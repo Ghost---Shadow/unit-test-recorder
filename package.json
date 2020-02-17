@@ -1,0 +1,27 @@
+{
+  "name": "test-recorder",
+  "version": "0.0.0",
+  "description": "TODO",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Ghost---Shadow/test-recorder.git"
+  },
+  "keywords": [
+    "TODO"
+  ],
+  "author": "Souradeep Nanda",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ghost---Shadow/test-recorder/issues"
+  },
+  "homepage": "https://github.com/Ghost---Shadow/test-recorder#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1"
+  }
+}

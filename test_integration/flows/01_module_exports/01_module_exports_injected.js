@@ -1,4 +1,4 @@
-var { recorderWrapper } = require("../../../src/recorder/recorder");const foo = (a, b) => a + b;
+var { recorderWrapper } = require("../../../src/recorder");const foo = (a, b) => a + b;
 
 function bar(a, b) {
   return a - b;

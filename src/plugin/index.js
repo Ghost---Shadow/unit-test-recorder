@@ -2,7 +2,7 @@ const { default: template } = require('@babel/template');
 const t = require('@babel/types');
 
 // TODO: Make this configurable
-const RECORDER_PATH = '../../../src/recorder/recorder';
+const RECORDER_PATH = '../../../src/recorder';
 const buildRequire = template(`
   var { recorderWrapper } = require(SOURCE);
 `);

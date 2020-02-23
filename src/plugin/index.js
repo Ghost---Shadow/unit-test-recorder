@@ -1,7 +1,5 @@
 const { default: template } = require('@babel/template');
-// const generate = require('@babel/generator');
 const t = require('@babel/types');
-// const _ = require('lodash');
 
 // TODO: Make this configurable
 const RECORDER_PATH = '../../../src/recorder/recorder';
@@ -13,25 +11,40 @@ const recorderImportStatement = buildRequire({
   SOURCE: t.stringLiteral(RECORDER_PATH),
 });
 
+const expgen = template.expression('(...p) => recorderWrapper(FUN_LIT,FUN_ID, ...p)');
+
+const getAstForExport = functionName => t.objectProperty(
+  t.identifier(functionName),
+  expgen({
+    FUN_ID: t.identifier(functionName),
+    FUN_LIT: t.stringLiteral(functionName),
+  }),
+);
+
 module.exports = (/* { types: t } */) => ({
   name: 'unit-test-recorder',
   visitor: {
     Program: {
-      enter(path) {
-        console.log(path);
+      enter() {
+        this.pathsToReplace = [];
       },
       exit(path) {
         path.unshiftContainer('body', recorderImportStatement);
+        this.pathsToReplace.forEach((p) => {
+          const functionName = p.node.key.name;
+          p.replaceWith(getAstForExport(functionName));
+        });
       },
     },
-    MemberExpression(path) {
-      const isModuleExports = path.node.object.name === 'module'
-        && path.node.property.name === 'exports';
+    AssignmentExpression(path) {
+      const { left } = path.node;
+      const isModuleExports = left.object.name === 'module'
+      && left.property.name === 'exports';
       if (isModuleExports) {
-        path.parent.right.properties.forEach((property) => {
-          if (property.value.name === property.key.name) {
-            console.log(property.value.name);
-          }
+        path.traverse({
+          ObjectProperty(innerPath) {
+            this.pathsToReplace.push(innerPath);
+          },
         });
       }
     },

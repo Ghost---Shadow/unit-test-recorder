@@ -1,4 +1,11 @@
 var { recorderWrapper } = require("../../../src/recorder/recorder");const foo = (a, b) => a + b;
-const bar = (a, b) => a - b;
 
-module.exports = { foo: (...p) => recorderWrapper("foo", foo, ...p), bar: (...p) => recorderWrapper("bar", bar, ...p) };
+function bar(a, b) {
+  return a - b;
+}
+
+const SOME_CONSTANT = 42;
+
+module.exports = { foo: (...p) => recorderWrapper("foo", foo, ...p),
+
+  SOME_CONSTANT, bar: (...p) => recorderWrapper("bar", bar, ...p) };

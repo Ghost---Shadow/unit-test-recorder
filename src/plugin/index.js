@@ -27,14 +27,23 @@ module.exports = (/* { types: t } */) => ({
     Program: {
       enter() {
         this.pathsToReplace = [];
+        this.validFunctions = {};
       },
       exit(path) {
         path.unshiftContainer('body', recorderImportStatement);
         this.pathsToReplace.forEach((p) => {
           const functionName = p.node.key.name;
-          p.replaceWith(getAstForExport(functionName));
+          if (this.validFunctions[functionName]) {
+            p.replaceWith(getAstForExport(functionName));
+          }
         });
       },
+    },
+    ArrowFunctionExpression(path) {
+      this.validFunctions[path.parent.id.name] = true;
+    },
+    FunctionDeclaration(path) {
+      this.validFunctions[path.node.id.name] = true;
     },
     AssignmentExpression(path) {
       const { left } = path.node;

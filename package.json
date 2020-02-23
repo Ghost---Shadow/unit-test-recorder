@@ -50,7 +50,9 @@
     "@babel/generator": "^7.4.4",
     "@babel/parser": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/template": "^7.8.3",
     "@babel/traverse": "^7.4.4",
+    "@babel/types": "^7.8.3",
     "babel-project-relative-import": "^2.0.1",
     "lodash": "^4.17.15",
     "mkdirp": "^0.5.1"

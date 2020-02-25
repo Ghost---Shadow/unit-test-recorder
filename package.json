@@ -55,7 +55,8 @@
     "@babel/types": "^7.8.3",
     "babel-project-relative-import": "^2.0.1",
     "lodash": "^4.17.15",
-    "mkdirp": "^0.5.1"
+    "mkdirp": "^0.5.1",
+    "prettier": "^1.19.1"
   },
   "jest": {
     "testPathIgnorePatterns": [

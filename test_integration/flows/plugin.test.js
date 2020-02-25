@@ -10,6 +10,7 @@ expect.extend({ toMatchFile });
 
 const myPlugin = require('../../src/plugin');
 const { parserPlugins, generatorOptions } = require('../../src/plugin/used-plugins');
+const { generateTestsFromActivity } = require('../../src/generator');
 
 const generatedInjectedCode = (inputPath) => {
   const inputCode = fs.readFileSync(inputPath, 'utf8');
@@ -23,19 +24,31 @@ const generatedInjectedCode = (inputPath) => {
   return code;
 };
 
-const getInputAndOutputPath = (fileName) => {
+const getInputAndOutputPathForInjected = (fileName) => {
   const inputPath = `test_integration/flows/${fileName}/${fileName}.js`;
   const outputPath = `test_integration/flows/${fileName}/${fileName}_injected.js`;
 
   return { inputPath, outputPath };
 };
 
+const getInputAndOutputPathForTests = (fileName) => {
+  const inputPath = `test_integration/flows/${fileName}/${fileName}_activity.json`;
+  const outputPath = `test_integration/flows/${fileName}/${fileName}_generated.test.js`;
+  const activity = JSON.parse(fs.readFileSync(inputPath).toString());
+  return { outputPath, activity };
+};
+
 describe('plugin.test', () => {
   describe('01_module_exports', () => {
-    it('should match snapshot', () => {
+    it('should match injected code snapshot', () => {
       const filename = '01_module_exports';
-      const { inputPath, outputPath } = getInputAndOutputPath(filename);
+      const { inputPath, outputPath } = getInputAndOutputPathForInjected(filename);
       expect(generatedInjectedCode(inputPath, filename)).toMatchFile(outputPath);
+    });
+    it('should match generated test code snapshot', () => {
+      const filename = '01_module_exports';
+      const { outputPath, activity } = getInputAndOutputPathForTests(filename);
+      expect(generateTestsFromActivity(filename, activity)).toMatchFile(outputPath);
     });
   });
 });

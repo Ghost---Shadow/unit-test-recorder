@@ -1,27 +1,39 @@
 {
-  "foo": [
-    {
-      "params": [
-        1,
-        2
-      ],
-      "result": 3
-    },
-    {
-      "params": [
-        2,
-        1
-      ],
-      "result": 3
-    }
-  ],
-  "bar": [
-    {
-      "params": [
-        2,
-        2
-      ],
-      "result": 0
-    }
-  ]
+  "foo": {
+    "paramIds": [
+      "a",
+      "b"
+    ],
+    "captures": [
+      {
+        "params": [
+          1,
+          2
+        ],
+        "result": 3
+      },
+      {
+        "params": [
+          2,
+          1
+        ],
+        "result": 3
+      }
+    ]
+  },
+  "bar": {
+    "paramIds": [
+      "a",
+      "b"
+    ],
+    "captures": [
+      {
+        "params": [
+          2,
+          2
+        ],
+        "result": 0
+      }
+    ]
+  }
 }

@@ -1,5 +1,6 @@
 const { default: template } = require('@babel/template');
 const t = require('@babel/types');
+const _ = require('lodash');
 
 // TODO: Make this configurable
 const RECORDER_PATH = '../../../src/recorder';
@@ -32,7 +33,9 @@ module.exports = (/* { types: t } */) => ({
         this.validFunctions = {};
       },
       exit(path) {
-        path.unshiftContainer('body', recorderImportStatement);
+        if (this.pathsToReplace.length) {
+          path.unshiftContainer('body', recorderImportStatement);
+        }
         this.pathsToReplace.forEach((p) => {
           const functionName = p.node.key.name;
           const paramIds = this.validFunctions[functionName];
@@ -43,15 +46,19 @@ module.exports = (/* { types: t } */) => ({
       },
     },
     ArrowFunctionExpression(path) {
-      this.validFunctions[path.parent.id.name] = path.node.params.map(p => p.name);
+      if (_.get(path, 'parent.id.name')) {
+        this.validFunctions[path.parent.id.name] = path.node.params.map(p => p.name);
+      }
     },
     FunctionDeclaration(path) {
-      this.validFunctions[path.node.id.name] = path.node.params.map(p => p.name);
+      if (_.get(path, 'node.id.name')) {
+        this.validFunctions[path.node.id.name] = path.node.params.map(p => p.name);
+      }
     },
     AssignmentExpression(path) {
       const { left } = path.node;
-      const isModuleExports = left.object.name === 'module'
-        && left.property.name === 'exports';
+      const isModuleExports = _.get(left, 'object.name') === 'module'
+        && _.get(left, 'property.name') === 'exports';
       if (isModuleExports) {
         path.traverse({
           ObjectProperty(innerPath) {

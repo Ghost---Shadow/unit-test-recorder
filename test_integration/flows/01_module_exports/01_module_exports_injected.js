@@ -6,6 +6,6 @@ function bar(a, b) {
 
 const SOME_CONSTANT = 42;
 
-module.exports = { foo: (...p) => recorderWrapper("foo", foo, "a,b", ...p),
+module.exports = { foo: (...p) => recorderWrapper("test_integration/flows/01_module_exports/01_module_exports.js", "foo", foo, "a,b", ...p),
 
-  SOME_CONSTANT, bar: (...p) => recorderWrapper("bar", bar, "a,b", ...p) };
+  SOME_CONSTANT, bar: (...p) => recorderWrapper("test_integration/flows/01_module_exports/01_module_exports.js", "bar", bar, "a,b", ...p) };

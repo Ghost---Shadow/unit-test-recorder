@@ -10,7 +10,7 @@ expect.extend({ toMatchFile });
 
 const myPlugin = require('../../src/plugin');
 const { parserPlugins, generatorOptions } = require('../../src/plugin/used-plugins');
-const { generateTestsFromActivity } = require('../../src/generator');
+const { extractTestsFromState } = require('../../src/generator');
 
 const generatedInjectedCode = (inputPath) => {
   const inputCode = fs.readFileSync(inputPath, 'utf8');
@@ -18,8 +18,8 @@ const generatedInjectedCode = (inputPath) => {
     sourceType: 'module',
     plugins: parserPlugins,
   });
-
-  traverse(ast, myPlugin(babel).visitor);
+  const state = { fileName: inputPath };
+  traverse(ast, myPlugin(babel).visitor, null, state);
   const { code } = generate(ast, generatorOptions);
   return code;
 };
@@ -34,8 +34,8 @@ const getInputAndOutputPathForInjected = (fileName) => {
 const getInputAndOutputPathForTests = (fileName) => {
   const inputPath = `test_integration/flows/${fileName}/${fileName}_activity.json`;
   const outputPath = `test_integration/flows/${fileName}/${fileName}_generated.test.js`;
-  const activity = JSON.parse(fs.readFileSync(inputPath).toString());
-  return { outputPath, activity };
+  const state = JSON.parse(fs.readFileSync(inputPath).toString());
+  return { outputPath, state };
 };
 
 describe('plugin.test', () => {
@@ -47,8 +47,10 @@ describe('plugin.test', () => {
     });
     it('should match generated test code snapshot', () => {
       const filename = '01_module_exports';
-      const { outputPath, activity } = getInputAndOutputPathForTests(filename);
-      expect(generateTestsFromActivity(filename, activity)).toMatchFile(outputPath);
+      const { outputPath, state } = getInputAndOutputPathForTests(filename);
+      const testFiles = extractTestsFromState(state);
+      // Only one file per test
+      expect(testFiles[0]).toMatchFile(outputPath);
     });
   });
 });

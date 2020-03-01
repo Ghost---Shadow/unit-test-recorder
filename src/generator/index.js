@@ -1,4 +1,5 @@
 // TODO: Use babel template
+const path = require('path');
 const prettier = require('prettier');
 
 const generateTestFromCapture = (functionName, paramIds, capture, testIndex) => {
@@ -52,6 +53,15 @@ const generateTestsFromActivity = (fileName, activity) => {
   });
 };
 
+const filePathToFileName = (filePath) => {
+  const basePath = path.basename(filePath);
+  return basePath.substring(0, basePath.length - 3);
+};
+
+const extractTestsFromState = state => Object
+  .keys(state)
+  .map(filePath => generateTestsFromActivity(filePathToFileName(filePath), state[filePath]));
+
 module.exports = {
-  generateTestsFromActivity,
+  extractTestsFromState,
 };

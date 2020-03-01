@@ -11,11 +11,12 @@ const recorderImportStatement = buildRequire({
   SOURCE: t.stringLiteral(RECORDER_PATH),
 });
 
-const expgen = template.expression('(...p) => recorderWrapper(FUN_LIT,FUN_ID,FUN_PN, ...p)');
+const expgen = template.expression('(...p) => recorderWrapper(PATH,FUN_LIT,FUN_ID,FUN_PN, ...p)');
 
-const getAstForExport = (functionName, paramIds) => t.objectProperty(
+const getAstForExport = (filePath, functionName, paramIds) => t.objectProperty(
   t.identifier(functionName),
   expgen({
+    PATH: t.stringLiteral(filePath),
     FUN_ID: t.identifier(functionName),
     FUN_LIT: t.stringLiteral(functionName),
     FUN_PN: t.stringLiteral(paramIds.join(',')),
@@ -36,7 +37,7 @@ module.exports = (/* { types: t } */) => ({
           const functionName = p.node.key.name;
           const paramIds = this.validFunctions[functionName];
           if (paramIds) {
-            p.replaceWith(getAstForExport(functionName, paramIds));
+            p.replaceWith(getAstForExport(this.fileName, functionName, paramIds));
           }
         });
       },
@@ -56,7 +57,7 @@ module.exports = (/* { types: t } */) => ({
           ObjectProperty(innerPath) {
             this.pathsToReplace.push(innerPath);
           },
-        });
+        }, this);
       }
     },
   },

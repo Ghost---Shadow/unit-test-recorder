@@ -1,0 +1,18 @@
+{
+  "test_integration/flows/02_module_export/02_module_export.js": {
+    "dum": {
+      "isDefault": true,
+      "paramIds": [
+        "a"
+      ],
+      "captures": [
+        {
+          "params": [
+            1
+          ],
+          "result": 2
+        }
+      ]
+    }
+  }
+}

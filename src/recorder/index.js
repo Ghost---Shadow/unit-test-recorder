@@ -7,12 +7,13 @@ const RecorderManager = {
   getSerialized: () => JSON.stringify(recorderState, null, 2),
 };
 
-const recorderWrapper = (filePath, functionName, innerFunction, paramIds, ...p) => {
+const recorderWrapper = (filePath, functionName, innerFunction, paramIds, isDefault, ...p) => {
   if (recorderState[filePath] === undefined) {
     recorderState[filePath] = {};
   }
   if (recorderState[filePath][functionName] === undefined) {
     recorderState[filePath][functionName] = {
+      isDefault,
       paramIds: paramIds.split(','),
       captures: [],
     };

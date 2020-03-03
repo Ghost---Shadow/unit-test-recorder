@@ -1,6 +1,7 @@
 {
   "test_integration/flows/01_module_exports/01_module_exports.js": {
     "foo": {
+      "isDefault": false,
       "paramIds": [
         "a",
         "b"
@@ -30,6 +31,7 @@
       ]
     },
     "bar": {
+      "isDefault": false,
       "paramIds": [
         "a",
         "b"

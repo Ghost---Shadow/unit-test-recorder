@@ -40,6 +40,20 @@ const generateTestsFromFunctionActivity = (functionName, functionActivity) => {
   `;
 };
 
+const generateImportStatementFromActivity = (activity, fileName) => {
+  const importedFunctions = Object.keys(activity);
+  if (importedFunctions.length > 1) {
+    return `const {${importedFunctions.join(',')}} = require('./${fileName}')`;
+  }
+  const importedFunction = importedFunctions[0];
+  const { isDefault } = activity[importedFunction];
+
+  if (isDefault) {
+    return `const ${importedFunction} = require('./${fileName}')`;
+  }
+  return `const {${importedFunction}} = require('./${fileName}')`;
+};
+
 const generateTestsFromActivity = (fileName, activity) => {
   const describeBlocks = Object
     .keys(activity)
@@ -47,9 +61,11 @@ const generateTestsFromActivity = (fileName, activity) => {
       functionName,
       activity[functionName],
     ));
-  const importStatement = Object.keys(activity);
+
+  const importStatement = generateImportStatementFromActivity(activity, fileName);
+
   const result = `
-  const {${importStatement.join(',')}} = require('./${fileName}')
+  ${importStatement}
   describe('${fileName}',()=>{
     ${describeBlocks.join('\n')}
   })

@@ -3,7 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
-
+const cp = require('child_process');
+const { promisify } = require('util');
 const babel = require('@babel/core');
 const { default: generate } = require('@babel/generator');
 const parser = require('@babel/parser');
@@ -12,10 +13,15 @@ const { default: traverse } = require('@babel/traverse');
 const myPlugin = require('./plugin');
 const { walk } = require('./util/walker');
 const { parserPlugins, generatorOptions } = require('./plugin/used-plugins');
+const { RecorderManager } = require('./recorder');
+const { extractTestsFromState } = require('./generator');
+const { getTestFileNameForFile } = require('./util/misc');
 
 const inputDir = './';
 const outputDir = './';
 const sourceDir = inputDir;
+
+const writeFileAsync = promisify(fs.writeFile);
 
 const transformFile = (fileName) => {
   try {
@@ -27,7 +33,8 @@ const transformFile = (fileName) => {
     });
 
     // Run the plugin
-    traverse(ast, myPlugin(babel).visitor);
+    const importPath = path.resolve(path.join(__dirname, './recorder'));
+    traverse(ast, myPlugin(babel).visitor, null, { fileName, importPath });
     const { code } = generate(ast, generatorOptions);
 
     const relativePath = path.relative(inputDir, fileName);
@@ -44,4 +51,32 @@ const allFiles = walk(path.join(path.resolve(inputDir), sourceDir));
 
 allFiles.forEach(fileName => transformFile(fileName));
 
-// npm start ../input-directory ../output-directory
+console.log('Injection complete. Starting server...');
+console.log('Press Ctrl + C to stop recording and dump the tests');
+
+process.on('SIGINT', async () => {
+  console.log('Dumping activity to disk');
+  fs.writeFileSync('activity_debug.json', RecorderManager.getSerialized());
+  const writePromises = extractTestsFromState(RecorderManager.recorderState)
+    .map(testObj => writeFileAsync(getTestFileNameForFile(testObj.filePath), testObj.fileString));
+  await Promise.all(writePromises);
+  try {
+    console.log('Using git to reset changes');
+    cp.execSync('git reset --hard');
+  } catch (e) {
+    console.error(e);
+  }
+  process.exit();
+});
+
+
+// setInterval(() => {
+//   // No operation
+//   // This is here to keep the process alive
+// }, 1000);
+
+const entryPoint = process.argv[2];
+const resolvedEntrypoint = path.resolve(process.cwd(), entryPoint);
+console.log(`Started ${resolvedEntrypoint}`);
+// eslint-disable-next-line
+require(resolvedEntrypoint);

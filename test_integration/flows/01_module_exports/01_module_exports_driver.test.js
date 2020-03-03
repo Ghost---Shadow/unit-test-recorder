@@ -11,6 +11,7 @@ describe('driver', () => {
     it('should record activity', () => {
       RecorderManager.clear();
       foo(1, 2);
+      foo('A', 'B');
       foo(2, 1);
       bar(2, 2);
       const outputFileName = getSnapshotFileName('01_module_exports');

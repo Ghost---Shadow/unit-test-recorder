@@ -3,14 +3,9 @@ const t = require('@babel/types');
 const _ = require('lodash');
 
 // TODO: Make this configurable
-const RECORDER_PATH = '../../../src/recorder';
 const buildRequire = template(`
   var { recorderWrapper } = require(SOURCE);
 `);
-
-const recorderImportStatement = buildRequire({
-  SOURCE: t.stringLiteral(RECORDER_PATH),
-});
 
 const expgen = template.expression('(...p) => recorderWrapper(PATH,FUN_LIT,FUN_ID,FUN_PN, ...p)');
 
@@ -34,6 +29,9 @@ module.exports = (/* { types: t } */) => ({
       },
       exit(path) {
         if (this.pathsToReplace.length) {
+          const recorderImportStatement = buildRequire({
+            SOURCE: t.stringLiteral(this.importPath),
+          });
           path.unshiftContainer('body', recorderImportStatement);
         }
         this.pathsToReplace.forEach((p) => {

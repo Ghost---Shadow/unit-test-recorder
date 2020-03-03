@@ -9,6 +9,13 @@ describe('01_module_exports', () => {
     });
 
     it('test 1', () => {
+      const a = 'A';
+      const b = 'B';
+      const result = 'AB';
+      expect(foo(a, b)).toEqual(result);
+    });
+
+    it('test 2', () => {
       const a = 2;
       const b = 1;
       const result = 3;

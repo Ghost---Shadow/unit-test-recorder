@@ -18,7 +18,7 @@ const generatedInjectedCode = (inputPath) => {
     sourceType: 'module',
     plugins: parserPlugins,
   });
-  const state = { fileName: inputPath };
+  const state = { fileName: inputPath, importPath: '../../../src/recorder' };
   traverse(ast, myPlugin(babel).visitor, null, state);
   const { code } = generate(ast, generatorOptions);
   return code;
@@ -50,7 +50,7 @@ describe('plugin.test', () => {
       const { outputPath, state } = getInputAndOutputPathForTests(filename);
       const testFiles = extractTestsFromState(state);
       // Only one file per test
-      expect(testFiles[0]).toMatchFile(outputPath);
+      expect(testFiles[0].fileString).toMatchFile(outputPath);
     });
   });
 });

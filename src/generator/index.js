@@ -2,10 +2,17 @@
 const path = require('path');
 const prettier = require('prettier');
 
+const wrapSafely = (param) => {
+  const result = {
+    string: `'${param}'`,
+  }[typeof (param)];
+  return result || param;
+};
+
 const generateTestFromCapture = (functionName, paramIds, capture, testIndex) => {
   const inputStatements = capture.params
-    .map((param, index) => `const ${paramIds[index]} = ${param}`);
-  const resultStatement = `const result = ${capture.result}`;
+    .map((param, index) => `const ${paramIds[index]} = ${wrapSafely(param)}`);
+  const resultStatement = `const result = ${wrapSafely(capture.result)}`;
   const invokeExpression = `${functionName}(${paramIds.join(',')})`;
   const expectStatement = `expect(${invokeExpression}).toEqual(result)`;
   return `
@@ -60,7 +67,10 @@ const filePathToFileName = (filePath) => {
 
 const extractTestsFromState = state => Object
   .keys(state)
-  .map(filePath => generateTestsFromActivity(filePathToFileName(filePath), state[filePath]));
+  .map(filePath => ({
+    filePath,
+    fileString: generateTestsFromActivity(filePathToFileName(filePath), state[filePath]),
+  }));
 
 module.exports = {
   extractTestsFromState,

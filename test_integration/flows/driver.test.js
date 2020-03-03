@@ -1,6 +1,7 @@
 const { toMatchFile } = require('jest-file-snapshot');
-const { foo, bar } = require('./01_module_exports_injected');
-const { RecorderManager } = require('../../../src/recorder');
+const { foo, bar } = require('./01_module_exports/01_module_exports_injected');
+const dum = require('./02_module_export/02_module_export_injected');
+const { RecorderManager } = require('../../src/recorder');
 
 expect.extend({ toMatchFile });
 
@@ -15,6 +16,14 @@ describe('driver', () => {
       foo(2, 1);
       bar(2, 2);
       const outputFileName = getSnapshotFileName('01_module_exports');
+      expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
+    });
+  });
+  describe('02_module_export', () => {
+    it('should record activity', () => {
+      RecorderManager.clear();
+      dum(1);
+      const outputFileName = getSnapshotFileName('02_module_export');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });
   });

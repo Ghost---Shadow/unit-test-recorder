@@ -1,18 +1,20 @@
-let recorderState = {};
-
 // TODO: Use redux
 const RecorderManager = {
-  recorderState,
-  clear: () => { recorderState = {}; },
-  getSerialized: () => JSON.stringify(recorderState, null, 2),
+  recorderState: {},
+  clear() {
+    this.recorderState = {};
+  },
+  getSerialized() {
+    return JSON.stringify(this.recorderState, null, 2);
+  },
 };
 
 const recorderWrapper = (filePath, functionName, innerFunction, paramIds, isDefault, ...p) => {
-  if (recorderState[filePath] === undefined) {
-    recorderState[filePath] = {};
+  if (RecorderManager.recorderState[filePath] === undefined) {
+    RecorderManager.recorderState[filePath] = {};
   }
-  if (recorderState[filePath][functionName] === undefined) {
-    recorderState[filePath][functionName] = {
+  if (RecorderManager.recorderState[filePath][functionName] === undefined) {
+    RecorderManager.recorderState[filePath][functionName] = {
       isDefault,
       paramIds: paramIds.split(','),
       captures: [],
@@ -20,7 +22,7 @@ const recorderWrapper = (filePath, functionName, innerFunction, paramIds, isDefa
   }
   const params = p;
   const result = innerFunction(...p);
-  recorderState[filePath][functionName].captures.push({
+  RecorderManager.recorderState[filePath][functionName].captures.push({
     params,
     result,
   });

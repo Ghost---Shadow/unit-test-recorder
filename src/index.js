@@ -51,6 +51,11 @@ const allFiles = walk(path.join(path.resolve(inputDir), sourceDir));
 
 allFiles.forEach(fileName => transformFile(fileName));
 
+if (fs.existsSync('activity_debug.json')) {
+  console.log('Found existing state');
+  RecorderManager.recorderState = JSON.parse(fs.readFileSync('activity_debug.json').toString());
+}
+
 console.log('Injection complete. Starting server...');
 console.log('Press Ctrl + C to stop recording and dump the tests');
 

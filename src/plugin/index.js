@@ -7,77 +7,91 @@ const buildRequire = template(`
   var { recorderWrapper } = require(SOURCE);
 `);
 
-const expgen = template.expression('(...p) => recorderWrapper(PATH,FUN_LIT,FUN_ID,FUN_PN,IS_DEF, ...p)');
+const expgen = template.expression('(...p) => recorderWrapper(PATH,FUN_LIT,FUN_PN,IS_DEF,FUN_AST, ...p)');
 
-const getAstForModuleExportObjProp = (
+const getAstWithWrapper = (
   filePath,
   functionName,
   paramIds,
   isDefault,
-) => t.objectProperty(
-  t.identifier(functionName),
-  expgen({
+  functionAst,
+) => ({
+  ArrowFunctionExpression: expgen({
     PATH: t.stringLiteral(filePath),
-    FUN_ID: t.identifier(functionName),
     FUN_LIT: t.stringLiteral(functionName),
     FUN_PN: t.stringLiteral(paramIds.join(',')),
     IS_DEF: t.booleanLiteral(isDefault),
+    FUN_AST: t.arrowFunctionExpression(functionAst.params, functionAst.body),
   }),
-);
-
-const getAstForModuleExport = (filePath, functionName, paramIds, isDefault) => expgen({
-  PATH: t.stringLiteral(filePath),
-  FUN_ID: t.identifier(functionName),
-  FUN_LIT: t.stringLiteral(functionName),
-  FUN_PN: t.stringLiteral(paramIds.join(',')),
-  IS_DEF: t.booleanLiteral(isDefault),
-});
+  FunctionDeclaration: t.variableDeclaration('const', [
+    t.variableDeclarator(
+      t.identifier(functionName),
+      expgen({
+        PATH: t.stringLiteral(filePath),
+        FUN_LIT: t.stringLiteral(functionName),
+        FUN_PN: t.stringLiteral(paramIds.join(',')),
+        IS_DEF: t.booleanLiteral(isDefault),
+        FUN_AST: functionAst.body.type === 'BinaryExpression'
+          ? t.arrowFunctionExpression(functionAst.params, functionAst.body)
+          : t.functionExpression(
+            t.identifier(functionName),
+            functionAst.params,
+            functionAst.body,
+          ),
+      }),
+    ),
+  ]),
+}[functionAst.type]);
 
 module.exports = (/* { types: t } */) => ({
   name: 'unit-test-recorder',
   visitor: {
     Program: {
       enter() {
-        this.pathsToReplace = [];
-        this.validFunctions = {};
+        this.functionsToReplace = {};
       },
       exit(path) {
-        if (this.pathsToReplace.length) {
+        const validFunctions = Object.keys(this.functionsToReplace)
+          .filter(name => this.functionsToReplace[name].isExported
+            && this.functionsToReplace[name].isFunction)
+          .map(name => ({
+            name,
+            paramIds: this.functionsToReplace[name].paramIds,
+            path: this.functionsToReplace[name].path,
+            isDefault: this.functionsToReplace[name].isDefault,
+          }));
+        if (validFunctions.length) {
           const recorderImportStatement = buildRequire({
             SOURCE: t.stringLiteral(this.importPath),
           });
           path.unshiftContainer('body', recorderImportStatement);
         }
-        this.pathsToReplace.forEach((p) => {
-          if (t.isObjectProperty(p)) {
-            const functionName = p.node.key.name;
-            const paramIds = this.validFunctions[functionName];
-            if (paramIds) {
-              p.replaceWith(getAstForModuleExportObjProp(
-                this.fileName,
-                functionName,
-                paramIds,
-                false,
-              ));
-            }
-          } else if (t.isIdentifier(p)) {
-            const functionName = p.node.name;
-            const paramIds = this.validFunctions[functionName];
-            if (paramIds) {
-              p.replaceWith(getAstForModuleExport(this.fileName, functionName, paramIds, true));
-            }
-          }
+        validFunctions.forEach((funObj) => {
+          const newAst = getAstWithWrapper(
+            this.fileName,
+            funObj.name,
+            funObj.paramIds,
+            funObj.isDefault,
+            funObj.path.node,
+          );
+          funObj.path.replaceWith(newAst);
         });
       },
     },
     ArrowFunctionExpression(path) {
-      if (_.get(path, 'parent.id.name')) {
-        this.validFunctions[path.parent.id.name] = path.node.params.map(p => p.name);
+      const functionName = _.get(path, 'parent.id.name');
+      if (functionName) {
+        const paramIds = path.node.params.map(p => p.name);
+        const old = this.functionsToReplace[functionName];
+        this.functionsToReplace[functionName] = _.merge(old, { isFunction: true, paramIds, path });
       }
     },
     FunctionDeclaration(path) {
-      if (_.get(path, 'node.id.name')) {
-        this.validFunctions[path.node.id.name] = path.node.params.map(p => p.name);
+      const functionName = _.get(path, 'node.id.name');
+      if (functionName) {
+        const paramIds = path.node.params.map(p => p.name);
+        const old = this.functionsToReplace[functionName];
+        this.functionsToReplace[functionName] = _.merge(old, { isFunction: true, paramIds, path });
       }
     },
     AssignmentExpression(path) {
@@ -87,11 +101,21 @@ module.exports = (/* { types: t } */) => ({
       if (isModuleExports) {
         path.traverse({
           ObjectProperty(innerPath) {
-            this.pathsToReplace.push(innerPath);
+            const functionName = innerPath.node.value.name;
+            const old = this.functionsToReplace[functionName];
+            this.functionsToReplace[functionName] = _.merge(old, {
+              isExported: true,
+              isDefault: false,
+            });
           },
         }, this);
         if (t.isIdentifier(path.node.right)) {
-          this.pathsToReplace.push(path.get('right'));
+          const functionName = path.node.right.name;
+          const old = this.functionsToReplace[functionName];
+          this.functionsToReplace[functionName] = _.merge(old, {
+            isExported: true,
+            isDefault: true,
+          });
         }
       }
     },

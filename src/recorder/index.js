@@ -9,7 +9,8 @@ const RecorderManager = {
   },
 };
 
-const recorderWrapper = (filePath, functionName, innerFunction, paramIds, isDefault, ...p) => {
+// PATH,FUN_LIT,FUN_PN,IS_DEF,FUN_AST, ...p
+const recorderWrapper = (filePath, functionName, paramIds, isDefault, innerFunction, ...p) => {
   if (RecorderManager.recorderState[filePath] === undefined) {
     RecorderManager.recorderState[filePath] = {};
   }

@@ -1,7 +1,8 @@
 const foo = (a, b) => a + b;
 
 function bar(a, b) {
-  return a - b;
+  const c = a - b;
+  return c;
 }
 
 const SOME_CONSTANT = 42;

@@ -5,6 +5,7 @@ const parser = require('@babel/parser');
 const { default: traverse } = require('@babel/traverse');
 const { toMatchFile } = require('jest-file-snapshot');
 const { default: generate } = require('@babel/generator');
+const prettier = require('prettier');
 
 expect.extend({ toMatchFile });
 
@@ -21,7 +22,10 @@ const generatedInjectedCode = (inputPath) => {
   const state = { fileName: inputPath, importPath: '../../../src/recorder' };
   traverse(ast, myPlugin(babel).visitor, null, state);
   const { code } = generate(ast, generatorOptions);
-  return code;
+  return prettier.format(code, {
+    singleQuote: true,
+    parser: 'babel',
+  });
 };
 
 const getInputAndOutputPathForInjected = (fileName) => {

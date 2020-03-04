@@ -1,3 +1,12 @@
-var { recorderWrapper } = require("../../../src/recorder");const dum = a => 2 * a;
+var { recorderWrapper } = require('../../../src/recorder');
+const dum = (...p) =>
+  recorderWrapper(
+    'test_integration/flows/02_module_export/02_module_export.js',
+    'dum',
+    'a',
+    true,
+    a => 2 * a,
+    ...p
+  );
 
-module.exports = (...p) => recorderWrapper("test_integration/flows/02_module_export/02_module_export.js", "dum", dum, "a", true, ...p);
+module.exports = dum;

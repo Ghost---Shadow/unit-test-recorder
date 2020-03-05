@@ -1,11 +1,16 @@
 {
   "test_integration/flows/01_module_exports/01_module_exports.js": {
     "foo": {
-      "isDefault": false,
-      "paramIds": [
-        "a",
-        "b"
-      ],
+      "meta": {
+        "path": "test_integration/flows/01_module_exports/01_module_exports.js",
+        "name": "foo",
+        "paramIds": [
+          "a",
+          "b"
+        ],
+        "isDefault": false,
+        "isEcmaDefault": false
+      },
       "captures": [
         {
           "params": [
@@ -31,11 +36,16 @@
       ]
     },
     "bar": {
-      "isDefault": false,
-      "paramIds": [
-        "a",
-        "b"
-      ],
+      "meta": {
+        "path": "test_integration/flows/01_module_exports/01_module_exports.js",
+        "name": "bar",
+        "paramIds": [
+          "a",
+          "b"
+        ],
+        "isDefault": false,
+        "isEcmaDefault": false
+      },
       "captures": [
         {
           "params": [

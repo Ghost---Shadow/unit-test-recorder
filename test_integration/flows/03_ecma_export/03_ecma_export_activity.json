@@ -1,0 +1,44 @@
+{
+  "test_integration/flows/03_ecma_export/03_ecma_export.js": {
+    "ecma1": {
+      "meta": {
+        "path": "test_integration/flows/03_ecma_export/03_ecma_export.js",
+        "name": "ecma1",
+        "paramIds": [
+          "a",
+          "b"
+        ],
+        "isDefault": false,
+        "isEcmaDefault": false
+      },
+      "captures": [
+        {
+          "params": [
+            1,
+            2
+          ],
+          "result": 3
+        }
+      ]
+    },
+    "ecma2": {
+      "meta": {
+        "path": "test_integration/flows/03_ecma_export/03_ecma_export.js",
+        "name": "ecma2",
+        "paramIds": [
+          "b"
+        ],
+        "isDefault": true,
+        "isEcmaDefault": true
+      },
+      "captures": [
+        {
+          "params": [
+            1
+          ],
+          "result": 3
+        }
+      ]
+    }
+  }
+}

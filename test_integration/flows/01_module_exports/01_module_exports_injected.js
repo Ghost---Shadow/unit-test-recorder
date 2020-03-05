@@ -1,19 +1,25 @@
 var { recorderWrapper } = require('../../../src/recorder');
 const foo = (...p) =>
   recorderWrapper(
-    'test_integration/flows/01_module_exports/01_module_exports.js',
-    'foo',
-    'a,b',
-    false,
+    {
+      path: 'test_integration/flows/01_module_exports/01_module_exports.js',
+      name: 'foo',
+      paramIds: 'a,b',
+      isDefault: false,
+      isEcmaDefault: false
+    },
     (a, b) => a + b,
     ...p
   );
 const bar = (...p) =>
   recorderWrapper(
-    'test_integration/flows/01_module_exports/01_module_exports.js',
-    'bar',
-    'a,b',
-    false,
+    {
+      path: 'test_integration/flows/01_module_exports/01_module_exports.js',
+      name: 'bar',
+      paramIds: 'a,b',
+      isDefault: false,
+      isEcmaDefault: false
+    },
     function bar(a, b) {
       const c = a - b;
       return c;

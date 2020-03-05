@@ -25,7 +25,8 @@ const generateTestFromCapture = (functionName, paramIds, capture, testIndex) => 
 };
 
 const generateTestsFromFunctionActivity = (functionName, functionActivity) => {
-  const { paramIds, captures } = functionActivity;
+  const { meta, captures } = functionActivity;
+  const { paramIds } = meta;
   const tests = captures
     .map((capture, index) => generateTestFromCapture(
       functionName,
@@ -42,16 +43,12 @@ const generateTestsFromFunctionActivity = (functionName, functionActivity) => {
 
 const generateImportStatementFromActivity = (activity, fileName) => {
   const importedFunctions = Object.keys(activity);
-  if (importedFunctions.length > 1) {
-    return `const {${importedFunctions.join(',')}} = require('./${fileName}')`;
-  }
-  const importedFunction = importedFunctions[0];
-  const { isDefault } = activity[importedFunction];
-
-  if (isDefault) {
-    return `const ${importedFunction} = require('./${fileName}')`;
-  }
-  return `const {${importedFunction}} = require('./${fileName}')`;
+  return importedFunctions.reduce((acc, importedFunction) => {
+    const { isDefault, isEcmaDefault } = activity[importedFunction].meta;
+    if (isEcmaDefault) return `${acc}\nconst {default:${importedFunction}} = require('./${fileName}')`;
+    if (isDefault) return `${acc}\nconst ${importedFunction} = require('./${fileName}')`;
+    return `${acc}\nconst {${importedFunction}} = require('./${fileName}')`;
+  }, '');
 };
 
 const generateTestsFromActivity = (fileName, activity) => {

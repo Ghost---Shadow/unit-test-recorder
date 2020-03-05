@@ -1,10 +1,15 @@
 {
   "test_integration/flows/02_module_export/02_module_export.js": {
     "dum": {
-      "isDefault": true,
-      "paramIds": [
-        "a"
-      ],
+      "meta": {
+        "path": "test_integration/flows/02_module_export/02_module_export.js",
+        "name": "dum",
+        "paramIds": [
+          "a"
+        ],
+        "isDefault": true,
+        "isEcmaDefault": false
+      },
       "captures": [
         {
           "params": [

@@ -9,21 +9,20 @@ const RecorderManager = {
   },
 };
 
-// PATH,FUN_LIT,FUN_PN,IS_DEF,FUN_AST, ...p
-const recorderWrapper = (filePath, functionName, paramIds, isDefault, innerFunction, ...p) => {
-  if (RecorderManager.recorderState[filePath] === undefined) {
-    RecorderManager.recorderState[filePath] = {};
+const recorderWrapper = (meta, innerFunction, ...p) => {
+  const { path, name } = meta;
+  if (RecorderManager.recorderState[path] === undefined) {
+    RecorderManager.recorderState[path] = {};
   }
-  if (RecorderManager.recorderState[filePath][functionName] === undefined) {
-    RecorderManager.recorderState[filePath][functionName] = {
-      isDefault,
-      paramIds: paramIds.split(','),
+  if (RecorderManager.recorderState[path][name] === undefined) {
+    RecorderManager.recorderState[path][name] = {
+      meta: { ...meta, paramIds: meta.paramIds.split(',') },
       captures: [],
     };
   }
   const params = p;
   const result = innerFunction(...p);
-  RecorderManager.recorderState[filePath][functionName].captures.push({
+  RecorderManager.recorderState[path][name].captures.push({
     params,
     result,
   });

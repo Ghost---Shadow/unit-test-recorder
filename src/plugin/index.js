@@ -7,30 +7,33 @@ const buildRequire = template(`
   var { recorderWrapper } = require(SOURCE);
 `);
 
-const expgen = template.expression('(...p) => recorderWrapper(PATH,FUN_LIT,FUN_PN,IS_DEF,FUN_AST, ...p)');
+const expgen = template.expression('(...p) => recorderWrapper(META, FUN_AST, ...p)');
+
+const metaGenerator = (path, name, paramIds, isDefault, isEcmaDefault) => t.objectExpression([
+  t.objectProperty(t.identifier('path'), t.stringLiteral(path)),
+  t.objectProperty(t.identifier('name'), t.stringLiteral(name)),
+  t.objectProperty(t.identifier('paramIds'), t.stringLiteral(paramIds)),
+  t.objectProperty(t.identifier('isDefault'), t.booleanLiteral(isDefault)),
+  t.objectProperty(t.identifier('isEcmaDefault'), t.booleanLiteral(isEcmaDefault)),
+]);
 
 const getAstWithWrapper = (
   filePath,
   functionName,
   paramIds,
   isDefault,
+  isEcmaDefault,
   functionAst,
 ) => ({
   ArrowFunctionExpression: expgen({
-    PATH: t.stringLiteral(filePath),
-    FUN_LIT: t.stringLiteral(functionName),
-    FUN_PN: t.stringLiteral(paramIds.join(',')),
-    IS_DEF: t.booleanLiteral(isDefault),
+    META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault),
     FUN_AST: t.arrowFunctionExpression(functionAst.params, functionAst.body),
   }),
   FunctionDeclaration: t.variableDeclaration('const', [
     t.variableDeclarator(
       t.identifier(functionName),
       expgen({
-        PATH: t.stringLiteral(filePath),
-        FUN_LIT: t.stringLiteral(functionName),
-        FUN_PN: t.stringLiteral(paramIds.join(',')),
-        IS_DEF: t.booleanLiteral(isDefault),
+        META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault),
         FUN_AST: functionAst.body.type === 'BinaryExpression'
           ? t.arrowFunctionExpression(functionAst.params, functionAst.body)
           : t.functionExpression(
@@ -54,12 +57,7 @@ module.exports = (/* { types: t } */) => ({
         const validFunctions = Object.keys(this.functionsToReplace)
           .filter(name => this.functionsToReplace[name].isExported
             && this.functionsToReplace[name].isFunction)
-          .map(name => ({
-            name,
-            paramIds: this.functionsToReplace[name].paramIds,
-            path: this.functionsToReplace[name].path,
-            isDefault: this.functionsToReplace[name].isDefault,
-          }));
+          .map(name => ({ name, ...this.functionsToReplace[name] }));
         if (validFunctions.length) {
           const recorderImportStatement = buildRequire({
             SOURCE: t.stringLiteral(this.importPath),
@@ -72,6 +70,7 @@ module.exports = (/* { types: t } */) => ({
             funObj.name,
             funObj.paramIds,
             funObj.isDefault,
+            funObj.isEcmaDefault,
             funObj.path.node,
           );
           funObj.path.replaceWith(newAst);
@@ -94,6 +93,30 @@ module.exports = (/* { types: t } */) => ({
         this.functionsToReplace[functionName] = _.merge(old, { isFunction: true, paramIds, path });
       }
     },
+    ExportNamedDeclaration(path) {
+      const declarations = _.get(path, 'node.declaration.declarations', []);
+      declarations.forEach((declaration) => {
+        const maybeFunctionName = _.get(declaration, 'id.name');
+        if (!maybeFunctionName) return;
+        const old = this.functionsToReplace[maybeFunctionName];
+        this.functionsToReplace[maybeFunctionName] = _.merge(old, {
+          isExported: true,
+          isDefault: false,
+          isEcmaDefault: false,
+        });
+      });
+    },
+    ExportDefaultDeclaration(path) {
+      const maybeFunctionName = _.get(path, 'node.declaration.name');
+      if (maybeFunctionName) {
+        const old = this.functionsToReplace[maybeFunctionName];
+        this.functionsToReplace[maybeFunctionName] = _.merge(old, {
+          isExported: true,
+          isDefault: true,
+          isEcmaDefault: true,
+        });
+      }
+    },
     AssignmentExpression(path) {
       const { left } = path.node;
       const isModuleExports = _.get(left, 'object.name') === 'module'
@@ -106,6 +129,7 @@ module.exports = (/* { types: t } */) => ({
             this.functionsToReplace[functionName] = _.merge(old, {
               isExported: true,
               isDefault: false,
+              isEcmaDefault: false,
             });
           },
         }, this);
@@ -115,6 +139,7 @@ module.exports = (/* { types: t } */) => ({
           this.functionsToReplace[functionName] = _.merge(old, {
             isExported: true,
             isDefault: true,
+            isEcmaDefault: false,
           });
         }
       }

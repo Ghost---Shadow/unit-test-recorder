@@ -13,7 +13,7 @@ const myPlugin = require('../../src/plugin');
 const { parserPlugins, generatorOptions } = require('../../src/plugin/used-plugins');
 const { extractTestsFromState } = require('../../src/generator');
 
-const generatedInjectedCode = (inputPath) => {
+const generatedInstrumentedCode = (inputPath) => {
   const inputCode = fs.readFileSync(inputPath, 'utf8');
   const ast = parser.parse(inputCode, {
     sourceType: 'module',
@@ -28,9 +28,9 @@ const generatedInjectedCode = (inputPath) => {
   });
 };
 
-const getInputAndOutputPathForInjected = (fileName) => {
+const getInputAndOutputPathForInstrumented = (fileName) => {
   const inputPath = `test_integration/flows/${fileName}/${fileName}.js`;
-  const outputPath = `test_integration/flows/${fileName}/${fileName}_injected.js`;
+  const outputPath = `test_integration/flows/${fileName}/${fileName}_instrumented.js`;
 
   return { inputPath, outputPath };
 };
@@ -44,10 +44,10 @@ const getInputAndOutputPathForTests = (fileName) => {
 
 describe('plugin.test', () => {
   describe('01_module_exports', () => {
-    it('should match injected code snapshot', () => {
+    it('should match instrumented code snapshot', () => {
       const filename = '01_module_exports';
-      const { inputPath, outputPath } = getInputAndOutputPathForInjected(filename);
-      expect(generatedInjectedCode(inputPath, filename)).toMatchFile(outputPath);
+      const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
+      expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
     });
     it('should match generated test code snapshot', () => {
       const filename = '01_module_exports';
@@ -58,10 +58,10 @@ describe('plugin.test', () => {
     });
   });
   describe('02_module_export', () => {
-    it('should match injected code snapshot', () => {
+    it('should match instrumented code snapshot', () => {
       const filename = '02_module_export';
-      const { inputPath, outputPath } = getInputAndOutputPathForInjected(filename);
-      expect(generatedInjectedCode(inputPath, filename)).toMatchFile(outputPath);
+      const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
+      expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
     });
     it('should match generated test code snapshot', () => {
       const filename = '02_module_export';
@@ -72,10 +72,10 @@ describe('plugin.test', () => {
     });
   });
   describe('03_ecma_export', () => {
-    it('should match injected code snapshot', () => {
+    it('should match instrumented code snapshot', () => {
       const filename = '03_ecma_export';
-      const { inputPath, outputPath } = getInputAndOutputPathForInjected(filename);
-      expect(generatedInjectedCode(inputPath, filename)).toMatchFile(outputPath);
+      const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
+      expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
     });
     it('should match generated test code snapshot', () => {
       const filename = '03_ecma_export';
@@ -86,10 +86,10 @@ describe('plugin.test', () => {
     });
   });
   describe('04_unserializeable', () => {
-    it('should match injected code snapshot', () => {
+    it('should match instrumented code snapshot', () => {
       const filename = '04_unserializeable';
-      const { inputPath, outputPath } = getInputAndOutputPathForInjected(filename);
-      expect(generatedInjectedCode(inputPath, filename)).toMatchFile(outputPath);
+      const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
+      expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
     });
     it('should match generated test code snapshot', () => {
       const filename = '04_unserializeable';

@@ -1,8 +1,8 @@
 const { toMatchFile } = require('jest-file-snapshot');
-const { foo, bar } = require('./01_module_exports/01_module_exports_injected');
-const dum = require('./02_module_export/02_module_export_injected');
-const { default: ecma2, ecma1 } = require('./03_ecma_export/03_ecma_export_injected');
-const { circularReference, returnAFunction } = require('./04_unserializeable/04_unserializeable_injected');
+const { foo, bar } = require('./01_module_exports/01_module_exports_instrumented');
+const dum = require('./02_module_export/02_module_export_instrumented');
+const { default: ecma2, ecma1 } = require('./03_ecma_export/03_ecma_export_instrumented');
+const { circularReference, returnAFunction } = require('./04_unserializeable/04_unserializeable_instrumented');
 const { RecorderManager } = require('../../src/recorder');
 
 expect.extend({ toMatchFile });

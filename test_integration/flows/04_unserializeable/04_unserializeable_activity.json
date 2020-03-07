@@ -1,0 +1,25 @@
+{
+  "test_integration/flows/04_unserializeable/04_unserializeable.js": {
+    "circularReference": {
+      "meta": {
+        "path": "test_integration/flows/04_unserializeable/04_unserializeable.js",
+        "name": "circularReference",
+        "paramIds": [
+          "a"
+        ],
+        "isDefault": false,
+        "isEcmaDefault": false
+      },
+      "captures": [
+        {
+          "params": [
+            1
+          ],
+          "result": {
+            "a": 1
+          }
+        }
+      ]
+    }
+  }
+}

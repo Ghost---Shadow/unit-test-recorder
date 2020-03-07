@@ -85,4 +85,18 @@ describe('plugin.test', () => {
       expect(testFiles[0].fileString).toMatchFile(outputPath);
     });
   });
+  describe('04_unserializeable', () => {
+    it('should match injected code snapshot', () => {
+      const filename = '04_unserializeable';
+      const { inputPath, outputPath } = getInputAndOutputPathForInjected(filename);
+      expect(generatedInjectedCode(inputPath, filename)).toMatchFile(outputPath);
+    });
+    it('should match generated test code snapshot', () => {
+      const filename = '04_unserializeable';
+      const { outputPath, state } = getInputAndOutputPathForTests(filename);
+      const testFiles = extractTestsFromState(state);
+      // Only one file per test
+      expect(testFiles[0].fileString).toMatchFile(outputPath);
+    });
+  });
 });

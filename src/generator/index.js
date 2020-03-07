@@ -5,8 +5,17 @@ const prettier = require('prettier');
 const wrapSafely = (param) => {
   const result = {
     string: `'${param}'`,
+    // Circular jsons should never exist in activity
+    object: JSON.stringify(param, null, 2),
   }[typeof (param)];
   return result || param;
+};
+
+const generateExpectStatement = (invokeExpression, result) => {
+  if (typeof (result) === 'object') {
+    return `expect(${invokeExpression}).toMatchObject(result)`;
+  }
+  return `expect(${invokeExpression}).toEqual(result)`;
 };
 
 const generateTestFromCapture = (functionName, paramIds, capture, testIndex) => {
@@ -14,7 +23,7 @@ const generateTestFromCapture = (functionName, paramIds, capture, testIndex) => 
     .map((param, index) => `const ${paramIds[index]} = ${wrapSafely(param)}`);
   const resultStatement = `const result = ${wrapSafely(capture.result)}`;
   const invokeExpression = `${functionName}(${paramIds.join(',')})`;
-  const expectStatement = `expect(${invokeExpression}).toEqual(result)`;
+  const expectStatement = generateExpectStatement(invokeExpression, capture.result);
   return `
   it('test ${testIndex}',()=>{
     ${inputStatements.join('\n')}

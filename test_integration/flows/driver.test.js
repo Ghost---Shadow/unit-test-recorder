@@ -2,6 +2,7 @@ const { toMatchFile } = require('jest-file-snapshot');
 const { foo, bar } = require('./01_module_exports/01_module_exports_injected');
 const dum = require('./02_module_export/02_module_export_injected');
 const { default: ecma2, ecma1 } = require('./03_ecma_export/03_ecma_export_injected');
+const { circularReference } = require('./04_unserializeable/04_unserializeable_injected');
 const { RecorderManager } = require('../../src/recorder');
 
 expect.extend({ toMatchFile });
@@ -34,6 +35,14 @@ describe('driver', () => {
       ecma1(1, 2);
       ecma2(1);
       const outputFileName = getSnapshotFileName('03_ecma_export');
+      expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
+    });
+  });
+  describe('04_unserializeable', () => {
+    it('should record activity', () => {
+      RecorderManager.clear();
+      circularReference(1);
+      const outputFileName = getSnapshotFileName('04_unserializeable');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });
   });

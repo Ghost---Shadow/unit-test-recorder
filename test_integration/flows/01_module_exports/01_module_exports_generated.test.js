@@ -13,7 +13,7 @@ describe('01_module_exports', () => {
       const a = 'A';
       const b = 'B';
       const result = 'AB';
-      expect(foo(a, b)).toEqual(result);
+      expect(foo(a, b).toString()).toEqual(result);
     });
 
     it('test 2', () => {

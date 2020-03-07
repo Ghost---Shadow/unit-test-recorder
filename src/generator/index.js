@@ -15,6 +15,9 @@ const generateExpectStatement = (invokeExpression, result) => {
   if (typeof (result) === 'object') {
     return `expect(${invokeExpression}).toMatchObject(result)`;
   }
+  if (typeof (result) === 'string') {
+    return `expect(${invokeExpression}.toString()).toEqual(result)`;
+  }
   return `expect(${invokeExpression}).toEqual(result)`;
 };
 

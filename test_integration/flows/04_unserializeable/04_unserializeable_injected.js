@@ -16,6 +16,20 @@ const circularReference = (...p) =>
     ...p
   );
 
-// const returnAFunction = a => b => a + b;
+const returnAFunction = (...p) =>
+  recorderWrapper(
+    {
+      path: 'test_integration/flows/04_unserializeable/04_unserializeable.js',
+      name: 'returnAFunction',
+      paramIds: 'a,f2',
+      isDefault: false,
+      isEcmaDefault: false
+    },
+    (a, f2) => b => a + f2(b),
+    ...p
+  );
 
-module.exports = { circularReference };
+module.exports = {
+  circularReference,
+  returnAFunction
+};

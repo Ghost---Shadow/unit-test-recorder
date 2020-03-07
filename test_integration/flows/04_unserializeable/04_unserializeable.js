@@ -4,6 +4,9 @@ const circularReference = (a) => {
   return obj;
 };
 
-// const returnAFunction = a => b => a + b;
+const returnAFunction = (a, f2) => b => a + f2(b);
 
-module.exports = { circularReference };
+module.exports = {
+  circularReference,
+  returnAFunction,
+};

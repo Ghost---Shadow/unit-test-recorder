@@ -20,6 +20,27 @@
           }
         }
       ]
+    },
+    "returnAFunction": {
+      "meta": {
+        "path": "test_integration/flows/04_unserializeable/04_unserializeable.js",
+        "name": "returnAFunction",
+        "paramIds": [
+          "a",
+          "f2"
+        ],
+        "isDefault": false,
+        "isEcmaDefault": false
+      },
+      "captures": [
+        {
+          "params": [
+            1,
+            "a => a * 2"
+          ],
+          "result": "b => a + f2(b)"
+        }
+      ]
     }
   }
 }

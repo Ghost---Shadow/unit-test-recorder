@@ -24,27 +24,33 @@ const getAstWithWrapper = (
   isDefault,
   isEcmaDefault,
   functionAst,
-) => ({
-  ArrowFunctionExpression: expgen({
-    META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault),
-    FUN_AST: t.arrowFunctionExpression(functionAst.params, functionAst.body),
-  }),
-  FunctionDeclaration: t.variableDeclaration('const', [
-    t.variableDeclarator(
-      t.identifier(functionName),
-      expgen({
-        META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault),
-        FUN_AST: functionAst.body.type === 'BinaryExpression'
-          ? t.arrowFunctionExpression(functionAst.params, functionAst.body)
-          : t.functionExpression(
-            t.identifier(functionName),
-            functionAst.params,
-            functionAst.body,
-          ),
-      }),
-    ),
-  ]),
-}[functionAst.type]);
+) => {
+  if (functionAst.type === 'ArrowFunctionExpression') {
+    return expgen({
+      META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault),
+      FUN_AST: t.arrowFunctionExpression(functionAst.params, functionAst.body),
+    });
+  }
+  if (functionAst.type === 'FunctionDeclaration') {
+    return t.variableDeclaration('const', [
+      t.variableDeclarator(
+        t.identifier(functionName),
+        expgen({
+          META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault),
+          FUN_AST: functionAst.body.type === 'BinaryExpression'
+            ? t.arrowFunctionExpression(functionAst.params, functionAst.body)
+            : t.functionExpression(
+              t.identifier(functionName),
+              functionAst.params,
+              functionAst.body,
+            ),
+        }),
+      ),
+    ]);
+  }
+  console.error('Unknown type:', functionName, functionAst.type);
+  return functionAst;
+};
 
 module.exports = (/* { types: t } */) => ({
   name: 'unit-test-recorder',

@@ -14,6 +14,11 @@ const safeStringify = (obj) => {
   }, 2);
 };
 
+const sanitize = (obj) => {
+  if (typeof (obj) === 'function') return obj.toString();
+  return obj;
+};
+
 // TODO: Use redux
 const RecorderManager = {
   recorderState: {},
@@ -36,8 +41,8 @@ const recorderWrapper = (meta, innerFunction, ...p) => {
       captures: [],
     };
   }
-  const params = p;
-  const result = innerFunction(...p);
+  const params = p.map(sanitize);
+  const result = sanitize(innerFunction(...p));
   RecorderManager.recorderState[path][name].captures.push({
     params,
     result,

@@ -99,4 +99,18 @@ describe('plugin.test', () => {
       expect(testFiles[0].fileString).toMatchFile(outputPath);
     });
   });
+  describe('05_dependency_injection', () => {
+    it('should match instrumented code snapshot', () => {
+      const filename = '05_dependency_injection';
+      const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
+      expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
+    });
+    it('should match generated test code snapshot', () => {
+      const filename = '05_dependency_injection';
+      const { outputPath, state } = getInputAndOutputPathForTests(filename);
+      const testFiles = extractTestsFromState(state);
+      // Only one file per test
+      expect(testFiles[0].fileString).toMatchFile(outputPath);
+    });
+  });
 });

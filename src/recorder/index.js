@@ -1,3 +1,6 @@
+const { flatten, unflatten } = require('flat');
+const _ = require('lodash');
+
 const safeStringify = (obj) => {
   // https://stackoverflow.com/a/11616993/1217998
   const cache = [];
@@ -30,20 +33,52 @@ const RecorderManager = {
   },
 };
 
+const injectDependencyInjections = (params, paramIds, idObj) => {
+  params.forEach((param, index) => {
+    if (typeof (param) === 'object') {
+      const flatObj = flatten(param);
+      Object.keys(flatObj).forEach((fppkey) => {
+        if (typeof (flatObj[fppkey]) === 'function') {
+          const oldFp = flatObj[fppkey];
+          flatObj[fppkey] = (...paramsOfInjected) => {
+            const result = oldFp(...paramsOfInjected);
+            const { path, name, captureIndex } = idObj;
+            const fqn = `${paramIds[index]}.${fppkey}`;
+            const destinationPath = ['recorderState', path, name, 'captures', captureIndex, 'injections', fqn];
+            if (!_.get(RecorderManager, destinationPath)) {
+              _.set(RecorderManager, destinationPath, []);
+            }
+            RecorderManager.recorderState[path][name]
+              .captures[captureIndex].injections[fqn].push({ params: paramsOfInjected, result });
+            return result;
+          };
+        }
+      });
+      const newParam = unflatten(flatObj);
+      params[index] = newParam;
+    }
+  });
+};
+
 const recorderWrapper = (meta, innerFunction, ...p) => {
   const { path, name } = meta;
   if (RecorderManager.recorderState[path] === undefined) {
     RecorderManager.recorderState[path] = {};
   }
+  const paramIds = meta.paramIds.split(',');
   if (RecorderManager.recorderState[path][name] === undefined) {
     RecorderManager.recorderState[path][name] = {
-      meta: { ...meta, paramIds: meta.paramIds.split(',') },
+      meta: { ...meta, paramIds },
       captures: [],
     };
   }
+  RecorderManager.recorderState[path][name].captures.push({ });
+  const captureIndex = RecorderManager.recorderState[path][name].captures.length - 1;
+  injectDependencyInjections(p, paramIds, { path, name, captureIndex });
   const params = p.map(sanitize);
   const result = sanitize(innerFunction(...p));
-  RecorderManager.recorderState[path][name].captures.push({
+  const existing = RecorderManager.recorderState[path][name].captures[captureIndex];
+  RecorderManager.recorderState[path][name].captures[captureIndex] = _.merge(existing, {
     params,
     result,
   });

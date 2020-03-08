@@ -1,0 +1,76 @@
+{
+  "test_integration/flows/05_dependency_injection/05_dependency_injection.js": {
+    "getPost": {
+      "meta": {
+        "path": "test_integration/flows/05_dependency_injection/05_dependency_injection.js",
+        "name": "getPost",
+        "paramIds": [
+          "dbClient",
+          "postId"
+        ],
+        "isDefault": true,
+        "isEcmaDefault": false
+      },
+      "captures": [
+        {
+          "injections": {
+            "dbClient.query": [
+              {
+                "params": [
+                  "SELECT * FROM posts WHERE id=?",
+                  1
+                ],
+                "result": {
+                  "title": "content"
+                }
+              },
+              {
+                "params": [
+                  "SELECT region_id FROM regions where post_id=?",
+                  1
+                ],
+                "result": 42
+              }
+            ],
+            "dbClient.pool.pooledQuery": [
+              {
+                "params": [
+                  "SELECT * FROM comments WHERE post_id=? AND region_id=?",
+                  1,
+                  42
+                ],
+                "result": [
+                  {
+                    "comment": "comment 1"
+                  },
+                  {
+                    "comment": "comment 2"
+                  }
+                ]
+              }
+            ]
+          },
+          "params": [
+            {
+              "pool": {}
+            },
+            1
+          ],
+          "result": {
+            "content": {
+              "title": "content"
+            },
+            "comments": [
+              {
+                "comment": "comment 1"
+              },
+              {
+                "comment": "comment 2"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -13,14 +13,16 @@ const wrapSafely = (param) => {
   return result || param;
 };
 
-const generateExpectStatement = (invokeExpression, result) => {
+const generateExpectStatement = (invokeExpression, result, isAsync) => {
+  const awaitString = isAsync ? 'await ' : '';
+  const actualStatement = `const actual = ${awaitString}${invokeExpression}`;
   if (typeof (result) === 'object') {
-    return `expect(${invokeExpression}).toMatchObject(result)`;
+    return `${actualStatement};expect(actual).toMatchObject(result)`;
   }
   if (typeof (result) === 'string') {
-    return `expect(${invokeExpression}.toString()).toEqual(result)`;
+    return `${actualStatement};expect(actual.toString()).toEqual(result)`;
   }
-  return `expect(${invokeExpression}).toEqual(result)`;
+  return `${actualStatement};expect(actual).toEqual(result)`;
 };
 
 const inputStatementsGenerator = (paramIds, capture) => {
@@ -54,13 +56,15 @@ const inputStatementsGenerator = (paramIds, capture) => {
   return inputStatements;
 };
 
-const generateTestFromCapture = (functionName, paramIds, capture, testIndex) => {
+const generateTestFromCapture = (functionName, meta, capture, testIndex) => {
+  const { paramIds, isAsync } = meta;
   const inputStatements = inputStatementsGenerator(paramIds, capture);
   const resultStatement = `const result = ${wrapSafely(capture.result)}`;
   const invokeExpression = `${functionName}(${paramIds.join(',')})`;
-  const expectStatement = generateExpectStatement(invokeExpression, capture.result);
+  const expectStatement = generateExpectStatement(invokeExpression, capture.result, isAsync);
+  const asyncString = isAsync ? 'async ' : '';
   return `
-  it('test ${testIndex}',()=>{
+  it('test ${testIndex}', ${asyncString}()=>{
     ${inputStatements.join('\n')}
     ${resultStatement}
     ${expectStatement}
@@ -70,11 +74,10 @@ const generateTestFromCapture = (functionName, paramIds, capture, testIndex) => 
 
 const generateTestsFromFunctionActivity = (functionName, functionActivity) => {
   const { meta, captures } = functionActivity;
-  const { paramIds } = meta;
   const tests = captures
     .map((capture, index) => generateTestFromCapture(
       functionName,
-      paramIds,
+      meta,
       capture,
       index,
     ));

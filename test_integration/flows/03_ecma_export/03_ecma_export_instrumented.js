@@ -1,4 +1,7 @@
-var { recorderWrapper } = require('../../../src/recorder');
+const {
+  recorderWrapper,
+  asyncRecorderWrapper
+} = require('../../../src/recorder');
 export const ecma1 = (...p) =>
   recorderWrapper(
     {
@@ -6,7 +9,8 @@ export const ecma1 = (...p) =>
       name: 'ecma1',
       paramIds: 'a,b',
       isDefault: false,
-      isEcmaDefault: false
+      isEcmaDefault: false,
+      isAsync: false
     },
     (a, b) => a + b,
     ...p
@@ -19,7 +23,8 @@ const ecma2 = (...p) =>
       name: 'ecma2',
       paramIds: 'b',
       isDefault: true,
-      isEcmaDefault: true
+      isEcmaDefault: true,
+      isAsync: false
     },
     b => b * 3,
     ...p

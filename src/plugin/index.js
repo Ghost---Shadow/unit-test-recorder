@@ -2,19 +2,21 @@ const { default: template } = require('@babel/template');
 const t = require('@babel/types');
 const _ = require('lodash');
 
-// TODO: Make this configurable
 const buildRequire = template(`
-  var { recorderWrapper } = require(SOURCE);
+  const { recorderWrapper, asyncRecorderWrapper } = require(SOURCE);
 `);
 
-const expgen = template.expression('(...p) => recorderWrapper(META, FUN_AST, ...p)');
+const expgen = template.expression('(...p) => WRAPPER_NAME(META, FUN_AST, ...p)');
 
-const metaGenerator = (path, name, paramIds, isDefault, isEcmaDefault) => t.objectExpression([
+const metaGenerator = (
+  path, name, paramIds, isDefault, isEcmaDefault, isAsync,
+) => t.objectExpression([
   t.objectProperty(t.identifier('path'), t.stringLiteral(path)),
   t.objectProperty(t.identifier('name'), t.stringLiteral(name)),
   t.objectProperty(t.identifier('paramIds'), t.stringLiteral(paramIds)),
   t.objectProperty(t.identifier('isDefault'), t.booleanLiteral(isDefault)),
   t.objectProperty(t.identifier('isEcmaDefault'), t.booleanLiteral(isEcmaDefault)),
+  t.objectProperty(t.identifier('isAsync'), t.booleanLiteral(isAsync)),
 ]);
 
 const getAstWithWrapper = (
@@ -23,12 +25,14 @@ const getAstWithWrapper = (
   paramIds,
   isDefault,
   isEcmaDefault,
+  isAsync,
   functionAst,
 ) => {
   if (functionAst.type === 'ArrowFunctionExpression') {
     return expgen({
-      META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault),
-      FUN_AST: t.arrowFunctionExpression(functionAst.params, functionAst.body),
+      WRAPPER_NAME: t.identifier(isAsync ? 'asyncRecorderWrapper' : 'recorderWrapper'),
+      META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault, isAsync),
+      FUN_AST: t.arrowFunctionExpression(functionAst.params, functionAst.body, isAsync),
     });
   }
   if (functionAst.type === 'FunctionDeclaration') {
@@ -36,11 +40,14 @@ const getAstWithWrapper = (
       t.variableDeclarator(
         t.identifier(functionName),
         expgen({
-          META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault),
+          WRAPPER_NAME: t.identifier(isAsync ? 'asyncRecorderWrapper' : 'recorderWrapper'),
+          META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault, isAsync),
           FUN_AST: t.functionExpression(
             t.identifier(functionName),
             functionAst.params,
             functionAst.body,
+            null,
+            isAsync,
           ),
         }),
       ),
@@ -75,8 +82,10 @@ module.exports = (/* { types: t } */) => ({
             funObj.paramIds,
             funObj.isDefault,
             funObj.isEcmaDefault,
+            funObj.isAsync,
             funObj.path.node,
           );
+          newAst.async = funObj.isAsync;
           funObj.path.replaceWith(newAst);
         });
       },
@@ -84,17 +93,23 @@ module.exports = (/* { types: t } */) => ({
     ArrowFunctionExpression(path) {
       const functionName = _.get(path, 'parent.id.name');
       if (functionName) {
+        const isAsync = !!path.node.async;
         const paramIds = path.node.params.map(p => p.name);
         const old = this.functionsToReplace[functionName];
-        this.functionsToReplace[functionName] = _.merge(old, { isFunction: true, paramIds, path });
+        this.functionsToReplace[functionName] = _.merge(old, {
+          isFunction: true, paramIds, path, isAsync,
+        });
       }
     },
     FunctionDeclaration(path) {
       const functionName = _.get(path, 'node.id.name');
       if (functionName) {
+        const isAsync = !!path.node.async;
         const paramIds = path.node.params.map(p => p.name);
         const old = this.functionsToReplace[functionName];
-        this.functionsToReplace[functionName] = _.merge(old, { isFunction: true, paramIds, path });
+        this.functionsToReplace[functionName] = _.merge(old, {
+          isFunction: true, paramIds, path, isAsync,
+        });
       }
     },
     ExportNamedDeclaration(path) {

@@ -1,4 +1,7 @@
-var { recorderWrapper } = require('../../../src/recorder');
+const {
+  recorderWrapper,
+  asyncRecorderWrapper
+} = require('../../../src/recorder');
 const getPostContent = (client, postId) =>
   client.query('SELECT * FROM posts WHERE id=?', postId);
 
@@ -22,7 +25,8 @@ const getPost = (...p) =>
       name: 'getPost',
       paramIds: 'dbClient,postId',
       isDefault: true,
-      isEcmaDefault: false
+      isEcmaDefault: false,
+      isAsync: false
     },
     (dbClient, postId) => {
       const content = getPostContent(dbClient, postId);

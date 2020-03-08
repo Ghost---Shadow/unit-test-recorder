@@ -6,7 +6,8 @@ describe('03_ecma_export', () => {
       const a = 1;
       const b = 2;
       const result = 3;
-      expect(ecma1(a, b)).toEqual(result);
+      const actual = ecma1(a, b);
+      expect(actual).toEqual(result);
     });
   });
 
@@ -14,7 +15,8 @@ describe('03_ecma_export', () => {
     it('test 0', () => {
       const b = 1;
       const result = 3;
-      expect(ecma2(b)).toEqual(result);
+      const actual = ecma2(b);
+      expect(actual).toEqual(result);
     });
   });
 });

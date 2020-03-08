@@ -57,14 +57,14 @@ describe('plugin.test', () => {
       expect(testFiles[0].fileString).toMatchFile(outputPath);
     });
   });
-  describe('02_module_export', () => {
+  describe('02_async_functions', () => {
     it('should match instrumented code snapshot', () => {
-      const filename = '02_module_export';
+      const filename = '02_async_functions';
       const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
       expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
     });
     it('should match generated test code snapshot', () => {
-      const filename = '02_module_export';
+      const filename = '02_async_functions';
       const { outputPath, state } = getInputAndOutputPathForTests(filename);
       const testFiles = extractTestsFromState(state);
       // Only one file per test

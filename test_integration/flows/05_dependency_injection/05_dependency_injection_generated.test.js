@@ -62,7 +62,8 @@ describe('05_dependency_injection', () => {
           }
         ]
       };
-      expect(getPost(dbClient, postId)).toMatchObject(result);
+      const actual = getPost(dbClient, postId);
+      expect(actual).toMatchObject(result);
     });
   });
 });

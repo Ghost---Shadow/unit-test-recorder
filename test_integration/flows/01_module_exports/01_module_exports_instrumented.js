@@ -1,4 +1,7 @@
-var { recorderWrapper } = require('../../../src/recorder');
+const {
+  recorderWrapper,
+  asyncRecorderWrapper
+} = require('../../../src/recorder');
 const foo = (...p) =>
   recorderWrapper(
     {
@@ -6,7 +9,8 @@ const foo = (...p) =>
       name: 'foo',
       paramIds: 'a,b',
       isDefault: false,
-      isEcmaDefault: false
+      isEcmaDefault: false,
+      isAsync: false
     },
     (a, b) => a + b,
     ...p
@@ -18,7 +22,8 @@ const bar = (...p) =>
       name: 'bar',
       paramIds: 'a,b',
       isDefault: false,
-      isEcmaDefault: false
+      isEcmaDefault: false,
+      isAsync: false
     },
     function bar(a, b) {
       const c = a - b;

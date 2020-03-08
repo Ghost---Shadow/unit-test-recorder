@@ -1,4 +1,7 @@
-var { recorderWrapper } = require('../../../src/recorder');
+const {
+  recorderWrapper,
+  asyncRecorderWrapper
+} = require('../../../src/recorder');
 const circularReference = (...p) =>
   recorderWrapper(
     {
@@ -6,7 +9,8 @@ const circularReference = (...p) =>
       name: 'circularReference',
       paramIds: 'a',
       isDefault: false,
-      isEcmaDefault: false
+      isEcmaDefault: false,
+      isAsync: false
     },
     a => {
       const obj = { a };
@@ -23,7 +27,8 @@ const returnAFunction = (...p) =>
       name: 'returnAFunction',
       paramIds: 'a,f2',
       isDefault: false,
-      isEcmaDefault: false
+      isEcmaDefault: false,
+      isAsync: false
     },
     (a, f2) => b => a + f2(b),
     ...p

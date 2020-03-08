@@ -9,7 +9,8 @@
           "postId"
         ],
         "isDefault": true,
-        "isEcmaDefault": false
+        "isEcmaDefault": false,
+        "isAsync": false
       },
       "captures": [
         {

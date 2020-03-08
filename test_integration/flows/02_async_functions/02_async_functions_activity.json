@@ -1,0 +1,33 @@
+{
+  "test_integration/flows/02_async_functions/02_async_functions.js": {
+    "getSocialInfo": {
+      "meta": {
+        "path": "test_integration/flows/02_async_functions/02_async_functions.js",
+        "name": "getSocialInfo",
+        "paramIds": [
+          "email"
+        ],
+        "isDefault": true,
+        "isEcmaDefault": false,
+        "isAsync": true
+      },
+      "captures": [
+        {
+          "params": [
+            "email"
+          ],
+          "result": {
+            "facebookInfo": {
+              "email": "email",
+              "request": "facebook"
+            },
+            "twitterInfo": {
+              "email": "email",
+              "request": "twitter"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

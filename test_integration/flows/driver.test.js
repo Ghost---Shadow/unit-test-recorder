@@ -1,6 +1,6 @@
 const { toMatchFile } = require('jest-file-snapshot');
 const { foo, bar } = require('./01_module_exports/01_module_exports_instrumented');
-const dum = require('./02_module_export/02_module_export_instrumented');
+const getSocialInfo = require('./02_async_functions/02_async_functions_instrumented');
 const { default: ecma2, ecma1 } = require('./03_ecma_export/03_ecma_export_instrumented');
 const { circularReference, returnAFunction } = require('./04_unserializeable/04_unserializeable_instrumented');
 const getPost = require('./05_dependency_injection/05_dependency_injection_instrumented');
@@ -22,11 +22,11 @@ describe('driver', () => {
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });
   });
-  describe('02_module_export', () => {
-    it('should record activity', () => {
+  describe('02_async_functions', () => {
+    it('should record activity', async () => {
       RecorderManager.clear();
-      dum(1);
-      const outputFileName = getSnapshotFileName('02_module_export');
+      await getSocialInfo('email');
+      const outputFileName = getSnapshotFileName('02_async_functions');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });
   });

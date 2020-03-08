@@ -9,7 +9,8 @@
           "b"
         ],
         "isDefault": false,
-        "isEcmaDefault": false
+        "isEcmaDefault": false,
+        "isAsync": false
       },
       "captures": [
         {
@@ -29,7 +30,8 @@
           "b"
         ],
         "isDefault": true,
-        "isEcmaDefault": true
+        "isEcmaDefault": true,
+        "isAsync": false
       },
       "captures": [
         {

@@ -7,7 +7,8 @@ describe('04_unserializeable', () => {
       const result = {
         a: 1
       };
-      expect(circularReference(a)).toMatchObject(result);
+      const actual = circularReference(a);
+      expect(actual).toMatchObject(result);
     });
   });
 
@@ -16,7 +17,8 @@ describe('04_unserializeable', () => {
       const a = 1;
       const f2 = 'a => a * 2';
       const result = 'b => a + f2(b)';
-      expect(returnAFunction(a, f2).toString()).toEqual(result);
+      const actual = returnAFunction(a, f2);
+      expect(actual.toString()).toEqual(result);
     });
   });
 });

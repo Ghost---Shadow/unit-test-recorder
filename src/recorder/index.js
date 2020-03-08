@@ -60,7 +60,7 @@ const injectDependencyInjections = (params, paramIds, idObj) => {
   });
 };
 
-const recorderWrapper = (meta, innerFunction, ...p) => {
+const pre = ({ meta, p }) => {
   const { path, name } = meta;
   if (RecorderManager.recorderState[path] === undefined) {
     RecorderManager.recorderState[path] = {};
@@ -76,7 +76,15 @@ const recorderWrapper = (meta, innerFunction, ...p) => {
   const captureIndex = RecorderManager.recorderState[path][name].captures.length - 1;
   injectDependencyInjections(p, paramIds, { path, name, captureIndex });
   const params = p.map(sanitize);
-  const result = sanitize(innerFunction(...p));
+  return {
+    path, name, captureIndex, params,
+  };
+};
+
+const post = ({
+  unsanitizedResult, path, name, captureIndex, params,
+}) => {
+  const result = sanitize(unsanitizedResult);
   const existing = RecorderManager.recorderState[path][name].captures[captureIndex];
   RecorderManager.recorderState[path][name].captures[captureIndex] = _.merge(existing, {
     params,
@@ -85,7 +93,29 @@ const recorderWrapper = (meta, innerFunction, ...p) => {
   return result;
 };
 
+// TODO: Find an elegant way of doing this
+const recorderWrapper = (meta, innerFunction, ...p) => {
+  const {
+    path, name, captureIndex, params,
+  } = pre({ meta, p });
+  const unsanitizedResult = innerFunction(...p);
+  return post({
+    unsanitizedResult, path, name, captureIndex, params,
+  });
+};
+
+const asyncRecorderWrapper = async (meta, innerFunction, ...p) => {
+  const {
+    path, name, captureIndex, params,
+  } = pre({ meta, p });
+  const unsanitizedResult = await innerFunction(...p);
+  return post({
+    unsanitizedResult, path, name, captureIndex, params,
+  });
+};
+
 module.exports = {
   recorderWrapper,
+  asyncRecorderWrapper,
   RecorderManager,
 };

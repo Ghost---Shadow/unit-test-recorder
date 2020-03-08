@@ -37,13 +37,11 @@ const getAstWithWrapper = (
         t.identifier(functionName),
         expgen({
           META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault),
-          FUN_AST: functionAst.body.type === 'BinaryExpression'
-            ? t.arrowFunctionExpression(functionAst.params, functionAst.body)
-            : t.functionExpression(
-              t.identifier(functionName),
-              functionAst.params,
-              functionAst.body,
-            ),
+          FUN_AST: t.functionExpression(
+            t.identifier(functionName),
+            functionAst.params,
+            functionAst.body,
+          ),
         }),
       ),
     ]);

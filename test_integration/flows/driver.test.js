@@ -48,7 +48,7 @@ describe('driver', () => {
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });
   });
-  describe.only('05_dependency_injection', () => {
+  describe('05_dependency_injection', () => {
     it('should record activity', async () => {
       RecorderManager.clear();
       const dbClient = {

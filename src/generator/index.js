@@ -1,6 +1,8 @@
 // TODO: Use babel template
 const path = require('path');
 const prettier = require('prettier');
+const _ = require('lodash');
+const { captureArrayToLutFun } = require('./lutFunGen');
 
 const wrapSafely = (param) => {
   const result = {
@@ -21,9 +23,39 @@ const generateExpectStatement = (invokeExpression, result) => {
   return `expect(${invokeExpression}).toEqual(result)`;
 };
 
-const generateTestFromCapture = (functionName, paramIds, capture, testIndex) => {
+const inputStatementsGenerator = (paramIds, capture) => {
+  if (!capture.injections) {
+    return capture.params
+      .map((param, index) => `const ${paramIds[index]} = ${wrapSafely(param)}`);
+  }
+  const injectedFunctionPlaceholders = Object.keys(capture.injections)
+    .reduce((acc, injPath) => {
+      const newObj = {};
+      _.set(newObj, injPath, injPath.toLocaleUpperCase());
+      return _.merge(acc, newObj);
+    }, {});
+  const injectedFunctionMocks = Object.keys(capture.injections)
+    .reduce((acc, injPath) => {
+      const functionBody = captureArrayToLutFun(capture.injections[injPath]);
+      const key = injPath.toLocaleUpperCase();
+      return _.merge(acc, {
+        [key]: functionBody,
+      });
+    }, {});
   const inputStatements = capture.params
-    .map((param, index) => `const ${paramIds[index]} = ${wrapSafely(param)}`);
+    .map((param, index) => {
+      const paramId = paramIds[index];
+      const paramWithMocks = _.merge(param, injectedFunctionPlaceholders[paramId]);
+      const parameterized = `const ${paramId} = ${wrapSafely(paramWithMocks)}`;
+      return Object.keys(injectedFunctionMocks)
+        .reduce((acc, toReplace) => acc.replace(`"${toReplace}"`, injectedFunctionMocks[toReplace]),
+          parameterized);
+    });
+  return inputStatements;
+};
+
+const generateTestFromCapture = (functionName, paramIds, capture, testIndex) => {
+  const inputStatements = inputStatementsGenerator(paramIds, capture);
   const resultStatement = `const result = ${wrapSafely(capture.result)}`;
   const invokeExpression = `${functionName}(${paramIds.join(',')})`;
   const expectStatement = generateExpectStatement(invokeExpression, capture.result);

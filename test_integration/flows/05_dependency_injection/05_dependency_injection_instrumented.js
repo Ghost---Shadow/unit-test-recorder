@@ -5,8 +5,8 @@ const {
 const getPostContent = (client, postId) =>
   client.query('SELECT * FROM posts WHERE id=?', postId);
 
-const getPostComments = (client, postId) => {
-  const regionId = client.query(
+const getPostComments = async (client, postId) => {
+  const regionId = await client.query(
     'SELECT region_id FROM regions where post_id=?',
     postId
   );
@@ -17,8 +17,8 @@ const getPostComments = (client, postId) => {
   );
 };
 
-const getPost = (...p) =>
-  recorderWrapper(
+const getPost = async (...p) =>
+  asyncRecorderWrapper(
     {
       path:
         'test_integration/flows/05_dependency_injection/05_dependency_injection.js',
@@ -26,11 +26,11 @@ const getPost = (...p) =>
       paramIds: 'dbClient,postId',
       isDefault: true,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: true
     },
-    (dbClient, postId) => {
-      const content = getPostContent(dbClient, postId);
-      const comments = getPostComments(dbClient, postId);
+    async (dbClient, postId) => {
+      const content = await getPostContent(dbClient, postId);
+      const comments = await getPostComments(dbClient, postId);
       return { content, comments };
     },
     ...p

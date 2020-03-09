@@ -51,13 +51,20 @@ describe('driver', () => {
   describe('05_dependency_injection', () => {
     it('should record activity', async () => {
       RecorderManager.clear();
-      const dbClient = {
-        query: q => ({
+      const query = q => new Promise((resolve) => {
+        setTimeout(() => resolve({
           'SELECT * FROM posts WHERE id=?': { title: 'content' },
           'SELECT region_id FROM regions where post_id=?': 42,
-        })[q],
+        }[q]), 1);
+      });
+
+      const pooledQuery = () => new Promise((resolve) => {
+        setTimeout(() => resolve([{ comment: 'comment 1' }, { comment: 'comment 2' }]));
+      });
+      const dbClient = {
+        query,
         pool: {
-          pooledQuery: () => [{ comment: 'comment 1' }, { comment: 'comment 2' }],
+          pooledQuery,
         },
       };
       await getPost(dbClient, 1);

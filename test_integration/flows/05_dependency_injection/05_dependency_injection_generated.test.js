@@ -1,7 +1,7 @@
 const getPost = require('./05_dependency_injection');
 describe('05_dependency_injection', () => {
   describe('getPost', () => {
-    it('test 0', () => {
+    it('test 0', async () => {
       const dbClient = {
         pool: {
           pooledQuery: (...params) =>
@@ -62,7 +62,7 @@ describe('05_dependency_injection', () => {
           }
         ]
       };
-      const actual = getPost(dbClient, postId);
+      const actual = await getPost(dbClient, postId);
       expect(actual).toMatchObject(result);
     });
   });

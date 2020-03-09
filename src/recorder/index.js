@@ -33,6 +33,17 @@ const RecorderManager = {
   },
 };
 
+const recordInjectedActivity = (idObj, paramIds, index, fppkey, paramsOfInjected, result) => {
+  const { path, name, captureIndex } = idObj;
+  const fqn = `${paramIds[index]}.${fppkey}`;
+  const destinationPath = ['recorderState', path, name, 'captures', captureIndex, 'injections', fqn];
+  if (!_.get(RecorderManager, destinationPath)) {
+    _.set(RecorderManager, destinationPath, []);
+  }
+  RecorderManager.recorderState[path][name]
+    .captures[captureIndex].injections[fqn].push({ params: paramsOfInjected, result });
+};
+
 const injectDependencyInjections = (params, paramIds, idObj) => {
   params.forEach((param, index) => {
     if (typeof (param) === 'object') {
@@ -42,14 +53,14 @@ const injectDependencyInjections = (params, paramIds, idObj) => {
           const oldFp = flatObj[fppkey];
           flatObj[fppkey] = (...paramsOfInjected) => {
             const result = oldFp(...paramsOfInjected);
-            const { path, name, captureIndex } = idObj;
-            const fqn = `${paramIds[index]}.${fppkey}`;
-            const destinationPath = ['recorderState', path, name, 'captures', captureIndex, 'injections', fqn];
-            if (!_.get(RecorderManager, destinationPath)) {
-              _.set(RecorderManager, destinationPath, []);
+            if (typeof (result.then) === 'function') {
+              // It might be a promise
+              result.then((res) => {
+                recordInjectedActivity(idObj, paramIds, index, fppkey, paramsOfInjected, res);
+              });
+            } else {
+              recordInjectedActivity(idObj, paramIds, index, fppkey, paramsOfInjected, result);
             }
-            RecorderManager.recorderState[path][name]
-              .captures[captureIndex].injections[fqn].push({ params: paramsOfInjected, result });
             return result;
           };
         }

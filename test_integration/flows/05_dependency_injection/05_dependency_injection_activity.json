@@ -10,7 +10,7 @@
         ],
         "isDefault": true,
         "isEcmaDefault": false,
-        "isAsync": false
+        "isAsync": true
       },
       "captures": [
         {

@@ -124,6 +124,17 @@ module.exports = (/* { types: t } */) => ({
           isEcmaDefault: false,
         });
       });
+      const specifiers = _.get(path, 'node.specifiers', []);
+      specifiers.forEach((specifier) => {
+        const maybeFunctionName = _.get(specifier, 'local.name');
+        if (!maybeFunctionName) return;
+        const old = this.functionsToReplace[maybeFunctionName];
+        this.functionsToReplace[maybeFunctionName] = _.merge(old, {
+          isExported: true,
+          isDefault: false,
+          isEcmaDefault: false,
+        });
+      });
     },
     ExportDefaultDeclaration(path) {
       const maybeFunctionName = _.get(path, 'node.declaration.name');

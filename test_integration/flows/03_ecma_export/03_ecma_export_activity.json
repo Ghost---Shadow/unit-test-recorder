@@ -41,6 +41,46 @@
           "result": 3
         }
       ]
+    },
+    "ecma3": {
+      "meta": {
+        "path": "test_integration/flows/03_ecma_export/03_ecma_export.js",
+        "name": "ecma3",
+        "paramIds": [
+          "a"
+        ],
+        "isDefault": false,
+        "isEcmaDefault": false,
+        "isAsync": false
+      },
+      "captures": [
+        {
+          "params": [
+            1
+          ],
+          "result": 0.5
+        }
+      ]
+    },
+    "ecma4": {
+      "meta": {
+        "path": "test_integration/flows/03_ecma_export/03_ecma_export.js",
+        "name": "ecma4",
+        "paramIds": [
+          "a"
+        ],
+        "isDefault": false,
+        "isEcmaDefault": false,
+        "isAsync": false
+      },
+      "captures": [
+        {
+          "params": [
+            1
+          ],
+          "result": 0.25
+        }
+      ]
     }
   }
 }

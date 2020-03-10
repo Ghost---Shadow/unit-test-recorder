@@ -1,7 +1,4 @@
-const {
-  recorderWrapper,
-  asyncRecorderWrapper
-} = require('../../../src/recorder');
+const { recorderWrapper } = require('../../../src/recorder');
 const mocksios = (email, request) =>
   new Promise(resolve => {
     setTimeout(() => {
@@ -10,7 +7,7 @@ const mocksios = (email, request) =>
   });
 
 const getSocialInfo = async (...p) =>
-  asyncRecorderWrapper(
+  recorderWrapper(
     {
       path: 'test_integration/flows/02_async_functions/02_async_functions.js',
       name: 'getSocialInfo',

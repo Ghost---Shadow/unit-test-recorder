@@ -13,8 +13,8 @@ const wrapSafely = (param) => {
   return result || param;
 };
 
-const generateExpectStatement = (invokeExpression, result, isAsync) => {
-  const awaitString = isAsync ? 'await ' : '';
+const generateExpectStatement = (invokeExpression, result, doesReturnPromise) => {
+  const awaitString = doesReturnPromise ? 'await ' : '';
   const actualStatement = `const actual = ${awaitString}${invokeExpression}`;
   if (typeof (result) === 'object') {
     return `${actualStatement};expect(actual).toMatchObject(result)`;
@@ -57,12 +57,16 @@ const inputStatementsGenerator = (paramIds, capture) => {
 };
 
 const generateTestFromCapture = (functionName, meta, capture, testIndex) => {
-  const { paramIds, isAsync } = meta;
+  const { paramIds, doesReturnPromise } = meta;
   const inputStatements = inputStatementsGenerator(paramIds, capture);
   const resultStatement = `const result = ${wrapSafely(capture.result)}`;
   const invokeExpression = `${functionName}(${paramIds.join(',')})`;
-  const expectStatement = generateExpectStatement(invokeExpression, capture.result, isAsync);
-  const asyncString = isAsync ? 'async ' : '';
+  const expectStatement = generateExpectStatement(
+    invokeExpression,
+    capture.result,
+    doesReturnPromise,
+  );
+  const asyncString = doesReturnPromise ? 'async ' : '';
   return `
   it('test ${testIndex}', ${asyncString}()=>{
     ${inputStatements.join('\n')}

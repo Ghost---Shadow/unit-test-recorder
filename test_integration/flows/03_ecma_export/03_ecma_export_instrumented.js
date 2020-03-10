@@ -1,7 +1,4 @@
-const {
-  recorderWrapper,
-  asyncRecorderWrapper
-} = require('../../../src/recorder');
+const { recorderWrapper } = require('../../../src/recorder');
 export const ecma1 = (...p) =>
   recorderWrapper(
     {

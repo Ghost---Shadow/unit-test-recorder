@@ -1,4 +1,6 @@
 const { toMatchFile } = require('jest-file-snapshot');
+const { RecorderManager } = require('../../src/recorder');
+
 const { foo, bar } = require('./01_module_exports/01_module_exports_instrumented');
 const getSocialInfo = require('./02_async_functions/02_async_functions_instrumented');
 const {
@@ -6,7 +8,7 @@ const {
 } = require('./03_ecma_export/03_ecma_export_instrumented');
 const { circularReference, returnAFunction } = require('./04_unserializeable/04_unserializeable_instrumented');
 const getPost = require('./05_dependency_injection/05_dependency_injection_instrumented');
-const { RecorderManager } = require('../../src/recorder');
+const { default: getTodo } = require('./06_mocks/06_mocks_instrumented');
 
 expect.extend({ toMatchFile });
 
@@ -73,6 +75,14 @@ describe('driver', () => {
       };
       await getPost(dbClient, 1);
       const outputFileName = getSnapshotFileName('05_dependency_injection');
+      expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
+    });
+  });
+  describe('06_mocks', () => {
+    it('should record activity', async () => {
+      RecorderManager.clear();
+      await getTodo(1);
+      const outputFileName = getSnapshotFileName('06_mocks');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });
   });

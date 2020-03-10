@@ -1,0 +1,30 @@
+{
+  "test_integration/flows/06_mocks/06_mocks.js": {
+    "getTodo": {
+      "meta": {
+        "path": "test_integration/flows/06_mocks/06_mocks.js",
+        "name": "getTodo",
+        "paramIds": [
+          "id"
+        ],
+        "isDefault": true,
+        "isEcmaDefault": true,
+        "isAsync": false,
+        "doesReturnPromise": true
+      },
+      "captures": [
+        {
+          "params": [
+            1
+          ],
+          "result": {
+            "userId": 1,
+            "id": 1,
+            "title": "delectus aut autem",
+            "completed": false
+          }
+        }
+      ]
+    }
+  }
+}

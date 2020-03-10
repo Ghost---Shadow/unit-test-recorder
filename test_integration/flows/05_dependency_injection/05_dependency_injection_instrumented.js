@@ -1,7 +1,4 @@
-const {
-  recorderWrapper,
-  asyncRecorderWrapper
-} = require('../../../src/recorder');
+const { recorderWrapper } = require('../../../src/recorder');
 const getPostContent = (client, postId) =>
   client.query('SELECT * FROM posts WHERE id=?', postId);
 
@@ -18,7 +15,7 @@ const getPostComments = async (client, postId) => {
 };
 
 const getPost = async (...p) =>
-  asyncRecorderWrapper(
+  recorderWrapper(
     {
       path:
         'test_integration/flows/05_dependency_injection/05_dependency_injection.js',

@@ -1,7 +1,4 @@
-const {
-  recorderWrapper,
-  asyncRecorderWrapper
-} = require('../../../src/recorder');
+const { recorderWrapper } = require('../../../src/recorder');
 const circularReference = (...p) =>
   recorderWrapper(
     {

@@ -3,10 +3,10 @@ const t = require('@babel/types');
 const _ = require('lodash');
 
 const buildRequire = template(`
-  const { recorderWrapper, asyncRecorderWrapper } = require(SOURCE);
+  const { recorderWrapper } = require(SOURCE);
 `);
 
-const expgen = template.expression('(...p) => WRAPPER_NAME(META, FUN_AST, ...p)');
+const expgen = template.expression('(...p) => recorderWrapper(META, FUN_AST, ...p)');
 
 const metaGenerator = (
   path, name, paramIds, isDefault, isEcmaDefault, isAsync,
@@ -30,7 +30,6 @@ const getAstWithWrapper = (
 ) => {
   if (functionAst.type === 'ArrowFunctionExpression') {
     return expgen({
-      WRAPPER_NAME: t.identifier(isAsync ? 'asyncRecorderWrapper' : 'recorderWrapper'),
       META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault, isAsync),
       FUN_AST: t.arrowFunctionExpression(functionAst.params, functionAst.body, isAsync),
     });
@@ -40,7 +39,6 @@ const getAstWithWrapper = (
       t.variableDeclarator(
         t.identifier(functionName),
         expgen({
-          WRAPPER_NAME: t.identifier(isAsync ? 'asyncRecorderWrapper' : 'recorderWrapper'),
           META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault, isAsync),
           FUN_AST: t.functionExpression(
             t.identifier(functionName),

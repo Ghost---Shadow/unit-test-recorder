@@ -113,4 +113,18 @@ describe('plugin.test', () => {
       expect(testFiles[0].fileString).toMatchFile(outputPath);
     });
   });
+  describe('06_mocks', () => {
+    it('should match instrumented code snapshot', () => {
+      const filename = '06_mocks';
+      const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
+      expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
+    });
+    it('should match generated test code snapshot', () => {
+      const filename = '06_mocks';
+      const { outputPath, state } = getInputAndOutputPathForTests(filename);
+      const testFiles = extractTestsFromState(state);
+      // Only one file per test
+      expect(testFiles[0].fileString).toMatchFile(outputPath);
+    });
+  });
 });

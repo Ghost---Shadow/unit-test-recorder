@@ -2,7 +2,7 @@ const { flatten, unflatten } = require('flat');
 const _ = require('lodash');
 
 const RecorderManager = require('./manager');
-const { mockRecorderWrapper } = require('./mock-recorder');
+const { mockRecorderWrapper } = require('./mock');
 
 const sanitize = (obj) => {
   if (typeof (obj) === 'function') return obj.toString();

@@ -1,4 +1,3 @@
-const prettier = require('prettier');
 const _ = require('lodash');
 
 const captureArrayToLutFun = (captures) => {
@@ -21,10 +20,7 @@ const captureArrayToLutFun = (captures) => {
       return acc[JSON.stringify(param)]
     },${stringifiedLut})
   `;
-  return prettier.format(functionWrapper, {
-    singleQuote: true,
-    parser: 'babel',
-  }).replace(/;/g, ''); // Oh lawd (https://github.com/prettier/prettier/issues/736)
+  return functionWrapper;
 };
 
 module.exports = { captureArrayToLutFun };

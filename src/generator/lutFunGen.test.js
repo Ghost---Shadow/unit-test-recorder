@@ -1,3 +1,4 @@
+const prettier = require('prettier');
 const { captureArrayToLutFun } = require('./lutFunGen');
 
 describe('lutFunGen', () => {
@@ -10,14 +11,18 @@ describe('lutFunGen', () => {
         { params: [{ foo: 'bar' }, 'd'], result: 'e' },
         { params: ['foo.exe'], result: 'yep' },
       ];
-      expect(captureArrayToLutFun(captures)).toMatchInlineSnapshot(`
+      const code = prettier.format(captureArrayToLutFun(captures), {
+        singleQuote: true,
+        parser: 'babel',
+      });
+      expect(code).toMatchInlineSnapshot(`
         "(...params) =>
           params
             .filter(param => param !== undefined)
             .reduce(
               (acc, param) => {
-                if (typeof param === 'string') return acc[param]
-                return acc[JSON.stringify(param)]
+                if (typeof param === 'string') return acc[param];
+                return acc[JSON.stringify(param)];
               },
               {
                 '1': {
@@ -32,7 +37,7 @@ describe('lutFunGen', () => {
                 },
                 'foo.exe': 'yep'
               }
-            )
+            );
         "
       `);
     });

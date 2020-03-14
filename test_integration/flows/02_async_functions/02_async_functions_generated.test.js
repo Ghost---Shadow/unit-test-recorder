@@ -1,4 +1,5 @@
-const getSocialInfo = require('./02_async_functions');
+const { getSocialInfo } = require('./02_async_functions');
+const { getFacebookInfo } = require('./02_async_functions');
 
 describe('02_async_functions', () => {
   describe('getSocialInfo', () => {
@@ -15,6 +16,18 @@ describe('02_async_functions', () => {
         }
       };
       const actual = await getSocialInfo(email);
+      expect(actual).toMatchObject(result);
+    });
+  });
+
+  describe('getFacebookInfo', () => {
+    it('test 0', async () => {
+      const email = 'email';
+      const result = {
+        email: 'email',
+        request: 'facebook'
+      };
+      const actual = await getFacebookInfo(email);
       expect(actual).toMatchObject(result);
     });
   });

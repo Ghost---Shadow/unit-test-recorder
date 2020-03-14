@@ -8,7 +8,7 @@
           "paramIds": [
             "email"
           ],
-          "isDefault": true,
+          "isDefault": false,
           "isEcmaDefault": false,
           "isAsync": true,
           "doesReturnPromise": true
@@ -27,6 +27,30 @@
                 "email": "email",
                 "request": "twitter"
               }
+            }
+          }
+        ]
+      },
+      "getFacebookInfo": {
+        "meta": {
+          "path": "test_integration/flows/02_async_functions/02_async_functions.js",
+          "name": "getFacebookInfo",
+          "paramIds": [
+            "email"
+          ],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": true
+        },
+        "captures": [
+          {
+            "params": [
+              "email"
+            ],
+            "result": {
+              "email": "email",
+              "request": "facebook"
             }
           }
         ]

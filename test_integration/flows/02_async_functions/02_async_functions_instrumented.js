@@ -15,7 +15,7 @@ const getSocialInfo = async (...p) =>
       path: 'test_integration/flows/02_async_functions/02_async_functions.js',
       name: 'getSocialInfo',
       paramIds: 'email',
-      isDefault: true,
+      isDefault: false,
       isEcmaDefault: false,
       isAsync: true
     },
@@ -28,4 +28,18 @@ const getSocialInfo = async (...p) =>
     ...p
   );
 
-module.exports = getSocialInfo;
+const getFacebookInfo = (...p) =>
+  recorderWrapper(
+    {
+      path: 'test_integration/flows/02_async_functions/02_async_functions.js',
+      name: 'getFacebookInfo',
+      paramIds: 'email',
+      isDefault: false,
+      isEcmaDefault: false,
+      isAsync: false
+    },
+    email => mocksios(email, 'facebook'),
+    ...p
+  );
+
+module.exports = { getFacebookInfo, getSocialInfo };

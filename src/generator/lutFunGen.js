@@ -7,7 +7,7 @@ const captureArrayToLutFun = (captures) => {
       if (typeof (p) === 'string') return p;
       return JSON.stringify(p);
     });
-    const key = stringifiedParams.join('.');
+    const key = stringifiedParams;
     const newObj = {};
     _.setWith(newObj, key, capture.result, Object);
     return _.merge(acc, newObj);

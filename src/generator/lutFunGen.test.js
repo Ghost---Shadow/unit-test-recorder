@@ -8,6 +8,7 @@ describe('lutFunGen', () => {
         { params: [3], result: 3 },
         { params: ['a', 'b'], result: 'c' },
         { params: [{ foo: 'bar' }, 'd'], result: 'e' },
+        { params: ['foo.exe'], result: 'yep' },
       ];
       expect(captureArrayToLutFun(captures)).toMatchInlineSnapshot(`
         "(...params) =>
@@ -28,7 +29,8 @@ describe('lutFunGen', () => {
                 },
                 '{\\"foo\\":\\"bar\\"}': {
                   d: 'e'
-                }
+                },
+                'foo.exe': 'yep'
               }
             )
         "

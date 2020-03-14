@@ -3,8 +3,27 @@ const t = require('@babel/types');
 const _ = require('lodash');
 
 const buildRequire = template(`
-  const { recorderWrapper } = require(SOURCE);
+  const { mockRecorderWrapper, recorderWrapper } = require(SOURCE);
 `);
+
+const mockInjector = template(`
+(() => {
+  const FP_ID = MODULE_ID.FP_ID;
+MODULE_ID.FP_ID = (...p) => mockRecorderWrapper({
+  path: FILE_NAME,
+  moduleName: MODULE_STRING_LITERAL,
+  name: FP_STRING_LITERAL,
+}, FP_ID, ...p);
+})()
+`);
+
+const mockInjectorGenerator = (moduleName, functionName, fileName) => mockInjector({
+  FP_ID: t.identifier(functionName),
+  FP_STRING_LITERAL: t.stringLiteral(functionName),
+  MODULE_ID: t.identifier(moduleName),
+  MODULE_STRING_LITERAL: t.stringLiteral(moduleName),
+  FILE_NAME: t.stringLiteral(fileName),
+});
 
 const expgen = template.expression('(...p) => recorderWrapper(META, FUN_AST, ...p)');
 
@@ -55,12 +74,27 @@ const getAstWithWrapper = (
   return functionAst;
 };
 
+function mockInjectedFunctions() {
+  Object.keys(this.importedModules).forEach((moduleId) => {
+    this.calledFunctions[moduleId].forEach((functionId) => {
+      if (!this.whiteListedModules[moduleId]) return;
+      const { path } = this.importedModules[moduleId];
+      const ast = mockInjectorGenerator(moduleId, functionId, this.fileName);
+      path.insertAfter(ast);
+    });
+  });
+}
+
 module.exports = (/* { types: t } */) => ({
   name: 'unit-test-recorder',
   visitor: {
     Program: {
       enter() {
+        this.importedModules = {};
+        this.calledFunctions = {};
         this.functionsToReplace = {};
+        // TODO: Make configurable
+        this.whiteListedModules = { fs: true, axios: true };
       },
       exit(path) {
         const validFunctions = Object.keys(this.functionsToReplace)
@@ -86,6 +120,8 @@ module.exports = (/* { types: t } */) => ({
           newAst.async = funObj.isAsync;
           funObj.path.replaceWith(newAst);
         });
+
+        mockInjectedFunctions.bind(this)();
       },
     },
     ArrowFunctionExpression(path) {
@@ -169,6 +205,25 @@ module.exports = (/* { types: t } */) => ({
             isDefault: true,
             isEcmaDefault: false,
           });
+        }
+      }
+    },
+    CallExpression(path) {
+      if (_.get(path, 'node.callee.name') === 'require') {
+        this.importedModules[path.parent.id.name] = {
+          moduleName: path.node.arguments[0].value,
+          path: path.parentPath.parentPath,
+        };
+      }
+      if (_.get(path, 'node.callee.object')) {
+        const left = _.get(path, 'node.callee.object.name');
+        const right = _.get(path, 'node.callee.property.name');
+
+        if (left && right) {
+          if (!this.calledFunctions[left]) {
+            this.calledFunctions[left] = [];
+          }
+          this.calledFunctions[left].push(right);
         }
       }
     },

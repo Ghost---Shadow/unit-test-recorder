@@ -102,18 +102,33 @@ const generateImportStatementFromActivity = (activity, fileName) => {
   }, '');
 };
 
+const generateMocksFromActivity = (mocks) => {
+  if (!mocks) return '';
+  return Object.keys(mocks)
+    .map((moduleId) => {
+      const mockedFunctions = Object.keys(mocks[moduleId])
+        .map(usedFunction => `${usedFunction}: ${captureArrayToLutFun(mocks[moduleId][usedFunction])}`).join(',\n');
+      return `jest.mock('${moduleId}', () => ({
+      ${mockedFunctions}
+    }));`;
+    });
+};
+
 const generateTestsFromActivity = (fileName, activity) => {
+  const { mocks, exportedFunctions } = activity;
   const describeBlocks = Object
-    .keys(activity)
+    .keys(exportedFunctions)
     .map(functionName => generateTestsFromFunctionActivity(
       functionName,
-      activity[functionName],
+      exportedFunctions[functionName],
     ));
 
-  const importStatement = generateImportStatementFromActivity(activity, fileName);
+  const importStatement = generateImportStatementFromActivity(exportedFunctions, fileName);
+  const mockStatements = generateMocksFromActivity(mocks);
 
   const result = `
   ${importStatement}
+  ${mockStatements}
   describe('${fileName}',()=>{
     ${describeBlocks.join('\n')}
   })

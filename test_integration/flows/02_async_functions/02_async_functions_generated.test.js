@@ -1,4 +1,5 @@
 const getSocialInfo = require('./02_async_functions');
+
 describe('02_async_functions', () => {
   describe('getSocialInfo', () => {
     it('test 0', async () => {

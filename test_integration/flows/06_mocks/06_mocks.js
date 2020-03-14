@@ -1,11 +1,5 @@
-// const axios = require('axios');
+const fs = require('fs');
 
-// const getTodo = id => axios.get(`https://jsonplaceholder.typicode.com/todos/${id}`).then(res => res.data);
-const getTodo = id => Promise.resolve({
-  userId: 1,
-  id,
-  title: 'delectus aut autem',
-  completed: false,
-});
+const getTodo = () => JSON.parse(fs.readFileSync('test_integration/flows/06_mocks/response.json', 'utf8').toString());
 
-export default getTodo;
+module.exports = getTodo;

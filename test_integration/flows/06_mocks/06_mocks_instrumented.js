@@ -1,24 +1,39 @@
-const { recorderWrapper } = require('../../../src/recorder'); // const axios = require('axios');
+const {
+  mockRecorderWrapper,
+  recorderWrapper
+} = require('../../../src/recorder');
+const fs = require('fs');
+(() => {
+  const readFileSync = fs.readFileSync;
+  fs.readFileSync = (...p) =>
+    mockRecorderWrapper(
+      {
+        path: 'test_integration/flows/06_mocks/06_mocks.js',
+        moduleName: 'fs',
+        name: 'readFileSync'
+      },
+      readFileSync,
+      ...p
+    );
+})();
 
-// const getTodo = id => axios.get(`https://jsonplaceholder.typicode.com/todos/${id}`).then(res => res.data);
 const getTodo = (...p) =>
   recorderWrapper(
     {
       path: 'test_integration/flows/06_mocks/06_mocks.js',
       name: 'getTodo',
-      paramIds: 'id',
+      paramIds: '',
       isDefault: true,
-      isEcmaDefault: true,
+      isEcmaDefault: false,
       isAsync: false
     },
-    id =>
-      Promise.resolve({
-        userId: 1,
-        id,
-        title: 'delectus aut autem',
-        completed: false
-      }),
+    () =>
+      JSON.parse(
+        fs
+          .readFileSync('test_integration/flows/06_mocks/response.json', 'utf8')
+          .toString()
+      ),
     ...p
   );
 
-export default getTodo;
+module.exports = getTodo;

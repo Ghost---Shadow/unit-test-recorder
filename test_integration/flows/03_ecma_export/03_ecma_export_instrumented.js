@@ -1,4 +1,7 @@
-const { recorderWrapper } = require('../../../src/recorder');
+const {
+  mockRecorderWrapper,
+  recorderWrapper
+} = require('../../../src/recorder');
 export const ecma1 = (...p) =>
   recorderWrapper(
     {

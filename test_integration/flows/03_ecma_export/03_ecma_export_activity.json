@@ -1,90 +1,92 @@
 {
   "test_integration/flows/03_ecma_export/03_ecma_export.js": {
-    "ecma1": {
-      "meta": {
-        "path": "test_integration/flows/03_ecma_export/03_ecma_export.js",
-        "name": "ecma1",
-        "paramIds": [
-          "a",
-          "b"
-        ],
-        "isDefault": false,
-        "isEcmaDefault": false,
-        "isAsync": false,
-        "doesReturnPromise": false
-      },
-      "captures": [
-        {
-          "params": [
-            1,
-            2
+    "exportedFunctions": {
+      "ecma1": {
+        "meta": {
+          "path": "test_integration/flows/03_ecma_export/03_ecma_export.js",
+          "name": "ecma1",
+          "paramIds": [
+            "a",
+            "b"
           ],
-          "result": 3
-        }
-      ]
-    },
-    "ecma2": {
-      "meta": {
-        "path": "test_integration/flows/03_ecma_export/03_ecma_export.js",
-        "name": "ecma2",
-        "paramIds": [
-          "b"
-        ],
-        "isDefault": true,
-        "isEcmaDefault": true,
-        "isAsync": false,
-        "doesReturnPromise": false
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              1,
+              2
+            ],
+            "result": 3
+          }
+        ]
       },
-      "captures": [
-        {
-          "params": [
-            1
+      "ecma2": {
+        "meta": {
+          "path": "test_integration/flows/03_ecma_export/03_ecma_export.js",
+          "name": "ecma2",
+          "paramIds": [
+            "b"
           ],
-          "result": 3
-        }
-      ]
-    },
-    "ecma3": {
-      "meta": {
-        "path": "test_integration/flows/03_ecma_export/03_ecma_export.js",
-        "name": "ecma3",
-        "paramIds": [
-          "a"
-        ],
-        "isDefault": false,
-        "isEcmaDefault": false,
-        "isAsync": false,
-        "doesReturnPromise": false
+          "isDefault": true,
+          "isEcmaDefault": true,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              1
+            ],
+            "result": 3
+          }
+        ]
       },
-      "captures": [
-        {
-          "params": [
-            1
+      "ecma3": {
+        "meta": {
+          "path": "test_integration/flows/03_ecma_export/03_ecma_export.js",
+          "name": "ecma3",
+          "paramIds": [
+            "a"
           ],
-          "result": 0.5
-        }
-      ]
-    },
-    "ecma4": {
-      "meta": {
-        "path": "test_integration/flows/03_ecma_export/03_ecma_export.js",
-        "name": "ecma4",
-        "paramIds": [
-          "a"
-        ],
-        "isDefault": false,
-        "isEcmaDefault": false,
-        "isAsync": false,
-        "doesReturnPromise": false
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              1
+            ],
+            "result": 0.5
+          }
+        ]
       },
-      "captures": [
-        {
-          "params": [
-            1
+      "ecma4": {
+        "meta": {
+          "path": "test_integration/flows/03_ecma_export/03_ecma_export.js",
+          "name": "ecma4",
+          "paramIds": [
+            "a"
           ],
-          "result": 0.25
-        }
-      ]
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              1
+            ],
+            "result": 0.25
+          }
+        ]
+      }
     }
   }
 }

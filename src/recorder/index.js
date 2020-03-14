@@ -36,11 +36,11 @@ const RecorderManager = {
 const recordInjectedActivity = (idObj, paramIds, index, fppkey, paramsOfInjected, result) => {
   const { path, name, captureIndex } = idObj;
   const fqn = `${paramIds[index]}.${fppkey}`;
-  const destinationPath = ['recorderState', path, name, 'captures', captureIndex, 'injections', fqn];
+  const destinationPath = ['recorderState', path, 'exportedFunctions', name, 'captures', captureIndex, 'injections', fqn];
   if (!_.get(RecorderManager, destinationPath)) {
     _.set(RecorderManager, destinationPath, []);
   }
-  RecorderManager.recorderState[path][name]
+  RecorderManager.recorderState[path].exportedFunctions[name]
     .captures[captureIndex].injections[fqn].push({ params: paramsOfInjected, result });
 };
 
@@ -73,18 +73,17 @@ const injectDependencyInjections = (params, paramIds, idObj) => {
 
 const pre = ({ meta, p }) => {
   const { path, name } = meta;
-  if (RecorderManager.recorderState[path] === undefined) {
-    RecorderManager.recorderState[path] = {};
-  }
   const paramIds = meta.paramIds.split(',');
-  if (RecorderManager.recorderState[path][name] === undefined) {
-    RecorderManager.recorderState[path][name] = {
+  const address = ['recorderState', path, 'exportedFunctions', name];
+  if (!_.get(RecorderManager, address)) {
+    _.set(RecorderManager, address, {
       meta: { ...meta, paramIds },
       captures: [],
-    };
+    });
   }
-  RecorderManager.recorderState[path][name].captures.push({ });
-  const captureIndex = RecorderManager.recorderState[path][name].captures.length - 1;
+  RecorderManager.recorderState[path].exportedFunctions[name].captures.push({ });
+  const captureIndex = RecorderManager
+    .recorderState[path].exportedFunctions[name].captures.length - 1;
   injectDependencyInjections(p, paramIds, { path, name, captureIndex });
   const params = p.map(sanitize);
   return {
@@ -95,14 +94,17 @@ const pre = ({ meta, p }) => {
 const post = ({
   unsanitizedResult, path, name, captureIndex, params, doesReturnPromise,
 }) => {
-  RecorderManager.recorderState[path][name].meta.doesReturnPromise = doesReturnPromise;
+  RecorderManager.recorderState[path]
+    .exportedFunctions[name].meta.doesReturnPromise = doesReturnPromise;
 
   const result = sanitize(unsanitizedResult);
-  const existing = RecorderManager.recorderState[path][name].captures[captureIndex];
-  RecorderManager.recorderState[path][name].captures[captureIndex] = _.merge(existing, {
-    params,
-    result,
-  });
+  const existing = RecorderManager
+    .recorderState[path].exportedFunctions[name].captures[captureIndex];
+  RecorderManager.recorderState[path]
+    .exportedFunctions[name].captures[captureIndex] = _.merge(existing, {
+      params,
+      result,
+    });
 };
 
 const recorderWrapper = (meta, innerFunction, ...p) => {
@@ -123,7 +125,33 @@ const recorderWrapper = (meta, innerFunction, ...p) => {
   return unsanitizedResult;
 };
 
+const captureMockActivity = (meta, params, result) => {
+  const { path, moduleName, name } = meta;
+  const address = ['recorderState', path, 'mocks', moduleName, name];
+  if (!_.get(RecorderManager, address)) {
+    _.set(RecorderManager, address, []);
+  }
+  RecorderManager.recorderState[path].mocks[moduleName][name].push({
+    params,
+    result,
+  });
+};
+
+const mockRecorderWrapper = (meta, oldFp, ...p) => {
+  const params = p;
+  const result = oldFp(...p);
+  if (typeof (result.then) === 'function') {
+    result.then((res) => {
+      captureMockActivity(meta, params, res);
+    });
+  } else {
+    captureMockActivity(meta, params, result);
+  }
+  return result;
+};
+
 module.exports = {
   recorderWrapper,
+  mockRecorderWrapper,
   RecorderManager,
 };

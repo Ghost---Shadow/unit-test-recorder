@@ -1,4 +1,5 @@
 const getPost = require('./05_dependency_injection');
+
 describe('05_dependency_injection', () => {
   describe('getPost', () => {
     it('test 0', async () => {

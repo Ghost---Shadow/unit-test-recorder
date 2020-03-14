@@ -1,4 +1,7 @@
-const { recorderWrapper } = require('../../../src/recorder');
+const {
+  mockRecorderWrapper,
+  recorderWrapper
+} = require('../../../src/recorder');
 const circularReference = (...p) =>
   recorderWrapper(
     {

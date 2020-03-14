@@ -1,64 +1,66 @@
 {
   "test_integration/flows/01_module_exports/01_module_exports.js": {
-    "foo": {
-      "meta": {
-        "path": "test_integration/flows/01_module_exports/01_module_exports.js",
-        "name": "foo",
-        "paramIds": [
-          "a",
-          "b"
-        ],
-        "isDefault": false,
-        "isEcmaDefault": false,
-        "isAsync": false,
-        "doesReturnPromise": false
-      },
-      "captures": [
-        {
-          "params": [
-            1,
-            2
+    "exportedFunctions": {
+      "foo": {
+        "meta": {
+          "path": "test_integration/flows/01_module_exports/01_module_exports.js",
+          "name": "foo",
+          "paramIds": [
+            "a",
+            "b"
           ],
-          "result": 3
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
         },
-        {
-          "params": [
-            "A",
-            "B"
-          ],
-          "result": "AB"
-        },
-        {
-          "params": [
-            2,
-            1
-          ],
-          "result": 3
-        }
-      ]
-    },
-    "bar": {
-      "meta": {
-        "path": "test_integration/flows/01_module_exports/01_module_exports.js",
-        "name": "bar",
-        "paramIds": [
-          "a",
-          "b"
-        ],
-        "isDefault": false,
-        "isEcmaDefault": false,
-        "isAsync": false,
-        "doesReturnPromise": false
+        "captures": [
+          {
+            "params": [
+              1,
+              2
+            ],
+            "result": 3
+          },
+          {
+            "params": [
+              "A",
+              "B"
+            ],
+            "result": "AB"
+          },
+          {
+            "params": [
+              2,
+              1
+            ],
+            "result": 3
+          }
+        ]
       },
-      "captures": [
-        {
-          "params": [
-            2,
-            2
+      "bar": {
+        "meta": {
+          "path": "test_integration/flows/01_module_exports/01_module_exports.js",
+          "name": "bar",
+          "paramIds": [
+            "a",
+            "b"
           ],
-          "result": 0
-        }
-      ]
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              2,
+              2
+            ],
+            "result": 0
+          }
+        ]
+      }
     }
   }
 }

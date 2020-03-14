@@ -1,4 +1,7 @@
-const { recorderWrapper } = require('../../../src/recorder');
+const {
+  mockRecorderWrapper,
+  recorderWrapper
+} = require('../../../src/recorder');
 const getPostContent = (client, postId) =>
   client.query('SELECT * FROM posts WHERE id=?', postId);
 

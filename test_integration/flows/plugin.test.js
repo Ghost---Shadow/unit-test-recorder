@@ -19,7 +19,8 @@ const generatedInstrumentedCode = (inputPath) => {
     sourceType: 'module',
     plugins: parserPlugins,
   });
-  const state = { fileName: inputPath, importPath: '../../../src/recorder' };
+  const whiteListedModules = { fs: true, axios: true };
+  const state = { whiteListedModules, fileName: inputPath, importPath: '../../../src/recorder' };
   traverse(ast, myPlugin(babel).visitor, null, state);
   const { code } = generate(ast, generatorOptions);
   return prettier.format(code, {

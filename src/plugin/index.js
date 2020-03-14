@@ -28,9 +28,8 @@ module.exports = (/* { types: t } */) => ({
         if (!this.fileName) throw new Error('fileName should be passed in state');
         // Absolute path to recorder.js
         if (!this.importPath) throw new Error('importPath should be passed in state');
-
-        // TODO: Make configurable
-        this.whiteListedModules = { fs: true, axios: true };
+        // Modules that should be mocked
+        if (!this.whiteListedModules) throw new Error('whiteListedModules should be passed in state');
 
         // Function bindings for mock-logic
         this.mockInjectedFunctions = mockInjectedFunctions.bind(this);

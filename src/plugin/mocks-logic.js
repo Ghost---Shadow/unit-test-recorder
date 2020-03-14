@@ -23,6 +23,7 @@ const mockInjectorGenerator = (moduleName, functionName, fileName) => mockInject
 
 function mockInjectedFunctions() {
   Object.keys(this.importedModules).forEach((moduleId) => {
+    if (!this.importedModules[moduleId].functions) return;
     this.importedModules[moduleId].functions.forEach((functionId) => {
       if (!this.whiteListedModules[moduleId]) return;
       const { path } = this.importedModules[moduleId];

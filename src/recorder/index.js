@@ -1,36 +1,12 @@
 const { flatten, unflatten } = require('flat');
 const _ = require('lodash');
 
-const safeStringify = (obj) => {
-  // https://stackoverflow.com/a/11616993/1217998
-  const cache = [];
-  return JSON.stringify(obj, (key, value) => {
-    if (typeof value === 'object' && value !== null) {
-      if (cache.indexOf(value) !== -1) {
-        // Duplicate reference found, discard key
-        return undefined;
-      }
-      // Store value in our collection
-      cache.push(value);
-    }
-    return value;
-  }, 2);
-};
+const RecorderManager = require('./manager');
+const { mockRecorderWrapper } = require('./mock-recorder');
 
 const sanitize = (obj) => {
   if (typeof (obj) === 'function') return obj.toString();
   return obj;
-};
-
-// TODO: Use redux
-const RecorderManager = {
-  recorderState: {},
-  clear() {
-    this.recorderState = {};
-  },
-  getSerialized() {
-    return safeStringify(this.recorderState);
-  },
 };
 
 const recordInjectedActivity = (idObj, paramIds, index, fppkey, paramsOfInjected, result) => {
@@ -125,30 +101,6 @@ const recorderWrapper = (meta, innerFunction, ...p) => {
   return unsanitizedResult;
 };
 
-const captureMockActivity = (meta, params, result) => {
-  const { path, moduleName, name } = meta;
-  const address = ['recorderState', path, 'mocks', moduleName, name];
-  if (!_.get(RecorderManager, address)) {
-    _.set(RecorderManager, address, []);
-  }
-  RecorderManager.recorderState[path].mocks[moduleName][name].push({
-    params,
-    result,
-  });
-};
-
-const mockRecorderWrapper = (meta, oldFp, ...p) => {
-  const params = p;
-  const result = oldFp(...p);
-  if (typeof (result.then) === 'function') {
-    result.then((res) => {
-      captureMockActivity(meta, params, res);
-    });
-  } else {
-    captureMockActivity(meta, params, result);
-  }
-  return result;
-};
 
 module.exports = {
   recorderWrapper,

@@ -23,15 +23,16 @@ const getPost = async (...p) =>
       path:
         'test_integration/flows/05_dependency_injection/05_dependency_injection.js',
       name: 'getPost',
-      paramIds: 'dbClient,postId',
+      paramIds: 'dbClient,postId,redisCache',
       isDefault: true,
       isEcmaDefault: false,
       isAsync: true
     },
-    async (dbClient, postId) => {
+    async (dbClient, postId, redisCache) => {
       const content = await getPostContent(dbClient, postId);
       const comments = await getPostComments(dbClient, postId);
-      return { content, comments };
+      const votes = await redisCache(postId);
+      return { content, comments, votes };
     },
     ...p
   );

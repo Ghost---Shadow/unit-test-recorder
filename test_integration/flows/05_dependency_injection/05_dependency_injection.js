@@ -5,10 +5,11 @@ const getPostComments = async (client, postId) => {
   return client.pool.pooledQuery('SELECT * FROM comments WHERE post_id=? AND region_id=?', postId, regionId);
 };
 
-const getPost = async (dbClient, postId) => {
+const getPost = async (dbClient, postId, redisCache) => {
   const content = await getPostContent(dbClient, postId);
   const comments = await getPostComments(dbClient, postId);
-  return { content, comments };
+  const votes = await redisCache(postId);
+  return { content, comments, votes };
 };
 
 module.exports = getPost;

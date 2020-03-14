@@ -73,7 +73,10 @@ describe('driver', () => {
           pooledQuery,
         },
       };
-      await getPost(dbClient, 1);
+      const redisCache = () => new Promise((resolve) => {
+        setTimeout(() => resolve(350));
+      });
+      await getPost(dbClient, 1, redisCache);
       const outputFileName = getSnapshotFileName('05_dependency_injection');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

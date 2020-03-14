@@ -41,7 +41,7 @@
           {
             "params": [
               1,
-              "a => a * 2"
+              null
             ],
             "result": "b => a + f2(b)"
           }

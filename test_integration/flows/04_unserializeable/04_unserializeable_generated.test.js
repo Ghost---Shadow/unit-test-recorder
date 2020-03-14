@@ -16,7 +16,7 @@ describe('04_unserializeable', () => {
   describe('returnAFunction', () => {
     it('test 0', () => {
       const a = 1;
-      const f2 = 'a => a * 2';
+      const f2 = null;
       const result = 'b => a + f2(b)';
       const actual = returnAFunction(a, f2);
       expect(actual.toString()).toEqual(result);

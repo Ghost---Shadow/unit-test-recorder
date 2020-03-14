@@ -50,6 +50,19 @@ describe('05_dependency_injection', () => {
             )
       };
       const postId = 1;
+      const redisCache = (...params) =>
+        params
+          .filter(param => param !== undefined)
+          .reduce(
+            (acc, param) => {
+              if (typeof param === 'string') return acc[param];
+              return acc[JSON.stringify(param)];
+            },
+            {
+              '1': 350
+            }
+          );
+
       const result = {
         content: {
           title: 'content'
@@ -61,9 +74,10 @@ describe('05_dependency_injection', () => {
           {
             comment: 'comment 2'
           }
-        ]
+        ],
+        votes: 350
       };
-      const actual = await getPost(dbClient, postId);
+      const actual = await getPost(dbClient, postId, redisCache);
       expect(actual).toMatchObject(result);
     });
   });

@@ -6,7 +6,7 @@ const { captureArrayToLutFun } = require('./lutFunGen');
 
 const wrapSafely = (param) => {
   const result = {
-    string: `'${param}'`,
+    string: `"${param}"`,
     // Circular jsons should never exist in activity
     object: JSON.stringify(param, null, 2),
   }[typeof (param)];
@@ -47,7 +47,10 @@ const inputStatementsGenerator = (paramIds, capture) => {
   const inputStatements = capture.params
     .map((param, index) => {
       const paramId = paramIds[index];
-      const paramWithMocks = _.merge(param, injectedFunctionPlaceholders[paramId]);
+      // If param is null like then it used to be a function
+      const paramWithMocks = !_.isNull(param)
+        ? _.merge(param, injectedFunctionPlaceholders[paramId])
+        : injectedFunctionPlaceholders[paramId];
       const parameterized = `const ${paramId} = ${wrapSafely(paramWithMocks)}`;
       return Object.keys(injectedFunctionMocks)
         .reduce((acc, toReplace) => acc.replace(`"${toReplace}"`, injectedFunctionMocks[toReplace]),

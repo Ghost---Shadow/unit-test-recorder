@@ -2,10 +2,10 @@ const {
   mockRecorderWrapper,
   recorderWrapper
 } = require('../../../src/recorder');
-const fs = require('fs');
+const fileSystem = require('fs');
 (() => {
-  const readFileSync = fs.readFileSync;
-  fs.readFileSync = (...p) =>
+  const readFileSync = fileSystem.readFileSync;
+  fileSystem.readFileSync = (...p) =>
     mockRecorderWrapper(
       {
         path: 'test_integration/flows/06_mocks/06_mocks.js',
@@ -29,7 +29,7 @@ const getTodo = (...p) =>
     },
     () =>
       JSON.parse(
-        fs
+        fileSystem
           .readFileSync('test_integration/flows/06_mocks/response.json', 'utf8')
           .toString()
       ),

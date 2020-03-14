@@ -13,10 +13,10 @@ MODULE_ID.FP_ID = (...p) => mockRecorderWrapper({
 })()
 `);
 
-const mockInjectorGenerator = (moduleName, functionName, fileName) => mockInjector({
+const mockInjectorGenerator = (moduleId, moduleName, functionName, fileName) => mockInjector({
   FP_ID: t.identifier(functionName),
   FP_STRING_LITERAL: t.stringLiteral(functionName),
-  MODULE_ID: t.identifier(moduleName),
+  MODULE_ID: t.identifier(moduleId),
   MODULE_STRING_LITERAL: t.stringLiteral(moduleName),
   FILE_NAME: t.stringLiteral(fileName),
 });
@@ -25,9 +25,9 @@ function mockInjectedFunctions() {
   Object.keys(this.importedModules).forEach((moduleId) => {
     if (!this.importedModules[moduleId].functions) return;
     this.importedModules[moduleId].functions.forEach((functionId) => {
-      if (!this.whiteListedModules[moduleId]) return;
-      const { path } = this.importedModules[moduleId];
-      const ast = mockInjectorGenerator(moduleId, functionId, this.fileName);
+      const { path, moduleName } = this.importedModules[moduleId];
+      if (!this.whiteListedModules[moduleName]) return;
+      const ast = mockInjectorGenerator(moduleId, moduleName, functionId, this.fileName);
       path.insertAfter(ast);
     });
   });
@@ -35,9 +35,9 @@ function mockInjectedFunctions() {
 
 function capturePathsOfRequiredModules(path) {
   // e.g.
-  // const fs = require('fs')
-  // importId = fs
-  // moduleName = 'fs'
+  // const fileSystem = require('fs')
+  // importId = fileSystem
+  // moduleName = fs
   // grandParentPath = path of the require statement
   if (_.get(path, 'node.callee.name') === 'require') {
     const importId = _.get(path, 'parent.id.name');

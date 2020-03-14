@@ -1,4 +1,3 @@
-const { default: template } = require('@babel/template');
 const t = require('@babel/types');
 const _ = require('lodash');
 
@@ -8,101 +7,38 @@ const {
   captureUsageOfImportedFunction,
 } = require('./mocks-logic');
 
-const buildRequire = template(`
-  const { mockRecorderWrapper, recorderWrapper } = require(SOURCE);
-`);
-
-const expgen = template.expression('(...p) => recorderWrapper(META, FUN_AST, ...p)');
-
-const metaGenerator = (
-  path, name, paramIds, isDefault, isEcmaDefault, isAsync,
-) => t.objectExpression([
-  t.objectProperty(t.identifier('path'), t.stringLiteral(path)),
-  t.objectProperty(t.identifier('name'), t.stringLiteral(name)),
-  t.objectProperty(t.identifier('paramIds'), t.stringLiteral(paramIds)),
-  t.objectProperty(t.identifier('isDefault'), t.booleanLiteral(isDefault)),
-  t.objectProperty(t.identifier('isEcmaDefault'), t.booleanLiteral(isEcmaDefault)),
-  t.objectProperty(t.identifier('isAsync'), t.booleanLiteral(isAsync)),
-]);
-
-const getAstWithWrapper = (
-  filePath,
-  functionName,
-  paramIds,
-  isDefault,
-  isEcmaDefault,
-  isAsync,
-  functionAst,
-) => {
-  if (functionAst.type === 'ArrowFunctionExpression') {
-    return expgen({
-      META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault, isAsync),
-      FUN_AST: t.arrowFunctionExpression(functionAst.params, functionAst.body, isAsync),
-    });
-  }
-  if (functionAst.type === 'FunctionDeclaration') {
-    return t.variableDeclaration('const', [
-      t.variableDeclarator(
-        t.identifier(functionName),
-        expgen({
-          META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault, isAsync),
-          FUN_AST: t.functionExpression(
-            t.identifier(functionName),
-            functionAst.params,
-            functionAst.body,
-            null,
-            isAsync,
-          ),
-        }),
-      ),
-    ]);
-  }
-  console.error('Unknown type:', functionName, functionAst.type);
-  return functionAst;
-};
-
+const {
+  getValidFunctions,
+  maybeAddImportStatement,
+  injectValidFunctions,
+} = require('./wrapper-logic');
 
 module.exports = (/* { types: t } */) => ({
   name: 'unit-test-recorder',
   visitor: {
     Program: {
       enter() {
-        // Functions bindings
+        // Function bindings for mock-logic
         this.mockInjectedFunctions = mockInjectedFunctions.bind(this);
         this.capturePathsOfRequiredModules = capturePathsOfRequiredModules.bind(this);
         this.captureUsageOfImportedFunction = captureUsageOfImportedFunction.bind(this);
 
+        // Function bindings for wrapper-logic
+        this.getValidFunctions = getValidFunctions.bind(this);
+        this.maybeAddImportStatement = maybeAddImportStatement.bind(this);
+        this.injectValidFunctions = injectValidFunctions.bind(this);
+
         // States
         this.importedModules = {};
         this.functionsToReplace = {};
+        this.validFunctions = [];
         // TODO: Make configurable
         this.whiteListedModules = { fs: true, axios: true };
       },
       exit(path) {
-        const validFunctions = Object.keys(this.functionsToReplace)
-          .filter(name => this.functionsToReplace[name].isExported
-            && this.functionsToReplace[name].isFunction)
-          .map(name => ({ name, ...this.functionsToReplace[name] }));
-        if (validFunctions.length) {
-          const recorderImportStatement = buildRequire({
-            SOURCE: t.stringLiteral(this.importPath),
-          });
-          path.unshiftContainer('body', recorderImportStatement);
-        }
-        validFunctions.forEach((funObj) => {
-          const newAst = getAstWithWrapper(
-            this.fileName,
-            funObj.name,
-            funObj.paramIds,
-            funObj.isDefault,
-            funObj.isEcmaDefault,
-            funObj.isAsync,
-            funObj.path.node,
-          );
-          newAst.async = funObj.isAsync;
-          funObj.path.replaceWith(newAst);
-        });
-
+        this.validFunctions = this.getValidFunctions();
+        this.maybeAddImportStatement(path);
+        this.injectValidFunctions();
         this.mockInjectedFunctions();
       },
     },

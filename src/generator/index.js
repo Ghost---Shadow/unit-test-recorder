@@ -9,14 +9,17 @@ const {
   generateResultStatement,
 } = require('./statement-genenerators');
 
-const generateTestFromCapture = (functionName, meta, capture, testIndex) => {
+const generateTestFromCapture = (functionIdentifier, meta, capture, testIndex) => {
   const { paramIds, doesReturnPromise } = meta;
   const {
     inputStatements,
     inputStatementExternalData,
   } = inputStatementsGenerator(paramIds, capture);
-  const { resultStatement, resultStatementExternalData } = generateResultStatement(capture);
-  const invokeExpression = `${functionName}(${paramIds.join(',')})`;
+  const {
+    resultStatement,
+    resultStatementExternalData,
+  } = generateResultStatement(capture, meta, testIndex);
+  const invokeExpression = `${functionIdentifier}(${paramIds.join(',')})`;
   const expectStatement = generateExpectStatement(
     invokeExpression,
     capture.result,

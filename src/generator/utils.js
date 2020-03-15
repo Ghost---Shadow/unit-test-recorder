@@ -17,13 +17,17 @@ const wrapSafely = (param) => {
 
 // If the stringified payload > 500 chars long
 // then it should be used as an external file
+// TODO: Make configurable
 const shouldMoveToExternal = obj => JSON.stringify(obj).length > 500;
 
-const generateNameForExternal = () => {
-  // TODO
-  const filePath = 'test_integration/flows/07_large_payload/07_large_payload/getClickCounts_1_result.js';
-  const importPath = './07_large_payload/getClickCounts_1_result.js';
-  const identifier = 'getClickCounts1Result';
+const generateNameForExternal = (meta, captureIndex, identifierName) => {
+  const { path: sourceFilePath, name: functionName } = meta;
+  const sourceFileDir = path.dirname(path.join('.', sourceFilePath));
+  const fileName = path.parse(sourceFilePath).name;
+  const externalName = `${functionName}_${captureIndex}_${identifierName}.js`;
+  const filePath = path.join(sourceFileDir, fileName, externalName);
+  const importPath = `./${path.join(fileName, externalName)}`;
+  const identifier = `${functionName}${captureIndex}${identifierName}`;
   return { identifier, filePath, importPath };
 };
 

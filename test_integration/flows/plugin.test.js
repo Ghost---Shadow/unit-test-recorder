@@ -56,6 +56,9 @@ describe('plugin.test', () => {
       const testFiles = extractTestsFromState(state);
       // Only one file per test
       expect(testFiles[0].fileString).toMatchFile(outputPath);
+      testFiles[0].externalData.forEach((ed) => {
+        expect(ed.fileString).toMatchFile(ed.filePath);
+      });
     });
   });
   describe('02_async_functions', () => {
@@ -70,6 +73,9 @@ describe('plugin.test', () => {
       const testFiles = extractTestsFromState(state);
       // Only one file per test
       expect(testFiles[0].fileString).toMatchFile(outputPath);
+      testFiles[0].externalData.forEach((ed) => {
+        expect(ed.fileString).toMatchFile(ed.filePath);
+      });
     });
   });
   describe('03_ecma_export', () => {
@@ -84,6 +90,9 @@ describe('plugin.test', () => {
       const testFiles = extractTestsFromState(state);
       // Only one file per test
       expect(testFiles[0].fileString).toMatchFile(outputPath);
+      testFiles[0].externalData.forEach((ed) => {
+        expect(ed.fileString).toMatchFile(ed.filePath);
+      });
     });
   });
   describe('04_unserializeable', () => {
@@ -98,6 +107,9 @@ describe('plugin.test', () => {
       const testFiles = extractTestsFromState(state);
       // Only one file per test
       expect(testFiles[0].fileString).toMatchFile(outputPath);
+      testFiles[0].externalData.forEach((ed) => {
+        expect(ed.fileString).toMatchFile(ed.filePath);
+      });
     });
   });
   describe('05_dependency_injection', () => {
@@ -112,6 +124,9 @@ describe('plugin.test', () => {
       const testFiles = extractTestsFromState(state);
       // Only one file per test
       expect(testFiles[0].fileString).toMatchFile(outputPath);
+      testFiles[0].externalData.forEach((ed) => {
+        expect(ed.fileString).toMatchFile(ed.filePath);
+      });
     });
   });
   describe('06_mocks', () => {
@@ -126,9 +141,12 @@ describe('plugin.test', () => {
       const testFiles = extractTestsFromState(state);
       // Only one file per test
       expect(testFiles[0].fileString).toMatchFile(outputPath);
+      testFiles[0].externalData.forEach((ed) => {
+        expect(ed.fileString).toMatchFile(ed.filePath);
+      });
     });
   });
-  describe.only('07_large_payload', () => {
+  describe('07_large_payload', () => {
     it('should match instrumented code snapshot', () => {
       const filename = '07_large_payload';
       const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);

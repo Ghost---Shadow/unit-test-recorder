@@ -91,7 +91,7 @@ describe('driver', () => {
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });
   });
-  describe.only('07_large_payload', () => {
+  describe('07_large_payload', () => {
     it('should record activity', async () => {
       RecorderManager.clear();
       getClickCounts();

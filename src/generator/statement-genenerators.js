@@ -73,7 +73,7 @@ const generateExpectStatement = (invokeExpression, result, doesReturnPromise) =>
   return `${actualStatement};expect(actual).toEqual(result)`;
 };
 
-const generateResultStatement = (capture) => {
+const generateResultStatement = (capture, meta, captureIndex) => {
   if (!shouldMoveToExternal(capture.result)) {
     const resultStatement = `const result = ${wrapSafely(capture.result)}`;
     return {
@@ -81,7 +81,9 @@ const generateResultStatement = (capture) => {
       resultStatementExternalData: [],
     };
   }
-  const { identifier, filePath, importPath } = generateNameForExternal();
+  const { identifier, filePath, importPath } = generateNameForExternal(
+    meta, captureIndex, 'result',
+  );
   const fileString = packageDataForExternal(capture.result);
   const resultStatement = `const result = ${identifier};`;
   const resultStatementExternalData = [{

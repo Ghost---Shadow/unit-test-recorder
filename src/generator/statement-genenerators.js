@@ -13,9 +13,12 @@ const generateImportStatementFromActivity = (activity, fileName) => {
 };
 
 const inputStatementsGenerator = (paramIds, capture) => {
+  const inputStatementExternalData = []; // TODO
+
   if (!capture.injections) {
-    return capture.params
+    const inputStatements = capture.params
       .map((param, index) => `const ${paramIds[index]} = ${wrapSafely(param)}`);
+    return { inputStatements, inputStatementExternalData };
   }
   const injectedFunctionPlaceholders = Object.keys(capture.injections)
     .reduce((acc, injPath) => {
@@ -43,7 +46,7 @@ const inputStatementsGenerator = (paramIds, capture) => {
         .reduce((acc, toReplace) => acc.replace(`"${toReplace}"`, injectedFunctionMocks[toReplace]),
           parameterized);
     });
-  return inputStatements;
+  return { inputStatements, inputStatementExternalData };
 };
 
 const generateExpectStatement = (invokeExpression, result, doesReturnPromise) => {
@@ -58,8 +61,15 @@ const generateExpectStatement = (invokeExpression, result, doesReturnPromise) =>
   return `${actualStatement};expect(actual).toEqual(result)`;
 };
 
+const generateResultStatement = (capture) => {
+  const resultStatement = `const result = ${wrapSafely(capture.result)}`;
+  const resultStatementExternalData = []; // TODO
+  return { resultStatement, resultStatementExternalData };
+};
+
 module.exports = {
   inputStatementsGenerator,
   generateImportStatementFromActivity,
   generateExpectStatement,
+  generateResultStatement,
 };

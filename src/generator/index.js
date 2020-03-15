@@ -1,17 +1,21 @@
 // TODO: Use babel template
 const prettier = require('prettier');
-const { filePathToFileName, wrapSafely } = require('./utils');
+const { filePathToFileName } = require('./utils');
 const { generateMocksFromActivity } = require('./mocks');
 const {
   inputStatementsGenerator,
   generateImportStatementFromActivity,
   generateExpectStatement,
+  generateResultStatement,
 } = require('./statement-genenerators');
 
 const generateTestFromCapture = (functionName, meta, capture, testIndex) => {
   const { paramIds, doesReturnPromise } = meta;
-  const inputStatements = inputStatementsGenerator(paramIds, capture);
-  const resultStatement = `const result = ${wrapSafely(capture.result)}`;
+  const {
+    inputStatements,
+    inputStatementExternalData,
+  } = inputStatementsGenerator(paramIds, capture);
+  const { resultStatement, resultStatementExternalData } = generateResultStatement(capture);
   const invokeExpression = `${functionName}(${paramIds.join(',')})`;
   const expectStatement = generateExpectStatement(
     invokeExpression,
@@ -19,62 +23,76 @@ const generateTestFromCapture = (functionName, meta, capture, testIndex) => {
     doesReturnPromise,
   );
   const asyncString = doesReturnPromise ? 'async ' : '';
-  return `
+  const testString = `
   it('test ${testIndex}', ${asyncString}()=>{
     ${inputStatements.join('\n')}
     ${resultStatement}
     ${expectStatement}
   })
   `;
+  const externalData = inputStatementExternalData + resultStatementExternalData;
+  return { testString, externalData };
 };
 
 const generateTestsFromFunctionActivity = (functionName, functionActivity) => {
   const { meta, captures } = functionActivity;
-  const tests = captures
+  const testData = captures
     .map((capture, index) => generateTestFromCapture(
       functionName,
       meta,
       capture,
       index,
     ));
-  return `
+  const tests = testData.map(t => t.testString).join('\n');
+  const externalData = testData.reduce((acc, d) => acc.concat(d.externalData), []);
+  const describeBlock = `
   describe('${functionName}',()=>{
-    ${tests.join('\n')}
+    ${tests}
   })
   `;
+  return { describeBlock, externalData };
 };
 
 const generateTestsFromActivity = (fileName, activity) => {
   const { mocks, exportedFunctions } = activity;
-  const describeBlocks = Object
+  const describeData = Object
     .keys(exportedFunctions)
-    .map(functionName => generateTestsFromFunctionActivity(
-      functionName,
-      exportedFunctions[functionName],
-    ));
+    .map((functionName) => {
+      const { describeBlock, externalData } = generateTestsFromFunctionActivity(
+        functionName,
+        exportedFunctions[functionName],
+      );
+      return { describeBlock, externalData };
+    });
+
+  const describeBlocks = describeData.map(d => d.describeBlock).join('\n');
+  const externalData = describeData.reduce((acc, d) => acc.concat(d.externalData), []);
 
   const importStatements = generateImportStatementFromActivity(exportedFunctions, fileName);
-  const mockStatements = generateMocksFromActivity(mocks);
+  const { mockStatements, externalMocks } = generateMocksFromActivity(mocks);
 
   const result = `
   ${importStatements}
   ${mockStatements}
   describe('${fileName}',()=>{
-    ${describeBlocks.join('\n')}
+    ${describeBlocks}
   })
   `;
-  return prettier.format(result, {
+  const fileString = prettier.format(result, {
     singleQuote: true,
     parser: 'babel',
   });
+
+  return { fileString, externalData: externalData.concat(externalMocks) };
 };
 
 const extractTestsFromState = state => Object
   .keys(state)
-  .map(filePath => ({
-    filePath,
-    fileString: generateTestsFromActivity(filePathToFileName(filePath), state[filePath]),
-  }));
+  .map((filePath) => {
+    const fileName = filePathToFileName(filePath);
+    const { fileString, externalData } = generateTestsFromActivity(fileName, state[filePath]);
+    return { filePath, fileString, externalData };
+  });
 
 module.exports = {
   extractTestsFromState,

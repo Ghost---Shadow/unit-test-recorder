@@ -9,6 +9,7 @@ const {
 const { circularReference, returnAFunction } = require('./04_unserializeable/04_unserializeable_instrumented');
 const getPost = require('./05_dependency_injection/05_dependency_injection_instrumented');
 const getTodo = require('./06_mocks/06_mocks_instrumented');
+const getClickCounts = require('./07_large_payload/07_large_payload_instrumented');
 
 expect.extend({ toMatchFile });
 
@@ -87,6 +88,14 @@ describe('driver', () => {
       RecorderManager.clear();
       await getTodo();
       const outputFileName = getSnapshotFileName('06_mocks');
+      expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
+    });
+  });
+  describe.only('07_large_payload', () => {
+    it('should record activity', async () => {
+      RecorderManager.clear();
+      getClickCounts();
+      const outputFileName = getSnapshotFileName('07_large_payload');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });
   });

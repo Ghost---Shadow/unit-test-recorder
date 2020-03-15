@@ -128,4 +128,21 @@ describe('plugin.test', () => {
       expect(testFiles[0].fileString).toMatchFile(outputPath);
     });
   });
+  describe.only('07_large_payload', () => {
+    it('should match instrumented code snapshot', () => {
+      const filename = '07_large_payload';
+      const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
+      expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
+    });
+    it('should match generated test code snapshot', () => {
+      const filename = '07_large_payload';
+      const { outputPath, state } = getInputAndOutputPathForTests(filename);
+      const testFiles = extractTestsFromState(state);
+      // Only one file per test
+      expect(testFiles[0].fileString).toMatchFile(outputPath);
+      testFiles[0].externalData.forEach((ed) => {
+        expect(ed.fileString).toMatchFile(ed.filePath);
+      });
+    });
+  });
 });

@@ -30,7 +30,7 @@ const generateTestFromCapture = (functionName, meta, capture, testIndex) => {
     ${expectStatement}
   })
   `;
-  const externalData = inputStatementExternalData + resultStatementExternalData;
+  const externalData = inputStatementExternalData.concat(resultStatementExternalData);
   return { testString, externalData };
 };
 
@@ -68,8 +68,11 @@ const generateTestsFromActivity = (fileName, activity) => {
   const describeBlocks = describeData.map(d => d.describeBlock).join('\n');
   const externalData = describeData.reduce((acc, d) => acc.concat(d.externalData), []);
 
-  const importStatements = generateImportStatementFromActivity(exportedFunctions, fileName);
   const { mockStatements, externalMocks } = generateMocksFromActivity(mocks);
+  const allExternalData = externalData.concat(externalMocks);
+  const importStatements = generateImportStatementFromActivity(
+    exportedFunctions, fileName, allExternalData,
+  );
 
   const result = `
   ${importStatements}
@@ -83,7 +86,7 @@ const generateTestsFromActivity = (fileName, activity) => {
     parser: 'babel',
   });
 
-  return { fileString, externalData: externalData.concat(externalMocks) };
+  return { fileString, externalData: allExternalData };
 };
 
 const extractTestsFromState = state => Object

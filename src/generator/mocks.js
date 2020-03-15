@@ -4,7 +4,7 @@ const generateMocksFromActivity = (mocks) => {
   if (!mocks) {
     return {
       mockStatements: '',
-      externalData: [],
+      externalMocks: [],
     };
   }
   const mockStatements = Object.keys(mocks)
@@ -15,8 +15,8 @@ const generateMocksFromActivity = (mocks) => {
       ${mockedFunctions}
     }));`;
     });
-  const externalData = []; // TODO
-  return { mockStatements, externalData };
+  const externalMocks = []; // TODO
+  return { mockStatements, externalMocks };
 };
 
 module.exports = {

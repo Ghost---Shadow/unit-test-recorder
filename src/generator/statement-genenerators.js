@@ -1,15 +1,27 @@
 const _ = require('lodash');
 const { captureArrayToLutFun } = require('./lutFunGen');
-const { wrapSafely } = require('./utils');
+const {
+  wrapSafely,
+  shouldMoveToExternal,
+  generateNameForExternal,
+  packageDataForExternal,
+} = require('./utils');
 
-const generateImportStatementFromActivity = (activity, fileName) => {
+const generateImportStatementFromActivity = (activity, fileName, allExternalData) => {
   const importedFunctions = Object.keys(activity);
-  return importedFunctions.reduce((acc, importedFunction) => {
+  const scriptImports = importedFunctions.reduce((acc, importedFunction) => {
     const { isDefault, isEcmaDefault } = activity[importedFunction].meta;
     if (isEcmaDefault) return `${acc}\nconst {default:${importedFunction}} = require('./${fileName}')`;
     if (isDefault) return `${acc}\nconst ${importedFunction} = require('./${fileName}')`;
     return `${acc}\nconst {${importedFunction}} = require('./${fileName}')`;
   }, '');
+
+  const externalDataImports = allExternalData.reduce((acc, ed) => {
+    const { importPath, identifier } = ed;
+    return `${acc}\nconst ${identifier} = require('${importPath}')`;
+  }, '');
+
+  return scriptImports + externalDataImports;
 };
 
 const inputStatementsGenerator = (paramIds, capture) => {
@@ -62,8 +74,22 @@ const generateExpectStatement = (invokeExpression, result, doesReturnPromise) =>
 };
 
 const generateResultStatement = (capture) => {
-  const resultStatement = `const result = ${wrapSafely(capture.result)}`;
-  const resultStatementExternalData = []; // TODO
+  if (!shouldMoveToExternal(capture.result)) {
+    const resultStatement = `const result = ${wrapSafely(capture.result)}`;
+    return {
+      resultStatement,
+      resultStatementExternalData: [],
+    };
+  }
+  const { identifier, filePath, importPath } = generateNameForExternal();
+  const fileString = packageDataForExternal(capture.result);
+  const resultStatement = `const result = ${identifier};`;
+  const resultStatementExternalData = [{
+    fileString,
+    identifier,
+    filePath,
+    importPath,
+  }];
   return { resultStatement, resultStatementExternalData };
 };
 

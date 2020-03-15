@@ -1,63 +1,12 @@
 // TODO: Use babel template
-const path = require('path');
 const prettier = require('prettier');
-const _ = require('lodash');
-const { captureArrayToLutFun } = require('./lutFunGen');
-
-const wrapSafely = (param) => {
-  const result = {
-    string: `"${param}"`,
-    // Circular jsons should never exist in activity
-    object: JSON.stringify(param, null, 2),
-  }[typeof (param)];
-  return result || param;
-};
-
-const generateExpectStatement = (invokeExpression, result, doesReturnPromise) => {
-  const awaitString = doesReturnPromise ? 'await ' : '';
-  const actualStatement = `const actual = ${awaitString}${invokeExpression}`;
-  if (typeof (result) === 'object') {
-    return `${actualStatement};expect(actual).toMatchObject(result)`;
-  }
-  if (typeof (result) === 'string') {
-    return `${actualStatement};expect(actual.toString()).toEqual(result)`;
-  }
-  return `${actualStatement};expect(actual).toEqual(result)`;
-};
-
-const inputStatementsGenerator = (paramIds, capture) => {
-  if (!capture.injections) {
-    return capture.params
-      .map((param, index) => `const ${paramIds[index]} = ${wrapSafely(param)}`);
-  }
-  const injectedFunctionPlaceholders = Object.keys(capture.injections)
-    .reduce((acc, injPath) => {
-      const newObj = {};
-      _.set(newObj, injPath, injPath.toLocaleUpperCase());
-      return _.merge(acc, newObj);
-    }, {});
-  const injectedFunctionMocks = Object.keys(capture.injections)
-    .reduce((acc, injPath) => {
-      const functionBody = captureArrayToLutFun(capture.injections[injPath]);
-      const key = injPath.toLocaleUpperCase();
-      return _.merge(acc, {
-        [key]: functionBody,
-      });
-    }, {});
-  const inputStatements = capture.params
-    .map((param, index) => {
-      const paramId = paramIds[index];
-      // If param is null like then it used to be a function
-      const paramWithMocks = !_.isNull(param)
-        ? _.merge(param, injectedFunctionPlaceholders[paramId])
-        : injectedFunctionPlaceholders[paramId];
-      const parameterized = `const ${paramId} = ${wrapSafely(paramWithMocks)}`;
-      return Object.keys(injectedFunctionMocks)
-        .reduce((acc, toReplace) => acc.replace(`"${toReplace}"`, injectedFunctionMocks[toReplace]),
-          parameterized);
-    });
-  return inputStatements;
-};
+const { filePathToFileName, wrapSafely } = require('./utils');
+const { generateMocksFromActivity } = require('./mocks');
+const {
+  inputStatementsGenerator,
+  generateImportStatementFromActivity,
+  generateExpectStatement,
+} = require('./statement-genenerators');
 
 const generateTestFromCapture = (functionName, meta, capture, testIndex) => {
   const { paramIds, doesReturnPromise } = meta;
@@ -95,28 +44,6 @@ const generateTestsFromFunctionActivity = (functionName, functionActivity) => {
   `;
 };
 
-const generateImportStatementFromActivity = (activity, fileName) => {
-  const importedFunctions = Object.keys(activity);
-  return importedFunctions.reduce((acc, importedFunction) => {
-    const { isDefault, isEcmaDefault } = activity[importedFunction].meta;
-    if (isEcmaDefault) return `${acc}\nconst {default:${importedFunction}} = require('./${fileName}')`;
-    if (isDefault) return `${acc}\nconst ${importedFunction} = require('./${fileName}')`;
-    return `${acc}\nconst {${importedFunction}} = require('./${fileName}')`;
-  }, '');
-};
-
-const generateMocksFromActivity = (mocks) => {
-  if (!mocks) return '';
-  return Object.keys(mocks)
-    .map((moduleId) => {
-      const mockedFunctions = Object.keys(mocks[moduleId])
-        .map(usedFunction => `${usedFunction}: ${captureArrayToLutFun(mocks[moduleId][usedFunction])}`).join(',\n');
-      return `jest.mock('${moduleId}', () => ({
-      ${mockedFunctions}
-    }));`;
-    });
-};
-
 const generateTestsFromActivity = (fileName, activity) => {
   const { mocks, exportedFunctions } = activity;
   const describeBlocks = Object
@@ -126,11 +53,11 @@ const generateTestsFromActivity = (fileName, activity) => {
       exportedFunctions[functionName],
     ));
 
-  const importStatement = generateImportStatementFromActivity(exportedFunctions, fileName);
+  const importStatements = generateImportStatementFromActivity(exportedFunctions, fileName);
   const mockStatements = generateMocksFromActivity(mocks);
 
   const result = `
-  ${importStatement}
+  ${importStatements}
   ${mockStatements}
   describe('${fileName}',()=>{
     ${describeBlocks.join('\n')}
@@ -140,11 +67,6 @@ const generateTestsFromActivity = (fileName, activity) => {
     singleQuote: true,
     parser: 'babel',
   });
-};
-
-const filePathToFileName = (filePath) => {
-  const basePath = path.basename(filePath);
-  return basePath.substring(0, basePath.length - 3);
 };
 
 const extractTestsFromState = state => Object

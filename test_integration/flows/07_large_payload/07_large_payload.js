@@ -1,14 +1,15 @@
-const getClickCountsHelper = (imgObjs) => {
+const getClickCountsHelper = (requestDataCb) => {
+  const imgObjs = requestDataCb();
   const result = imgObjs
     .map(imgObj => ({ ...imgObj, clicks: imgObj.imageId * 100 }));
   return result;
 };
 
 const getClickCounts = () => {
-  const imgObjs = [...Array(100)].map((_, index) => ({
+  const requestDataCb = () => [...Array(100)].map((_, index) => ({
     imageId: index,
   }));
-  return getClickCountsHelper(imgObjs);
+  return getClickCountsHelper(requestDataCb);
 };
 
 module.exports = { getClickCounts, getClickCountsHelper };

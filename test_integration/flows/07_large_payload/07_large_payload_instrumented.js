@@ -7,12 +7,13 @@ const getClickCountsHelper = (...p) =>
     {
       path: 'test_integration/flows/07_large_payload/07_large_payload.js',
       name: 'getClickCountsHelper',
-      paramIds: 'imgObjs',
+      paramIds: 'requestDataCb',
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false
     },
-    imgObjs => {
+    requestDataCb => {
+      const imgObjs = requestDataCb();
       const result = imgObjs.map(imgObj => ({
         ...imgObj,
         clicks: imgObj.imageId * 100
@@ -33,11 +34,12 @@ const getClickCounts = (...p) =>
       isAsync: false
     },
     () => {
-      const imgObjs = [...Array(100)].map((_, index) => ({
-        imageId: index
-      }));
+      const requestDataCb = () =>
+        [...Array(100)].map((_, index) => ({
+          imageId: index
+        }));
 
-      return getClickCountsHelper(imgObjs);
+      return getClickCountsHelper(requestDataCb);
     },
     ...p
   );

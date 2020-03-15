@@ -14,7 +14,7 @@ const generateTestFromCapture = (functionIdentifier, meta, capture, testIndex) =
   const {
     inputStatements,
     inputStatementExternalData,
-  } = inputStatementsGenerator(paramIds, capture);
+  } = inputStatementsGenerator(capture, meta, testIndex);
   const {
     resultStatement,
     resultStatementExternalData,

@@ -24,12 +24,42 @@ const generateImportStatementFromActivity = (activity, fileName, allExternalData
   return scriptImports + externalDataImports;
 };
 
-const inputStatementsGenerator = (paramIds, capture) => {
-  const inputStatementExternalData = []; // TODO
+const generateAssignmentOperation = (maybeObject, lIdentifier, meta, captureIndex) => {
+  if (!shouldMoveToExternal(maybeObject)) {
+    const statement = `const ${lIdentifier} = ${wrapSafely(maybeObject)}`;
+    return { statement, externalData: [] };
+  }
+  const { identifier, filePath, importPath } = generateNameForExternal(
+    meta, captureIndex, lIdentifier,
+  );
+  const fileString = packageDataForExternal(maybeObject);
+  const statement = `const ${lIdentifier} = ${identifier};`;
+  const externalData = [{
+    fileString,
+    identifier,
+    filePath,
+    importPath,
+  }];
+  return { statement, externalData };
+};
+
+const inputStatementsGenerator = (capture, meta, testIndex) => {
+  const { paramIds } = meta;
 
   if (!capture.injections) {
-    const inputStatements = capture.params
-      .map((param, index) => `const ${paramIds[index]} = ${wrapSafely(param)}`);
+    const inputStatementData = capture.params
+      .map((param, index) => {
+        const maybeObject = param;
+        const lIdentifier = paramIds[index];
+        const captureIndex = testIndex;
+        const { statement, externalData } = generateAssignmentOperation(
+          maybeObject, lIdentifier, meta, captureIndex,
+        );
+        return { statement, externalData };
+      });
+    const inputStatements = inputStatementData.map(isd => isd.statement);
+    const inputStatementExternalData = inputStatementData
+      .reduce((acc, isd) => acc.concat(isd.externalData), []);
     return { inputStatements, inputStatementExternalData };
   }
   const injectedFunctionPlaceholders = Object.keys(capture.injections)
@@ -58,7 +88,8 @@ const inputStatementsGenerator = (paramIds, capture) => {
         .reduce((acc, toReplace) => acc.replace(`"${toReplace}"`, injectedFunctionMocks[toReplace]),
           parameterized);
     });
-  return { inputStatements, inputStatementExternalData };
+  // TODO
+  return { inputStatements, inputStatementExternalData: [] };
 };
 
 const generateExpectStatement = (invokeExpression, result, doesReturnPromise) => {
@@ -74,25 +105,12 @@ const generateExpectStatement = (invokeExpression, result, doesReturnPromise) =>
 };
 
 const generateResultStatement = (capture, meta, captureIndex) => {
-  if (!shouldMoveToExternal(capture.result)) {
-    const resultStatement = `const result = ${wrapSafely(capture.result)}`;
-    return {
-      resultStatement,
-      resultStatementExternalData: [],
-    };
-  }
-  const { identifier, filePath, importPath } = generateNameForExternal(
-    meta, captureIndex, 'result',
+  const maybeObject = capture.result;
+  const lIdentifier = 'result';
+  const { statement, externalData } = generateAssignmentOperation(
+    maybeObject, lIdentifier, meta, captureIndex,
   );
-  const fileString = packageDataForExternal(capture.result);
-  const resultStatement = `const result = ${identifier};`;
-  const resultStatementExternalData = [{
-    fileString,
-    identifier,
-    filePath,
-    importPath,
-  }];
-  return { resultStatement, resultStatementExternalData };
+  return { resultStatement: statement, resultStatementExternalData: externalData };
 };
 
 module.exports = {

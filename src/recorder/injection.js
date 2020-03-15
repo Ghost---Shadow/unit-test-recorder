@@ -36,7 +36,8 @@ const injectFunctionDynamically = (maybeFunction, paramIds, idObj, index, fppkey
 const injectDependencyInjections = (params, paramIds, idObj) => {
   params.forEach((param, index) => {
     // If param is an object with functions
-    if (typeof (param) === 'object') {
+    // TODO: Handle array of functions
+    if (_.isObject(param) && !_.isArray(param) && !_.isFunction(param)) {
       const flatObj = flatten(param);
       Object.keys(flatObj).forEach((fppkey) => {
         // If a property of the object is a function

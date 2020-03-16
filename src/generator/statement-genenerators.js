@@ -4,6 +4,11 @@ const {
   generateInputAssignmentsWithInjections,
 } = require('./statement-helpers');
 
+const externalImportReducer = externalData => externalData.reduce((acc, ed) => {
+  const { importPath, identifier } = ed;
+  return `${acc}\nconst ${identifier} = require('${importPath}')`;
+}, '');
+
 const generateImportStatementFromActivity = (activity, fileName, allExternalData) => {
   const importedFunctions = Object.keys(activity);
   const scriptImports = importedFunctions.reduce((acc, importedFunction) => {
@@ -13,10 +18,10 @@ const generateImportStatementFromActivity = (activity, fileName, allExternalData
     return `${acc}\nconst {${importedFunction}} = require('./${fileName}')`;
   }, '');
 
-  const externalDataImports = allExternalData.reduce((acc, ed) => {
-    const { importPath, identifier } = ed;
-    return `${acc}\nconst ${identifier} = require('${importPath}')`;
-  }, '');
+  // Mocks are imported in a separate place
+  const externalsWithoutMocks = allExternalData.filter(ed => !ed.isMock);
+
+  const externalDataImports = externalImportReducer(externalsWithoutMocks);
 
   return scriptImports + externalDataImports;
 };
@@ -54,4 +59,5 @@ module.exports = {
   generateImportStatementFromActivity,
   generateExpectStatement,
   generateResultStatement,
+  externalImportReducer,
 };

@@ -56,7 +56,7 @@ const generateTestsFromFunctionActivity = (functionName, functionActivity) => {
   return { describeBlock, externalData };
 };
 
-const generateTestsFromActivity = (fileName, activity) => {
+const generateTestsFromActivity = (fileName, filePath, activity) => {
   const { mocks, exportedFunctions } = activity;
   const describeData = Object
     .keys(exportedFunctions)
@@ -71,7 +71,7 @@ const generateTestsFromActivity = (fileName, activity) => {
   const describeBlocks = describeData.map(d => d.describeBlock).join('\n');
   const externalData = describeData.reduce((acc, d) => acc.concat(d.externalData), []);
 
-  const { mockStatements, externalMocks } = generateMocksFromActivity(mocks);
+  const { mockStatements, externalMocks } = generateMocksFromActivity(filePath, mocks);
   const allExternalData = externalData.concat(externalMocks);
   const importStatements = generateImportStatementFromActivity(
     exportedFunctions, fileName, allExternalData,
@@ -96,7 +96,10 @@ const extractTestsFromState = state => Object
   .keys(state)
   .map((filePath) => {
     const fileName = filePathToFileName(filePath);
-    const { fileString, externalData } = generateTestsFromActivity(fileName, state[filePath]);
+    const {
+      fileString,
+      externalData,
+    } = generateTestsFromActivity(fileName, filePath, state[filePath]);
     return { filePath, fileString, externalData };
   });
 

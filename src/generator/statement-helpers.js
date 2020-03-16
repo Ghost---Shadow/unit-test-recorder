@@ -57,13 +57,20 @@ const generateInputAssignmentsWithInjections = (capture, meta, testIndex) => {
       return _.merge(acc, newObj);
     }, {});
 
+  const allExternalData = [];
+
   // Generate mock functions lut
   const injectedFunctionMocks = Object.keys(capture.injections)
     .reduce((acc, injPath) => {
-      const functionBody = captureArrayToLutFun(capture.injections[injPath]);
+      const lIdentifier = injPath;
+      const captures = capture.injections[injPath];
+      const { code, externalData } = captureArrayToLutFun(
+        captures, lIdentifier, meta, testIndex,
+      );
+      allExternalData.push(...externalData);
       const key = injPath.toLocaleUpperCase();
       return _.merge(acc, {
-        [key]: functionBody,
+        [key]: code,
       });
     }, {});
 
@@ -86,6 +93,7 @@ const generateInputAssignmentsWithInjections = (capture, meta, testIndex) => {
   } = generateRegularInputAssignments(
     { params: augmentedParams }, meta, testIndex,
   );
+  allExternalData.push(...inputStatementExternalData);
 
   // Replace the placeholders with function strings
   const templatedInputStatements = inputStatements
@@ -96,7 +104,7 @@ const generateInputAssignmentsWithInjections = (capture, meta, testIndex) => {
 
   return {
     inputStatements: templatedInputStatements,
-    inputStatementExternalData,
+    inputStatementExternalData: allExternalData,
   };
 };
 

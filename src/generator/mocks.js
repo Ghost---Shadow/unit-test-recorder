@@ -7,15 +7,19 @@ const generateMocksFromActivity = (mocks) => {
       externalMocks: [],
     };
   }
+  const externalMocks = [];
   const mockStatements = Object.keys(mocks)
     .map((moduleId) => {
       const mockedFunctions = Object.keys(mocks[moduleId])
-        .map(usedFunction => `${usedFunction}: ${captureArrayToLutFun(mocks[moduleId][usedFunction])}`).join(',\n');
+        .map((usedFunction) => {
+          // TODO: externalData
+          const { code } = captureArrayToLutFun(mocks[moduleId][usedFunction]);
+          return `${usedFunction}: ${code}`;
+        }).join(',\n');
       return `jest.mock('${moduleId}', () => ({
       ${mockedFunctions}
     }));`;
     });
-  const externalMocks = []; // TODO
   return { mockStatements, externalMocks };
 };
 

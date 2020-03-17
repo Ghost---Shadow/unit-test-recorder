@@ -60,14 +60,15 @@ module.exports = (/* { types: t } */) => ({
         // The identifier has to be a function and exported
         this.validFunctions = this.getValidFunctions();
 
-        // Dont add import statement if there are no exported functions
-        this.maybeAddImportStatement(path);
-
         // Instrument functions which match criteria
         this.injectValidFunctions();
 
         // Instrument mocks of whitelisted modules
         this.mockInjectedFunctions();
+
+        // Dont add import statement if there are no exported functions
+        // Dont import mocks if nothing is mocked
+        this.maybeAddImportStatement(path);
       },
     },
     ArrowFunctionExpression(path) {

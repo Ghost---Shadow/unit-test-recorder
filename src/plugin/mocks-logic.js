@@ -27,6 +27,7 @@ function mockInjectedFunctions() {
     this.importedModules[moduleId].functions.forEach((functionId) => {
       const { path, moduleName } = this.importedModules[moduleId];
       if (!this.whiteListedModules[moduleName]) return;
+      this.atLeastOneMockUsed = true;
       const ast = mockInjectorGenerator(moduleId, moduleName, functionId, this.fileName);
       path.insertAfter(ast);
     });

@@ -1,7 +1,5 @@
-const {
-  mockRecorderWrapper,
-  recorderWrapper
-} = require('../../../src/recorder');
+const { mockRecorderWrapper } = require('../../../src/recorder');
+const { recorderWrapper } = require('../../../src/recorder');
 const fileSystem = require('fs');
 (() => {
   const readFileSync = fileSystem.readFileSync;

@@ -1,7 +1,4 @@
-const {
-  mockRecorderWrapper,
-  recorderWrapper
-} = require('../../../src/recorder');
+const { recorderWrapper } = require('../../../src/recorder');
 const getClickCountsHelper = (...p) =>
   recorderWrapper(
     {

@@ -2,13 +2,22 @@ const { default: template } = require('@babel/template');
 const t = require('@babel/types');
 
 const buildRequire = template(`
-  const { mockRecorderWrapper, recorderWrapper } = require(SOURCE);
+  const { IDENTIFIER } = require(SOURCE);
 `);
 
 function maybeAddImportStatement(path) {
   if (this.validFunctions.length) {
     const recorderImportStatement = buildRequire({
       SOURCE: t.stringLiteral(this.importPath),
+      IDENTIFIER: t.identifier('recorderWrapper'),
+    });
+    path.unshiftContainer('body', recorderImportStatement);
+  }
+
+  if (this.atLeastOneMockUsed) {
+    const recorderImportStatement = buildRequire({
+      SOURCE: t.stringLiteral(this.importPath),
+      IDENTIFIER: t.identifier('mockRecorderWrapper'),
     });
     path.unshiftContainer('body', recorderImportStatement);
   }

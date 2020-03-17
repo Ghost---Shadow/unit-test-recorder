@@ -1,7 +1,8 @@
 {
   "name": "unit-test-recorder",
   "bin": {
-    "unit-test-recorder": "src/index.js"
+    "unit-test-recorder": "src/index.js",
+    "ts-unit-test-recorder": "src/index.ts"
   },
   "version": "0.0.0",
   "description": "A cli tool records usage and generates unit tests",
@@ -50,6 +51,7 @@
     "@babel/generator": "^7.4.4",
     "@babel/parser": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/preset-typescript": "^7.8.3",
     "@babel/template": "^7.8.3",
     "@babel/traverse": "^7.4.4",
     "@babel/types": "^7.8.3",

@@ -1,7 +1,7 @@
 const parserPlugins = [
   'jsx',
   'classProperties', // '@babel/plugin-proposal-class-properties',
-  'flow',
+  'typescript', // '@babel/preset-typescript',
 ];
 
 const generatorOptions = {

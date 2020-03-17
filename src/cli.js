@@ -22,10 +22,12 @@ if (!entryPoint) {
   process.exit(1);
 }
 
-const resolvedEntrypoint = path.resolve(process.cwd(), entryPoint);
+const resolvedEntrypoint = path.isAbsolute(entryPoint)
+  ? entryPoint
+  : path.resolve(process.cwd(), entryPoint);
 
-const inputDir = './';
-const outputDir = './';
+const inputDir = './'; // TODO
+const outputDir = './'; // TODO
 const sourceDir = path.dirname(entryPoint);
 
 const writeFileAsync = promisify(fs.writeFile);
@@ -55,7 +57,7 @@ const transformFile = (fileName, whiteListedModules) => {
   }
 };
 
-const allFiles = walk(path.join(path.resolve(inputDir), sourceDir));
+const allFiles = walk(sourceDir);
 
 let whiteListedModules = { fs: true, axios: true };
 if (fs.existsSync('whitelist.json')) {

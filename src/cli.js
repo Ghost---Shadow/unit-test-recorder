@@ -106,6 +106,6 @@ process.on('SIGINT', async () => {
 //   // This is here to keep the process alive
 // }, 1000);
 
-console.log(`Started ${resolvedEntrypoint}`);
+console.log(`Starting ${resolvedEntrypoint}`);
 // eslint-disable-next-line
 require(resolvedEntrypoint);

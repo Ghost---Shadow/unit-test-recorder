@@ -52,6 +52,13 @@ describe('05_dependency_injection', () => {
               }
             );
           }
+        },
+        commitSync: (...params) => {
+          const safeParams = params.length === 0 ? [undefined] : params;
+          return safeParams.reduce((acc, param) => {
+            if (typeof param === 'string') return acc[param];
+            return acc[JSON.stringify(param)];
+          }, {});
         }
       };
       const postId = 1;

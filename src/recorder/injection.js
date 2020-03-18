@@ -16,11 +16,18 @@ const recordInjectedActivity = (idObj, paramIds, index, fppkey, paramsOfInjected
 };
 
 const injectFunctionDynamically = (maybeFunction, paramIds, idObj, index, fppkey) => {
-  if (typeof (maybeFunction) === 'function') {
-    const oldFp = maybeFunction;
-    maybeFunction = (...paramsOfInjected) => {
-      const result = oldFp(...paramsOfInjected);
-      if (typeof (result.then) === 'function') {
+  if (_.isFunction(maybeFunction)) {
+    const OldFp = maybeFunction;
+    // eslint-disable-next-line
+    function injectedFunction(...paramsOfInjected) {
+      // https://stackoverflow.com/a/31060154/1217998
+      // if (new.target) {
+      //   // https://stackoverflow.com/a/47469377/1217998
+      //   return new OldFp(...paramsOfInjected);
+      // }
+      // const result = OldFp.bind(this)(...paramsOfInjected);
+      const result = OldFp(...paramsOfInjected);
+      if (result && _.isFunction(result.then)) {
         // It might be a promise
         result.then((res) => {
           recordInjectedActivity(idObj, paramIds, index, fppkey, paramsOfInjected, res);
@@ -29,7 +36,8 @@ const injectFunctionDynamically = (maybeFunction, paramIds, idObj, index, fppkey
         recordInjectedActivity(idObj, paramIds, index, fppkey, paramsOfInjected, result);
       }
       return result;
-    };
+    }
+    return injectedFunction;
   }
   return maybeFunction;
 };

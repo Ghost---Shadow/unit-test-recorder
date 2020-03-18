@@ -60,6 +60,11 @@
                   ],
                   "result": 350
                 }
+              ],
+              "dbClient.commitSync": [
+                {
+                  "params": []
+                }
               ]
             },
             "params": [

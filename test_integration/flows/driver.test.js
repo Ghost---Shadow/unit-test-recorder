@@ -70,6 +70,7 @@ describe('driver', () => {
         setTimeout(() => resolve([{ comment: 'comment 1' }, { comment: 'comment 2' }]));
       });
       const dbClient = {
+        commitSync: () => {},
         __proto__: {
           query,
           __proto__: {

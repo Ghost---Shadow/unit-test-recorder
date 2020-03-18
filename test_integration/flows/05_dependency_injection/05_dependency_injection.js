@@ -9,6 +9,7 @@ const getPost = async (dbClient, postId, redisCache) => {
   const content = await getPostContent(dbClient, postId);
   const comments = await getPostComments(dbClient, postId);
   const votes = await redisCache(postId);
+  dbClient.commitSync();
   return { content, comments, votes };
 };
 

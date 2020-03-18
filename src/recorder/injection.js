@@ -3,6 +3,14 @@ const _ = require('lodash');
 const RecorderManager = require('./manager');
 const { traverse } = require('./object-traverser');
 
+const markForConstructorInjection = (idObj) => {
+  const { path, name } = idObj;
+  // No tests will be generated for this
+  // For now
+  RecorderManager.recorderState[path].exportedFunctions[name]
+    .meta.requiresContructorInjection = true;
+};
+
 const recordInjectedActivity = (idObj, paramIds, index, fppkey, paramsOfInjected, result) => {
   const { path, name, captureIndex } = idObj;
   // Fully qualified name
@@ -21,10 +29,11 @@ const injectFunctionDynamically = (maybeFunction, paramIds, idObj, index, fppkey
     // eslint-disable-next-line
     function injectedFunction(...paramsOfInjected) {
       // https://stackoverflow.com/a/31060154/1217998
-      // if (new.target) {
-      //   // https://stackoverflow.com/a/47469377/1217998
-      //   return new OldFp(...paramsOfInjected);
-      // }
+      if (new.target) {
+        markForConstructorInjection(idObj);
+        // https://stackoverflow.com/a/47469377/1217998
+        return new OldFp(...paramsOfInjected);
+      }
       // const result = OldFp.bind(this)(...paramsOfInjected);
       const result = OldFp(...paramsOfInjected);
       if (result && _.isFunction(result.then)) {

@@ -37,6 +37,18 @@ const generateTestFromCapture = (functionIdentifier, meta, capture, testIndex) =
   return { testString, externalData };
 };
 
+const generateComments = (meta) => {
+  const { requiresContructorInjection } = meta;
+  if (requiresContructorInjection) {
+    return {
+      failure: true,
+      startComments: '/* This function requires injection of Constructor (WIP)',
+      endComments: '*/',
+    };
+  }
+  return { failure: false, startComments: '', endComments: '' };
+};
+
 const generateTestsFromFunctionActivity = (functionName, functionActivity) => {
   const { meta, captures } = functionActivity;
   const testData = captures
@@ -48,12 +60,15 @@ const generateTestsFromFunctionActivity = (functionName, functionActivity) => {
     ));
   const tests = testData.map(t => t.testString).join('\n');
   const externalData = testData.reduce((acc, d) => acc.concat(d.externalData), []);
+  const { failure, startComments, endComments } = generateComments(meta);
   const describeBlock = `
+  ${startComments}
   describe('${functionName}',()=>{
     ${tests}
   })
+  ${endComments}
   `;
-  return { describeBlock, externalData };
+  return { describeBlock, externalData, failure };
 };
 
 const generateTestsFromActivity = (fileName, filePath, activity) => {

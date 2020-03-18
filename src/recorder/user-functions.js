@@ -44,7 +44,7 @@ const recorderWrapper = (meta, innerFunction, ...p) => {
     path, name, captureIndex, params,
   } = pre({ meta, p });
   const result = innerFunction(...p);
-  if (typeof (result.then) === 'function') {
+  if (result && _.isFunction(result.then)) {
     // It might be a promise
     result.then(res => captureUserFunction({
       result: res, path, name, captureIndex, params, doesReturnPromise: true,

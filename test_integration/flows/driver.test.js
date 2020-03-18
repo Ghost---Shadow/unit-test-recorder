@@ -70,9 +70,13 @@ describe('driver', () => {
         setTimeout(() => resolve([{ comment: 'comment 1' }, { comment: 'comment 2' }]));
       });
       const dbClient = {
-        query,
-        pool: {
-          pooledQuery,
+        __proto__: {
+          query,
+          __proto__: {
+            pool: {
+              pooledQuery,
+            },
+          },
         },
       };
       const redisCache = () => new Promise((resolve) => {

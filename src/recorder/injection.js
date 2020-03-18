@@ -1,6 +1,7 @@
-const { flatten, unflatten } = require('flat');
 const _ = require('lodash');
+
 const RecorderManager = require('./manager');
+const { traverse } = require('./object-traverser');
 
 const recordInjectedActivity = (idObj, paramIds, index, fppkey, paramsOfInjected, result) => {
   const { path, name, captureIndex } = idObj;
@@ -38,20 +39,19 @@ const injectDependencyInjections = (params, paramIds, idObj) => {
     // If param is an object with functions
     // TODO: Handle array of functions
     if (_.isObject(param) && !_.isArray(param) && !_.isFunction(param)) {
-      const flatObj = flatten(param);
-      Object.keys(flatObj).forEach((fppkey) => {
-        // If a property of the object is a function
-        // then inject it
-        flatObj[fppkey] = injectFunctionDynamically(
-          flatObj[fppkey],
+      const paths = traverse(param);
+      paths.forEach((path) => {
+        const existingProperty = _.get(param, path);
+        const fppkey = path.join('.');
+        const injectedProperty = injectFunctionDynamically(
+          existingProperty,
           paramIds,
           idObj,
           index,
           fppkey,
         );
+        _.set(param, path, injectedProperty);
       });
-      const newParam = unflatten(flatObj, paramIds, idObj);
-      params[index] = newParam;
     } else {
       params[index] = injectFunctionDynamically(
         param,

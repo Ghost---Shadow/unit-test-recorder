@@ -4,6 +4,30 @@ describe('05_dependency_injection', () => {
   describe('getPost', () => {
     it('test 0', async () => {
       const dbClient = {
+        __proto__: {
+          __proto__: {
+            pool: {}
+          }
+        },
+        query: (...params) => {
+          const safeParams = params.length === 0 ? [undefined] : params;
+          return safeParams.reduce(
+            (acc, param) => {
+              if (typeof param === 'string') return acc[param];
+              return acc[JSON.stringify(param)];
+            },
+            {
+              'SELECT * FROM posts WHERE id=?': {
+                '1': {
+                  title: 'content'
+                }
+              },
+              'SELECT region_id FROM regions where post_id=?': {
+                '1': 42
+              }
+            }
+          );
+        },
         pool: {
           pooledQuery: (...params) => {
             const safeParams = params.length === 0 ? [undefined] : params;
@@ -28,25 +52,6 @@ describe('05_dependency_injection', () => {
               }
             );
           }
-        },
-        query: (...params) => {
-          const safeParams = params.length === 0 ? [undefined] : params;
-          return safeParams.reduce(
-            (acc, param) => {
-              if (typeof param === 'string') return acc[param];
-              return acc[JSON.stringify(param)];
-            },
-            {
-              'SELECT * FROM posts WHERE id=?': {
-                '1': {
-                  title: 'content'
-                }
-              },
-              'SELECT region_id FROM regions where post_id=?': {
-                '1': 42
-              }
-            }
-          );
         }
       };
       const postId = 1;

@@ -45,9 +45,30 @@ const generateRegularInputAssignments = (capture, meta, testIndex) => {
   return { inputStatements, inputStatementExternalData };
 };
 
+// Drop the __proto__ because we dont wanna
+// deal with immutable stuff
+// TODO: Make sure there would be no side effects
+// with polymorphism
+const dropProtoFromInjections = (injections) => {
+  const dropProto = str => str
+    .split('.')
+    .filter(part => part !== '__proto__')
+    .join('.');
+  return Object.keys(injections).reduce((acc, key) => {
+    const newKey = dropProto(key);
+    return {
+      ...acc,
+      [newKey]: injections[key],
+    };
+  }, {});
+};
+
 // TODO: Find a way of doing this without string replacements
 const generateInputAssignmentsWithInjections = (capture, meta, testIndex) => {
   const { paramIds } = meta;
+
+  // Drop the __proto__ from keys
+  capture.injections = dropProtoFromInjections(capture.injections);
 
   // Generate placeholders lut
   const injectedFunctionPlaceholders = Object.keys(capture.injections)

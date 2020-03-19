@@ -11,7 +11,6 @@ expect.extend({ toMatchFile });
 
 const myPlugin = require('../../src/plugin');
 const { parserPlugins, generatorOptions } = require('../../src/plugin/used-plugins');
-const { extractTestsFromState } = require('../../src/generator');
 
 const generatedInstrumentedCode = (inputPath) => {
   const inputCode = fs.readFileSync(inputPath, 'utf8');
@@ -36,29 +35,12 @@ const getInputAndOutputPathForInstrumented = (fileName) => {
   return { inputPath, outputPath };
 };
 
-const getInputAndOutputPathForTests = (fileName) => {
-  const inputPath = `test_integration/flows/${fileName}/${fileName}_activity.json`;
-  const outputPath = `test_integration/flows/${fileName}/${fileName}_generated.test.js`;
-  const state = JSON.parse(fs.readFileSync(inputPath).toString());
-  return { outputPath, state };
-};
-
 describe('plugin.test', () => {
   describe('01_module_exports', () => {
     it('should match instrumented code snapshot', () => {
       const filename = '01_module_exports';
       const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
       expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
-    });
-    it('should match generated test code snapshot', () => {
-      const filename = '01_module_exports';
-      const { outputPath, state } = getInputAndOutputPathForTests(filename);
-      const testFiles = extractTestsFromState(state);
-      // Only one file per test
-      expect(testFiles[0].fileString).toMatchFile(outputPath);
-      testFiles[0].externalData.forEach((ed) => {
-        expect(ed.fileString).toMatchFile(ed.filePath);
-      });
     });
   });
   describe('02_async_functions', () => {
@@ -67,32 +49,12 @@ describe('plugin.test', () => {
       const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
       expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
     });
-    it('should match generated test code snapshot', () => {
-      const filename = '02_async_functions';
-      const { outputPath, state } = getInputAndOutputPathForTests(filename);
-      const testFiles = extractTestsFromState(state);
-      // Only one file per test
-      expect(testFiles[0].fileString).toMatchFile(outputPath);
-      testFiles[0].externalData.forEach((ed) => {
-        expect(ed.fileString).toMatchFile(ed.filePath);
-      });
-    });
   });
   describe('03_ecma_export', () => {
     it('should match instrumented code snapshot', () => {
       const filename = '03_ecma_export';
       const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
       expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
-    });
-    it('should match generated test code snapshot', () => {
-      const filename = '03_ecma_export';
-      const { outputPath, state } = getInputAndOutputPathForTests(filename);
-      const testFiles = extractTestsFromState(state);
-      // Only one file per test
-      expect(testFiles[0].fileString).toMatchFile(outputPath);
-      testFiles[0].externalData.forEach((ed) => {
-        expect(ed.fileString).toMatchFile(ed.filePath);
-      });
     });
   });
   describe('04_unserializeable', () => {
@@ -101,32 +63,12 @@ describe('plugin.test', () => {
       const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
       expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
     });
-    it('should match generated test code snapshot', () => {
-      const filename = '04_unserializeable';
-      const { outputPath, state } = getInputAndOutputPathForTests(filename);
-      const testFiles = extractTestsFromState(state);
-      // Only one file per test
-      expect(testFiles[0].fileString).toMatchFile(outputPath);
-      testFiles[0].externalData.forEach((ed) => {
-        expect(ed.fileString).toMatchFile(ed.filePath);
-      });
-    });
   });
   describe('05_dependency_injection', () => {
     it('should match instrumented code snapshot', () => {
       const filename = '05_dependency_injection';
       const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
       expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
-    });
-    it('should match generated test code snapshot', () => {
-      const filename = '05_dependency_injection';
-      const { outputPath, state } = getInputAndOutputPathForTests(filename);
-      const testFiles = extractTestsFromState(state);
-      // Only one file per test
-      expect(testFiles[0].fileString).toMatchFile(outputPath);
-      testFiles[0].externalData.forEach((ed) => {
-        expect(ed.fileString).toMatchFile(ed.filePath);
-      });
     });
   });
   describe('06_mocks', () => {
@@ -135,16 +77,6 @@ describe('plugin.test', () => {
       const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
       expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
     });
-    it('should match generated test code snapshot', () => {
-      const filename = '06_mocks';
-      const { outputPath, state } = getInputAndOutputPathForTests(filename);
-      const testFiles = extractTestsFromState(state);
-      // Only one file per test
-      expect(testFiles[0].fileString).toMatchFile(outputPath);
-      testFiles[0].externalData.forEach((ed) => {
-        expect(ed.fileString).toMatchFile(ed.filePath);
-      });
-    });
   });
   describe('07_large_payload', () => {
     it('should match instrumented code snapshot', () => {
@@ -152,32 +84,12 @@ describe('plugin.test', () => {
       const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
       expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
     });
-    it('should match generated test code snapshot', () => {
-      const filename = '07_large_payload';
-      const { outputPath, state } = getInputAndOutputPathForTests(filename);
-      const testFiles = extractTestsFromState(state);
-      // Only one file per test
-      expect(testFiles[0].fileString).toMatchFile(outputPath);
-      testFiles[0].externalData.forEach((ed) => {
-        expect(ed.fileString).toMatchFile(ed.filePath);
-      });
-    });
   });
   describe('08_this', () => {
     it('should match instrumented code snapshot', () => {
       const filename = '08_this';
       const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
       expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
-    });
-    it('should match generated test code snapshot', () => {
-      const filename = '08_this';
-      const { outputPath, state } = getInputAndOutputPathForTests(filename);
-      const testFiles = extractTestsFromState(state);
-      // Only one file per test
-      expect(testFiles[0].fileString).toMatchFile(outputPath);
-      testFiles[0].externalData.forEach((ed) => {
-        expect(ed.fileString).toMatchFile(ed.filePath);
-      });
     });
   });
 });

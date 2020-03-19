@@ -27,4 +27,53 @@ const sample = (...p) =>
     ...p
   );
 
-module.exports = { newTarget, sample };
+function Foo() {
+  this.bar = 1;
+}
+
+Foo.prototype.fun1 = function fun1() {
+  this.bar += 1;
+  return this.bar;
+};
+
+Foo.prototype.fun2 = function fun2() {
+  return this.fun1();
+};
+
+const protoOverwriteHelper = (...p) =>
+  recorderWrapper(
+    {
+      path: 'test_integration/flows/08_this/08_this.js',
+      name: 'protoOverwriteHelper',
+      paramIds: 'foo',
+      isDefault: false,
+      isEcmaDefault: false,
+      isAsync: false
+    },
+    foo => foo.fun2(),
+    ...p
+  );
+
+const protoOverwrite = (...p) =>
+  recorderWrapper(
+    {
+      path: 'test_integration/flows/08_this/08_this.js',
+      name: 'protoOverwrite',
+      paramIds: '',
+      isDefault: false,
+      isEcmaDefault: false,
+      isAsync: false
+    },
+    () => {
+      const foo = new Foo();
+      return protoOverwriteHelper(foo);
+    },
+    ...p
+  );
+
+module.exports = {
+  newTarget,
+  sample,
+  protoOverwrite,
+  protoOverwriteHelper
+};

@@ -34,8 +34,7 @@ const injectFunctionDynamically = (maybeFunction, paramIds, idObj, index, fppkey
         // https://stackoverflow.com/a/47469377/1217998
         return new OldFp(...paramsOfInjected);
       }
-      // const result = OldFp.bind(this)(...paramsOfInjected);
-      const result = OldFp(...paramsOfInjected);
+      const result = OldFp.bind(this)(...paramsOfInjected);
       if (result && _.isFunction(result.then)) {
         // It might be a promise
         result.then((res) => {

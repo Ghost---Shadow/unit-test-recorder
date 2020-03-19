@@ -10,7 +10,7 @@ const { circularReference, returnAFunction } = require('./04_unserializeable/04_
 const getPost = require('./05_dependency_injection/05_dependency_injection_instrumented');
 const getTodo = require('./06_mocks/06_mocks_instrumented');
 const { getClickCounts } = require('./07_large_payload/07_large_payload_instrumented');
-const { newTarget, sample } = require('./08_this/08_this_instrumented');
+const { newTarget, sample, protoOverwrite } = require('./08_this/08_this_instrumented');
 
 expect.extend({ toMatchFile });
 
@@ -111,6 +111,7 @@ describe('driver', () => {
       const obj = { InjectedPromise: global.Promise };
       await newTarget(obj);
       sample();
+      protoOverwrite();
       const outputFileName = getSnapshotFileName('08_this');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

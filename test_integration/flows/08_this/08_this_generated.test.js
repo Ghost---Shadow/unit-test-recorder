@@ -1,5 +1,7 @@
 const { newTarget } = require('./08_this');
 const { sample } = require('./08_this');
+const { protoOverwrite } = require('./08_this');
+const { protoOverwriteHelper } = require('./08_this');
 
 describe('08_this', () => {
   /* This function requires injection of Constructor (WIP)
@@ -18,6 +20,50 @@ describe('08_this', () => {
     it('test 0', () => {
       const result = undefined;
       const actual = sample();
+      expect(actual).toEqual(result);
+    });
+  });
+
+  describe('protoOverwrite', () => {
+    it('test 0', () => {
+      const result = 2;
+      const actual = protoOverwrite();
+      expect(actual).toEqual(result);
+    });
+  });
+
+  describe('protoOverwriteHelper', () => {
+    it('test 0', () => {
+      const foo = {
+        bar: 2,
+        __proto__: {},
+        fun1: (...params) => {
+          const safeParams = params.length === 0 ? [undefined] : params;
+          return safeParams.reduce(
+            (acc, param) => {
+              if (typeof param === 'string') return acc[param];
+              return acc[JSON.stringify(param)];
+            },
+            {
+              undefined: 2
+            }
+          );
+        },
+        fun2: (...params) => {
+          const safeParams = params.length === 0 ? [undefined] : params;
+          return safeParams.reduce(
+            (acc, param) => {
+              if (typeof param === 'string') return acc[param];
+              return acc[JSON.stringify(param)];
+            },
+            {
+              undefined: 2
+            }
+          );
+        }
+      };
+      const result = 2;
+      const actual = protoOverwriteHelper(foo);
       expect(actual).toEqual(result);
     });
   });

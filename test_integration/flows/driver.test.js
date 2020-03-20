@@ -8,7 +8,7 @@ const {
 } = require('./03_ecma_export/03_ecma_export_instrumented');
 const { circularReference, returnAFunction } = require('./04_unserializeable/04_unserializeable_instrumented');
 const getPost = require('./05_dependency_injection/05_dependency_injection_instrumented');
-const getTodo = require('./06_mocks/06_mocks_instrumented');
+const { getTodo, localMocksTest } = require('./06_mocks/06_mocks_instrumented');
 const { getClickCounts } = require('./07_large_payload/07_large_payload_instrumented');
 const { newTarget, sample, protoOverwrite } = require('./08_this/08_this_instrumented');
 
@@ -93,6 +93,7 @@ describe('driver', () => {
     it('should record activity', async () => {
       RecorderManager.clear();
       await getTodo();
+      localMocksTest();
       const outputFileName = getSnapshotFileName('06_mocks');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

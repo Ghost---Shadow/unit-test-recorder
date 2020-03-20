@@ -1,4 +1,5 @@
-const getTodo = require('./06_mocks');
+const { getTodo } = require('./06_mocks');
+const { localMocksTest } = require('./06_mocks');
 const getTodo0result = require('./06_mocks/getTodo_0_result.js');
 jest.mock('fs', () => {
   // https://github.com/facebook/jest/issues/2567
@@ -23,6 +24,14 @@ describe('06_mocks', () => {
       const result = getTodo0result;
       const actual = getTodo();
       expect(actual).toMatchObject(result);
+    });
+  });
+
+  describe('localMocksTest', () => {
+    it('test 0', () => {
+      const result = 3;
+      const actual = localMocksTest();
+      expect(actual).toEqual(result);
     });
   });
 });

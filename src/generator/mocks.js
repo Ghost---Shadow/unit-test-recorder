@@ -9,7 +9,7 @@ const generateMocksFromActivity = (fileName, mocks) => {
     };
   }
   const externalMocks = [];
-  const mockStatements = Object.keys(mocks)
+  const mockStatementArr = Object.keys(mocks)
     .map((moduleId) => {
       const externalsForThisModule = [];
       const mockedFunctions = Object.keys(mocks[moduleId])
@@ -45,7 +45,7 @@ const generateMocksFromActivity = (fileName, mocks) => {
       });`;
       return mockStatement;
     });
-  return { mockStatements, externalMocks };
+  return { mockStatements: mockStatementArr.join('\n'), externalMocks };
 };
 
 module.exports = {

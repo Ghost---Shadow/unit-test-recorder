@@ -19,25 +19,34 @@ const NEW_FP_ID = (...p) => mockRecorderWrapper({
 `);
 
 const mockInjectorGenerator = (
-  moduleId, moduleName, functionName,
+  moduleId, moduleName, importId, importedAs,
   newFunctionName, fileName, isObjectLike,
 ) => {
-  const params = {
-    FP_ID: t.identifier(functionName),
+  if (isObjectLike) {
+    return mockInjectorObjLike({
+      FP_ID: t.identifier(importedAs),
+      NEW_FP_ID: t.identifier(newFunctionName),
+      FP_STRING_LITERAL: t.stringLiteral(importedAs),
+      MODULE_ID: t.identifier(moduleId),
+      MODULE_STRING_LITERAL: t.stringLiteral(moduleName),
+      FILE_NAME: t.stringLiteral(fileName),
+    });
+  }
+  return mockInjector({
+    FP_ID: t.identifier(importedAs),
     NEW_FP_ID: t.identifier(newFunctionName),
-    FP_STRING_LITERAL: t.stringLiteral(functionName),
-    MODULE_ID: t.identifier(moduleId),
+    FP_STRING_LITERAL: t.stringLiteral(importId),
+    // MODULE_ID: t.identifier(moduleId),
     MODULE_STRING_LITERAL: t.stringLiteral(moduleName),
     FILE_NAME: t.stringLiteral(fileName),
-  };
-  return isObjectLike ? mockInjectorObjLike(params) : mockInjector(params);
+  });
 };
 
 // TODO: Make sure it doesnt clober any existing functions of this object
 const newFunctionNameGenerator = (functionName, fileName) => _.camelCase(`${fileName}.${functionName}`);
 
 const isWhitelisted = (moduleName, whiteListedModules) => {
-  // if (moduleName.startsWith('.')) return true;
+  if (`${moduleName}`.startsWith('.')) return true;
   if (whiteListedModules[moduleName]) return true;
   return false;
 };
@@ -45,22 +54,24 @@ const isWhitelisted = (moduleName, whiteListedModules) => {
 function mockInjectedFunctions() {
   Object.keys(this.importedModules).forEach((moduleId) => {
     // Early exit if module is not whitelisted
-    const { path, moduleName, isObjectLike } = this.importedModules[moduleId];
+    const {
+      path, moduleName, isObjectLike, importId,
+    } = this.importedModules[moduleId];
     if (!isWhitelisted(moduleName, this.whiteListedModules)) return;
 
-    const functions = Object.keys(this.importedModules[moduleId].functions);
-    functions.forEach((functionId) => {
+    const functionObj = _.get(this.importedModules, [moduleId, 'functions'], {});
+    Object.keys(functionObj).forEach((importedAs) => {
       this.atLeastOneMockUsed = true;
 
       // Add mock injection AST
-      const newFunctionName = newFunctionNameGenerator(functionId, this.fileName);
+      const newFunctionName = newFunctionNameGenerator(importedAs, this.fileName);
       const ast = mockInjectorGenerator(
-        moduleId, moduleName, functionId, newFunctionName, this.fileName, isObjectLike,
+        moduleId, moduleName, importId, importedAs, newFunctionName, this.fileName, isObjectLike,
       );
       path.insertAfter(ast);
 
       // Replace all the call paths with new function name
-      const callPaths = this.importedModules[moduleId].functions[functionId].map(f => f.callPath);
+      const callPaths = this.importedModules[moduleId].functions[importedAs].map(f => f.callPath);
       callPaths.forEach((callPath) => {
         callPath.node.name = newFunctionName;
       });
@@ -78,14 +89,16 @@ function capturePathsOfRequiredModules(path) {
       // moduleName = fs
       // grandParentPath = path of the require statement
       const importId = _.get(path, 'parent.id.name');
+      const importedAs = importId;
       const moduleName = _.get(path, 'node.arguments[0].value');
       const grandParentPath = _.get(path, 'parentPath.parentPath');
-      if (!(importId && moduleName && grandParentPath)) return;
-      const old = this.importedModules[importId];
-      this.importedModules[importId] = _.merge(old, {
+      if (!(importedAs && moduleName && grandParentPath)) return;
+      const old = this.importedModules[importedAs];
+      this.importedModules[importedAs] = _.merge(old, {
         moduleName,
         isObjectLike: true,
-        importedAs: importId,
+        importId,
+        importedAs,
         path: grandParentPath,
       });
     } else if (t.isObjectPattern(idNode)) {
@@ -103,8 +116,9 @@ function capturePathsOfRequiredModules(path) {
         const importedAs = _.get(opNode, 'value.name');
         if (!(importId && moduleName && grandParentPath)) return;
         const old = this.importedModules[importId];
-        this.importedModules[importId] = _.merge(old, {
+        this.importedModules[importedAs] = _.merge(old, {
           moduleName,
+          importId,
           importedAs,
           isObjectLike: false,
           path: grandParentPath,
@@ -134,6 +148,15 @@ function captureUsageOfImportedFunction(path) {
     // readFileSync
     // importId = readFileSync
     // functionId = readFileSync
+    const importId = _.get(path, 'node.callee.name');
+    const functionId = importId;
+    if (importId === 'require') return;
+    if (importId) {
+      const callPath = path.get('callee');
+      const functions = _.get(this.importedModules, [importId, 'functions', functionId], []);
+      functions.push({ callPath });
+      _.set(this.importedModules, [importId, 'functions', functionId], functions);
+    }
   }
 }
 

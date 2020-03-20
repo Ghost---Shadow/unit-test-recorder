@@ -18,6 +18,34 @@ jest.mock('fs', () => {
     }
   };
 });
+jest.mock('./auxilary1', () => {
+  return {
+    foo1: (...params) => {
+      const safeParams = params.length === 0 ? [undefined] : params;
+      return safeParams.reduce(
+        (acc, param) => {
+          if (typeof param === 'string') return acc[param];
+          return acc[JSON.stringify(param)];
+        },
+        {
+          undefined: 1
+        }
+      );
+    },
+    foo2: (...params) => {
+      const safeParams = params.length === 0 ? [undefined] : params;
+      return safeParams.reduce(
+        (acc, param) => {
+          if (typeof param === 'string') return acc[param];
+          return acc[JSON.stringify(param)];
+        },
+        {
+          undefined: 2
+        }
+      );
+    }
+  };
+});
 describe('06_mocks', () => {
   describe('getTodo', () => {
     it('test 0', () => {
@@ -29,7 +57,7 @@ describe('06_mocks', () => {
 
   describe('localMocksTest', () => {
     it('test 0', () => {
-      const result = 3;
+      const result = 4;
       const actual = localMocksTest();
       expect(actual).toEqual(result);
     });

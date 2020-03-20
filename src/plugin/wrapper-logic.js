@@ -27,35 +27,36 @@ function getValidFunctions() {
   // The identifier must be export and a function
   return Object.keys(this.functionsToReplace)
     .filter(name => this.functionsToReplace[name].isExported
-    && this.functionsToReplace[name].isFunction)
+      && this.functionsToReplace[name].isFunction)
     .map(name => ({ name, ...this.functionsToReplace[name] }));
 }
 
 const expgen = template.expression('(...p) => recorderWrapper(META, FUN_AST, ...p)');
 
-const metaGenerator = (
-  path, name, paramIds, isDefault, isEcmaDefault, isAsync,
-) => t.objectExpression([
-  t.objectProperty(t.identifier('path'), t.stringLiteral(path)),
-  t.objectProperty(t.identifier('name'), t.stringLiteral(name)),
-  t.objectProperty(t.identifier('paramIds'), t.arrayExpression(paramIds.map(pid => t.stringLiteral(pid)))),
-  t.objectProperty(t.identifier('isDefault'), t.booleanLiteral(isDefault)),
-  t.objectProperty(t.identifier('isEcmaDefault'), t.booleanLiteral(isEcmaDefault)),
-  t.objectProperty(t.identifier('isAsync'), t.booleanLiteral(isAsync)),
-]);
+const metaGenerator = (path, funObj) => {
+  const {
+    name, isAsync, paramIds, isDefault, isEcmaDefault,
+  } = funObj;
+  return t.objectExpression([
+    t.objectProperty(t.identifier('path'), t.stringLiteral(path)),
+    t.objectProperty(t.identifier('name'), t.stringLiteral(name)),
+    t.objectProperty(t.identifier('paramIds'), t.arrayExpression(paramIds.map(pid => t.stringLiteral(pid)))),
+    t.objectProperty(t.identifier('isDefault'), t.booleanLiteral(isDefault)),
+    t.objectProperty(t.identifier('isEcmaDefault'), t.booleanLiteral(isEcmaDefault)),
+    t.objectProperty(t.identifier('isAsync'), t.booleanLiteral(isAsync)),
+  ]);
+};
 
 const getAstWithWrapper = (
   filePath,
-  functionName,
-  paramIds,
-  isDefault,
-  isEcmaDefault,
-  isAsync,
-  functionAst,
+  funObj,
 ) => {
+  const functionAst = funObj.path.node;
+  const { name: functionName, isAsync } = funObj;
+  const meta = metaGenerator(filePath, funObj);
   if (functionAst.type === 'ArrowFunctionExpression') {
     return expgen({
-      META: metaGenerator(filePath, functionName, paramIds, isDefault, isEcmaDefault, isAsync),
+      META: meta,
       FUN_AST: t.arrowFunctionExpression(functionAst.params, functionAst.body, isAsync),
     });
   }
@@ -64,7 +65,7 @@ const getAstWithWrapper = (
       t.variableDeclarator(
         t.identifier(functionName),
         expgen({
-          META: metaGenerator(filePath, functionName, paramIds, isDefault, isEcmaDefault, isAsync),
+          META: meta,
           FUN_AST: t.functionExpression(
             t.identifier(functionName),
             functionAst.params,
@@ -82,15 +83,7 @@ const getAstWithWrapper = (
 
 function injectValidFunctions() {
   this.validFunctions.forEach((funObj) => {
-    const newAst = getAstWithWrapper(
-      this.fileName,
-      funObj.name,
-      funObj.paramIds,
-      funObj.isDefault,
-      funObj.isEcmaDefault,
-      funObj.isAsync,
-      funObj.path.node,
-    );
+    const newAst = getAstWithWrapper(this.fileName, funObj);
     newAst.async = funObj.isAsync;
     funObj.path.replaceWith(newAst);
   });

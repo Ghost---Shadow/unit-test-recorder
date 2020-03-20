@@ -2,6 +2,8 @@ const t = require('@babel/types');
 const { default: template } = require('@babel/template');
 const _ = require('lodash');
 
+const { newFunctionNameGenerator } = require('../util/misc');
+
 const mockInjectorObjLike = template(`
 MODULE_ID.NEW_FP_ID = (...p) => mockRecorderWrapper({
   path: FILE_NAME,
@@ -41,9 +43,6 @@ const mockInjectorGenerator = (
     FILE_NAME: t.stringLiteral(fileName),
   });
 };
-
-// TODO: Make sure it doesnt clober any existing functions of this object
-const newFunctionNameGenerator = (functionName, fileName) => _.camelCase(`${fileName}.${functionName}`);
 
 const isWhitelisted = (moduleName, whiteListedModules) => {
   if (`${moduleName}`.startsWith('.')) return true;

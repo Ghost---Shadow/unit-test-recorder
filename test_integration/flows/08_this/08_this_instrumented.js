@@ -50,7 +50,7 @@ const protoOverwriteHelper = (...p) =>
       isEcmaDefault: false,
       isAsync: false
     },
-    foo => foo.fun2(),
+    foo => foo.testIntegrationFlows08This08ThisJsFun2(),
     ...p
   );
 

@@ -16,7 +16,12 @@ const {
   captureEfFromEn,
   captureFunFromFd,
   captureFunFromAf,
+  captureFunForDi,
 } = require('./capture-logic');
+
+const {
+  unclobberInjections,
+} = require('./dependency-injection');
 
 module.exports = (/* { types: t } */) => ({
   name: 'unit-test-recorder',
@@ -47,6 +52,10 @@ module.exports = (/* { types: t } */) => ({
         this.captureEfFromEn = captureEfFromEn.bind(this);
         this.captureFunFromFd = captureFunFromFd.bind(this);
         this.captureFunFromAf = captureFunFromAf.bind(this);
+        this.captureFunForDi = captureFunForDi.bind(this);
+
+        // Function bindings for dependency-injection
+        this.unclobberInjections = unclobberInjections.bind(this);
 
         // States
         // Imported modules which are candidates for mocking
@@ -55,10 +64,15 @@ module.exports = (/* { types: t } */) => ({
         this.functionsToReplace = {};
         // Metadata for functions that are exported
         this.validFunctions = [];
+        // All functions called by dependency injected objects
+        this.injectedFunctions = [];
       },
       exit(path) {
         // The identifier has to be a function and exported
         this.validFunctions = this.getValidFunctions();
+
+        // Rename all the dependency injected functions
+        this.unclobberInjections();
 
         // Instrument functions which match criteria
         this.injectValidFunctions();
@@ -95,6 +109,9 @@ module.exports = (/* { types: t } */) => ({
       // Capture all functions that are candidates for mocking
       this.capturePathsOfRequiredModules(path);
       this.captureUsageOfImportedFunction(path);
+
+      // Capture called functions for dependency injections
+      this.captureFunForDi(path);
     },
   },
 });

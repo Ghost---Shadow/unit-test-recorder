@@ -106,6 +106,53 @@ function captureFunFromAf(path) {
   }
 }
 
+// e.g.
+// foo.bar.baz('something')
+// callee = foo.bar.baz (MemberExpression)
+// returns = foo
+const getRootObject = (callee) => {
+  if (callee.object === undefined) {
+    return callee.name;
+  }
+
+  return getRootObject(callee.object);
+};
+
+// Get the names of all params in scope
+const getParamBindingsInScope = path => Object
+  .keys(path.scope.bindings)
+  .map(fnName => path.scope.bindings[fnName])
+  .filter(obj => obj.kind === 'param')
+  .map(obj => obj.identifier.name);
+
+// Capture called functions for dependency injections
+function captureFunForDi(path) {
+  // e.g.
+  // foo.bar('param')
+  // functionName = bar
+  // injectionFunctionPaths = path of bar
+  const hasObject = !!_.get(path, 'node.callee.object');
+  const hasProperty = !!_.get(path, 'node.callee.property');
+  const functionName = _.get(path, 'node.callee.property.name');
+  if (hasObject && hasProperty && functionName) {
+    // Dont process if call expression is not form a param injection
+    const params = getParamBindingsInScope(path);
+    const rootId = getRootObject(path.node.callee);
+    if (_.findIndex(params, p => p === rootId) === -1) return;
+
+    const functionPath = path.get('callee').get('property');
+    const index = _.findIndex(this.injectedFunctions, { name: functionName });
+    if (index === -1) {
+      this.injectedFunctions.push({
+        name: functionName,
+        paths: [functionPath],
+      });
+      return;
+    }
+    this.injectedFunctions[index].paths.push(functionPath);
+  }
+}
+
 module.exports = {
   captureEfFromMe,
   captureEfFromEd,
@@ -113,4 +160,6 @@ module.exports = {
 
   captureFunFromFd,
   captureFunFromAf,
+
+  captureFunForDi,
 };

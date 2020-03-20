@@ -7,6 +7,7 @@ const babel = require('@babel/core');
 const { default: generate } = require('@babel/generator');
 const parser = require('@babel/parser');
 const { default: traverse } = require('@babel/traverse');
+const prettier = require('prettier');
 
 const myPlugin = require('./plugin');
 const { walk } = require('./util/walker');
@@ -32,6 +33,7 @@ const sourceDir = path.dirname(entryPoint);
 
 const writeFileAsync = promisify(fs.writeFile);
 
+// TODO: Make async
 const transformFile = (fileName, whiteListedModules) => {
   try {
     console.log('Transforming:', fileName);
@@ -45,12 +47,16 @@ const transformFile = (fileName, whiteListedModules) => {
     const importPath = path.resolve(path.join(__dirname, './recorder'));
     traverse(ast, myPlugin(babel).visitor, null, { fileName, importPath, whiteListedModules });
     const { code } = generate(ast, generatorOptions);
+    const formattedCode = prettier.format(code, {
+      singleQuote: true,
+      parser: 'babel',
+    });
 
     const relativePath = path.relative(inputDir, fileName);
     const outputFilePath = path.join(outputDir, relativePath);
-    // TODO: Make async
+
     mkdirp.sync(path.dirname(outputFilePath));
-    fs.writeFileSync(outputFilePath, code);
+    fs.writeFileSync(outputFilePath, formattedCode);
   } catch (err) {
     console.error('Error for file:', fileName);
     console.error(err);

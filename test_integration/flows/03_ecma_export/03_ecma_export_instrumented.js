@@ -5,6 +5,7 @@ export const ecma1 = (...p) =>
       path: 'test_integration/flows/03_ecma_export/03_ecma_export.js',
       name: 'ecma1',
       paramIds: ['a', 'b'],
+      injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false
@@ -19,6 +20,7 @@ const ecma2 = (...p) =>
       path: 'test_integration/flows/03_ecma_export/03_ecma_export.js',
       name: 'ecma2',
       paramIds: ['b'],
+      injectionWhitelist: [],
       isDefault: true,
       isEcmaDefault: true,
       isAsync: false
@@ -33,6 +35,7 @@ const ecma3 = (...p) =>
       path: 'test_integration/flows/03_ecma_export/03_ecma_export.js',
       name: 'ecma3',
       paramIds: ['a'],
+      injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false
@@ -46,6 +49,7 @@ const ecma4 = (...p) =>
       path: 'test_integration/flows/03_ecma_export/03_ecma_export.js',
       name: 'ecma4',
       paramIds: ['a'],
+      injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false

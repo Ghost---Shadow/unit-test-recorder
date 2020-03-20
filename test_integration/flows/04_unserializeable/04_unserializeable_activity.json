@@ -8,6 +8,7 @@
           "paramIds": [
             "a"
           ],
+          "injectionWhitelist": [],
           "isDefault": false,
           "isEcmaDefault": false,
           "isAsync": false,
@@ -32,6 +33,7 @@
             "a",
             "f2"
           ],
+          "injectionWhitelist": [],
           "isDefault": false,
           "isEcmaDefault": false,
           "isAsync": false,

@@ -5,6 +5,7 @@ const foo = (...p) =>
       path: 'test_integration/flows/01_module_exports/01_module_exports.js',
       name: 'foo',
       paramIds: ['a', 'b'],
+      injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false
@@ -18,6 +19,7 @@ const bar = (...p) =>
       path: 'test_integration/flows/01_module_exports/01_module_exports.js',
       name: 'bar',
       paramIds: ['a', 'b'],
+      injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false

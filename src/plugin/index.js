@@ -21,6 +21,7 @@ const {
 
 const {
   unclobberInjections,
+  addInjectedFunctionsToMeta,
 } = require('./dependency-injection');
 
 module.exports = (/* { types: t } */) => ({
@@ -56,6 +57,7 @@ module.exports = (/* { types: t } */) => ({
 
         // Function bindings for dependency-injection
         this.unclobberInjections = unclobberInjections.bind(this);
+        this.addInjectedFunctionsToMeta = addInjectedFunctionsToMeta.bind(this);
 
         // States
         // Imported modules which are candidates for mocking
@@ -73,6 +75,8 @@ module.exports = (/* { types: t } */) => ({
 
         // Rename all the dependency injected functions
         this.unclobberInjections();
+        // Add these functions to meta so that recorder can pick it up
+        this.addInjectedFunctionsToMeta();
 
         // Instrument functions which match criteria
         this.injectValidFunctions();

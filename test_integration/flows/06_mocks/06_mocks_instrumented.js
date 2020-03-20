@@ -39,6 +39,7 @@ const getTodo = (...p) =>
       path: 'test_integration/flows/06_mocks/06_mocks.js',
       name: 'getTodo',
       paramIds: [],
+      injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false
@@ -61,6 +62,7 @@ const localMocksTest = (...p) =>
       path: 'test_integration/flows/06_mocks/06_mocks.js',
       name: 'localMocksTest',
       paramIds: [],
+      injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false

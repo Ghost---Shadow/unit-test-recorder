@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const { newFunctionNameGenerator } = require('../util/misc');
 
 // Rename all the dependency injected functions
@@ -14,4 +15,12 @@ function unclobberInjections() {
   });
 }
 
-module.exports = { unclobberInjections };
+// Add these functions to meta so that recorder can pick it up
+function addInjectedFunctionsToMeta() {
+  const injectionWhitelist = this.injectedFunctions.map(({ name }) => name);
+
+  this.validFunctions = this.validFunctions
+    .map(funObj => _.merge(funObj, { injectionWhitelist }));
+}
+
+module.exports = { unclobberInjections, addInjectedFunctionsToMeta };

@@ -5,6 +5,7 @@ const getClickCountsHelper = (...p) =>
       path: 'test_integration/flows/07_large_payload/07_large_payload.js',
       name: 'getClickCountsHelper',
       paramIds: ['requestDataCb'],
+      injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false
@@ -26,6 +27,7 @@ const getClickCounts = (...p) =>
       path: 'test_integration/flows/07_large_payload/07_large_payload.js',
       name: 'getClickCounts',
       paramIds: [],
+      injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false

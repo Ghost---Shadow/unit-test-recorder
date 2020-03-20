@@ -9,6 +9,7 @@
             "a",
             "b"
           ],
+          "injectionWhitelist": [],
           "isDefault": false,
           "isEcmaDefault": false,
           "isAsync": false,
@@ -31,6 +32,7 @@
           "paramIds": [
             "b"
           ],
+          "injectionWhitelist": [],
           "isDefault": true,
           "isEcmaDefault": true,
           "isAsync": false,
@@ -52,6 +54,7 @@
           "paramIds": [
             "a"
           ],
+          "injectionWhitelist": [],
           "isDefault": false,
           "isEcmaDefault": false,
           "isAsync": false,
@@ -73,6 +76,7 @@
           "paramIds": [
             "a"
           ],
+          "injectionWhitelist": [],
           "isDefault": false,
           "isEcmaDefault": false,
           "isAsync": false,

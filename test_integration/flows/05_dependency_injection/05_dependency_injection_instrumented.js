@@ -24,6 +24,7 @@ const getPost = async (...p) =>
         'test_integration/flows/05_dependency_injection/05_dependency_injection.js',
       name: 'getPost',
       paramIds: ['dbClient', 'postId', 'redisCache'],
+      injectionWhitelist: ['query', 'pooledQuery', 'commitSync'],
       isDefault: true,
       isEcmaDefault: false,
       isAsync: true

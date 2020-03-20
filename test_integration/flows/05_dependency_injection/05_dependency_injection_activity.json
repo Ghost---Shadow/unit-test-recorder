@@ -10,6 +10,11 @@
             "postId",
             "redisCache"
           ],
+          "injectionWhitelist": [
+            "query",
+            "pooledQuery",
+            "commitSync"
+          ],
           "isDefault": true,
           "isEcmaDefault": false,
           "isAsync": true,

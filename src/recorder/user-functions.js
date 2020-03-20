@@ -16,7 +16,7 @@ const pre = ({ meta, p }) => {
   RecorderManager.recorderState[path].exportedFunctions[name].captures.push({ });
   const captureIndex = RecorderManager
     .recorderState[path].exportedFunctions[name].captures.length - 1;
-  injectDependencyInjections(p, paramIds, { path, name, captureIndex });
+  injectDependencyInjections(p, paramIds, { ...meta, captureIndex });
   const params = p;
   return {
     path, name, captureIndex, params,

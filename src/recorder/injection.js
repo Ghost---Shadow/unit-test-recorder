@@ -2,17 +2,18 @@ const _ = require('lodash');
 
 const RecorderManager = require('./manager');
 const { traverse } = require('./object-traverser');
+const { newFunctionNameGenerator } = require('../util/misc');
 
-const markForConstructorInjection = (idObj) => {
-  const { path, name } = idObj;
+const markForConstructorInjection = (meta) => {
+  const { path, name } = meta;
   // No tests will be generated for this
   // For now
   RecorderManager.recorderState[path].exportedFunctions[name]
     .meta.requiresContructorInjection = true;
 };
 
-const recordInjectedActivity = (idObj, paramIds, index, fppkey, paramsOfInjected, result) => {
-  const { path, name, captureIndex } = idObj;
+const recordInjectedActivity = (meta, paramIds, index, fppkey, paramsOfInjected, result) => {
+  const { path, name, captureIndex } = meta;
   // Fully qualified name
   const fqn = fppkey ? `${paramIds[index]}.${fppkey}` : paramIds[index];
   const destinationPath = ['recorderState', path, 'exportedFunctions', name, 'captures', captureIndex, 'injections', fqn];
@@ -23,14 +24,14 @@ const recordInjectedActivity = (idObj, paramIds, index, fppkey, paramsOfInjected
     .captures[captureIndex].injections[fqn].push({ params: paramsOfInjected, result });
 };
 
-const injectFunctionDynamically = (maybeFunction, paramIds, idObj, index, fppkey) => {
+const injectFunctionDynamically = (maybeFunction, paramIds, meta, index, fppkey) => {
   if (_.isFunction(maybeFunction)) {
     const OldFp = maybeFunction;
     // eslint-disable-next-line
     function injectedFunction(...paramsOfInjected) {
       // https://stackoverflow.com/a/31060154/1217998
       if (new.target) {
-        markForConstructorInjection(idObj);
+        markForConstructorInjection(meta);
         // https://stackoverflow.com/a/47469377/1217998
         return new OldFp(...paramsOfInjected);
       }
@@ -38,10 +39,10 @@ const injectFunctionDynamically = (maybeFunction, paramIds, idObj, index, fppkey
       if (result && _.isFunction(result.then)) {
         // It might be a promise
         result.then((res) => {
-          recordInjectedActivity(idObj, paramIds, index, fppkey, paramsOfInjected, res);
+          recordInjectedActivity(meta, paramIds, index, fppkey, paramsOfInjected, res);
         });
       } else {
-        recordInjectedActivity(idObj, paramIds, index, fppkey, paramsOfInjected, result);
+        recordInjectedActivity(meta, paramIds, index, fppkey, paramsOfInjected, result);
       }
       return result;
     }
@@ -50,29 +51,38 @@ const injectFunctionDynamically = (maybeFunction, paramIds, idObj, index, fppkey
   return maybeFunction;
 };
 
-const injectDependencyInjections = (params, paramIds, idObj) => {
+const isWhitelisted = (injectionWhitelist, path) => injectionWhitelist
+  .reduce((acc, fnName) => acc || _.last(path) === fnName, false);
+
+const injectDependencyInjections = (params, paramIds, meta) => {
+  const { injectionWhitelist, path: fileName } = meta;
   params.forEach((param, index) => {
     // If param is an object with functions
     // TODO: Handle array of functions
     if (_.isObject(param) && !_.isArray(param) && !_.isFunction(param)) {
       const paths = traverse(param);
       paths.forEach((path) => {
+        if (!isWhitelisted(injectionWhitelist, path)) return;
         const existingProperty = _.get(param, path);
+        const lIndex = path.length - 1;
+        const newFnName = newFunctionNameGenerator(path[lIndex], fileName);
+        const newPath = _.clone(path);
+        newPath[lIndex] = newFnName;
         const fppkey = path.join('.');
         const injectedProperty = injectFunctionDynamically(
           existingProperty,
           paramIds,
-          idObj,
+          meta,
           index,
           fppkey,
         );
-        _.set(param, path, injectedProperty);
+        _.set(param, newPath, injectedProperty);
       });
     } else {
       params[index] = injectFunctionDynamically(
         param,
         paramIds,
-        idObj,
+        meta,
         index,
         null,
       );

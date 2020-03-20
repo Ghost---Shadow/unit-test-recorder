@@ -38,7 +38,7 @@ const metaGenerator = (
 ) => t.objectExpression([
   t.objectProperty(t.identifier('path'), t.stringLiteral(path)),
   t.objectProperty(t.identifier('name'), t.stringLiteral(name)),
-  t.objectProperty(t.identifier('paramIds'), t.stringLiteral(paramIds)),
+  t.objectProperty(t.identifier('paramIds'), t.arrayExpression(paramIds.map(pid => t.stringLiteral(pid)))),
   t.objectProperty(t.identifier('isDefault'), t.booleanLiteral(isDefault)),
   t.objectProperty(t.identifier('isEcmaDefault'), t.booleanLiteral(isEcmaDefault)),
   t.objectProperty(t.identifier('isAsync'), t.booleanLiteral(isAsync)),
@@ -55,7 +55,7 @@ const getAstWithWrapper = (
 ) => {
   if (functionAst.type === 'ArrowFunctionExpression') {
     return expgen({
-      META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault, isAsync),
+      META: metaGenerator(filePath, functionName, paramIds, isDefault, isEcmaDefault, isAsync),
       FUN_AST: t.arrowFunctionExpression(functionAst.params, functionAst.body, isAsync),
     });
   }
@@ -64,7 +64,7 @@ const getAstWithWrapper = (
       t.variableDeclarator(
         t.identifier(functionName),
         expgen({
-          META: metaGenerator(filePath, functionName, paramIds.join(','), isDefault, isEcmaDefault, isAsync),
+          META: metaGenerator(filePath, functionName, paramIds, isDefault, isEcmaDefault, isAsync),
           FUN_AST: t.functionExpression(
             t.identifier(functionName),
             functionAst.params,

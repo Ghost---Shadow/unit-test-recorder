@@ -4,7 +4,7 @@ const getClickCountsHelper = (...p) =>
     {
       path: 'test_integration/flows/07_large_payload/07_large_payload.js',
       name: 'getClickCountsHelper',
-      paramIds: 'requestDataCb',
+      paramIds: ['requestDataCb'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false
@@ -25,7 +25,7 @@ const getClickCounts = (...p) =>
     {
       path: 'test_integration/flows/07_large_payload/07_large_payload.js',
       name: 'getClickCounts',
-      paramIds: '',
+      paramIds: [],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false

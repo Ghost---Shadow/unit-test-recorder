@@ -38,7 +38,7 @@ const getTodo = (...p) =>
     {
       path: 'test_integration/flows/06_mocks/06_mocks.js',
       name: 'getTodo',
-      paramIds: '',
+      paramIds: [],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false
@@ -60,7 +60,7 @@ const localMocksTest = (...p) =>
     {
       path: 'test_integration/flows/06_mocks/06_mocks.js',
       name: 'localMocksTest',
-      paramIds: '',
+      paramIds: [],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false

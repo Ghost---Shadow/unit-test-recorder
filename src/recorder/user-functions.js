@@ -5,8 +5,7 @@ const RecorderManager = require('./manager');
 const { injectDependencyInjections } = require('./injection');
 
 const pre = ({ meta, p }) => {
-  const { path, name } = meta;
-  const paramIds = meta.paramIds.split(',');
+  const { path, name, paramIds } = meta;
   const address = ['recorderState', path, 'exportedFunctions', name];
   if (!_.get(RecorderManager, address)) {
     _.set(RecorderManager, address, {

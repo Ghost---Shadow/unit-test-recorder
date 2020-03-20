@@ -20,7 +20,7 @@ const getPost = async (...p) =>
       path:
         'test_integration/flows/05_dependency_injection/05_dependency_injection.js',
       name: 'getPost',
-      paramIds: 'dbClient,postId,redisCache',
+      paramIds: ['dbClient', 'postId', 'redisCache'],
       isDefault: true,
       isEcmaDefault: false,
       isAsync: true

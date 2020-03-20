@@ -27,9 +27,7 @@
         "meta": {
           "path": "test_integration/flows/08_this/08_this.js",
           "name": "sample",
-          "paramIds": [
-            ""
-          ],
+          "paramIds": [],
           "isDefault": false,
           "isEcmaDefault": false,
           "isAsync": false,
@@ -45,9 +43,7 @@
         "meta": {
           "path": "test_integration/flows/08_this/08_this.js",
           "name": "protoOverwrite",
-          "paramIds": [
-            ""
-          ],
+          "paramIds": [],
           "isDefault": false,
           "isEcmaDefault": false,
           "isAsync": false,

@@ -4,7 +4,7 @@ const newTarget = (...p) =>
     {
       path: 'test_integration/flows/08_this/08_this.js',
       name: 'newTarget',
-      paramIds: 'obj',
+      paramIds: ['obj'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false
@@ -18,7 +18,7 @@ const sample = (...p) =>
     {
       path: 'test_integration/flows/08_this/08_this.js',
       name: 'sample',
-      paramIds: '',
+      paramIds: [],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false
@@ -45,7 +45,7 @@ const protoOverwriteHelper = (...p) =>
     {
       path: 'test_integration/flows/08_this/08_this.js',
       name: 'protoOverwriteHelper',
-      paramIds: 'foo',
+      paramIds: ['foo'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false
@@ -59,7 +59,7 @@ const protoOverwrite = (...p) =>
     {
       path: 'test_integration/flows/08_this/08_this.js',
       name: 'protoOverwrite',
-      paramIds: '',
+      paramIds: [],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false

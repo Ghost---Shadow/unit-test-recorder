@@ -11,7 +11,7 @@ const getSocialInfo = async (...p) =>
     {
       path: 'test_integration/flows/02_async_functions/02_async_functions.js',
       name: 'getSocialInfo',
-      paramIds: 'email',
+      paramIds: ['email'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: true
@@ -30,7 +30,7 @@ const getFacebookInfo = (...p) =>
     {
       path: 'test_integration/flows/02_async_functions/02_async_functions.js',
       name: 'getFacebookInfo',
-      paramIds: 'email',
+      paramIds: ['email'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false

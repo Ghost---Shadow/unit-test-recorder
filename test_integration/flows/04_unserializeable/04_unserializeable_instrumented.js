@@ -4,7 +4,7 @@ const circularReference = (...p) =>
     {
       path: 'test_integration/flows/04_unserializeable/04_unserializeable.js',
       name: 'circularReference',
-      paramIds: 'a',
+      paramIds: ['a'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false
@@ -22,7 +22,7 @@ const returnAFunction = (...p) =>
     {
       path: 'test_integration/flows/04_unserializeable/04_unserializeable.js',
       name: 'returnAFunction',
-      paramIds: 'a,f2',
+      paramIds: ['a', 'f2'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false

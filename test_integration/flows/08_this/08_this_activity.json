@@ -9,12 +9,14 @@
             "obj"
           ],
           "injectionWhitelist": [
+            "InjectedPromise",
             "fun1",
             "fun2"
           ],
           "isDefault": false,
           "isEcmaDefault": false,
           "isAsync": false,
+          "requiresContructorInjection": true,
           "doesReturnPromise": true
         },
         "captures": [
@@ -32,6 +34,7 @@
           "name": "sample",
           "paramIds": [],
           "injectionWhitelist": [
+            "InjectedPromise",
             "fun1",
             "fun2"
           ],
@@ -52,6 +55,7 @@
           "name": "protoOverwrite",
           "paramIds": [],
           "injectionWhitelist": [
+            "InjectedPromise",
             "fun1",
             "fun2"
           ],
@@ -75,6 +79,7 @@
             "foo"
           ],
           "injectionWhitelist": [
+            "InjectedPromise",
             "fun1",
             "fun2"
           ],

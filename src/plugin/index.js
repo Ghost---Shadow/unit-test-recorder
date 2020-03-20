@@ -117,5 +117,9 @@ module.exports = (/* { types: t } */) => ({
       // Capture called functions for dependency injections
       this.captureFunForDi(path);
     },
+    NewExpression(path) {
+      // Capture called functions for dependency injections
+      this.captureFunForDi(path);
+    },
   },
 });

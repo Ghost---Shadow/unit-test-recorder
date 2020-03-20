@@ -8,10 +8,13 @@
           "paramIds": [
             "obj"
           ],
+          "injectionWhitelist": [
+            "fun1",
+            "fun2"
+          ],
           "isDefault": false,
           "isEcmaDefault": false,
           "isAsync": false,
-          "requiresContructorInjection": true,
           "doesReturnPromise": true
         },
         "captures": [
@@ -28,6 +31,10 @@
           "path": "test_integration/flows/08_this/08_this.js",
           "name": "sample",
           "paramIds": [],
+          "injectionWhitelist": [
+            "fun1",
+            "fun2"
+          ],
           "isDefault": false,
           "isEcmaDefault": false,
           "isAsync": false,
@@ -44,6 +51,10 @@
           "path": "test_integration/flows/08_this/08_this.js",
           "name": "protoOverwrite",
           "paramIds": [],
+          "injectionWhitelist": [
+            "fun1",
+            "fun2"
+          ],
           "isDefault": false,
           "isEcmaDefault": false,
           "isAsync": false,
@@ -62,6 +73,10 @@
           "name": "protoOverwriteHelper",
           "paramIds": [
             "foo"
+          ],
+          "injectionWhitelist": [
+            "fun1",
+            "fun2"
           ],
           "isDefault": false,
           "isEcmaDefault": false,

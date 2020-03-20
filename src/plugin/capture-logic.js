@@ -114,6 +114,9 @@ const getRootObject = (callee) => {
   if (callee.object === undefined) {
     return callee.name;
   }
+  if (t.isThisExpression(callee.object)) {
+    return 'this';
+  }
 
   return getRootObject(callee.object);
 };
@@ -136,7 +139,7 @@ function captureFunForDi(path) {
   const functionName = _.get(path, 'node.callee.property.name');
   if (hasObject && hasProperty && functionName) {
     // Dont process if call expression is not form a param injection
-    const params = getParamBindingsInScope(path);
+    const params = getParamBindingsInScope(path).concat('this');
     const rootId = getRootObject(path.node.callee);
     if (_.findIndex(params, p => p === rootId) === -1) return;
 

@@ -11,7 +11,7 @@ const getPost = require('./05_dependency_injection/05_dependency_injection_instr
 const { getTodo, localMocksTest } = require('./06_mocks/06_mocks_instrumented');
 const { getClickCounts } = require('./07_large_payload/07_large_payload_instrumented');
 const { newTarget, sample, protoOverwrite } = require('./08_this/08_this_instrumented');
-const { exportTest1, default: exportTest2 } = require('./09_typescript_exports/09_typescript_exports_instrumented');
+const { exportTest1, default: exportTest2, exportTest3 } = require('./09_typescript_exports/09_typescript_exports_instrumented');
 
 expect.extend({ toMatchFile });
 
@@ -123,6 +123,7 @@ describe('driver', () => {
       RecorderManager.clear();
       exportTest1(2);
       exportTest2(3);
+      exportTest3(4);
       const outputFileName = getSnapshotFileName('09_typescript_exports');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

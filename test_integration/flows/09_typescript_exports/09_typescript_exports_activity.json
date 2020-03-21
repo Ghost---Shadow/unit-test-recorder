@@ -44,6 +44,28 @@
             "result": "b => [a, b]"
           }
         ]
+      },
+      "exportTest3": {
+        "meta": {
+          "path": "test_integration/flows/09_typescript_exports/09_typescript_exports.js",
+          "name": "exportTest3",
+          "paramIds": [
+            "a"
+          ],
+          "injectionWhitelist": [],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              4
+            ],
+            "result": 8
+          }
+        ]
       }
     }
   }

@@ -41,18 +41,21 @@ function captureEfFromMe(path) {
 function captureEfFromEp(path) {
   // e.g.
   // exports.foo = foooos
-  // lhs = exports
+  // objName = exports
+  // exportedAs = foo
   // functionName = foooos
   const objName = _.get(path, 'node.left.object.name');
-  const propName = _.get(path, 'node.left.property.name');
+  const exportedAs = _.get(path, 'node.left.property.name');
   const functionName = _.get(path, 'node.right.name');
 
-  if (objName === 'exports' && functionName) {
-    const old = this.functionsToReplace[functionName];
-    this.functionsToReplace[functionName] = _.merge(old, {
+  const effectiveFunctionName = functionName || exportedAs;
+
+  if (objName === 'exports' && effectiveFunctionName) {
+    const old = this.functionsToReplace[effectiveFunctionName];
+    this.functionsToReplace[effectiveFunctionName] = _.merge(old, {
       isExported: true,
       isDefault: false,
-      isEcmaDefault: propName === 'default',
+      isEcmaDefault: exportedAs === 'default',
     });
   }
 }
@@ -115,12 +118,18 @@ function captureFunFromFd(path) {
 
 // Capture function from arrow function expression
 function captureFunFromAf(path) {
+  // const foo = () => 42
   const functionName = _.get(path, 'parent.id.name');
-  if (functionName) {
+  // module.exports.foo = () => 42
+  const exportedAs = _.get(path, 'parent.left.property.name');
+
+  const effectiveFunctionName = functionName || exportedAs;
+
+  if (effectiveFunctionName) {
     const isAsync = !!path.node.async;
     const paramIds = path.node.params.map(p => p.name);
-    const old = this.functionsToReplace[functionName];
-    this.functionsToReplace[functionName] = _.merge(old, {
+    const old = this.functionsToReplace[effectiveFunctionName];
+    this.functionsToReplace[effectiveFunctionName] = _.merge(old, {
       isFunction: true, paramIds, path, isAsync,
     });
   }

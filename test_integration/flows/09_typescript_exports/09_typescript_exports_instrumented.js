@@ -35,3 +35,19 @@ const exportTest2 = (...p) =>
   );
 
 exports.default = exportTest2;
+
+exports.exportTest3 = (...p) =>
+  recorderWrapper(
+    {
+      path:
+        'test_integration/flows/09_typescript_exports/09_typescript_exports.js',
+      name: 'exportTest3',
+      paramIds: ['a'],
+      injectionWhitelist: [],
+      isDefault: false,
+      isEcmaDefault: false,
+      isAsync: false
+    },
+    a => 2 * a,
+    ...p
+  );

@@ -37,6 +37,25 @@ function captureEfFromMe(path) {
   }
 }
 
+// Capture exported function from exports property
+function captureEfFromEp(path) {
+  // e.g.
+  // exports.foo = foooos
+  // lhs = exports
+  // functionName = foooos
+  const lhs = _.get(path, 'node.left.object.name');
+  const functionName = _.get(path, 'node.right.name');
+
+  if (lhs === 'exports' && functionName) {
+    const old = this.functionsToReplace[functionName];
+    this.functionsToReplace[functionName] = _.merge(old, {
+      isExported: true,
+      isDefault: false,
+      isEcmaDefault: false,
+    });
+  }
+}
+
 // Capture exported function from export default
 function captureEfFromEd(path) {
   const maybeFunctionName = _.get(path, 'node.declaration.name');
@@ -160,6 +179,7 @@ module.exports = {
   captureEfFromMe,
   captureEfFromEd,
   captureEfFromEn,
+  captureEfFromEp,
 
   captureFunFromFd,
   captureFunFromAf,

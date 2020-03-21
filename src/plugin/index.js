@@ -14,6 +14,7 @@ const {
   captureEfFromMe,
   captureEfFromEd,
   captureEfFromEn,
+  captureEfFromEp,
   captureFunFromFd,
   captureFunFromAf,
   captureFunForDi,
@@ -51,6 +52,7 @@ module.exports = (/* { types: t } */) => ({
         this.captureEfFromMe = captureEfFromMe.bind(this);
         this.captureEfFromEd = captureEfFromEd.bind(this);
         this.captureEfFromEn = captureEfFromEn.bind(this);
+        this.captureEfFromEp = captureEfFromEp.bind(this);
         this.captureFunFromFd = captureFunFromFd.bind(this);
         this.captureFunFromAf = captureFunFromAf.bind(this);
         this.captureFunForDi = captureFunForDi.bind(this);
@@ -108,6 +110,9 @@ module.exports = (/* { types: t } */) => ({
     AssignmentExpression(path) {
       // Capture exported identifier from module exports
       this.captureEfFromMe(path);
+
+      // Capture exported identifier from exported property
+      this.captureEfFromEp(path);
     },
     CallExpression(path) {
       // Capture all functions that are candidates for mocking

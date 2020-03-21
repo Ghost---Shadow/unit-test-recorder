@@ -1,0 +1,28 @@
+{
+  "test_integration/flows/09_typescript_exports/09_typescript_exports.js": {
+    "exportedFunctions": {
+      "exportTest": {
+        "meta": {
+          "path": "test_integration/flows/09_typescript_exports/09_typescript_exports.js",
+          "name": "exportTest",
+          "paramIds": [
+            "a"
+          ],
+          "injectionWhitelist": [],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              2
+            ],
+            "result": 2
+          }
+        ]
+      }
+    }
+  }
+}

@@ -40,9 +40,11 @@ function captureEfFromMe(path) {
       path.traverse({
         ObjectProperty(innerPath) {
           const functionName = _.get(innerPath, 'node.value.name');
+          const exportedAs = _.get(innerPath, 'node.key.name');
           if (!functionName) return;
           const old = this.functionsToReplace[functionName];
           this.functionsToReplace[functionName] = _.merge(old, {
+            exportedAs,
             isExported: true,
             isDefault: false,
             isEcmaDefault: false,

@@ -1,4 +1,4 @@
-const foo = (a, b) => a + b;
+const foo1 = (a, b) => a + b;
 
 function bar(a, b) {
   const c = a - b;
@@ -8,7 +8,7 @@ function bar(a, b) {
 const SOME_CONSTANT = 42;
 
 module.exports = {
-  foo,
+  foo: foo1,
   SOME_CONSTANT,
   bar,
 };

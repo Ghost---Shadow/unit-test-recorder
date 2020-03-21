@@ -1,5 +1,5 @@
 const { recorderWrapper } = require('../../../src/recorder');
-const foo = (...p) =>
+const foo1 = (...p) =>
   recorderWrapper(
     {
       path: 'test_integration/flows/01_module_exports/01_module_exports.js',
@@ -34,7 +34,7 @@ const bar = (...p) =>
 const SOME_CONSTANT = 42;
 
 module.exports = {
-  foo,
+  foo: foo1,
   SOME_CONSTANT,
   bar
 };

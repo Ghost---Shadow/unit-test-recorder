@@ -29,7 +29,7 @@ const ecma2 = (...p) =>
     ...p
   );
 
-const ecma3 = (...p) =>
+const ecma33 = (...p) =>
   recorderWrapper(
     {
       path: 'test_integration/flows/03_ecma_export/03_ecma_export.js',
@@ -58,6 +58,6 @@ const ecma4 = (...p) =>
     ...p
   );
 
-export { ecma3, ecma4 };
+export { ecma33 as ecma3, ecma4 };
 
 export default ecma2;

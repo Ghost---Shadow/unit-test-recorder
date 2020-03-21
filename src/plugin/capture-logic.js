@@ -1,6 +1,9 @@
 const t = require('@babel/types');
 const _ = require('lodash');
 
+// https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export
+// Work in progress
+
 // e.g.
 // foo.bar.baz('something')
 // callee = foo.bar.baz (MemberExpression)
@@ -97,10 +100,11 @@ function captureEfFromEd(path) {
 
 // Capture exported function from export named declaration
 function captureEfFromEn(path) {
-  const storeIfValid = (maybeFunctionName) => {
+  const storeIfValid = (maybeFunctionName, exportedAs) => {
     if (!maybeFunctionName) return;
     const old = this.functionsToReplace[maybeFunctionName];
     this.functionsToReplace[maybeFunctionName] = _.merge(old, {
+      exportedAs,
       isExported: true,
       isDefault: false,
       isEcmaDefault: false,
@@ -117,7 +121,8 @@ function captureEfFromEn(path) {
     // foo = 42
     // export { foo }
     const maybeFunctionName = _.get(specifier, 'local.name');
-    storeIfValid(maybeFunctionName);
+    const exportedAs = _.get(specifier, 'exported.name');
+    storeIfValid(maybeFunctionName, exportedAs);
   });
 }
 

@@ -24,11 +24,23 @@ function maybeAddImportStatement(path) {
 }
 
 function getValidFunctions() {
+  const getExportedName = (localName) => {
+    const { exportedAs } = this.functionsToReplace[localName];
+    if (exportedAs && exportedAs !== 'default') {
+      return exportedAs;
+    }
+    return localName;
+  };
+
   // The identifier must be export and a function
   return Object.keys(this.functionsToReplace)
-    .filter(name => this.functionsToReplace[name].isExported
-      && this.functionsToReplace[name].isFunction)
-    .map(name => ({ name, ...this.functionsToReplace[name] }));
+    .filter(localName => this.functionsToReplace[localName].isExported
+      && this.functionsToReplace[localName].isFunction)
+    .map(localName => ({
+      // localName,
+      name: getExportedName(localName),
+      ...this.functionsToReplace[localName],
+    }));
 }
 
 const expgen = template.expression('(...p) => recorderWrapper(META, FUN_AST, ...p)');
@@ -40,6 +52,7 @@ const metaGenerator = (path, funObj) => {
   return t.objectExpression([
     t.objectProperty(t.identifier('path'), t.stringLiteral(path)),
     t.objectProperty(t.identifier('name'), t.stringLiteral(name)),
+    // t.objectProperty(t.identifier('localName'), t.stringLiteral(localName)),
     t.objectProperty(t.identifier('paramIds'), t.arrayExpression(paramIds.map(pid => t.stringLiteral(pid)))),
     t.objectProperty(t.identifier('injectionWhitelist'), t.arrayExpression(injectionWhitelist.map(wl => t.stringLiteral(wl)))),
     t.objectProperty(t.identifier('isDefault'), t.booleanLiteral(isDefault)),

@@ -11,7 +11,7 @@ const getSocialInfo = async (email) => {
   return { facebookInfo, twitterInfo };
 };
 
-const getFacebookInfo = email => mocksios(email, 'facebook');
+const getFacebookInfoHelper = email => mocksios(email, 'facebook');
 
-module.exports.getFacebookInfo = getFacebookInfo;
+module.exports.getFacebookInfo = getFacebookInfoHelper;
 module.exports.getSocialInfo = getSocialInfo;

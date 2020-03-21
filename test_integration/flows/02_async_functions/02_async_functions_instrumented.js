@@ -26,7 +26,7 @@ const getSocialInfo = async (...p) =>
     ...p
   );
 
-const getFacebookInfo = (...p) =>
+const getFacebookInfoHelper = (...p) =>
   recorderWrapper(
     {
       path: 'test_integration/flows/02_async_functions/02_async_functions.js',
@@ -41,5 +41,5 @@ const getFacebookInfo = (...p) =>
     ...p
   );
 
-module.exports.getFacebookInfo = getFacebookInfo;
+module.exports.getFacebookInfo = getFacebookInfoHelper;
 module.exports.getSocialInfo = getSocialInfo;

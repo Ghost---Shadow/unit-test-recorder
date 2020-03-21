@@ -1,6 +1,22 @@
 const t = require('@babel/types');
 const _ = require('lodash');
 
+// e.g.
+// foo.bar.baz('something')
+// callee = foo.bar.baz (MemberExpression)
+// returns = foo
+const getRootObject = (callee, depth = 0) => {
+  if (!_.isObject(callee)) return null;
+  if (callee.object === undefined) {
+    return { name: callee.name, depth };
+  }
+  if (t.isThisExpression(callee.object)) {
+    return { name: 'this', depth };
+  }
+
+  return getRootObject(callee.object, depth + 1);
+};
+
 // Capture exported function from module exports
 function captureEfFromMe(path) {
   const { left } = path.node;
@@ -44,13 +60,16 @@ function captureEfFromEp(path) {
   // objName = exports
   // exportedAs = foo
   // functionName = foooos
-  const objName = _.get(path, 'node.left.object.name');
+  const obj = _.get(path, 'node.left.object');
   const exportedAs = _.get(path, 'node.left.property.name');
   const functionName = _.get(path, 'node.right.name');
 
   const effectiveFunctionName = functionName || exportedAs;
 
-  if (objName === 'exports' && effectiveFunctionName) {
+  const { name: objName, depth } = getRootObject(obj);
+  const isExports = objName === 'exports' || (objName === 'module' && depth > 0);
+
+  if (isExports && effectiveFunctionName) {
     const old = this.functionsToReplace[effectiveFunctionName];
     this.functionsToReplace[effectiveFunctionName] = _.merge(old, {
       isExported: true,
@@ -135,21 +154,6 @@ function captureFunFromAf(path) {
   }
 }
 
-// e.g.
-// foo.bar.baz('something')
-// callee = foo.bar.baz (MemberExpression)
-// returns = foo
-const getRootObject = (callee) => {
-  if (callee.object === undefined) {
-    return callee.name;
-  }
-  if (t.isThisExpression(callee.object)) {
-    return 'this';
-  }
-
-  return getRootObject(callee.object);
-};
-
 // Get the names of all params in scope
 const getParamBindingsInScope = path => Object
   .keys(path.scope.bindings)
@@ -169,7 +173,7 @@ function captureFunForDi(path) {
   if (hasObject && hasProperty && functionName) {
     // Dont process if call expression is not form a param injection
     const params = getParamBindingsInScope(path).concat('this');
-    const rootId = getRootObject(path.node.callee);
+    const { name: rootId } = getRootObject(path.node.callee);
     if (_.findIndex(params, p => p === rootId) === -1) return;
 
     const functionPath = path.get('callee').get('property');

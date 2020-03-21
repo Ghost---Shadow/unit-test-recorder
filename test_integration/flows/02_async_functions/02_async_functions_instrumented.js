@@ -41,4 +41,5 @@ const getFacebookInfo = (...p) =>
     ...p
   );
 
-module.exports = { getFacebookInfo, getSocialInfo };
+module.exports.getFacebookInfo = getFacebookInfo;
+module.exports.getSocialInfo = getSocialInfo;

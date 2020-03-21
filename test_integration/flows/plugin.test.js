@@ -99,4 +99,11 @@ describe('plugin.test', () => {
       expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
     });
   });
+  describe('10_anon_export_default', () => {
+    it('should match instrumented code snapshot', () => {
+      const filename = '10_anon_export_default';
+      const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
+      expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
+    });
+  });
 });

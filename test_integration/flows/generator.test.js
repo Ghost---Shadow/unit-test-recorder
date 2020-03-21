@@ -122,4 +122,16 @@ describe('generator.test', () => {
       });
     });
   });
+  describe('10_anon_export_default', () => {
+    it('should match generated test code snapshot', () => {
+      const filename = '10_anon_export_default';
+      const { outputPath, state } = getInputAndOutputPathForTests(filename);
+      const testFiles = extractTestsFromState(state);
+      // Only one file per test
+      expect(testFiles[0].fileString).toMatchFile(outputPath);
+      testFiles[0].externalData.forEach((ed) => {
+        expect(ed.fileString).toMatchFile(ed.filePath);
+      });
+    });
+  });
 });

@@ -1,6 +1,8 @@
 const t = require('@babel/types');
 const _ = require('lodash');
 
+const ANON_DEFAULT_IDENTIFIER = 'defaultExport';
+
 // https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export
 // Work in progress
 
@@ -87,7 +89,7 @@ function captureEfFromEp(path) {
 
 // Capture exported function from export default
 function captureEfFromEd(path) {
-  const maybeFunctionName = _.get(path, 'node.declaration.name');
+  const maybeFunctionName = _.get(path, 'node.declaration.name', ANON_DEFAULT_IDENTIFIER);
   if (maybeFunctionName) {
     const old = this.functionsToReplace[maybeFunctionName];
     this.functionsToReplace[maybeFunctionName] = _.merge(old, {
@@ -149,8 +151,10 @@ function captureFunFromAf(path) {
   const functionName = _.get(path, 'parent.id.name');
   // module.exports.foo = () => 42
   const exportedAs = _.get(path, 'parent.left.property.name');
+  // Is anonymous export default
+  const isAnonDefault = _.get(path, 'parent.type') === 'ExportDefaultDeclaration' ? ANON_DEFAULT_IDENTIFIER : undefined;
 
-  const effectiveFunctionName = functionName || exportedAs;
+  const effectiveFunctionName = functionName || exportedAs || isAnonDefault;
 
   if (effectiveFunctionName) {
     const isAsync = !!path.node.async;

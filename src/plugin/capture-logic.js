@@ -43,15 +43,16 @@ function captureEfFromEp(path) {
   // exports.foo = foooos
   // lhs = exports
   // functionName = foooos
-  const lhs = _.get(path, 'node.left.object.name');
+  const objName = _.get(path, 'node.left.object.name');
+  const propName = _.get(path, 'node.left.property.name');
   const functionName = _.get(path, 'node.right.name');
 
-  if (lhs === 'exports' && functionName) {
+  if (objName === 'exports' && functionName) {
     const old = this.functionsToReplace[functionName];
     this.functionsToReplace[functionName] = _.merge(old, {
       isExported: true,
       isDefault: false,
-      isEcmaDefault: false,
+      isEcmaDefault: propName === 'default',
     });
   }
 }

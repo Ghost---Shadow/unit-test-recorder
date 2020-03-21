@@ -1,10 +1,10 @@
 {
   "test_integration/flows/09_typescript_exports/09_typescript_exports.js": {
     "exportedFunctions": {
-      "exportTest": {
+      "exportTest1": {
         "meta": {
           "path": "test_integration/flows/09_typescript_exports/09_typescript_exports.js",
-          "name": "exportTest",
+          "name": "exportTest1",
           "paramIds": [
             "a"
           ],
@@ -20,6 +20,28 @@
               2
             ],
             "result": 2
+          }
+        ]
+      },
+      "exportTest2": {
+        "meta": {
+          "path": "test_integration/flows/09_typescript_exports/09_typescript_exports.js",
+          "name": "exportTest2",
+          "paramIds": [
+            "a"
+          ],
+          "injectionWhitelist": [],
+          "isDefault": false,
+          "isEcmaDefault": true,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              3
+            ],
+            "result": "b => [a, b]"
           }
         ]
       }

@@ -32,6 +32,7 @@ const outputDir = './'; // TODO
 const sourceDir = path.dirname(entryPoint);
 
 const writeFileAsync = promisify(fs.writeFile);
+const readFileAsync = promisify(fs.readFile);
 
 // TODO: Make async
 const transformFile = (fileName, whiteListedModules) => {
@@ -97,13 +98,18 @@ process.on('SIGINT', async () => {
   } catch (e) {
     console.error(e);
   }
-  console.log('Dumping activity to disk');
-  const activityDumpPromise = writeFileAsync('activity.json', RecorderManager.getSerialized());
-  const writePromises = extractTestsFromState(RecorderManager.recorderState)
-    .map(testObj => writeFileAsync(getTestFileNameForFile(testObj.filePath), testObj.fileString));
-  writePromises.push(activityDumpPromise);
-  await Promise.all(writePromises);
-  process.exit();
+  try {
+    console.log('Dumping activity to disk');
+    await writeFileAsync('activity.json', RecorderManager.getSerialized());
+    const nonCircularState = await readFileAsync('activity.json');
+    const writePromises = extractTestsFromState(JSON.parse(nonCircularState.toString()))
+      .map(testObj => writeFileAsync(getTestFileNameForFile(testObj.filePath), testObj.fileString));
+    await Promise.all(writePromises);
+    process.exit();
+  } catch (e) {
+    console.error(e);
+    process.exit(1);
+  }
 });
 
 

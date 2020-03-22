@@ -25,6 +25,8 @@ const {
   addInjectedFunctionsToMeta,
 } = require('./dependency-injection');
 
+const { getBlackList } = require('./blacklist-generator');
+
 module.exports = (/* { types: t } */) => ({
   name: 'unit-test-recorder',
   visitor: {
@@ -70,6 +72,8 @@ module.exports = (/* { types: t } */) => ({
         this.validFunctions = [];
         // All functions called by dependency injected objects
         this.injectedFunctions = [];
+        // Dont inject these functions
+        this.injectionBlackList = getBlackList();
       },
       exit(path) {
         // The identifier has to be a function and exported

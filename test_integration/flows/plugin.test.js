@@ -113,4 +113,11 @@ describe('plugin.test', () => {
       expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
     });
   });
+  describe('12_unwanted_injections', () => {
+    it('should match instrumented code snapshot', () => {
+      const filename = '12_unwanted_injections';
+      const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
+      expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
+    });
+  });
 });

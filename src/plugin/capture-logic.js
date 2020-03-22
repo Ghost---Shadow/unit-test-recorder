@@ -221,6 +221,9 @@ function captureFunForDi(path) {
   const hasProperty = !!_.get(path, 'node.callee.property');
   const functionName = _.get(path, 'node.callee.property.name');
   if (hasObject && hasProperty && functionName) {
+    // Dont process blacklisted functions. e.g. map, reduce, filter
+    if (this.injectionBlackList[functionName]) return;
+
     // Dont process if call expression is not form a param injection
     const params = getParamBindingsInScope(path).concat('this');
     const { name: rootId } = getRootObject(path.node.callee);

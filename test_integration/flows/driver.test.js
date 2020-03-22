@@ -14,6 +14,7 @@ const { newTarget, sample, protoOverwrite } = require('./08_this/08_this_instrum
 const { exportTest1, default: exportTest2, exportTest3 } = require('./09_typescript_exports/09_typescript_exports_instrumented');
 const { default: edTest } = require('./10_anon_export_default/10_anon_export_default_instrumented');
 const hoi = require('./11_higher_order/11_higher_order_instrumented');
+const ui = require('./12_unwanted_injections/12_unwanted_injections_instrumented');
 
 expect.extend({ toMatchFile });
 
@@ -149,6 +150,15 @@ describe('driver', () => {
       hoi.obj.fun2({ anotherFun: () => 4 });
       hoi.validFun({ someFun: () => 5 });
       const outputFileName = getSnapshotFileName('11_higher_order');
+      expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
+    });
+  });
+  describe('12_unwanted_injections', () => {
+    it('should record activity', async () => {
+      RecorderManager.clear();
+      ui.fun([1, 2]);
+      ui.fun2(2);
+      const outputFileName = getSnapshotFileName('12_unwanted_injections');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });
   });

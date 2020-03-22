@@ -1,0 +1,56 @@
+{
+  "test_integration/flows/12_unwanted_injections/12_unwanted_injections.js": {
+    "exportedFunctions": {
+      "fun": {
+        "meta": {
+          "path": "test_integration/flows/12_unwanted_injections/12_unwanted_injections.js",
+          "name": "fun",
+          "paramIds": [
+            "arr"
+          ],
+          "injectionWhitelist": [],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              [
+                1,
+                2
+              ]
+            ],
+            "result": [
+              2,
+              4
+            ]
+          }
+        ]
+      },
+      "fun2": {
+        "meta": {
+          "path": "test_integration/flows/12_unwanted_injections/12_unwanted_injections.js",
+          "name": "fun2",
+          "paramIds": [
+            "num"
+          ],
+          "injectionWhitelist": [],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              2
+            ],
+            "result": "2"
+          }
+        ]
+      }
+    }
+  }
+}

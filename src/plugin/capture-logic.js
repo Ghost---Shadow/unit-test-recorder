@@ -11,7 +11,8 @@ const ANON_DEFAULT_IDENTIFIER = 'defaultExport';
 // callee = foo.bar.baz (MemberExpression)
 // returns = foo
 const getRootObject = (callee, depth = 0) => {
-  if (!_.isObject(callee)) return null;
+  // TODO: Find a test case for this
+  if (!_.isObject(callee)) return {};
   if (callee.object === undefined) {
     return { name: callee.name, depth };
   }

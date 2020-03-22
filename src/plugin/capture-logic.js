@@ -173,6 +173,27 @@ const getParamBindingsInScope = path => Object
   .filter(obj => obj.kind === 'param')
   .map(obj => obj.identifier.name);
 
+
+// const fun = p => p => p
+const isHigherOrderFunction = (path) => {
+  const functor = p => p.isArrowFunctionExpression()
+    || p.isFunctionDeclaration()
+    || p.isFunctionExpression();
+  const path1 = path.findParent(functor);
+  if (!path1) return false;
+  const path2 = path1.findParent(functor);
+  if (!path2) return false;
+  return true;
+};
+
+// const obj = {fun: p => p, fun2(p){return p}}
+const isWithinObject = (path) => {
+  const functor = p => p.isObjectMethod() || p.isObjectProperty();
+  const path1 = path.findParent(functor);
+  if (!path1) return false;
+  return true;
+};
+
 // Capture called functions for dependency injections
 function captureFunForDi(path) {
   // e.g.
@@ -187,6 +208,12 @@ function captureFunForDi(path) {
     const params = getParamBindingsInScope(path).concat('this');
     const { name: rootId } = getRootObject(path.node.callee);
     if (_.findIndex(params, p => p === rootId) === -1) return;
+
+    // TODO: WIP: Dont process higher order functions
+    if (isHigherOrderFunction(path)) return;
+
+    // TODO: WIP: Dont process if function is within an object
+    if (isWithinObject(path)) return;
 
     const functionPath = path.get('callee').get('property');
     const index = _.findIndex(this.injectedFunctions, { name: functionName });

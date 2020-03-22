@@ -13,6 +13,7 @@ const { getClickCounts } = require('./07_large_payload/07_large_payload_instrume
 const { newTarget, sample, protoOverwrite } = require('./08_this/08_this_instrumented');
 const { exportTest1, default: exportTest2, exportTest3 } = require('./09_typescript_exports/09_typescript_exports_instrumented');
 const { default: edTest } = require('./10_anon_export_default/10_anon_export_default_instrumented');
+const hoi = require('./11_higher_order/11_higher_order_instrumented');
 
 expect.extend({ toMatchFile });
 
@@ -134,6 +135,17 @@ describe('driver', () => {
       RecorderManager.clear();
       edTest(1, 2);
       const outputFileName = getSnapshotFileName('10_anon_export_default');
+      expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
+    });
+  });
+  describe('11_higher_order', () => {
+    it('should record activity', async () => {
+      RecorderManager.clear();
+      hoi.base({ someFun: () => 1 })({ someOtherFun: () => 2 });
+      hoi.obj.fun({ anotherFun: () => 3 });
+      hoi.obj.fun2({ anotherFun: () => 4 });
+      hoi.validFun({ someFun: () => 5 });
+      const outputFileName = getSnapshotFileName('11_higher_order');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });
   });

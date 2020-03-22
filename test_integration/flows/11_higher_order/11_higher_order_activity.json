@@ -1,0 +1,62 @@
+{
+  "test_integration/flows/11_higher_order/11_higher_order.js": {
+    "exportedFunctions": {
+      "base": {
+        "meta": {
+          "path": "test_integration/flows/11_higher_order/11_higher_order.js",
+          "name": "base",
+          "paramIds": [
+            "param1"
+          ],
+          "injectionWhitelist": [
+            "someFun"
+          ],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              {}
+            ],
+            "result": "param2 => param1.someFun() + param2.someOtherFun()"
+          }
+        ]
+      },
+      "validFun": {
+        "meta": {
+          "path": "test_integration/flows/11_higher_order/11_higher_order.js",
+          "name": "validFun",
+          "paramIds": [
+            "param"
+          ],
+          "injectionWhitelist": [
+            "someFun"
+          ],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "injections": {
+              "param.someFun": [
+                {
+                  "params": [],
+                  "result": 5
+                }
+              ]
+            },
+            "params": [
+              {}
+            ],
+            "result": 5
+          }
+        ]
+      }
+    }
+  }
+}

@@ -14,6 +14,31 @@ const getInputAndOutputPathForTests = (fileName) => {
 };
 
 describe('generator.test', () => {
+  describe('failure', () => {
+    it('should match generated test code snapshot', () => {
+      const testFiles = extractTestsFromState('{}');
+      // Only one file per test
+      expect(testFiles[0]).toMatchInlineSnapshot(`
+        Object {
+          "externalData": Array [],
+          "filePath": "0",
+          "fileString": "'TypeError: Cannot convert undefined or null to object
+            at Function.keys (<anonymous>)
+            at generateTestsFromActivity (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:77:6)
+            at map (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:118:11)
+            at Array.map (<anonymous>)
+            at extractTestsFromState (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:112:4)
+            at Object.it (/mnt/c/Users/windows/Desktop/unit-test-recorder/test_integration/flows/generator.test.js:19:25)
+            at Object.asyncJestTest (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:102:37)
+            at resolve (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/queueRunner.js:43:12)
+            at new Promise (<anonymous>)
+            at mapper (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/queueRunner.js:26:19)
+            at promise.then (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/queueRunner.js:73:41)
+            at process._tickCallback (internal/process/next_tick.js:68:7)'",
+        }
+      `);
+    });
+  });
   describe('01_module_exports', () => {
     it('should match generated test code snapshot', () => {
       const filename = '01_module_exports';

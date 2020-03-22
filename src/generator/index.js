@@ -110,12 +110,17 @@ const generateTestsFromActivity = (fileName, filePath, activity) => {
 const extractTestsFromState = state => Object
   .keys(state)
   .map((filePath) => {
-    const fileName = filePathToFileName(filePath);
-    const {
-      fileString,
-      externalData,
-    } = generateTestsFromActivity(fileName, filePath, state[filePath]);
-    return { filePath, fileString, externalData };
+    try {
+      const fileName = filePathToFileName(filePath);
+      const {
+        fileString,
+        externalData,
+      } = generateTestsFromActivity(fileName, filePath, state[filePath]);
+      return { filePath, fileString, externalData };
+    } catch (e) {
+      // console.error(e);
+      return { filePath, fileString: `'${e.stack.toString()}'`, externalData: [] };
+    }
   });
 
 module.exports = {

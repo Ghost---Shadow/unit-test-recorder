@@ -28,11 +28,12 @@ const generateAssignmentOperation = (maybeObject, lIdentifier, meta, captureInde
 
 const generateRegularInputAssignments = (capture, meta, testIndex) => {
   const { paramIds } = meta;
+  const { params } = capture;
 
-  const inputStatementData = capture.params
-    .map((param, index) => {
-      const maybeObject = param;
-      const lIdentifier = paramIds[index];
+  const inputStatementData = paramIds
+    .map((paramId, index) => {
+      const maybeObject = params[index];
+      const lIdentifier = paramId;
       const captureIndex = testIndex;
       const { statement, externalData } = generateAssignmentOperation(
         maybeObject, lIdentifier, meta, captureIndex,

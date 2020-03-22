@@ -129,13 +129,29 @@ function captureEfFromEn(path) {
   });
 }
 
+const generateSafeParamIds = (path) => {
+  const params = _.get(path, 'node.params', []);
+  const paramIds = params.map((param) => {
+    if (t.isIdentifier(param)) {
+      return param.name;
+    }
+    if (t.isObjectPattern(param)) {
+      return path.scope.generateUidIdentifier('obj').name;
+    }
+    if (t.isAssignmentPattern(param)) {
+      return _.get(param, 'left.name', 'unhandled_assignment_pattern_default');
+    }
+    return _.snakeCase(`unhandled.${param.type}`);
+  });
+  return paramIds;
+};
+
 // Capture function from function Declaration
 function captureFunFromFd(path) {
   const functionName = _.get(path, 'node.id.name');
   if (functionName) {
     const isAsync = !!_.get(path, 'node.async');
-    const params = _.get(path, 'node.params', []);
-    const paramIds = params.map(p => p.name);
+    const paramIds = generateSafeParamIds(path);
     const old = this.functionsToReplace[functionName];
     this.functionsToReplace[functionName] = _.merge(old, {
       isFunction: true,
@@ -159,7 +175,7 @@ function captureFunFromAf(path) {
 
   if (effectiveFunctionName) {
     const isAsync = !!path.node.async;
-    const paramIds = path.node.params.map(p => p.name);
+    const paramIds = generateSafeParamIds(path);
     const old = this.functionsToReplace[effectiveFunctionName];
     this.functionsToReplace[effectiveFunctionName] = _.merge(old, {
       isFunction: true, paramIds, path, isAsync,

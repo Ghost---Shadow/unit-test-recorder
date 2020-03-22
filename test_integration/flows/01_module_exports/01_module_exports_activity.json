@@ -62,6 +62,73 @@
             "result": 0
           }
         ]
+      },
+      "specialParams": {
+        "meta": {
+          "path": "test_integration/flows/01_module_exports/01_module_exports.js",
+          "name": "specialParams",
+          "paramIds": [
+            "a",
+            "_obj",
+            "d"
+          ],
+          "injectionWhitelist": [],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              1,
+              {
+                "b": 1,
+                "c": 1
+              }
+            ],
+            "result": 4
+          },
+          {
+            "params": [
+              1,
+              {
+                "b": 1,
+                "c": 1
+              },
+              2
+            ],
+            "result": 5
+          }
+        ]
+      },
+      "specialParams2": {
+        "meta": {
+          "path": "test_integration/flows/01_module_exports/01_module_exports.js",
+          "name": "specialParams2",
+          "paramIds": [
+            "a",
+            "_obj2",
+            "d"
+          ],
+          "injectionWhitelist": [],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              1,
+              {
+                "b": 1,
+                "c": 1
+              }
+            ],
+            "result": 4
+          }
+        ]
       }
     }
   }

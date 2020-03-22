@@ -1,7 +1,7 @@
 const { toMatchFile } = require('jest-file-snapshot');
 const { RecorderManager } = require('../../src/recorder');
 
-const { foo, bar } = require('./01_module_exports/01_module_exports_instrumented');
+const mei = require('./01_module_exports/01_module_exports_instrumented');
 const { getFacebookInfo, getSocialInfo } = require('./02_async_functions/02_async_functions_instrumented');
 const {
   default: ecma2, ecma1, ecma3, ecma4,
@@ -23,10 +23,13 @@ describe('driver', () => {
   describe('01_module_exports', () => {
     it('should record activity', () => {
       RecorderManager.clear();
-      foo(1, 2);
-      foo('A', 'B');
-      foo(2, 1);
-      bar(2, 2);
+      mei.foo(1, 2);
+      mei.foo('A', 'B');
+      mei.foo(2, 1);
+      mei.bar(2, 2);
+      mei.specialParams(1, { b: 1, c: 1 });
+      mei.specialParams(1, { b: 1, c: 1 }, 2);
+      mei.specialParams2(1, { b: 1, c: 1 });
       const outputFileName = getSnapshotFileName('01_module_exports');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

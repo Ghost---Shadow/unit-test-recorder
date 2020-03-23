@@ -4,7 +4,7 @@ const getBlackListForProperty = type => Object
   .filter(prop => typeof type.prototype[prop] === 'function');
 
 const getBlackList = () => {
-  const types = [Array, String, Object, Number];
+  const types = [Array, String, Object, Number, Date];
   const allProperties = types.reduce((acc, type) => {
     const keys = getBlackListForProperty(type);
     const obj = keys.reduce((innerAcc, key) => ({ ...innerAcc, [key]: true }), {});

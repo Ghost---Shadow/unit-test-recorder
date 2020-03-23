@@ -99,10 +99,16 @@ const generateTestsFromActivity = (fileName, filePath, activity) => {
     ${describeBlocks}
   })
   `;
-  const fileString = prettier.format(result, {
-    singleQuote: true,
-    parser: 'babel',
-  });
+  let fileString = '';
+  try {
+    fileString = prettier.format(result, {
+      singleQuote: true,
+      parser: 'babel',
+    });
+  } catch (e) {
+    console.error(e);
+    fileString = result;
+  }
 
   return { fileString, externalData: allExternalData };
 };
@@ -112,12 +118,14 @@ const extractTestsFromState = state => Object
   .map((filePath) => {
     try {
       const fileName = filePathToFileName(filePath);
+      console.log('Generating tests for ', fileName);
       const {
         fileString,
         externalData,
       } = generateTestsFromActivity(fileName, filePath, state[filePath]);
       return { filePath, fileString, externalData };
     } catch (e) {
+      console.log('Error tests for ', filePath);
       // console.error(e);
       return { filePath, fileString: `'${e.stack.toString()}'`, externalData: [] };
     }

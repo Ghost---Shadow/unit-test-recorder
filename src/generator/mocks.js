@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const { captureArrayToLutFun } = require('./lutFunGen');
 const { externalImportReducer } = require('./statement-genenerators');
 
@@ -19,7 +21,7 @@ const generateMocksFromActivity = (fileName, mocks) => {
           const testIndex = ''; // There is only one
           const meta = {
             path: fileName,
-            name: moduleId,
+            name: _.camelCase(moduleId), // TODO: Add tests for large payload mocks
           };
           const { code, externalData } = captureArrayToLutFun(
             captures, lIdentifier, meta, testIndex,

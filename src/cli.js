@@ -102,8 +102,22 @@ process.on('SIGINT', async () => {
     console.log('Dumping activity to disk');
     await writeFileAsync('activity.json', RecorderManager.getSerialized());
     const nonCircularState = await readFileAsync('activity.json');
-    const writePromises = extractTestsFromState(JSON.parse(nonCircularState.toString()))
-      .map(testObj => writeFileAsync(getTestFileNameForFile(testObj.filePath), testObj.fileString));
+    const newState = JSON.parse(nonCircularState.toString());
+    console.log('Generating test cases');
+    const testData = extractTestsFromState(newState);
+    const writePromises = testData
+      .map(async (testObj) => {
+        console.log('Writing test for: ', testObj.filePath);
+        const testFileName = getTestFileNameForFile(testObj.filePath);
+        const testFilePromise = writeFileAsync(testFileName, testObj.fileString);
+        const externalDataPromises = testObj.externalData.map((ed) => {
+          console.log('Creating dir:', path.dirname(ed.filePath));
+          console.log('Dumping: ', ed.filePath);
+          mkdirp.sync(path.dirname(ed.filePath)); // TODO: Make async
+          return writeFileAsync(ed.filePath, ed.fileString);
+        });
+        return Promise.all([testFilePromise, ...externalDataPromises]);
+      });
     await Promise.all(writePromises);
     process.exit();
   } catch (e) {

@@ -24,7 +24,7 @@ const generateNameForExternal = (meta, captureIndex, identifierName) => {
   const { path: sourceFilePath, name: functionName } = meta;
   const sourceFileDir = path.dirname(path.join('.', sourceFilePath));
   const fileName = path.parse(sourceFilePath).name;
-  const externalName = `${functionName}_${captureIndex}_${identifierName}.js`;
+  const externalName = `${functionName}_${captureIndex}_${identifierName}.mock.js`;
   const filePath = path.join(sourceFileDir, fileName, externalName);
   const importPath = `./${path.join(fileName, externalName)}`;
   const identifier = `${functionName}${captureIndex}${identifierName}`;

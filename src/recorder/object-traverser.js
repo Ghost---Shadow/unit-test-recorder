@@ -10,7 +10,13 @@ const traverse = (objRoot) => {
     const toConcat = appendProto ? ['__proto__'] : [];
     const keys = Object.keys(obj).concat(toConcat);
     keys.forEach((key) => {
-      traverseInner(obj[key], path.concat(key));
+      try {
+        // TODO: Add test case
+        // Getter function exists but it throws exception
+        traverseInner(obj[key], path.concat(key));
+      } catch (e) {
+        console.error(e);
+      }
     });
   };
   traverseInner(objRoot);

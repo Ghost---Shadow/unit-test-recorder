@@ -18,7 +18,7 @@ describe('01_module_exports', () => {
       const b = 'B';
       const result = 'AB';
       const actual = foo(a, b);
-      expect(actual.toString()).toEqual(result);
+      expect(actual).toEqual(result);
     });
 
     it('test 2', () => {

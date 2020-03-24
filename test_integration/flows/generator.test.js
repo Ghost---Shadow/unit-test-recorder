@@ -28,10 +28,10 @@ describe('generator.test', () => {
           "filePath": "0",
           "fileString": "'TypeError: Cannot convert undefined or null to object
             at Function.keys (<anonymous>)
-            at generateTestsFromActivity (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:77:6)
-            at map (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:125:11)
+            at generateTestsFromActivity (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:74:6)
+            at map (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:122:11)
             at Array.map (<anonymous>)
-            at extractTestsFromState (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:118:4)
+            at extractTestsFromState (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:115:4)
             at Object.it (/mnt/c/Users/windows/Desktop/unit-test-recorder/test_integration/flows/generator.test.js:23:25)
             at Object.asyncJestTest (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:102:37)
             at resolve (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/queueRunner.js:43:12)

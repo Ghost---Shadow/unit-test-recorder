@@ -7,7 +7,7 @@ describe('12_unwanted_injections', () => {
       const arr = [1, 2];
       const result = [2, 4];
       const actual = fun(arr);
-      expect(actual).toMatchObject(result);
+      expect(actual).toEqual(result);
     });
   });
 
@@ -16,7 +16,7 @@ describe('12_unwanted_injections', () => {
       const num = 2;
       const result = '2';
       const actual = fun2(num);
-      expect(actual.toString()).toEqual(result);
+      expect(actual).toEqual(result);
     });
   });
 });

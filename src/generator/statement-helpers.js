@@ -7,9 +7,9 @@ const {
   packageDataForExternal,
 } = require('./utils');
 
-const generateAssignmentOperation = (maybeObject, lIdentifier, meta, captureIndex) => {
+const generateAssignmentOperation = (maybeObject, lIdentifier, meta, captureIndex, paramType) => {
   if (!shouldMoveToExternal(maybeObject)) {
-    const statement = `const ${lIdentifier} = ${wrapSafely(maybeObject)}`;
+    const statement = `const ${lIdentifier} = ${wrapSafely(maybeObject, paramType)}`;
     return { statement, externalData: [] };
   }
   const { identifier, filePath, importPath } = generateNameForExternal(
@@ -28,15 +28,17 @@ const generateAssignmentOperation = (maybeObject, lIdentifier, meta, captureInde
 
 const generateRegularInputAssignments = (capture, meta, testIndex) => {
   const { paramIds } = meta;
-  const { params } = capture;
+  const { params, types } = capture;
+  const paramTypes = _.get(types, 'params', []);
 
   const inputStatementData = paramIds
     .map((paramId, index) => {
       const maybeObject = params[index];
       const lIdentifier = paramId;
       const captureIndex = testIndex;
+      const paramType = paramTypes[index];
       const { statement, externalData } = generateAssignmentOperation(
-        maybeObject, lIdentifier, meta, captureIndex,
+        maybeObject, lIdentifier, meta, captureIndex, paramType,
       );
       return { statement, externalData };
     });

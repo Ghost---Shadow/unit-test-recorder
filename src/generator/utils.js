@@ -6,13 +6,13 @@ const filePathToFileName = (filePath) => {
   return basePath.substring(0, basePath.length - 3);
 };
 
-const wrapSafely = (param) => {
+const wrapSafely = (param, paramType = typeof (param)) => {
+  paramType = paramType.toLowerCase();
   const result = {
-    string: `"${param}"`,
-    // Circular jsons should never exist in activity
-    object: JSON.stringify(param, null, 2),
-  }[typeof (param)];
-  return result || param;
+    date: `new Date('${param}')`,
+  }[paramType];
+  // Circular jsons should never exist in activity
+  return result || JSON.stringify(param, null, 2);
 };
 
 // If the stringified payload > 500 chars long

@@ -61,7 +61,7 @@ describe('driver', () => {
       RecorderManager.clear();
       unserializeable.circularReference(1);
       unserializeable.returnAFunction(1, a => a * 2);
-      // unserializeable.getElapsedTime(new Date(2018, 1, 1), new Date(2019, 1, 1));
+      unserializeable.getElapsedTime(new Date(2018, 1, 1), new Date(2019, 1, 1));
       const outputFileName = getSnapshotFileName('04_unserializeable');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

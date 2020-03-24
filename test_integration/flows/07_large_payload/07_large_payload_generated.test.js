@@ -9,7 +9,7 @@ describe('07_large_payload', () => {
     it('test 0', () => {
       const result = getClickCounts0result;
       const actual = getClickCounts();
-      expect(actual).toMatchObject(result);
+      expect(actual).toEqual(result);
     });
   });
 
@@ -25,7 +25,7 @@ describe('07_large_payload', () => {
 
       const result = getClickCountsHelper0result;
       const actual = getClickCountsHelper(requestDataCb);
-      expect(actual).toMatchObject(result);
+      expect(actual).toEqual(result);
     });
   });
 });

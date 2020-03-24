@@ -10,7 +10,7 @@ const {
 } = require('./statement-genenerators');
 
 const generateTestFromCapture = (functionIdentifier, meta, capture, testIndex) => {
-  const { paramIds, doesReturnPromise } = meta;
+  const { doesReturnPromise } = meta;
   const {
     inputStatements,
     inputStatementExternalData,
@@ -19,11 +19,8 @@ const generateTestFromCapture = (functionIdentifier, meta, capture, testIndex) =
     resultStatement,
     resultStatementExternalData,
   } = generateResultStatement(capture, meta, testIndex);
-  const invokeExpression = `${functionIdentifier}(${paramIds.join(',')})`;
   const expectStatement = generateExpectStatement(
-    invokeExpression,
-    capture.result,
-    doesReturnPromise,
+    functionIdentifier, capture, meta,
   );
   const asyncString = doesReturnPromise ? 'async ' : '';
   const testString = `

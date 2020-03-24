@@ -67,6 +67,40 @@
         "hashTable": {
           "5PYDcF336WQHyAx7ouEyJw==": true
         }
+      },
+      "getElapsedTime": {
+        "meta": {
+          "path": "test_integration/flows/04_unserializeable/04_unserializeable.js",
+          "name": "getElapsedTime",
+          "paramIds": [
+            "start",
+            "end"
+          ],
+          "injectionWhitelist": [],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              "2018-01-31T18:30:00.000Z",
+              "2019-01-31T18:30:00.000Z"
+            ],
+            "result": "2001-01-30T18:30:00.000Z",
+            "types": {
+              "params": [
+                "Date",
+                "Date"
+              ],
+              "result": "Date"
+            }
+          }
+        ],
+        "hashTable": {
+          "Er+sr8i14pQtLU46YaceVw==": true
+        }
       }
     }
   }

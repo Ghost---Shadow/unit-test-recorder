@@ -91,18 +91,22 @@
         "captures": [
           {
             "injections": {
-              "foo.__proto__.fun1": [
-                {
-                  "params": [],
-                  "result": 2
-                }
-              ],
-              "foo.__proto__.fun2": [
-                {
-                  "params": [],
-                  "result": 2
-                }
-              ]
+              "foo.__proto__.fun1": {
+                "captures": [
+                  {
+                    "params": [],
+                    "result": 2
+                  }
+                ]
+              },
+              "foo.__proto__.fun2": {
+                "captures": [
+                  {
+                    "params": [],
+                    "result": 2
+                  }
+                ]
+              }
             },
             "params": [
               {

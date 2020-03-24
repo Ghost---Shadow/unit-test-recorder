@@ -3,11 +3,11 @@ const RecorderManager = require('./manager');
 
 const captureMockActivity = (meta, params, result) => {
   const { path, moduleName, name } = meta;
-  const address = ['recorderState', path, 'mocks', moduleName, name];
+  const address = ['recorderState', path, 'mocks', moduleName, name, 'captures'];
   if (!_.get(RecorderManager, address)) {
     _.set(RecorderManager, address, []);
   }
-  RecorderManager.recorderState[path].mocks[moduleName][name].push({
+  RecorderManager.recorderState[path].mocks[moduleName][name].captures.push({
     params,
     result,
   });

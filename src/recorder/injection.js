@@ -16,12 +16,12 @@ const recordInjectedActivity = (meta, paramIds, index, fppkey, paramsOfInjected,
   const { path, name, captureIndex } = meta;
   // Fully qualified name
   const fqn = fppkey ? `${paramIds[index]}.${fppkey}` : paramIds[index];
-  const destinationPath = ['recorderState', path, 'exportedFunctions', name, 'captures', captureIndex, 'injections', fqn];
+  const destinationPath = ['recorderState', path, 'exportedFunctions', name, 'captures', captureIndex, 'injections', fqn, 'captures'];
   if (!_.get(RecorderManager, destinationPath)) {
     _.set(RecorderManager, destinationPath, []);
   }
   RecorderManager.recorderState[path].exportedFunctions[name]
-    .captures[captureIndex].injections[fqn].push({ params: paramsOfInjected, result });
+    .captures[captureIndex].injections[fqn].captures.push({ params: paramsOfInjected, result });
 };
 
 const injectFunctionDynamically = (maybeFunction, paramIds, meta, index, fppkey) => {

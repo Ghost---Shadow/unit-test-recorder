@@ -43,12 +43,14 @@
         "captures": [
           {
             "injections": {
-              "param.someFun": [
-                {
-                  "params": [],
-                  "result": 5
-                }
-              ]
+              "param.someFun": {
+                "captures": [
+                  {
+                    "params": [],
+                    "result": 5
+                  }
+                ]
+              }
             },
             "params": [
               {}

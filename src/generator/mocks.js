@@ -16,7 +16,7 @@ const generateMocksFromActivity = (fileName, mocks) => {
       const externalsForThisModule = [];
       const mockedFunctions = Object.keys(mocks[moduleId])
         .map((usedFunction) => {
-          const captures = mocks[moduleId][usedFunction];
+          const { captures } = mocks[moduleId][usedFunction];
           const lIdentifier = usedFunction;
           const testIndex = ''; // There is only one
           const meta = {

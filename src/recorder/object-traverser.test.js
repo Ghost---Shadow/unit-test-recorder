@@ -19,7 +19,7 @@ describe('object-traverser', () => {
         ['__proto__', '__proto__', 'fun']]);
     });
     it('should not crash if getter throws exception', () => {
-      // console.error = () => null;
+      console.error = () => null;
       const obj = {
         get foo() {
           throw new Error('sample');

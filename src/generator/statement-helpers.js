@@ -85,7 +85,7 @@ const generateInputAssignmentsWithInjections = (capture, meta, testIndex) => {
   const injectedFunctionMocks = Object.keys(capture.injections)
     .reduce((acc, injPath) => {
       const lIdentifier = injPath;
-      const captures = capture.injections[injPath];
+      const { captures } = capture.injections[injPath];
       const { code, externalData } = captureArrayToLutFun(
         captures, lIdentifier, meta, testIndex,
       );

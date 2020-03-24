@@ -55,6 +55,12 @@ const getTodo = (...p) =>
       isAsync: false
     },
     () => {
+      fileSystem
+        .testIntegrationFlows06Mocks06MocksJsReadFileSync(
+          'test_integration/flows/06_mocks/response.json',
+          'utf8'
+        )
+        .toString();
       const a = JSON.parse(
         fileSystem
           .testIntegrationFlows06Mocks06MocksJsReadFileSync(

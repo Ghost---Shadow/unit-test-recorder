@@ -1,11 +1,16 @@
 const _ = require('lodash');
 const RecorderManager = require('./manager');
+const { checkAndSetHash } = require('./hash-helper');
 
 const captureMockActivity = (meta, params, result) => {
   const { path, moduleName, name } = meta;
-  const address = ['recorderState', path, 'mocks', moduleName, name, 'captures'];
+  const basePath = ['recorderState', path, 'mocks', moduleName, name];
+  const address = [...basePath, 'captures'];
   if (!_.get(RecorderManager, address)) {
     _.set(RecorderManager, address, []);
+  }
+  if (checkAndSetHash(RecorderManager, basePath, params)) {
+    return;
   }
   RecorderManager.recorderState[path].mocks[moduleName][name].captures.push({
     params,

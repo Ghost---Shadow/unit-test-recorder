@@ -19,7 +19,20 @@ jest.mock('fs', () => {
   };
 });
 jest.mock('./auxilary1', () => {
+  // https://github.com/facebook/jest/issues/2567
+  /* eslint-disable */
+
+  const auxilary1foo4 = require('./06_mocks/auxilary1__foo4.mock.js');
+  /* eslint-enable */
+
   return {
+    foo4: (...params) => {
+      const safeParams = params.length === 0 ? [undefined] : params;
+      return safeParams.reduce((acc, param) => {
+        if (typeof param === 'string') return acc[param];
+        return acc[JSON.stringify(param)];
+      }, auxilary1foo4);
+    },
     foo1: (...params) => {
       const safeParams = params.length === 0 ? [undefined] : params;
       return safeParams.reduce(

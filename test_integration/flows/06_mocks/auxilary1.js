@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const foo1 = () => 1;
 
 const foo2 = () => new Promise((resolve) => {
@@ -6,4 +8,6 @@ const foo2 = () => new Promise((resolve) => {
   }, 1);
 });
 
-module.exports = { foo1, foo2 };
+const foo4 = () => JSON.parse(fs.readFileSync('test_integration/flows/06_mocks/response.json', 'utf8').toString());
+
+module.exports = { foo1, foo2, foo4 };

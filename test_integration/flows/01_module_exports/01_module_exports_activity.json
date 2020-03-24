@@ -21,21 +21,42 @@
               1,
               2
             ],
-            "result": 3
+            "result": 3,
+            "types": {
+              "params": [
+                "Number",
+                "Number"
+              ],
+              "result": "Number"
+            }
           },
           {
             "params": [
               "A",
               "B"
             ],
-            "result": "AB"
+            "result": "AB",
+            "types": {
+              "params": [
+                "String",
+                "String"
+              ],
+              "result": "String"
+            }
           },
           {
             "params": [
               2,
               1
             ],
-            "result": 3
+            "result": 3,
+            "types": {
+              "params": [
+                "Number",
+                "Number"
+              ],
+              "result": "Number"
+            }
           }
         ],
         "hashTable": {
@@ -64,7 +85,14 @@
               2,
               2
             ],
-            "result": 0
+            "result": 0,
+            "types": {
+              "params": [
+                "Number",
+                "Number"
+              ],
+              "result": "Number"
+            }
           }
         ],
         "hashTable": {
@@ -95,7 +123,14 @@
                 "c": 1
               }
             ],
-            "result": 4
+            "result": 4,
+            "types": {
+              "params": [
+                "Number",
+                "Object"
+              ],
+              "result": "Number"
+            }
           },
           {
             "params": [
@@ -106,7 +141,15 @@
               },
               2
             ],
-            "result": 5
+            "result": 5,
+            "types": {
+              "params": [
+                "Number",
+                "Object",
+                "Number"
+              ],
+              "result": "Number"
+            }
           }
         ],
         "hashTable": {
@@ -138,7 +181,14 @@
                 "c": 1
               }
             ],
-            "result": 4
+            "result": 4,
+            "types": {
+              "params": [
+                "Number",
+                "Object"
+              ],
+              "result": "Number"
+            }
           }
         ],
         "hashTable": {

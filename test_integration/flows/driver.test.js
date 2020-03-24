@@ -6,7 +6,7 @@ const { getFacebookInfo, getSocialInfo } = require('./02_async_functions/02_asyn
 const {
   default: ecma2, ecma1, ecma3, ecma4,
 } = require('./03_ecma_export/03_ecma_export_instrumented');
-const { circularReference, returnAFunction } = require('./04_unserializeable/04_unserializeable_instrumented');
+const unserializeable = require('./04_unserializeable/04_unserializeable_instrumented');
 const getPost = require('./05_dependency_injection/05_dependency_injection_instrumented');
 const { getTodo, localMocksTest } = require('./06_mocks/06_mocks_instrumented');
 const { getClickCounts } = require('./07_large_payload/07_large_payload_instrumented');
@@ -59,8 +59,9 @@ describe('driver', () => {
   describe('04_unserializeable', () => {
     it('should record activity', () => {
       RecorderManager.clear();
-      circularReference(1);
-      returnAFunction(1, a => a * 2);
+      unserializeable.circularReference(1);
+      unserializeable.returnAFunction(1, a => a * 2);
+      // unserializeable.getElapsedTime(new Date(2018, 1, 1), new Date(2019, 1, 1));
       const outputFileName = getSnapshotFileName('04_unserializeable');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

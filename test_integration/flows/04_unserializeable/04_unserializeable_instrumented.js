@@ -33,7 +33,29 @@ const returnAFunction = (...p) =>
     ...p
   );
 
+const getElapsedTime = (...p) =>
+  recorderWrapper(
+    {
+      path: 'test_integration/flows/04_unserializeable/04_unserializeable.js',
+      name: 'getElapsedTime',
+      paramIds: ['start', 'end'],
+      injectionWhitelist: [],
+      isDefault: false,
+      isEcmaDefault: false,
+      isAsync: false
+    },
+    (start, end) => {
+      const y2k = new Date(2000, 1, 1);
+      const delta = end.getTime() - start.getTime();
+      const result = new Date();
+      result.setTime(y2k.getTime() + delta);
+      return result;
+    },
+    ...p
+  );
+
 module.exports = {
   circularReference,
-  returnAFunction
+  returnAFunction,
+  getElapsedTime
 };

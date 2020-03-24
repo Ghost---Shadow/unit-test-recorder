@@ -24,7 +24,13 @@
             "params": [
               {}
             ],
-            "result": 42
+            "result": 42,
+            "types": {
+              "params": [
+                "Object"
+              ],
+              "result": "Number"
+            }
           }
         ],
         "hashTable": {
@@ -48,7 +54,11 @@
         },
         "captures": [
           {
-            "params": []
+            "params": [],
+            "types": {
+              "params": [],
+              "result": "Undefined"
+            }
           }
         ],
         "hashTable": {
@@ -73,7 +83,11 @@
         "captures": [
           {
             "params": [],
-            "result": 2
+            "result": 2,
+            "types": {
+              "params": [],
+              "result": "Number"
+            }
           }
         ],
         "hashTable": {
@@ -129,7 +143,13 @@
                 "__proto__": {}
               }
             ],
-            "result": 2
+            "result": 2,
+            "types": {
+              "params": [
+                "Object"
+              ],
+              "result": "Number"
+            }
           }
         ],
         "hashTable": {

@@ -416,7 +416,11 @@
                 "imageId": 99,
                 "clicks": 9900
               }
-            ]
+            ],
+            "types": {
+              "params": [],
+              "result": "Array"
+            }
           }
         ],
         "hashTable": {
@@ -1156,7 +1160,13 @@
                 "imageId": 99,
                 "clicks": 9900
               }
-            ]
+            ],
+            "types": {
+              "params": [
+                "Function"
+              ],
+              "result": "Array"
+            }
           }
         ],
         "hashTable": {

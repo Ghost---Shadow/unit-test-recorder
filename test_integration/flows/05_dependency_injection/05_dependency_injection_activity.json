@@ -117,6 +117,14 @@
                 }
               ],
               "votes": 350
+            },
+            "types": {
+              "params": [
+                "Object",
+                "Number",
+                "Function"
+              ],
+              "result": "Object"
             }
           }
         ],

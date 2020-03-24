@@ -28,6 +28,12 @@
                 "email": "email",
                 "request": "twitter"
               }
+            },
+            "types": {
+              "params": [
+                "String"
+              ],
+              "result": "Object"
             }
           }
         ],
@@ -56,6 +62,12 @@
             "result": {
               "email": "email",
               "request": "facebook"
+            },
+            "types": {
+              "params": [
+                "String"
+              ],
+              "result": "Object"
             }
           }
         ],

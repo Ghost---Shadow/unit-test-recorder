@@ -19,7 +19,13 @@
             "params": [
               2
             ],
-            "result": 2
+            "result": 2,
+            "types": {
+              "params": [
+                "Number"
+              ],
+              "result": "Number"
+            }
           }
         ],
         "hashTable": {
@@ -44,7 +50,13 @@
             "params": [
               3
             ],
-            "result": "b => [a, b]"
+            "result": "b => [a, b]",
+            "types": {
+              "params": [
+                "Number"
+              ],
+              "result": "Function"
+            }
           }
         ],
         "hashTable": {
@@ -69,7 +81,13 @@
             "params": [
               4
             ],
-            "result": 8
+            "result": 8,
+            "types": {
+              "params": [
+                "Number"
+              ],
+              "result": "Number"
+            }
           }
         ],
         "hashTable": {

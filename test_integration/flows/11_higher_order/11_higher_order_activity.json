@@ -21,7 +21,13 @@
             "params": [
               {}
             ],
-            "result": "param2 => param1.someFun() + param2.someOtherFun()"
+            "result": "param2 => param1.someFun() + param2.someOtherFun()",
+            "types": {
+              "params": [
+                "Object"
+              ],
+              "result": "Function"
+            }
           }
         ],
         "hashTable": {
@@ -61,7 +67,13 @@
             "params": [
               {}
             ],
-            "result": 5
+            "result": 5,
+            "types": {
+              "params": [
+                "Object"
+              ],
+              "result": "Number"
+            }
           }
         ],
         "hashTable": {

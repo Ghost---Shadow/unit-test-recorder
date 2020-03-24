@@ -232,6 +232,10 @@
                 "title": "delectus aut autem",
                 "completed": false
               }
+            },
+            "types": {
+              "params": [],
+              "result": "Object"
             }
           }
         ],
@@ -253,7 +257,11 @@
         "captures": [
           {
             "params": [],
-            "result": 4
+            "result": 4,
+            "types": {
+              "params": [],
+              "result": "Number"
+            }
           }
         ],
         "hashTable": {

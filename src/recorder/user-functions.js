@@ -4,6 +4,7 @@ const RecorderManager = require('./manager');
 
 const { injectDependencyInjections } = require('./injection');
 const { checkAndSetHash } = require('./hash-helper');
+const { generateTypesObj } = require('./dynamic-type-inference');
 
 const pre = ({ meta, p }) => {
   const { path, name, paramIds } = meta;
@@ -27,6 +28,9 @@ const pre = ({ meta, p }) => {
 const captureUserFunction = ({
   result, path, name, captureIndex, params, doesReturnPromise,
 }) => {
+  // Record types from this capture
+  const types = generateTypesObj({ params, result });
+
   // TODO: Handle higher order functions
   if (_.isFunction(result)) {
     result = result.toString();
@@ -48,6 +52,7 @@ const captureUserFunction = ({
     .exportedFunctions[name].captures[captureIndex] = _.merge(existing, {
       params,
       result,
+      types,
     });
 };
 

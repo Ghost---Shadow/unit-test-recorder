@@ -25,7 +25,13 @@
             "result": [
               2,
               4
-            ]
+            ],
+            "types": {
+              "params": [
+                "Array"
+              ],
+              "result": "Array"
+            }
           }
         ],
         "hashTable": {
@@ -50,7 +56,13 @@
             "params": [
               2
             ],
-            "result": "2"
+            "result": "2",
+            "types": {
+              "params": [
+                "Number"
+              ],
+              "result": "String"
+            }
           }
         ],
         "hashTable": {

@@ -21,7 +21,14 @@
               1,
               2
             ],
-            "result": 3
+            "result": 3,
+            "types": {
+              "params": [
+                "Number",
+                "Number"
+              ],
+              "result": "Number"
+            }
           }
         ],
         "hashTable": {

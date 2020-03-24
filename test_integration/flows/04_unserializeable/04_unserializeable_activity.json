@@ -21,6 +21,12 @@
             ],
             "result": {
               "a": 1
+            },
+            "types": {
+              "params": [
+                "Number"
+              ],
+              "result": "Object"
             }
           }
         ],
@@ -48,7 +54,14 @@
               1,
               null
             ],
-            "result": "b => a + f2(b)"
+            "result": "b => a + f2(b)",
+            "types": {
+              "params": [
+                "Number",
+                "Function"
+              ],
+              "result": "Function"
+            }
           }
         ],
         "hashTable": {

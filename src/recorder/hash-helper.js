@@ -7,12 +7,6 @@ const generateHashForParam = (params) => {
   return hash;
 };
 
-const doesParamExist = (hashTable, params) => {
-  const hash = generateHashForParam(params);
-  return hashTable[hash];
-};
-
 module.exports = {
   generateHashForParam,
-  doesParamExist,
 };

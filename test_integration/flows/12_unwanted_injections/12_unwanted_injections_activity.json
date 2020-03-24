@@ -27,7 +27,10 @@
               4
             ]
           }
-        ]
+        ],
+        "hashTable": {
+          "krs8gtle1lXxA11mkKd7tQ==": true
+        }
       },
       "fun2": {
         "meta": {
@@ -49,7 +52,10 @@
             ],
             "result": "2"
           }
-        ]
+        ],
+        "hashTable": {
+          "0AqRT9EPx92+k/YaoBk7Bg==": true
+        }
       }
     }
   }

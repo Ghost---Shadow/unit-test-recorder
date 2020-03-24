@@ -234,7 +234,10 @@
               }
             }
           }
-        ]
+        ],
+        "hashTable": {
+          "11FxOYiYfpMxmANj4kGJzg==": true
+        }
       },
       "localMocksTest": {
         "meta": {
@@ -252,7 +255,10 @@
             "params": [],
             "result": 4
           }
-        ]
+        ],
+        "hashTable": {
+          "11FxOYiYfpMxmANj4kGJzg==": true
+        }
       }
     },
     "mocks": {

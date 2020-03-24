@@ -23,7 +23,10 @@
             ],
             "result": 3
           }
-        ]
+        ],
+        "hashTable": {
+          "lU1KnBLnuGAnpefgxib3kA==": true
+        }
       },
       "ecma2": {
         "meta": {
@@ -45,7 +48,10 @@
             ],
             "result": 3
           }
-        ]
+        ],
+        "hashTable": {
+          "zzvvHO4JAn0vNgcX2g7OrA==": true
+        }
       },
       "ecma3": {
         "meta": {
@@ -67,7 +73,10 @@
             ],
             "result": 0.5
           }
-        ]
+        ],
+        "hashTable": {
+          "zzvvHO4JAn0vNgcX2g7OrA==": true
+        }
       },
       "ecma4": {
         "meta": {
@@ -89,7 +98,10 @@
             ],
             "result": 0.25
           }
-        ]
+        ],
+        "hashTable": {
+          "zzvvHO4JAn0vNgcX2g7OrA==": true
+        }
       }
     }
   }

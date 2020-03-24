@@ -23,7 +23,10 @@
               "a": 1
             }
           }
-        ]
+        ],
+        "hashTable": {
+          "zzvvHO4JAn0vNgcX2g7OrA==": true
+        }
       },
       "returnAFunction": {
         "meta": {
@@ -47,7 +50,10 @@
             ],
             "result": "b => a + f2(b)"
           }
-        ]
+        ],
+        "hashTable": {
+          "5PYDcF336WQHyAx7ouEyJw==": true
+        }
       }
     }
   }

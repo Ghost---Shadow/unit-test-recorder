@@ -21,7 +21,10 @@
             ],
             "result": 2
           }
-        ]
+        ],
+        "hashTable": {
+          "0AqRT9EPx92+k/YaoBk7Bg==": true
+        }
       },
       "exportTest2": {
         "meta": {
@@ -43,7 +46,10 @@
             ],
             "result": "b => [a, b]"
           }
-        ]
+        ],
+        "hashTable": {
+          "etU7CLEGT28dFqeb/2w9Bw==": true
+        }
       },
       "exportTest3": {
         "meta": {
@@ -65,7 +71,10 @@
             ],
             "result": 8
           }
-        ]
+        ],
+        "hashTable": {
+          "zPlCBso044mktJxs54Ak+A==": true
+        }
       }
     }
   }

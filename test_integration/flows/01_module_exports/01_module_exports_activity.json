@@ -37,7 +37,12 @@
             ],
             "result": 3
           }
-        ]
+        ],
+        "hashTable": {
+          "lU1KnBLnuGAnpefgxib3kA==": true,
+          "wzlkaBgjf/EUu8V3SYMu9w==": true,
+          "YW0oQXh3Ymqvqhu85eKrLA==": true
+        }
       },
       "bar": {
         "meta": {
@@ -61,7 +66,10 @@
             ],
             "result": 0
           }
-        ]
+        ],
+        "hashTable": {
+          "y9T5PC8JpSyuH7TQ7K/e3w==": true
+        }
       },
       "specialParams": {
         "meta": {
@@ -100,7 +108,11 @@
             ],
             "result": 5
           }
-        ]
+        ],
+        "hashTable": {
+          "0reBpAWgTP1CBhbanMYTHQ==": true,
+          "9E51uZk690RTXiFps8odWQ==": true
+        }
       },
       "specialParams2": {
         "meta": {
@@ -128,7 +140,10 @@
             ],
             "result": 4
           }
-        ]
+        ],
+        "hashTable": {
+          "0reBpAWgTP1CBhbanMYTHQ==": true
+        }
       }
     }
   }

@@ -3,6 +3,7 @@ const _ = require('lodash');
 const RecorderManager = require('./manager');
 
 const { injectDependencyInjections } = require('./injection');
+const { generateHashForParam } = require('./hash-helper');
 
 const pre = ({ meta, p }) => {
   const { path, name, paramIds } = meta;
@@ -26,9 +27,26 @@ const pre = ({ meta, p }) => {
 const captureUserFunction = ({
   result, path, name, captureIndex, params, doesReturnPromise,
 }) => {
+  // TODO: Handle higher order functions
+  if (_.isFunction(result)) {
+    result = result.toString();
+  }
   RecorderManager.recorderState[path]
     .exportedFunctions[name].meta.doesReturnPromise = doesReturnPromise;
 
+  // Dont store duplicate activities
+  if (!RecorderManager.recorderState[path].exportedFunctions[name].hashTable) {
+    RecorderManager.recorderState[path].exportedFunctions[name].hashTable = {};
+  }
+  const hash = generateHashForParam(params);
+  if (RecorderManager.recorderState[path].exportedFunctions[name].hashTable[hash]) {
+    // Capture already exists
+    RecorderManager.recorderState[path].exportedFunctions[name].captures.pop();
+    return;
+  }
+  RecorderManager.recorderState[path].exportedFunctions[name].hashTable[hash] = true;
+
+  // Merge with recordings of dependency injections
   const existing = RecorderManager
     .recorderState[path].exportedFunctions[name].captures[captureIndex];
   RecorderManager.recorderState[path]
@@ -51,17 +69,6 @@ const recorderWrapper = (meta, innerFunction, ...p) => {
   } else {
     captureUserFunction({
       result, path, name, captureIndex, params, doesReturnPromise: false,
-    });
-  }
-  // If the function is a second order function
-  if (typeof (result) === 'function') {
-    captureUserFunction({
-      result: result.toString(),
-      path,
-      name,
-      captureIndex,
-      params,
-      doesReturnPromise: false,
     });
   }
   return result;

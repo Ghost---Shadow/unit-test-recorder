@@ -418,7 +418,10 @@
               }
             ]
           }
-        ]
+        ],
+        "hashTable": {
+          "11FxOYiYfpMxmANj4kGJzg==": true
+        }
       },
       "getClickCountsHelper": {
         "meta": {
@@ -1152,7 +1155,10 @@
               }
             ]
           }
-        ]
+        ],
+        "hashTable": {
+          "OxlSdmg4qH64f7WxDtiMsA==": true
+        }
       }
     }
   }

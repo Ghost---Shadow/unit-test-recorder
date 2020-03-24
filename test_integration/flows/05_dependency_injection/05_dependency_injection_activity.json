@@ -106,7 +106,10 @@
               "votes": 350
             }
           }
-        ]
+        ],
+        "hashTable": {
+          "qqyOA7DF/CBDP6O3zAECJQ==": true
+        }
       }
     }
   }

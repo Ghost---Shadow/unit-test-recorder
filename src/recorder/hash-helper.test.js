@@ -1,4 +1,4 @@
-const { generateHashForParam, doesParamExist } = require('./hash-helper');
+const { generateHashForParam } = require('./hash-helper');
 
 describe('hash-helper', () => {
   describe('generateHashForParam', () => {
@@ -15,13 +15,6 @@ describe('hash-helper', () => {
       expect(generateHashForParam(params)).toMatchInlineSnapshot(
         '"doPDmaA/Mx07jt0IoImW9A=="',
       );
-    });
-  });
-  describe('doesParamExist', () => {
-    it('should check if hash exists in table', () => {
-      const params = [1, 2, 'a', 'b'];
-      const hashTable = { 'bcenZxMdEYCh1WrmLQe3aA==': true };
-      expect(doesParamExist(hashTable, params)).toBeTruthy();
     });
   });
 });

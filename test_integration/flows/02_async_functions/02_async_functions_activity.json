@@ -30,7 +30,10 @@
               }
             }
           }
-        ]
+        ],
+        "hashTable": {
+          "jgae5UD6VCLpCcFrlqwhLw==": true
+        }
       },
       "getFacebookInfo": {
         "meta": {
@@ -55,7 +58,10 @@
               "request": "facebook"
             }
           }
-        ]
+        ],
+        "hashTable": {
+          "jgae5UD6VCLpCcFrlqwhLw==": true
+        }
       }
     }
   }

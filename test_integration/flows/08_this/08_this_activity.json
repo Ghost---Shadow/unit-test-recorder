@@ -26,7 +26,10 @@
             ],
             "result": 42
           }
-        ]
+        ],
+        "hashTable": {
+          "VE/M8Yddsxc+gCUTVJ8cxA==": true
+        }
       },
       "sample": {
         "meta": {
@@ -47,7 +50,10 @@
           {
             "params": []
           }
-        ]
+        ],
+        "hashTable": {
+          "11FxOYiYfpMxmANj4kGJzg==": true
+        }
       },
       "protoOverwrite": {
         "meta": {
@@ -69,7 +75,10 @@
             "params": [],
             "result": 2
           }
-        ]
+        ],
+        "hashTable": {
+          "11FxOYiYfpMxmANj4kGJzg==": true
+        }
       },
       "protoOverwriteHelper": {
         "meta": {
@@ -116,7 +125,10 @@
             ],
             "result": 2
           }
-        ]
+        ],
+        "hashTable": {
+          "xgvnThk8//z+RKJZgeYBgg==": true
+        }
       }
     }
   }

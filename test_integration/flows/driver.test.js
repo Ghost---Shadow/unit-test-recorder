@@ -25,6 +25,7 @@ describe('driver', () => {
     it('should record activity', () => {
       RecorderManager.clear();
       mei.foo(1, 2);
+      mei.foo(1, 2);
       mei.foo('A', 'B');
       mei.foo(2, 1);
       mei.bar(2, 2);

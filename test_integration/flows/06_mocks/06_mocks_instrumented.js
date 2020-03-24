@@ -56,7 +56,7 @@ const getTodo = (...p) =>
     ...p
   );
 
-const localMocksTest = (...p) =>
+const localMocksTest = async (...p) =>
   recorderWrapper(
     {
       path: 'test_integration/flows/06_mocks/06_mocks.js',
@@ -65,13 +65,13 @@ const localMocksTest = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: true
     },
-    () => {
+    async () => {
       const result =
         testIntegrationFlows06Mocks06MocksJsFoo1() +
         testIntegrationFlows06Mocks06MocksJsFoo1() +
-        testIntegrationFlows06Mocks06MocksJsFoo3();
+        (await testIntegrationFlows06Mocks06MocksJsFoo3());
       return result;
     },
     ...p

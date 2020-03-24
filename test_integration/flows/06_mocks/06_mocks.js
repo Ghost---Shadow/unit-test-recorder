@@ -3,8 +3,8 @@ const { foo1, foo2: foo3 } = require('./auxilary1');
 
 const getTodo = () => JSON.parse(fileSystem.readFileSync('test_integration/flows/06_mocks/response.json', 'utf8').toString());
 
-const localMocksTest = () => {
-  const result = foo1() + foo1() + foo3();
+const localMocksTest = async () => {
+  const result = foo1() + foo1() + await foo3();
   return result;
 };
 

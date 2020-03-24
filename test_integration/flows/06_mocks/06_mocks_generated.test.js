@@ -56,9 +56,9 @@ describe('06_mocks', () => {
   });
 
   describe('localMocksTest', () => {
-    it('test 0', () => {
+    it('test 0', async () => {
       const result = 4;
-      const actual = localMocksTest();
+      const actual = await localMocksTest();
       expect(actual).toEqual(result);
     });
   });

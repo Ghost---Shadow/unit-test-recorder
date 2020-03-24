@@ -100,7 +100,7 @@ describe('driver', () => {
     it('should record activity', async () => {
       RecorderManager.clear();
       await getTodo();
-      localMocksTest();
+      await localMocksTest();
       const outputFileName = getSnapshotFileName('06_mocks');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

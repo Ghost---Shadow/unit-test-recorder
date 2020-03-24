@@ -244,8 +244,8 @@
           "injectionWhitelist": [],
           "isDefault": false,
           "isEcmaDefault": false,
-          "isAsync": false,
-          "doesReturnPromise": false
+          "isAsync": true,
+          "doesReturnPromise": true
         },
         "captures": [
           {

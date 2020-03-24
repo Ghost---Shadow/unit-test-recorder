@@ -1,5 +1,9 @@
 const foo1 = () => 1;
-// TODO: Try with async
-const foo2 = () => 2;
+
+const foo2 = () => new Promise((resolve) => {
+  setTimeout(() => {
+    resolve(2);
+  }, 1);
+});
 
 module.exports = { foo1, foo2 };

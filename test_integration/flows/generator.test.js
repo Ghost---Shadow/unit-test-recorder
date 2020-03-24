@@ -38,8 +38,7 @@ describe('generator.test', () => {
             at new Promise (<anonymous>)
             at mapper (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/queueRunner.js:26:19)
             at promise.then (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/queueRunner.js:73:41)
-            at <anonymous>
-            at process._tickCallback (internal/process/next_tick.js:188:7)'",
+            at process._tickCallback (internal/process/next_tick.js:68:7)'",
         }
       `);
     });

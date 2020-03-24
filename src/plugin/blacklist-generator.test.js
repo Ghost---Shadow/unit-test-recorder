@@ -121,10 +121,13 @@ describe('blacklist-generator', () => {
           "toUTCString": true,
           "toUpperCase": true,
           "trim": true,
+          "trimEnd": true,
           "trimLeft": true,
           "trimRight": true,
+          "trimStart": true,
           "unshift": true,
           "valueOf": true,
+          "values": true,
         }
       `);
     });

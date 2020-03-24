@@ -37,7 +37,7 @@ const captureUserFunction = ({
   const basePath = ['recorderState', path, 'exportedFunctions', name];
   if (checkAndSetHash(RecorderManager, basePath, params)) {
     // Capture already exists
-    RecorderManager.recorderState[path].exportedFunctions[name].captures.pop();
+    RecorderManager.recorderState[path].exportedFunctions[name].captures[captureIndex] = null;
     return;
   }
 

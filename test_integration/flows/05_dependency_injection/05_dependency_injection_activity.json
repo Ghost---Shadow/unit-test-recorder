@@ -41,7 +41,11 @@
                     ],
                     "result": 42
                   }
-                ]
+                ],
+                "hashTable": {
+                  "dMf972OPP3nY45EvnbCSCw==": true,
+                  "T760nwO8CQPXxsyNlCfoXQ==": true
+                }
               },
               "dbClient.__proto__.__proto__.pool.pooledQuery": {
                 "captures": [
@@ -60,7 +64,10 @@
                       }
                     ]
                   }
-                ]
+                ],
+                "hashTable": {
+                  "0Jl/wt9ETI6lpqBP8a7lrg==": true
+                }
               },
               "redisCache": {
                 "captures": [
@@ -70,14 +77,20 @@
                     ],
                     "result": 350
                   }
-                ]
+                ],
+                "hashTable": {
+                  "zzvvHO4JAn0vNgcX2g7OrA==": true
+                }
               },
               "dbClient.commitSync": {
                 "captures": [
                   {
                     "params": []
                   }
-                ]
+                ],
+                "hashTable": {
+                  "11FxOYiYfpMxmANj4kGJzg==": true
+                }
               }
             },
             "params": [

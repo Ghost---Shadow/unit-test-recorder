@@ -3,6 +3,7 @@ const _ = require('lodash');
 const RecorderManager = require('./manager');
 const { traverse } = require('./object-traverser');
 const { newFunctionNameGenerator } = require('../util/misc');
+const { generateHashForParam } = require('./hash-helper');
 
 const markForConstructorInjection = (meta) => {
   const { path, name } = meta;
@@ -16,10 +17,21 @@ const recordInjectedActivity = (meta, paramIds, index, fppkey, paramsOfInjected,
   const { path, name, captureIndex } = meta;
   // Fully qualified name
   const fqn = fppkey ? `${paramIds[index]}.${fppkey}` : paramIds[index];
-  const destinationPath = ['recorderState', path, 'exportedFunctions', name, 'captures', captureIndex, 'injections', fqn, 'captures'];
+  const basePath = ['recorderState', path, 'exportedFunctions', name, 'captures', captureIndex, 'injections', fqn];
+  const destinationPath = [...basePath, 'captures'];
+  const hashTablePath = [...basePath, 'hashTable'];
   if (!_.get(RecorderManager, destinationPath)) {
     _.set(RecorderManager, destinationPath, []);
   }
+  if (!_.get(RecorderManager, hashTablePath)) {
+    _.set(RecorderManager, hashTablePath, {});
+  }
+  const hash = generateHashForParam(paramsOfInjected);
+  const pathWithHash = [...hashTablePath, hash];
+  if (_.get(RecorderManager, pathWithHash)) {
+    return;
+  }
+  _.set(RecorderManager, pathWithHash, true);
   RecorderManager.recorderState[path].exportedFunctions[name]
     .captures[captureIndex].injections[fqn].captures.push({ params: paramsOfInjected, result });
 };

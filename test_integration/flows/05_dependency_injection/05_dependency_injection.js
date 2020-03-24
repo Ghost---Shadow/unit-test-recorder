@@ -6,6 +6,7 @@ const getPostComments = async (client, postId) => {
 };
 
 const getPost = async (dbClient, postId, redisCache) => {
+  await getPostContent(dbClient, postId);
   const content = await getPostContent(dbClient, postId);
   const comments = await getPostComments(dbClient, postId);
   const votes = await redisCache(postId);

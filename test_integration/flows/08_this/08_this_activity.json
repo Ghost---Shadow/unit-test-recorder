@@ -106,7 +106,10 @@
                     "params": [],
                     "result": 2
                   }
-                ]
+                ],
+                "hashTable": {
+                  "11FxOYiYfpMxmANj4kGJzg==": true
+                }
               },
               "foo.__proto__.fun2": {
                 "captures": [
@@ -114,7 +117,10 @@
                     "params": [],
                     "result": 2
                   }
-                ]
+                ],
+                "hashTable": {
+                  "11FxOYiYfpMxmANj4kGJzg==": true
+                }
               }
             },
             "params": [

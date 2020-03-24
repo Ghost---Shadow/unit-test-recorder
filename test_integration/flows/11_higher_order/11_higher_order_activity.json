@@ -52,7 +52,10 @@
                     "params": [],
                     "result": 5
                   }
-                ]
+                ],
+                "hashTable": {
+                  "11FxOYiYfpMxmANj4kGJzg==": true
+                }
               }
             },
             "params": [

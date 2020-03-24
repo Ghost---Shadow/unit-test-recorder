@@ -1,11 +1,11 @@
 const { getTodo } = require('./06_mocks');
 const { localMocksTest } = require('./06_mocks');
-const getTodo0result = require('./06_mocks/getTodo_0_result.js');
+const getTodo0result = require('./06_mocks/getTodo_0_result.mock.js');
 jest.mock('fs', () => {
   // https://github.com/facebook/jest/issues/2567
   /* eslint-disable */
 
-  const fsreadFileSync = require('./06_mocks/fs__readFileSync.js');
+  const fsreadFileSync = require('./06_mocks/fs__readFileSync.mock.js');
   /* eslint-enable */
 
   return {

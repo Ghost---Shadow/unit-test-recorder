@@ -1,5 +1,9 @@
 const fs = require('fs');
 
+// Suppress console
+console.log = () => null;
+console.error = () => null;
+
 const { toMatchFile } = require('jest-file-snapshot');
 
 expect.extend({ toMatchFile });
@@ -25,16 +29,17 @@ describe('generator.test', () => {
           "fileString": "'TypeError: Cannot convert undefined or null to object
             at Function.keys (<anonymous>)
             at generateTestsFromActivity (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:77:6)
-            at map (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:118:11)
+            at map (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:125:11)
             at Array.map (<anonymous>)
-            at extractTestsFromState (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:112:4)
-            at Object.it (/mnt/c/Users/windows/Desktop/unit-test-recorder/test_integration/flows/generator.test.js:19:25)
+            at extractTestsFromState (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:118:4)
+            at Object.it (/mnt/c/Users/windows/Desktop/unit-test-recorder/test_integration/flows/generator.test.js:23:25)
             at Object.asyncJestTest (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:102:37)
             at resolve (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/queueRunner.js:43:12)
             at new Promise (<anonymous>)
             at mapper (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/queueRunner.js:26:19)
             at promise.then (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/queueRunner.js:73:41)
-            at process._tickCallback (internal/process/next_tick.js:68:7)'",
+            at <anonymous>
+            at process._tickCallback (internal/process/next_tick.js:188:7)'",
         }
       `);
     });

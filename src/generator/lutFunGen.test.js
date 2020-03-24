@@ -100,8 +100,8 @@ describe('lutFunGen', () => {
         "{
           \\"fileString\\": \\"module.exports = {\\\\n  undefined: {\\\\n    message: 'Imagine a large payload'\\\\n  }\\\\n};\\\\n\\",
           \\"identifier\\": \\"name0lIdentifierFooBar\\",
-          \\"filePath\\": \\"path/name_0_lIdentifierFooBar.js\\",
-          \\"importPath\\": \\"./path/name_0_lIdentifierFooBar.js\\"
+          \\"filePath\\": \\"path/name_0_lIdentifierFooBar.mock.js\\",
+          \\"importPath\\": \\"./path/name_0_lIdentifierFooBar.mock.js\\"
         }"
       `);
     });

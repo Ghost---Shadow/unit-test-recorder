@@ -125,8 +125,7 @@ const extractTestsFromState = state => Object
       } = generateTestsFromActivity(fileName, filePath, state[filePath]);
       return { filePath, fileString, externalData };
     } catch (e) {
-      console.log('Error tests for ', filePath);
-      // console.error(e);
+      console.error('Error tests for ', filePath);
       return { filePath, fileString: `'${e.stack.toString()}'`, externalData: [] };
     }
   });

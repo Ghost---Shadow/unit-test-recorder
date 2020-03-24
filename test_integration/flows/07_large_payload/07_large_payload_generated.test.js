@@ -1,8 +1,8 @@
 const { getClickCounts } = require('./07_large_payload');
 const { getClickCountsHelper } = require('./07_large_payload');
-const getClickCounts0result = require('./07_large_payload/getClickCounts_0_result.js');
-const getClickCountsHelper0requestDataCb = require('./07_large_payload/getClickCountsHelper_0_requestDataCb.js');
-const getClickCountsHelper0result = require('./07_large_payload/getClickCountsHelper_0_result.js');
+const getClickCounts0result = require('./07_large_payload/getClickCounts_0_result.mock.js');
+const getClickCountsHelper0requestDataCb = require('./07_large_payload/getClickCountsHelper_0_requestDataCb.mock.js');
+const getClickCountsHelper0result = require('./07_large_payload/getClickCountsHelper_0_result.mock.js');
 
 describe('07_large_payload', () => {
   describe('getClickCounts', () => {

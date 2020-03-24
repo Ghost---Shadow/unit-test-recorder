@@ -11,7 +11,6 @@ const traverse = (objRoot) => {
     const keys = Object.keys(obj).concat(toConcat);
     keys.forEach((key) => {
       try {
-        // TODO: Add test case
         // Getter function exists but it throws exception
         traverseInner(obj[key], path.concat(key));
       } catch (e) {

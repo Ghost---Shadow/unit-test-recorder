@@ -18,5 +18,15 @@ describe('object-traverser', () => {
         ['__proto__', 'fun'],
         ['__proto__', '__proto__', 'fun']]);
     });
+    it('should not crash if getter throws exception', () => {
+      // console.error = () => null;
+      const obj = {
+        get foo() {
+          throw new Error('sample');
+        },
+      };
+      const paths = traverse(obj);
+      expect(paths).toEqual([]);
+    });
   });
 });

@@ -3,7 +3,7 @@ const _ = require('lodash');
 const RecorderManager = require('./manager');
 
 const { injectDependencyInjections } = require('./injection');
-const { generateHashForParam } = require('./hash-helper');
+const { checkAndSetHash } = require('./hash-helper');
 
 const pre = ({ meta, p }) => {
   const { path, name, paramIds } = meta;
@@ -34,17 +34,12 @@ const captureUserFunction = ({
   RecorderManager.recorderState[path]
     .exportedFunctions[name].meta.doesReturnPromise = doesReturnPromise;
 
-  // Dont store duplicate activities
-  if (!RecorderManager.recorderState[path].exportedFunctions[name].hashTable) {
-    RecorderManager.recorderState[path].exportedFunctions[name].hashTable = {};
-  }
-  const hash = generateHashForParam(params);
-  if (RecorderManager.recorderState[path].exportedFunctions[name].hashTable[hash]) {
+  const basePath = ['recorderState', path, 'exportedFunctions', name];
+  if (checkAndSetHash(RecorderManager, basePath, params)) {
     // Capture already exists
     RecorderManager.recorderState[path].exportedFunctions[name].captures.pop();
     return;
   }
-  RecorderManager.recorderState[path].exportedFunctions[name].hashTable[hash] = true;
 
   // Merge with recordings of dependency injections
   const existing = RecorderManager

@@ -1,5 +1,6 @@
 const { fun } = require('./12_unwanted_injections');
 const { fun2 } = require('./12_unwanted_injections');
+const { fun3 } = require('./12_unwanted_injections');
 
 describe('12_unwanted_injections', () => {
   describe('fun', () => {
@@ -16,6 +17,27 @@ describe('12_unwanted_injections', () => {
       const num = 2;
       const result = '2';
       const actual = fun2(num);
+      expect(actual).toEqual(result);
+    });
+  });
+
+  describe('fun3', () => {
+    it('test 0', () => {
+      const f = (...params) => {
+        const safeParams = params.length === 0 ? [undefined] : params;
+        return safeParams.reduce(
+          (acc, param) => {
+            if (typeof param === 'string') return acc[param];
+            return acc[JSON.stringify(param)];
+          },
+          {
+            '2': 2
+          }
+        );
+      };
+
+      const result = 2;
+      const actual = fun3(f);
       expect(actual).toEqual(result);
     });
   });

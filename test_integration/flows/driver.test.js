@@ -161,6 +161,7 @@ describe('driver', () => {
       RecorderManager.clear();
       ui.fun([1, 2]);
       ui.fun2(2);
+      ui.fun3(a => a);
       const outputFileName = getSnapshotFileName('12_unwanted_injections');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

@@ -68,6 +68,58 @@
         "hashTable": {
           "0AqRT9EPx92+k/YaoBk7Bg==": true
         }
+      },
+      "fun3": {
+        "meta": {
+          "path": "test_integration/flows/12_unwanted_injections/12_unwanted_injections.js",
+          "name": "fun3",
+          "paramIds": [
+            "f"
+          ],
+          "injectionWhitelist": [],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "injections": {
+              "f": {
+                "captures": [
+                  {
+                    "params": [
+                      2
+                    ],
+                    "result": 2,
+                    "types": {
+                      "params": [
+                        "Number"
+                      ],
+                      "result": "Number"
+                    }
+                  }
+                ],
+                "hashTable": {
+                  "0AqRT9EPx92+k/YaoBk7Bg==": true
+                }
+              }
+            },
+            "params": [
+              null
+            ],
+            "result": 2,
+            "types": {
+              "params": [
+                "Function"
+              ],
+              "result": "Number"
+            }
+          }
+        ],
+        "hashTable": {
+          "OxlSdmg4qH64f7WxDtiMsA==": true
+        }
       }
     }
   }

@@ -31,4 +31,20 @@ const fun2 = (...p) =>
     ...p
   );
 
-module.exports = { fun, fun2 };
+const fun3 = (...p) =>
+  recorderWrapper(
+    {
+      path:
+        'test_integration/flows/12_unwanted_injections/12_unwanted_injections.js',
+      name: 'fun3',
+      paramIds: ['f'],
+      injectionWhitelist: [],
+      isDefault: false,
+      isEcmaDefault: false,
+      isAsync: false
+    },
+    f => f.call(null, 2),
+    ...p
+  );
+
+module.exports = { fun, fun2, fun3 };

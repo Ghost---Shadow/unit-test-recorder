@@ -10,4 +10,8 @@ const foo2 = () => new Promise((resolve) => {
 
 const foo4 = () => JSON.parse(fs.readFileSync('test_integration/flows/06_mocks/response.json', 'utf8').toString());
 
-module.exports = { foo1, foo2, foo4 };
+const foo5 = () => new Date(2020, 1, 1);
+
+module.exports = {
+  foo1, foo2, foo4, foo5,
+};

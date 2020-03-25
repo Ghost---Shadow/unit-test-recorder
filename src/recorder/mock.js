@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const RecorderManager = require('./manager');
 const { checkAndSetHash } = require('./hash-helper');
+const { generateTypesObj } = require('./dynamic-type-inference');
 
 const captureMockActivity = (meta, params, result) => {
   const { path, moduleName, name } = meta;
@@ -12,9 +13,12 @@ const captureMockActivity = (meta, params, result) => {
   if (checkAndSetHash(RecorderManager, basePath, params)) {
     return;
   }
+  // Record types from this capture
+  const types = generateTypesObj({ params, result });
   RecorderManager.recorderState[path].mocks[moduleName][name].captures.push({
     params,
     result,
+    types,
   });
 };
 

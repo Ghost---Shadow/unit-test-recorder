@@ -11,7 +11,17 @@ fileSystem.testIntegrationFlows06Mocks06MocksJsReadFileSync = (...p) =>
     fileSystem.readFileSync,
     ...p
   );
-const { foo1, foo2: foo3, foo4 } = require('./auxilary1');
+const { foo1, foo2: foo3, foo4, foo5 } = require('./auxilary1');
+const testIntegrationFlows06Mocks06MocksJsFoo5 = (...p) =>
+  mockRecorderWrapper(
+    {
+      path: 'test_integration/flows/06_mocks/06_mocks.js',
+      moduleName: './auxilary1',
+      name: 'foo5'
+    },
+    foo5,
+    ...p
+  );
 const testIntegrationFlows06Mocks06MocksJsFoo4 = (...p) =>
   mockRecorderWrapper(
     {
@@ -96,4 +106,19 @@ const localMocksTest = async (...p) =>
     ...p
   );
 
-module.exports = { getTodo, localMocksTest };
+const datesTest = (...p) =>
+  recorderWrapper(
+    {
+      path: 'test_integration/flows/06_mocks/06_mocks.js',
+      name: 'datesTest',
+      paramIds: [],
+      injectionWhitelist: [],
+      isDefault: false,
+      isEcmaDefault: false,
+      isAsync: false
+    },
+    () => testIntegrationFlows06Mocks06MocksJsFoo5(),
+    ...p
+  );
+
+module.exports = { getTodo, localMocksTest, datesTest };

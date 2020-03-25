@@ -42,13 +42,11 @@ const generateExpectStatement = (functionIdentifier, capture, meta) => {
 
   const awaitString = doesReturnPromise ? 'await ' : '';
   const actualStatement = `const actual = ${awaitString}${invokeExpression}`;
-  if (resultType === 'Object') {
-    return `${actualStatement};expect(actual).toMatchObject(result)`;
-  }
-  if (resultType === 'Function') {
-    return `${actualStatement};expect(actual.toString()).toEqual(result)`;
-  }
-  return `${actualStatement};expect(actual).toEqual(result)`;
+  const defaultReturn = `${actualStatement};expect(actual).toEqual(result)`;
+  return {
+    Object: `${actualStatement};expect(actual).toMatchObject(result)`,
+    Function: `${actualStatement};expect(actual.toString()).toEqual(result)`,
+  }[resultType] || defaultReturn;
 };
 
 const generateResultStatement = (capture, meta, captureIndex) => {

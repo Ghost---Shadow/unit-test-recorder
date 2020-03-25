@@ -1,5 +1,7 @@
 const fileSystem = require('fs');
-const { foo1, foo2: foo3, foo4 } = require('./auxilary1');
+const {
+  foo1, foo2: foo3, foo4, foo5,
+} = require('./auxilary1');
 
 const getTodo = () => {
   fileSystem.readFileSync('test_integration/flows/06_mocks/response.json', 'utf8').toString();
@@ -13,4 +15,6 @@ const localMocksTest = async () => {
   return result;
 };
 
-module.exports = { getTodo, localMocksTest };
+const datesTest = () => foo5();
+
+module.exports = { getTodo, localMocksTest, datesTest };

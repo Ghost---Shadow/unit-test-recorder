@@ -8,7 +8,7 @@ const {
 } = require('./03_ecma_export/03_ecma_export_instrumented');
 const unserializeable = require('./04_unserializeable/04_unserializeable_instrumented');
 const getPost = require('./05_dependency_injection/05_dependency_injection_instrumented');
-const { getTodo, localMocksTest } = require('./06_mocks/06_mocks_instrumented');
+const mocks = require('./06_mocks/06_mocks_instrumented');
 const { getClickCounts } = require('./07_large_payload/07_large_payload_instrumented');
 const { newTarget, sample, protoOverwrite } = require('./08_this/08_this_instrumented');
 const { exportTest1, default: exportTest2, exportTest3 } = require('./09_typescript_exports/09_typescript_exports_instrumented');
@@ -101,8 +101,9 @@ describe('driver', () => {
   describe('06_mocks', () => {
     it('should record activity', async () => {
       RecorderManager.clear();
-      await getTodo();
-      await localMocksTest();
+      await mocks.getTodo();
+      await mocks.localMocksTest();
+      // mocks.datesTest(); // TODO
       const outputFileName = getSnapshotFileName('06_mocks');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

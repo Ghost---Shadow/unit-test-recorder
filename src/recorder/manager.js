@@ -1,14 +1,15 @@
+const _ = require('lodash');
 const { safeStringify } = require('./utils');
 
 const removeNullCaptures = (recorderState) => {
   // RecorderManager.recorderState[path].exportedFunctions[name].captures[captureIndex]
   const processCaptures = captures => captures.filter(capture => capture !== null);
-  const processFunctions = expFun => ({ ...expFun, captures: processCaptures(expFun.captures) });
+  const processFunctions = expFun => ({ ...expFun, captures: processCaptures(_.get(expFun, 'captures', [])) });
   const processFile = fileObj => ({
     ...fileObj,
-    exportedFunctions: Object.keys(fileObj.exportedFunctions).reduce((acc, functionName) => ({
+    exportedFunctions: Object.keys(_.get(fileObj, 'exportedFunctions', {})).reduce((acc, functionName) => ({
       ...acc,
-      [functionName]: processFunctions(fileObj.exportedFunctions[functionName]),
+      [functionName]: processFunctions(_.get(fileObj, ['exportedFunctions', functionName], {})),
     }), {}),
   });
   return Object.keys(recorderState).reduce((acc, path) => ({

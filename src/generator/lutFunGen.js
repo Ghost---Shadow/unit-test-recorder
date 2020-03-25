@@ -30,7 +30,7 @@ const generatePayload = (lut, lIdentifier, meta, captureIndex, limit) => {
 };
 
 const captureArrayToLutFun = (
-  captures, lIdentifier, meta, captureIndex, limit = 500, keyLimit = 100,
+  captures, lIdentifier, meta, captureIndex, limit = 500, keyLimit = 1e+4,
 ) => {
   const lut = captures.reduce((acc, capture) => {
     const stringifiedParams = capture.params.map((p) => {

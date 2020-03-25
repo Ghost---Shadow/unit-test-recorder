@@ -20,7 +20,7 @@ describe('11_higher_order', () => {
             (acc, param) => {
               if (typeof param === 'string') return acc[param];
               const stringifiedParam = JSON.stringify(param);
-              if (stringifiedParam && stringifiedParam.length > 100)
+              if (stringifiedParam && stringifiedParam.length > 10000)
                 return acc['KEY_TOO_LARGE'];
               return acc[stringifiedParam];
             },

@@ -7,7 +7,7 @@ const getClickCountsHelper0result = require('./07_large_payload/getClickCountsHe
 describe('07_large_payload', () => {
   describe('getClickCounts', () => {
     it('test 0', () => {
-      const result = getClickCounts0result;
+      let result = getClickCounts0result;
       const actual = getClickCounts();
       expect(actual).toEqual(result);
     });
@@ -15,7 +15,8 @@ describe('07_large_payload', () => {
 
   describe('getClickCountsHelper', () => {
     it('test 0', () => {
-      const requestDataCb = (...params) => {
+      let requestDataCb = null;
+      requestDataCb = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce((acc, param) => {
           if (typeof param === 'string') return acc[param];
@@ -26,7 +27,7 @@ describe('07_large_payload', () => {
         }, getClickCountsHelper0requestDataCb);
       };
 
-      const result = getClickCountsHelper0result;
+      let result = getClickCountsHelper0result;
       const actual = getClickCountsHelper(requestDataCb);
       expect(actual).toEqual(result);
     });

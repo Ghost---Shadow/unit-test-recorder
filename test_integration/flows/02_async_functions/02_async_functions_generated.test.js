@@ -4,8 +4,9 @@ const { getFacebookInfo } = require('./02_async_functions');
 describe('02_async_functions', () => {
   describe('getSocialInfo', () => {
     it('test 0', async () => {
-      const email = 'email';
-      const result = {
+      let email = 'email';
+
+      let result = {
         facebookInfo: {
           email: 'email',
           request: 'facebook'
@@ -22,8 +23,9 @@ describe('02_async_functions', () => {
 
   describe('getFacebookInfo', () => {
     it('test 0', async () => {
-      const email = 'email';
-      const result = {
+      let email = 'email';
+
+      let result = {
         email: 'email',
         request: 'facebook'
       };

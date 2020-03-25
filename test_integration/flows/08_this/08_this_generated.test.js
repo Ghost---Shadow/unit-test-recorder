@@ -8,8 +8,9 @@ describe('08_this', () => {
   describe('newTarget',()=>{
     
   it('test 0', async ()=>{
-    const obj = {}
-    const result = 42
+    let obj = {}
+    
+    let result = 42
     const actual = await newTarget(obj);expect(actual).toEqual(result)
   })
   
@@ -18,7 +19,7 @@ describe('08_this', () => {
 
   describe('sample', () => {
     it('test 0', () => {
-      const result = undefined;
+      let result = undefined;
       const actual = sample();
       expect(actual).toEqual(result);
     });
@@ -26,7 +27,7 @@ describe('08_this', () => {
 
   describe('protoOverwrite', () => {
     it('test 0', () => {
-      const result = 2;
+      let result = 2;
       const actual = protoOverwrite();
       expect(actual).toEqual(result);
     });
@@ -34,41 +35,43 @@ describe('08_this', () => {
 
   describe('protoOverwriteHelper', () => {
     it('test 0', () => {
-      const foo = {
+      let foo = {
         bar: 2,
-        __proto__: {},
-        fun1: (...params) => {
-          const safeParams = params.length === 0 ? [undefined] : params;
-          return safeParams.reduce(
-            (acc, param) => {
-              if (typeof param === 'string') return acc[param];
-              const stringifiedParam = JSON.stringify(param);
-              if (stringifiedParam && stringifiedParam.length > 10000)
-                return acc['KEY_TOO_LARGE'];
-              return acc[stringifiedParam];
-            },
-            {
-              undefined: 2
-            }
-          );
-        },
-        fun2: (...params) => {
-          const safeParams = params.length === 0 ? [undefined] : params;
-          return safeParams.reduce(
-            (acc, param) => {
-              if (typeof param === 'string') return acc[param];
-              const stringifiedParam = JSON.stringify(param);
-              if (stringifiedParam && stringifiedParam.length > 10000)
-                return acc['KEY_TOO_LARGE'];
-              return acc[stringifiedParam];
-            },
-            {
-              undefined: 2
-            }
-          );
-        }
+        __proto__: {}
       };
-      const result = 2;
+      foo.fun1 = (...params) => {
+        const safeParams = params.length === 0 ? [undefined] : params;
+        return safeParams.reduce(
+          (acc, param) => {
+            if (typeof param === 'string') return acc[param];
+            const stringifiedParam = JSON.stringify(param);
+            if (stringifiedParam && stringifiedParam.length > 10000)
+              return acc['KEY_TOO_LARGE'];
+            return acc[stringifiedParam];
+          },
+          {
+            undefined: 2
+          }
+        );
+      };
+
+      foo.fun2 = (...params) => {
+        const safeParams = params.length === 0 ? [undefined] : params;
+        return safeParams.reduce(
+          (acc, param) => {
+            if (typeof param === 'string') return acc[param];
+            const stringifiedParam = JSON.stringify(param);
+            if (stringifiedParam && stringifiedParam.length > 10000)
+              return acc['KEY_TOO_LARGE'];
+            return acc[stringifiedParam];
+          },
+          {
+            undefined: 2
+          }
+        );
+      };
+
+      let result = 2;
       const actual = protoOverwriteHelper(foo);
       expect(actual).toEqual(result);
     });

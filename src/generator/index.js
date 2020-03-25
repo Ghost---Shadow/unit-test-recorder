@@ -13,6 +13,7 @@ const generateTestFromCapture = (functionIdentifier, meta, capture, testIndex) =
   const { doesReturnPromise } = meta;
   const {
     inputStatements,
+    injectedFunctionMocks,
     inputStatementExternalData,
   } = inputStatementsGenerator(capture, meta, testIndex);
   const {
@@ -26,6 +27,7 @@ const generateTestFromCapture = (functionIdentifier, meta, capture, testIndex) =
   const testString = `
   it('test ${testIndex}', ${asyncString}()=>{
     ${inputStatements.join('\n')}
+    ${(injectedFunctionMocks || []).join('\n')}
     ${resultStatement}
     ${expectStatement}
   })

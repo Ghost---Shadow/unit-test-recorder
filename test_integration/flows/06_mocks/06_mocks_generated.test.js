@@ -74,7 +74,7 @@ jest.mock('./auxilary1', () => {
 describe('06_mocks', () => {
   describe('getTodo', () => {
     it('test 0', () => {
-      const result = getTodo0result;
+      let result = getTodo0result;
       const actual = getTodo();
       expect(actual).toMatchObject(result);
     });
@@ -82,7 +82,7 @@ describe('06_mocks', () => {
 
   describe('localMocksTest', () => {
     it('test 0', async () => {
-      const result = 4;
+      let result = 4;
       const actual = await localMocksTest();
       expect(actual).toEqual(result);
     });

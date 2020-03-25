@@ -25,5 +25,15 @@ describe('recorder.utils', () => {
         }"
       `);
     });
+    it('should retain path to functions', () => {
+      const obj = { a: { b: { c: () => {} } } };
+      expect(safeStringify(obj)).toMatchInlineSnapshot(`
+        "{
+          \\"a\\": {
+            \\"b\\": {}
+          }
+        }"
+      `);
+    });
   });
 });

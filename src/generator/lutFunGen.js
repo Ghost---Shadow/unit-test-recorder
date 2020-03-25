@@ -7,6 +7,8 @@ const {
   packageDataForExternal,
 } = require('./utils');
 
+const KEY_TOO_LARGE = 'KEY_TOO_LARGE';
+
 const generatePayload = (lut, lIdentifier, meta, captureIndex, limit) => {
   if (!shouldMoveToExternal(lut, limit)) {
     const payload = wrapSafely(lut);
@@ -27,7 +29,9 @@ const generatePayload = (lut, lIdentifier, meta, captureIndex, limit) => {
   return { payload, externalData };
 };
 
-const captureArrayToLutFun = (captures, lIdentifier, meta, captureIndex, limit = 500) => {
+const captureArrayToLutFun = (
+  captures, lIdentifier, meta, captureIndex, limit = 500, keyLimit = 100,
+) => {
   const lut = captures.reduce((acc, capture) => {
     const stringifiedParams = capture.params.map((p) => {
       // TODO: wrapSafely
@@ -37,17 +41,23 @@ const captureArrayToLutFun = (captures, lIdentifier, meta, captureIndex, limit =
     const key = stringifiedParams.length === 0 ? undefined : stringifiedParams;
     const newObj = {};
     _.setWith(newObj, key, capture.result, Object);
+    if (key) {
+      const altKey = key.map(k => (k.length > keyLimit ? KEY_TOO_LARGE : k));
+      _.setWith(newObj, altKey, capture.result, Object);
+    }
     return _.merge(acc, newObj);
   }, {});
   const { payload, externalData } = generatePayload(
-    lut, lIdentifier, meta, captureIndex, limit,
+    lut, lIdentifier, meta, captureIndex, limit, keyLimit,
   );
   const code = `
   (...params) => {
     const safeParams = params.length === 0 ? [undefined] : params
     return safeParams.reduce((acc, param) => {
       if(typeof(param) === 'string') return acc[param]
-      return acc[JSON.stringify(param)]
+      const stringifiedParam = JSON.stringify(param)
+      if(stringifiedParam && stringifiedParam.length > ${keyLimit}) return acc['${KEY_TOO_LARGE}'];
+      return acc[stringifiedParam]
     },${payload})
   }
   `;

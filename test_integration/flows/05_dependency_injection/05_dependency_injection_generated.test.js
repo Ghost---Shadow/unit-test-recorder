@@ -14,7 +14,10 @@ describe('05_dependency_injection', () => {
           return safeParams.reduce(
             (acc, param) => {
               if (typeof param === 'string') return acc[param];
-              return acc[JSON.stringify(param)];
+              const stringifiedParam = JSON.stringify(param);
+              if (stringifiedParam && stringifiedParam.length > 100)
+                return acc['KEY_TOO_LARGE'];
+              return acc[stringifiedParam];
             },
             {
               'SELECT * FROM posts WHERE id=?': {
@@ -34,7 +37,10 @@ describe('05_dependency_injection', () => {
             return safeParams.reduce(
               (acc, param) => {
                 if (typeof param === 'string') return acc[param];
-                return acc[JSON.stringify(param)];
+                const stringifiedParam = JSON.stringify(param);
+                if (stringifiedParam && stringifiedParam.length > 100)
+                  return acc['KEY_TOO_LARGE'];
+                return acc[stringifiedParam];
               },
               {
                 'SELECT * FROM comments WHERE post_id=? AND region_id=?': {
@@ -57,7 +63,10 @@ describe('05_dependency_injection', () => {
           const safeParams = params.length === 0 ? [undefined] : params;
           return safeParams.reduce((acc, param) => {
             if (typeof param === 'string') return acc[param];
-            return acc[JSON.stringify(param)];
+            const stringifiedParam = JSON.stringify(param);
+            if (stringifiedParam && stringifiedParam.length > 100)
+              return acc['KEY_TOO_LARGE'];
+            return acc[stringifiedParam];
           }, {});
         }
       };
@@ -67,7 +76,10 @@ describe('05_dependency_injection', () => {
         return safeParams.reduce(
           (acc, param) => {
             if (typeof param === 'string') return acc[param];
-            return acc[JSON.stringify(param)];
+            const stringifiedParam = JSON.stringify(param);
+            if (stringifiedParam && stringifiedParam.length > 100)
+              return acc['KEY_TOO_LARGE'];
+            return acc[stringifiedParam];
           },
           {
             '1': 350

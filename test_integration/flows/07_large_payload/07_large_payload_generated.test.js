@@ -19,7 +19,10 @@ describe('07_large_payload', () => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce((acc, param) => {
           if (typeof param === 'string') return acc[param];
-          return acc[JSON.stringify(param)];
+          const stringifiedParam = JSON.stringify(param);
+          if (stringifiedParam && stringifiedParam.length > 100)
+            return acc['KEY_TOO_LARGE'];
+          return acc[stringifiedParam];
         }, getClickCountsHelper0requestDataCb);
       };
 

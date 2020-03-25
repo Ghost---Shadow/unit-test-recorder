@@ -32,6 +32,13 @@
                     ],
                     "result": {
                       "title": "content"
+                    },
+                    "types": {
+                      "params": [
+                        "String",
+                        "Number"
+                      ],
+                      "result": "Object"
                     }
                   },
                   {
@@ -39,7 +46,14 @@
                       "SELECT region_id FROM regions where post_id=?",
                       1
                     ],
-                    "result": 42
+                    "result": 42,
+                    "types": {
+                      "params": [
+                        "String",
+                        "Number"
+                      ],
+                      "result": "Number"
+                    }
                   }
                 ],
                 "hashTable": {
@@ -62,7 +76,15 @@
                       {
                         "comment": "comment 2"
                       }
-                    ]
+                    ],
+                    "types": {
+                      "params": [
+                        "String",
+                        "Number",
+                        "Number"
+                      ],
+                      "result": "Array"
+                    }
                   }
                 ],
                 "hashTable": {
@@ -75,7 +97,13 @@
                     "params": [
                       1
                     ],
-                    "result": 350
+                    "result": 350,
+                    "types": {
+                      "params": [
+                        "Number"
+                      ],
+                      "result": "Number"
+                    }
                   }
                 ],
                 "hashTable": {
@@ -85,7 +113,11 @@
               "dbClient.commitSync": {
                 "captures": [
                   {
-                    "params": []
+                    "params": [],
+                    "types": {
+                      "params": [],
+                      "result": "Undefined"
+                    }
                   }
                 ],
                 "hashTable": {

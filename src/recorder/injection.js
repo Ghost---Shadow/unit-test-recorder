@@ -4,6 +4,7 @@ const RecorderManager = require('./manager');
 const { traverse } = require('./object-traverser');
 const { newFunctionNameGenerator } = require('../util/misc');
 const { checkAndSetHash } = require('./hash-helper');
+const { generateTypesObj } = require('./dynamic-type-inference');
 
 const markForConstructorInjection = (meta) => {
   const { path, name } = meta;
@@ -13,7 +14,7 @@ const markForConstructorInjection = (meta) => {
     .meta.requiresContructorInjection = true;
 };
 
-const recordInjectedActivity = (meta, paramIds, index, fppkey, paramsOfInjected, result) => {
+const recordInjectedActivity = (meta, paramIds, index, fppkey, params, result) => {
   const { path, name, captureIndex } = meta;
   // Fully qualified name
   const fqn = fppkey ? `${paramIds[index]}.${fppkey}` : paramIds[index];
@@ -22,11 +23,13 @@ const recordInjectedActivity = (meta, paramIds, index, fppkey, paramsOfInjected,
   if (!_.get(RecorderManager, destinationPath)) {
     _.set(RecorderManager, destinationPath, []);
   }
-  if (checkAndSetHash(RecorderManager, basePath, paramsOfInjected)) {
+  if (checkAndSetHash(RecorderManager, basePath, params)) {
     return;
   }
+  // Record types from this capture
+  const types = generateTypesObj({ params, result });
   RecorderManager.recorderState[path].exportedFunctions[name]
-    .captures[captureIndex].injections[fqn].captures.push({ params: paramsOfInjected, result });
+    .captures[captureIndex].injections[fqn].captures.push({ params, result, types });
 };
 
 const injectFunctionDynamically = (maybeFunction, paramIds, meta, index, fppkey) => {

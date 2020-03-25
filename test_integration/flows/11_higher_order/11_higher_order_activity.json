@@ -56,7 +56,11 @@
                 "captures": [
                   {
                     "params": [],
-                    "result": 5
+                    "result": 5,
+                    "types": {
+                      "params": [],
+                      "result": "Number"
+                    }
                   }
                 ],
                 "hashTable": {

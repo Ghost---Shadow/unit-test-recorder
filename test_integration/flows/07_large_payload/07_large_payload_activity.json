@@ -748,7 +748,11 @@
                       {
                         "imageId": 99
                       }
-                    ]
+                    ],
+                    "types": {
+                      "params": [],
+                      "result": "Array"
+                    }
                   }
                 ],
                 "hashTable": {

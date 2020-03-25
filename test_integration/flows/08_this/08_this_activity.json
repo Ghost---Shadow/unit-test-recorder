@@ -118,7 +118,11 @@
                 "captures": [
                   {
                     "params": [],
-                    "result": 2
+                    "result": 2,
+                    "types": {
+                      "params": [],
+                      "result": "Number"
+                    }
                   }
                 ],
                 "hashTable": {
@@ -129,7 +133,11 @@
                 "captures": [
                   {
                     "params": [],
-                    "result": 2
+                    "result": 2,
+                    "types": {
+                      "params": [],
+                      "result": "Number"
+                    }
                   }
                 ],
                 "hashTable": {

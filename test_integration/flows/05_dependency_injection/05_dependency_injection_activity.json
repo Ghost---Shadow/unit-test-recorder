@@ -61,38 +61,20 @@
                   "T760nwO8CQPXxsyNlCfoXQ==": true
                 }
               },
-              "dbClient.__proto__.__proto__.pool.pooledQuery": {
+              "redisCache": {
                 "captures": [
                   {
                     "params": [
-                      "SELECT * FROM comments WHERE post_id=? AND region_id=?",
-                      1,
-                      42
+                      2
                     ],
-                    "result": [
-                      {
-                        "comment": "comment 1"
-                      },
-                      {
-                        "comment": "comment 2"
-                      }
-                    ],
+                    "result": 350,
                     "types": {
                       "params": [
-                        "String",
-                        "Number",
                         "Number"
                       ],
-                      "result": "Array"
+                      "result": "Number"
                     }
-                  }
-                ],
-                "hashTable": {
-                  "0Jl/wt9ETI6lpqBP8a7lrg==": true
-                }
-              },
-              "redisCache": {
-                "captures": [
+                  },
                   {
                     "params": [
                       1
@@ -107,7 +89,40 @@
                   }
                 ],
                 "hashTable": {
+                  "0AqRT9EPx92+k/YaoBk7Bg==": true,
                   "zzvvHO4JAn0vNgcX2g7OrA==": true
+                }
+              },
+              "dbClient.__proto__.__proto__.pool.pooledQuery": {
+                "captures": [
+                  {
+                    "params": [
+                      "SELECT * FROM comments WHERE post_id=? AND region_id=? AND votes=?",
+                      1,
+                      42,
+                      350
+                    ],
+                    "result": [
+                      {
+                        "comment": "comment 1"
+                      },
+                      {
+                        "comment": "comment 2"
+                      }
+                    ],
+                    "types": {
+                      "params": [
+                        "String",
+                        "Number",
+                        "Number",
+                        "Number"
+                      ],
+                      "result": "Array"
+                    }
+                  }
+                ],
+                "hashTable": {
+                  "QIybPf98iP7LjExe0vm0tw==": true
                 }
               },
               "dbClient.commitSync": {
@@ -170,7 +185,8 @@
           "name": "getPostComments",
           "paramIds": [
             "client",
-            "postId"
+            "postId",
+            "redisCache"
           ],
           "injectionWhitelist": [
             "query",
@@ -185,6 +201,38 @@
         "captures": [
           {
             "injections": {
+              "redisCache": {
+                "captures": [
+                  {
+                    "params": [
+                      2
+                    ],
+                    "result": 350,
+                    "types": {
+                      "params": [
+                        "Number"
+                      ],
+                      "result": "Number"
+                    }
+                  },
+                  {
+                    "params": [
+                      1
+                    ],
+                    "result": 350,
+                    "types": {
+                      "params": [
+                        "Number"
+                      ],
+                      "result": "Number"
+                    }
+                  }
+                ],
+                "hashTable": {
+                  "0AqRT9EPx92+k/YaoBk7Bg==": true,
+                  "zzvvHO4JAn0vNgcX2g7OrA==": true
+                }
+              },
               "client.__proto__.query": {
                 "captures": [
                   {
@@ -210,9 +258,10 @@
                 "captures": [
                   {
                     "params": [
-                      "SELECT * FROM comments WHERE post_id=? AND region_id=?",
+                      "SELECT * FROM comments WHERE post_id=? AND region_id=? AND votes=?",
                       1,
-                      42
+                      42,
+                      350
                     ],
                     "result": [
                       {
@@ -226,6 +275,7 @@
                       "params": [
                         "String",
                         "Number",
+                        "Number",
                         "Number"
                       ],
                       "result": "Array"
@@ -233,7 +283,7 @@
                   }
                 ],
                 "hashTable": {
-                  "0Jl/wt9ETI6lpqBP8a7lrg==": true
+                  "QIybPf98iP7LjExe0vm0tw==": true
                 }
               },
               "client.commitSync": {
@@ -259,7 +309,8 @@
                   }
                 }
               },
-              1
+              1,
+              null
             ],
             "result": [
               {
@@ -272,14 +323,15 @@
             "types": {
               "params": [
                 "Object",
-                "Number"
+                "Number",
+                "Function"
               ],
               "result": "Array"
             }
           }
         ],
         "hashTable": {
-          "59R5MpisGgPoJK7TLM0x4w==": true
+          "qqyOA7DF/CBDP6O3zAECJQ==": true
         }
       }
     }

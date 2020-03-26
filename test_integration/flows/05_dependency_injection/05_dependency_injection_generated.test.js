@@ -36,33 +36,6 @@ describe('05_dependency_injection', () => {
         );
       };
 
-      dbClient.pool.pooledQuery = (...params) => {
-        const safeParams = params.length === 0 ? [undefined] : params;
-        return safeParams.reduce(
-          (acc, param) => {
-            if (typeof param === 'string') return acc[param];
-            const stringifiedParam = JSON.stringify(param);
-            if (stringifiedParam && stringifiedParam.length > 10000)
-              return acc['KEY_TOO_LARGE'];
-            return acc[stringifiedParam];
-          },
-          {
-            'SELECT * FROM comments WHERE post_id=? AND region_id=?': {
-              '1': {
-                '42': [
-                  {
-                    comment: 'comment 1'
-                  },
-                  {
-                    comment: 'comment 2'
-                  }
-                ]
-              }
-            }
-          }
-        );
-      };
-
       redisCache = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(
@@ -74,7 +47,37 @@ describe('05_dependency_injection', () => {
             return acc[stringifiedParam];
           },
           {
-            '1': 350
+            '1': 350,
+            '2': 350
+          }
+        );
+      };
+
+      dbClient.pool.pooledQuery = (...params) => {
+        const safeParams = params.length === 0 ? [undefined] : params;
+        return safeParams.reduce(
+          (acc, param) => {
+            if (typeof param === 'string') return acc[param];
+            const stringifiedParam = JSON.stringify(param);
+            if (stringifiedParam && stringifiedParam.length > 10000)
+              return acc['KEY_TOO_LARGE'];
+            return acc[stringifiedParam];
+          },
+          {
+            'SELECT * FROM comments WHERE post_id=? AND region_id=? AND votes=?': {
+              '1': {
+                '42': {
+                  '350': [
+                    {
+                      comment: 'comment 1'
+                    },
+                    {
+                      comment: 'comment 2'
+                    }
+                  ]
+                }
+              }
+            }
           }
         );
       };
@@ -119,6 +122,24 @@ describe('05_dependency_injection', () => {
         }
       };
       let postId = 1;
+      let redisCache = null;
+      redisCache = (...params) => {
+        const safeParams = params.length === 0 ? [undefined] : params;
+        return safeParams.reduce(
+          (acc, param) => {
+            if (typeof param === 'string') return acc[param];
+            const stringifiedParam = JSON.stringify(param);
+            if (stringifiedParam && stringifiedParam.length > 10000)
+              return acc['KEY_TOO_LARGE'];
+            return acc[stringifiedParam];
+          },
+          {
+            '1': 350,
+            '2': 350
+          }
+        );
+      };
+
       client.query = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(
@@ -148,16 +169,18 @@ describe('05_dependency_injection', () => {
             return acc[stringifiedParam];
           },
           {
-            'SELECT * FROM comments WHERE post_id=? AND region_id=?': {
+            'SELECT * FROM comments WHERE post_id=? AND region_id=? AND votes=?': {
               '1': {
-                '42': [
-                  {
-                    comment: 'comment 1'
-                  },
-                  {
-                    comment: 'comment 2'
-                  }
-                ]
+                '42': {
+                  '350': [
+                    {
+                      comment: 'comment 1'
+                    },
+                    {
+                      comment: 'comment 2'
+                    }
+                  ]
+                }
               }
             }
           }
@@ -183,7 +206,7 @@ describe('05_dependency_injection', () => {
           comment: 'comment 2'
         }
       ];
-      const actual = await getPostComments(client, postId);
+      const actual = await getPostComments(client, postId, redisCache);
       expect(actual).toEqual(result);
     });
   });

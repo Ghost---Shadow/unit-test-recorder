@@ -3,8 +3,8 @@ const _ = require('lodash');
 const RecorderManager = require('./manager');
 
 const { injectDependencyInjections } = require('./injection');
-const { checkAndSetHash } = require('./hash-helper');
-const { generateTypesObj } = require('./dynamic-type-inference');
+const { checkAndSetHash } = require('./utils/hash-helper');
+const { generateTypesObj } = require('./utils/dynamic-type-inference');
 
 const pre = ({ meta, p }) => {
   const { path, name, paramIds } = meta;

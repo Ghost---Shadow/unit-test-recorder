@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const RecorderManager = require('./manager');
-const { checkAndSetHash } = require('./hash-helper');
-const { generateTypesObj } = require('./dynamic-type-inference');
+const { checkAndSetHash } = require('./utils/hash-helper');
+const { generateTypesObj } = require('./utils/dynamic-type-inference');
 
 const captureMockActivity = (meta, params, result) => {
   const { path, moduleName, name } = meta;

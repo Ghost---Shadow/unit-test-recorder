@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { safeStringify } = require('./utils');
+const { safeStringify } = require('./utils/safe-stringify');
 
 const removeNullCaptures = (recorderState) => {
   // RecorderManager.recorderState[path].exportedFunctions[name].captures[captureIndex]

@@ -1,10 +1,10 @@
 const _ = require('lodash');
 
 const RecorderManager = require('./manager');
-const { traverse } = require('./object-traverser');
+const { traverse } = require('./utils/object-traverser');
 const { newFunctionNameGenerator } = require('../util/misc');
-const { checkAndSetHash } = require('./hash-helper');
-const { generateTypesObj } = require('./dynamic-type-inference');
+const { checkAndSetHash } = require('./utils/hash-helper');
+const { generateTypesObj } = require('./utils/dynamic-type-inference');
 
 const markForConstructorInjection = (meta) => {
   const { path, name } = meta;

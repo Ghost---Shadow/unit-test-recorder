@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const _ = require('lodash');
-const { safeStringify } = require('./utils');
+const { safeStringify } = require('./safe-stringify');
 
 const generateHashForParam = (params) => {
   // TODO: safeStringify converts functions to null

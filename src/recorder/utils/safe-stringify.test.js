@@ -1,4 +1,4 @@
-const { safeStringify } = require('./utils');
+const { safeStringify } = require('./safe-stringify');
 
 describe('recorder.utils', () => {
   describe('safeStringify', () => {

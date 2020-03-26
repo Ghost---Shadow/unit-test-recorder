@@ -15,7 +15,7 @@
             "pooledQuery",
             "commitSync"
           ],
-          "isDefault": true,
+          "isDefault": false,
           "isEcmaDefault": false,
           "isAsync": true,
           "doesReturnPromise": true
@@ -40,55 +40,10 @@
                       ],
                       "result": "Object"
                     }
-                  },
-                  {
-                    "params": [
-                      "SELECT region_id FROM regions where post_id=?",
-                      1
-                    ],
-                    "result": 42,
-                    "types": {
-                      "params": [
-                        "String",
-                        "Number"
-                      ],
-                      "result": "Number"
-                    }
                   }
                 ],
                 "hashTable": {
-                  "dMf972OPP3nY45EvnbCSCw==": true,
-                  "T760nwO8CQPXxsyNlCfoXQ==": true
-                }
-              },
-              "dbClient.__proto__.__proto__.pool.pooledQuery": {
-                "captures": [
-                  {
-                    "params": [
-                      "SELECT * FROM comments WHERE post_id=? AND region_id=?",
-                      1,
-                      42
-                    ],
-                    "result": [
-                      {
-                        "comment": "comment 1"
-                      },
-                      {
-                        "comment": "comment 2"
-                      }
-                    ],
-                    "types": {
-                      "params": [
-                        "String",
-                        "Number",
-                        "Number"
-                      ],
-                      "result": "Array"
-                    }
-                  }
-                ],
-                "hashTable": {
-                  "0Jl/wt9ETI6lpqBP8a7lrg==": true
+                  "dMf972OPP3nY45EvnbCSCw==": true
                 }
               },
               "redisCache": {
@@ -108,20 +63,6 @@
                 ],
                 "hashTable": {
                   "zzvvHO4JAn0vNgcX2g7OrA==": true
-                }
-              },
-              "dbClient.commitSync": {
-                "captures": [
-                  {
-                    "params": [],
-                    "types": {
-                      "params": [],
-                      "result": "Undefined"
-                    }
-                  }
-                ],
-                "hashTable": {
-                  "11FxOYiYfpMxmANj4kGJzg==": true
                 }
               }
             },
@@ -162,6 +103,124 @@
         ],
         "hashTable": {
           "qqyOA7DF/CBDP6O3zAECJQ==": true
+        }
+      },
+      "getPostComments": {
+        "meta": {
+          "path": "test_integration/flows/05_dependency_injection/05_dependency_injection.js",
+          "name": "getPostComments",
+          "paramIds": [
+            "client",
+            "postId"
+          ],
+          "injectionWhitelist": [
+            "query",
+            "pooledQuery",
+            "commitSync"
+          ],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": true,
+          "doesReturnPromise": true
+        },
+        "captures": [
+          {
+            "injections": {
+              "client.__proto__.query": {
+                "captures": [
+                  {
+                    "params": [
+                      "SELECT region_id FROM regions where post_id=?",
+                      1
+                    ],
+                    "result": 42,
+                    "types": {
+                      "params": [
+                        "String",
+                        "Number"
+                      ],
+                      "result": "Number"
+                    }
+                  }
+                ],
+                "hashTable": {
+                  "T760nwO8CQPXxsyNlCfoXQ==": true
+                }
+              },
+              "client.__proto__.__proto__.pool.pooledQuery": {
+                "captures": [
+                  {
+                    "params": [
+                      "SELECT * FROM comments WHERE post_id=? AND region_id=?",
+                      1,
+                      42
+                    ],
+                    "result": [
+                      {
+                        "comment": "comment 1"
+                      },
+                      {
+                        "comment": "comment 2"
+                      }
+                    ],
+                    "types": {
+                      "params": [
+                        "String",
+                        "Number",
+                        "Number"
+                      ],
+                      "result": "Array"
+                    }
+                  }
+                ],
+                "hashTable": {
+                  "0Jl/wt9ETI6lpqBP8a7lrg==": true
+                }
+              },
+              "client.commitSync": {
+                "captures": [
+                  {
+                    "params": [],
+                    "types": {
+                      "params": [],
+                      "result": "Undefined"
+                    }
+                  }
+                ],
+                "hashTable": {
+                  "11FxOYiYfpMxmANj4kGJzg==": true
+                }
+              }
+            },
+            "params": [
+              {
+                "__proto__": {
+                  "__proto__": {
+                    "pool": {}
+                  }
+                }
+              },
+              1
+            ],
+            "result": [
+              {
+                "comment": "comment 1"
+              },
+              {
+                "comment": "comment 2"
+              }
+            ],
+            "types": {
+              "params": [
+                "Object",
+                "Number"
+              ],
+              "result": "Array"
+            }
+          }
+        ],
+        "hashTable": {
+          "59R5MpisGgPoJK7TLM0x4w==": true
         }
       }
     }

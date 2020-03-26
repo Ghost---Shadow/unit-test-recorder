@@ -1,4 +1,5 @@
-const getPost = require('./05_dependency_injection');
+const { getPost } = require('./05_dependency_injection');
+const { getPostComments } = require('./05_dependency_injection');
 
 describe('05_dependency_injection', () => {
   describe('getPost', () => {
@@ -27,7 +28,67 @@ describe('05_dependency_injection', () => {
               '1': {
                 title: 'content'
               }
-            },
+            }
+          }
+        );
+      };
+
+      redisCache = (...params) => {
+        const safeParams = params.length === 0 ? [undefined] : params;
+        return safeParams.reduce(
+          (acc, param) => {
+            if (typeof param === 'string') return acc[param];
+            const stringifiedParam = JSON.stringify(param);
+            if (stringifiedParam && stringifiedParam.length > 10000)
+              return acc['KEY_TOO_LARGE'];
+            return acc[stringifiedParam];
+          },
+          {
+            '1': 350
+          }
+        );
+      };
+
+      let result = {
+        content: {
+          title: 'content'
+        },
+        comments: [
+          {
+            comment: 'comment 1'
+          },
+          {
+            comment: 'comment 2'
+          }
+        ],
+        votes: 350
+      };
+      const actual = await getPost(dbClient, postId, redisCache);
+      expect(actual).toMatchObject(result);
+    });
+  });
+
+  describe('getPostComments', () => {
+    it('test 0', async () => {
+      let client = {
+        __proto__: {
+          __proto__: {
+            pool: {}
+          }
+        }
+      };
+      let postId = 1;
+      client.query = (...params) => {
+        const safeParams = params.length === 0 ? [undefined] : params;
+        return safeParams.reduce(
+          (acc, param) => {
+            if (typeof param === 'string') return acc[param];
+            const stringifiedParam = JSON.stringify(param);
+            if (stringifiedParam && stringifiedParam.length > 10000)
+              return acc['KEY_TOO_LARGE'];
+            return acc[stringifiedParam];
+          },
+          {
             'SELECT region_id FROM regions where post_id=?': {
               '1': 42
             }
@@ -35,7 +96,7 @@ describe('05_dependency_injection', () => {
         );
       };
 
-      dbClient.pool.pooledQuery = (...params) => {
+      client.pool.pooledQuery = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(
           (acc, param) => {
@@ -62,23 +123,7 @@ describe('05_dependency_injection', () => {
         );
       };
 
-      redisCache = (...params) => {
-        const safeParams = params.length === 0 ? [undefined] : params;
-        return safeParams.reduce(
-          (acc, param) => {
-            if (typeof param === 'string') return acc[param];
-            const stringifiedParam = JSON.stringify(param);
-            if (stringifiedParam && stringifiedParam.length > 10000)
-              return acc['KEY_TOO_LARGE'];
-            return acc[stringifiedParam];
-          },
-          {
-            '1': 350
-          }
-        );
-      };
-
-      dbClient.commitSync = (...params) => {
+      client.commitSync = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce((acc, param) => {
           if (typeof param === 'string') return acc[param];
@@ -89,22 +134,16 @@ describe('05_dependency_injection', () => {
         }, {});
       };
 
-      let result = {
-        content: {
-          title: 'content'
+      let result = [
+        {
+          comment: 'comment 1'
         },
-        comments: [
-          {
-            comment: 'comment 1'
-          },
-          {
-            comment: 'comment 2'
-          }
-        ],
-        votes: 350
-      };
-      const actual = await getPost(dbClient, postId, redisCache);
-      expect(actual).toMatchObject(result);
+        {
+          comment: 'comment 2'
+        }
+      ];
+      const actual = await getPostComments(client, postId);
+      expect(actual).toEqual(result);
     });
   });
 });

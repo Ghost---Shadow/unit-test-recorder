@@ -14,4 +14,4 @@ const getPost = async (dbClient, postId, redisCache) => {
   return { content, comments, votes };
 };
 
-module.exports = getPost;
+module.exports = { getPost, getPostComments };

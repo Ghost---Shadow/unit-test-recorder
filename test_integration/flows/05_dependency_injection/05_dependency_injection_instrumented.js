@@ -5,17 +5,31 @@ const getPostContent = (client, postId) =>
     postId
   );
 
-const getPostComments = async (client, postId) => {
-  const regionId = await client.testIntegrationFlows05DependencyInjection05DependencyInjectionJsQuery(
-    'SELECT region_id FROM regions where post_id=?',
-    postId
+const getPostComments = async (...p) =>
+  recorderWrapper(
+    {
+      path:
+        'test_integration/flows/05_dependency_injection/05_dependency_injection.js',
+      name: 'getPostComments',
+      paramIds: ['client', 'postId'],
+      injectionWhitelist: ['query', 'pooledQuery', 'commitSync'],
+      isDefault: false,
+      isEcmaDefault: false,
+      isAsync: true
+    },
+    async (client, postId) => {
+      const regionId = await client.testIntegrationFlows05DependencyInjection05DependencyInjectionJsQuery(
+        'SELECT region_id FROM regions where post_id=?',
+        postId
+      );
+      return client.pool.testIntegrationFlows05DependencyInjection05DependencyInjectionJsPooledQuery(
+        'SELECT * FROM comments WHERE post_id=? AND region_id=?',
+        postId,
+        regionId
+      );
+    },
+    ...p
   );
-  return client.pool.testIntegrationFlows05DependencyInjection05DependencyInjectionJsPooledQuery(
-    'SELECT * FROM comments WHERE post_id=? AND region_id=?',
-    postId,
-    regionId
-  );
-};
 
 const getPost = async (...p) =>
   recorderWrapper(
@@ -25,7 +39,7 @@ const getPost = async (...p) =>
       name: 'getPost',
       paramIds: ['dbClient', 'postId', 'redisCache'],
       injectionWhitelist: ['query', 'pooledQuery', 'commitSync'],
-      isDefault: true,
+      isDefault: false,
       isEcmaDefault: false,
       isAsync: true
     },
@@ -40,4 +54,4 @@ const getPost = async (...p) =>
     ...p
   );
 
-module.exports = getPost;
+module.exports = { getPost, getPostComments };

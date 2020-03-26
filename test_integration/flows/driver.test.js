@@ -7,7 +7,7 @@ const {
   default: ecma2, ecma1, ecma3, ecma4,
 } = require('./03_ecma_export/03_ecma_export_instrumented');
 const unserializeable = require('./04_unserializeable/04_unserializeable_instrumented');
-const getPost = require('./05_dependency_injection/05_dependency_injection_instrumented');
+const di = require('./05_dependency_injection/05_dependency_injection_instrumented');
 const mocks = require('./06_mocks/06_mocks_instrumented');
 const { getClickCounts } = require('./07_large_payload/07_large_payload_instrumented');
 const { newTarget, sample, protoOverwrite } = require('./08_this/08_this_instrumented');
@@ -93,7 +93,7 @@ describe('driver', () => {
       const redisCache = () => new Promise((resolve) => {
         setTimeout(() => resolve(350));
       });
-      await getPost(dbClient, 1, redisCache);
+      await di.getPost(dbClient, 1, redisCache);
       const outputFileName = getSnapshotFileName('05_dependency_injection');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

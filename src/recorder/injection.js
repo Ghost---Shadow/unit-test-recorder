@@ -5,6 +5,7 @@ const { traverse } = require('./utils/object-traverser');
 const { newFunctionNameGenerator } = require('../util/misc');
 const { checkAndSetHash } = require('./utils/hash-helper');
 const { generateTypesObj } = require('./utils/dynamic-type-inference');
+const { broadcastFunctions } = require('./utils/broadcast-functions');
 
 const markForConstructorInjection = (meta) => {
   const { path, name } = meta;
@@ -39,6 +40,7 @@ const injectFunctionDynamically = (maybeFunction, meta, boundRecorder) => {
     const OldFp = maybeFunction;
     // eslint-disable-next-line
     function injectedFunction(...paramsOfInjected) {
+      injectedFunction.boundRecorder = boundRecorder;
       // https://stackoverflow.com/a/31060154/1217998
       if (new.target) {
         markForConstructorInjection(meta);
@@ -49,10 +51,10 @@ const injectFunctionDynamically = (maybeFunction, meta, boundRecorder) => {
       if (result && _.isFunction(result.then)) {
         // It might be a promise
         result.then((res) => {
-          boundRecorder(paramsOfInjected, res);
+          injectedFunction.boundRecorder(paramsOfInjected, res);
         });
       } else {
-        boundRecorder(paramsOfInjected, result);
+        injectedFunction.boundRecorder(paramsOfInjected, result);
       }
       return result;
     }
@@ -63,6 +65,16 @@ const injectFunctionDynamically = (maybeFunction, meta, boundRecorder) => {
 
 const isWhitelisted = (injectionWhitelist, path) => injectionWhitelist
   .reduce((acc, fnName) => acc || _.last(path) === fnName, false);
+
+const getBoundRecorder = (existingProperty, meta, paramIndex, fppkey) => {
+  const newRecorder = recordInjectedActivity.bind(null, meta, paramIndex, fppkey);
+  // TODO: Make sure we are not overwriting the user's boundRecorder
+  // const oldRecorder = _.get(existingProperty, 'boundRecorder');
+  // if (_.isFunction(existingProperty) && oldRecorder) {
+  //   return broadcastFunctions(oldRecorder, newRecorder);
+  // }
+  return newRecorder;
+};
 
 const injectDependencyInjections = (params, meta) => {
   const { injectionWhitelist, path: fileName } = meta;
@@ -79,7 +91,7 @@ const injectDependencyInjections = (params, meta) => {
         const newPath = _.clone(path);
         newPath[lIndex] = newFnName;
         const fppkey = path.join('.');
-        const boundRecorder = recordInjectedActivity.bind(null, meta, paramIndex, fppkey);
+        const boundRecorder = getBoundRecorder(existingProperty, meta, paramIndex, fppkey);
         const injectedProperty = injectFunctionDynamically(
           existingProperty,
           meta,
@@ -88,7 +100,7 @@ const injectDependencyInjections = (params, meta) => {
         _.set(param, newPath, injectedProperty);
       });
     } else {
-      const boundRecorder = recordInjectedActivity.bind(null, meta, paramIndex, null);
+      const boundRecorder = getBoundRecorder(params[paramIndex], meta, paramIndex, null);
       params[paramIndex] = injectFunctionDynamically(
         param,
         meta,

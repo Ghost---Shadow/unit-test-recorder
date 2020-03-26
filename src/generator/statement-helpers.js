@@ -67,10 +67,16 @@ const dropProtoFromInjections = (injections) => {
 };
 
 const generateInputAssignmentsWithInjections = (capture, meta, testIndex) => {
+  const functionMockExternalData = [];
+  if (!capture.injections) {
+    return {
+      injectedFunctionMocks: [],
+      functionMockExternalData,
+    };
+  }
+
   // Drop the __proto__ from keys
   capture.injections = dropProtoFromInjections(capture.injections);
-
-  const allExternalData = [];
 
   // Generate mock functions
   const injectedFunctionMocks = Object.keys(capture.injections)
@@ -80,21 +86,13 @@ const generateInputAssignmentsWithInjections = (capture, meta, testIndex) => {
       const { code, externalData } = captureArrayToLutFun(
         captures, lIdentifier, meta, testIndex,
       );
-      allExternalData.push(...externalData);
+      functionMockExternalData.push(...externalData);
       return `${lIdentifier} = ${code}`;
     });
 
-  // Generate all the assignment operations
-  const {
-    inputStatements,
-    inputStatementExternalData,
-  } = generateRegularInputAssignments(capture, meta, testIndex);
-  allExternalData.push(...inputStatementExternalData);
-
   return {
-    inputStatements,
     injectedFunctionMocks,
-    inputStatementExternalData: allExternalData,
+    functionMockExternalData,
   };
 };
 

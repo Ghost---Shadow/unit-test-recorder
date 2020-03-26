@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
 const { captureArrayToLutFun } = require('./lutFunGen');
-const { externalImportReducer } = require('./statement-genenerators');
+const { reduceExternalImports } = require('./utils');
 
 const generateMocksFromActivity = (fileName, mocks) => {
   if (!mocks) {
@@ -33,7 +33,7 @@ const generateMocksFromActivity = (fileName, mocks) => {
           return `${usedFunction}: ${code}`;
         }).join(',\n');
       externalMocks.push(...externalsForThisModule);
-      const importStatements = externalImportReducer(externalsForThisModule);
+      const importStatements = reduceExternalImports(externalsForThisModule);
       const wrappedImportStatements = importStatements.length ? `
       // https://github.com/facebook/jest/issues/2567
       /* eslint-disable */

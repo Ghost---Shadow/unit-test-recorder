@@ -3,7 +3,7 @@ const prettier = require('prettier');
 const { filePathToFileName } = require('./utils');
 const { generateMocksFromActivity } = require('./mocks');
 const {
-  inputStatementsGenerator,
+  generateInputStatements,
   generateImportStatementFromActivity,
   generateExpectStatement,
   generateResultStatement,
@@ -15,7 +15,7 @@ const generateTestFromCapture = (functionIdentifier, meta, capture, testIndex) =
     inputStatements,
     injectedFunctionMocks,
     inputStatementExternalData,
-  } = inputStatementsGenerator(capture, meta, testIndex);
+  } = generateInputStatements(capture, meta, testIndex);
   const {
     resultStatement,
     resultStatementExternalData,
@@ -27,7 +27,7 @@ const generateTestFromCapture = (functionIdentifier, meta, capture, testIndex) =
   const testString = `
   it('test ${testIndex}', ${asyncString}()=>{
     ${inputStatements.join('\n')}
-    ${(injectedFunctionMocks || []).join('\n')}
+    ${injectedFunctionMocks.join('\n')}
     ${resultStatement}
     ${expectStatement}
   })

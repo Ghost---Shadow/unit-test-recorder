@@ -6,10 +6,7 @@ const {
   generateInputAssignmentsWithInjections,
 } = require('./statement-helpers');
 
-const externalImportReducer = externalData => externalData.reduce((acc, ed) => {
-  const { importPath, identifier } = ed;
-  return `${acc}\nconst ${identifier} = require('${importPath}')`;
-}, '');
+const { reduceExternalImports } = require('./utils');
 
 const generateImportStatementFromActivity = (activity, fileName, allExternalData) => {
   const importedFunctions = Object.keys(activity);
@@ -23,16 +20,33 @@ const generateImportStatementFromActivity = (activity, fileName, allExternalData
   // Mocks are imported in a separate place
   const externalsWithoutMocks = allExternalData.filter(ed => !ed.isMock);
 
-  const externalDataImports = externalImportReducer(externalsWithoutMocks);
+  const externalDataImports = reduceExternalImports(externalsWithoutMocks);
 
   return scriptImports + externalDataImports;
 };
 
-const inputStatementsGenerator = (capture, meta, testIndex) => {
-  if (!capture.injections) {
-    return generateRegularInputAssignments(capture, meta, testIndex);
-  }
-  return generateInputAssignmentsWithInjections(capture, meta, testIndex);
+const generateInputStatements = (capture, meta, testIndex) => {
+  const allExternalData = [];
+
+  // Generate all the assignment operations
+  const {
+    inputStatements,
+    inputStatementExternalData,
+  } = generateRegularInputAssignments(capture, meta, testIndex);
+  allExternalData.push(...inputStatementExternalData);
+
+  // Generate injected function assignments if any
+  const {
+    injectedFunctionMocks,
+    functionMockExternalData,
+  } = generateInputAssignmentsWithInjections(capture, meta, testIndex);
+  allExternalData.push(...functionMockExternalData);
+
+  return {
+    inputStatements,
+    injectedFunctionMocks,
+    inputStatementExternalData: allExternalData,
+  };
 };
 
 const generateExpectStatement = (functionIdentifier, capture, meta) => {
@@ -60,9 +74,8 @@ const generateResultStatement = (capture, meta, captureIndex) => {
 };
 
 module.exports = {
-  inputStatementsGenerator,
+  generateInputStatements,
   generateImportStatementFromActivity,
   generateExpectStatement,
   generateResultStatement,
-  externalImportReducer,
 };

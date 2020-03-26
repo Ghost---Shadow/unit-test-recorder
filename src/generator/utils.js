@@ -39,10 +39,16 @@ const packageDataForExternal = obj => prettier.format(
   },
 );
 
+const reduceExternalImports = externalData => externalData.reduce((acc, ed) => {
+  const { importPath, identifier } = ed;
+  return `${acc}\nconst ${identifier} = require('${importPath}')`;
+}, '');
+
 module.exports = {
   filePathToFileName,
   wrapSafely,
   shouldMoveToExternal,
   generateNameForExternal,
   packageDataForExternal,
+  reduceExternalImports,
 };

@@ -40,10 +40,55 @@
                       ],
                       "result": "Object"
                     }
+                  },
+                  {
+                    "params": [
+                      "SELECT region_id FROM regions where post_id=?",
+                      1
+                    ],
+                    "result": 42,
+                    "types": {
+                      "params": [
+                        "String",
+                        "Number"
+                      ],
+                      "result": "Number"
+                    }
                   }
                 ],
                 "hashTable": {
-                  "dMf972OPP3nY45EvnbCSCw==": true
+                  "dMf972OPP3nY45EvnbCSCw==": true,
+                  "T760nwO8CQPXxsyNlCfoXQ==": true
+                }
+              },
+              "dbClient.__proto__.__proto__.pool.pooledQuery": {
+                "captures": [
+                  {
+                    "params": [
+                      "SELECT * FROM comments WHERE post_id=? AND region_id=?",
+                      1,
+                      42
+                    ],
+                    "result": [
+                      {
+                        "comment": "comment 1"
+                      },
+                      {
+                        "comment": "comment 2"
+                      }
+                    ],
+                    "types": {
+                      "params": [
+                        "String",
+                        "Number",
+                        "Number"
+                      ],
+                      "result": "Array"
+                    }
+                  }
+                ],
+                "hashTable": {
+                  "0Jl/wt9ETI6lpqBP8a7lrg==": true
                 }
               },
               "redisCache": {
@@ -63,6 +108,20 @@
                 ],
                 "hashTable": {
                   "zzvvHO4JAn0vNgcX2g7OrA==": true
+                }
+              },
+              "dbClient.commitSync": {
+                "captures": [
+                  {
+                    "params": [],
+                    "types": {
+                      "params": [],
+                      "result": "Undefined"
+                    }
+                  }
+                ],
+                "hashTable": {
+                  "11FxOYiYfpMxmANj4kGJzg==": true
                 }
               }
             },

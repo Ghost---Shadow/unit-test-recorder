@@ -35,12 +35,14 @@ const recordInjectedActivity = (meta, paramIndex, fppkey, params, result) => {
     .captures[captureIndex].injections[fqn].captures.push({ params, result, types });
 };
 
+const getBoundRecorder = (meta, paramIndex, fppkey) => recordInjectedActivity
+  .bind(null, meta, paramIndex, fppkey);
+
 const injectFunctionDynamically = (maybeFunction, meta, boundRecorder) => {
   if (_.isFunction(maybeFunction)) {
     const OldFp = maybeFunction;
     // eslint-disable-next-line
     function injectedFunction(...paramsOfInjected) {
-      injectedFunction.boundRecorder = boundRecorder;
       // https://stackoverflow.com/a/31060154/1217998
       if (new.target) {
         markForConstructorInjection(meta);
@@ -58,6 +60,11 @@ const injectFunctionDynamically = (maybeFunction, meta, boundRecorder) => {
       }
       return result;
     }
+    if (OldFp.boundRecorder) {
+      OldFp.boundRecorder = broadcastFunctions(OldFp.boundRecorder, boundRecorder);
+      return OldFp;
+    }
+    injectedFunction.boundRecorder = boundRecorder;
     return injectedFunction;
   }
   return maybeFunction;
@@ -66,15 +73,6 @@ const injectFunctionDynamically = (maybeFunction, meta, boundRecorder) => {
 const isWhitelisted = (injectionWhitelist, path) => injectionWhitelist
   .reduce((acc, fnName) => acc || _.last(path) === fnName, false);
 
-const getBoundRecorder = (existingProperty, meta, paramIndex, fppkey) => {
-  const newRecorder = recordInjectedActivity.bind(null, meta, paramIndex, fppkey);
-  // TODO: Make sure we are not overwriting the user's boundRecorder
-  // const oldRecorder = _.get(existingProperty, 'boundRecorder');
-  // if (_.isFunction(existingProperty) && oldRecorder) {
-  //   return broadcastFunctions(oldRecorder, newRecorder);
-  // }
-  return newRecorder;
-};
 
 const injectDependencyInjections = (params, meta) => {
   const { injectionWhitelist, path: fileName } = meta;
@@ -91,16 +89,17 @@ const injectDependencyInjections = (params, meta) => {
         const newPath = _.clone(path);
         newPath[lIndex] = newFnName;
         const fppkey = path.join('.');
-        const boundRecorder = getBoundRecorder(existingProperty, meta, paramIndex, fppkey);
+        const boundRecorder = getBoundRecorder(meta, paramIndex, fppkey);
+        const propertyToInject = _.get(param, newPath, existingProperty);
         const injectedProperty = injectFunctionDynamically(
-          existingProperty,
+          propertyToInject,
           meta,
           boundRecorder,
         );
         _.set(param, newPath, injectedProperty);
       });
     } else {
-      const boundRecorder = getBoundRecorder(params[paramIndex], meta, paramIndex, null);
+      const boundRecorder = getBoundRecorder(meta, paramIndex, null);
       params[paramIndex] = injectFunctionDynamically(
         param,
         meta,

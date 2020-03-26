@@ -14,10 +14,12 @@ const markForConstructorInjection = (meta) => {
     .meta.requiresContructorInjection = true;
 };
 
-const recordInjectedActivity = (meta, paramIds, index, fppkey, params, result) => {
-  const { path, name, captureIndex } = meta;
+const recordInjectedActivity = (meta, paramIndex, fppkey, params, result) => {
+  const {
+    path, name, captureIndex, paramIds,
+  } = meta;
   // Fully qualified name
-  const fqn = fppkey ? `${paramIds[index]}.${fppkey}` : paramIds[index];
+  const fqn = fppkey ? `${paramIds[paramIndex]}.${fppkey}` : paramIds[paramIndex];
   const basePath = ['recorderState', path, 'exportedFunctions', name, 'captures', captureIndex, 'injections', fqn];
   const destinationPath = [...basePath, 'captures'];
   if (!_.get(RecorderManager, destinationPath)) {
@@ -32,7 +34,7 @@ const recordInjectedActivity = (meta, paramIds, index, fppkey, params, result) =
     .captures[captureIndex].injections[fqn].captures.push({ params, result, types });
 };
 
-const injectFunctionDynamically = (maybeFunction, paramIds, meta, index, fppkey) => {
+const injectFunctionDynamically = (maybeFunction, meta, paramIndex, fppkey) => {
   if (_.isFunction(maybeFunction)) {
     const OldFp = maybeFunction;
     // eslint-disable-next-line
@@ -47,10 +49,10 @@ const injectFunctionDynamically = (maybeFunction, paramIds, meta, index, fppkey)
       if (result && _.isFunction(result.then)) {
         // It might be a promise
         result.then((res) => {
-          recordInjectedActivity(meta, paramIds, index, fppkey, paramsOfInjected, res);
+          recordInjectedActivity(meta, paramIndex, fppkey, paramsOfInjected, res);
         });
       } else {
-        recordInjectedActivity(meta, paramIds, index, fppkey, paramsOfInjected, result);
+        recordInjectedActivity(meta, paramIndex, fppkey, paramsOfInjected, result);
       }
       return result;
     }
@@ -62,9 +64,9 @@ const injectFunctionDynamically = (maybeFunction, paramIds, meta, index, fppkey)
 const isWhitelisted = (injectionWhitelist, path) => injectionWhitelist
   .reduce((acc, fnName) => acc || _.last(path) === fnName, false);
 
-const injectDependencyInjections = (params, paramIds, meta) => {
+const injectDependencyInjections = (params, meta) => {
   const { injectionWhitelist, path: fileName } = meta;
-  params.forEach((param, index) => {
+  params.forEach((param, paramIndex) => {
     // If param is an object with functions
     // TODO: Handle array of functions
     if (_.isObject(param) && !_.isArray(param) && !_.isFunction(param)) {
@@ -79,19 +81,17 @@ const injectDependencyInjections = (params, paramIds, meta) => {
         const fppkey = path.join('.');
         const injectedProperty = injectFunctionDynamically(
           existingProperty,
-          paramIds,
           meta,
-          index,
+          paramIndex,
           fppkey,
         );
         _.set(param, newPath, injectedProperty);
       });
     } else {
-      params[index] = injectFunctionDynamically(
+      params[paramIndex] = injectFunctionDynamically(
         param,
-        paramIds,
         meta,
-        index,
+        paramIndex,
         null,
       );
     }

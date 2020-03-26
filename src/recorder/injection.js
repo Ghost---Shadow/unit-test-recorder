@@ -34,7 +34,7 @@ const recordInjectedActivity = (meta, paramIndex, fppkey, params, result) => {
     .captures[captureIndex].injections[fqn].captures.push({ params, result, types });
 };
 
-const injectFunctionDynamically = (maybeFunction, meta, paramIndex, fppkey) => {
+const injectFunctionDynamically = (maybeFunction, meta, boundRecorder) => {
   if (_.isFunction(maybeFunction)) {
     const OldFp = maybeFunction;
     // eslint-disable-next-line
@@ -49,10 +49,10 @@ const injectFunctionDynamically = (maybeFunction, meta, paramIndex, fppkey) => {
       if (result && _.isFunction(result.then)) {
         // It might be a promise
         result.then((res) => {
-          recordInjectedActivity(meta, paramIndex, fppkey, paramsOfInjected, res);
+          boundRecorder(paramsOfInjected, res);
         });
       } else {
-        recordInjectedActivity(meta, paramIndex, fppkey, paramsOfInjected, result);
+        boundRecorder(paramsOfInjected, result);
       }
       return result;
     }
@@ -79,20 +79,20 @@ const injectDependencyInjections = (params, meta) => {
         const newPath = _.clone(path);
         newPath[lIndex] = newFnName;
         const fppkey = path.join('.');
+        const boundRecorder = recordInjectedActivity.bind(null, meta, paramIndex, fppkey);
         const injectedProperty = injectFunctionDynamically(
           existingProperty,
           meta,
-          paramIndex,
-          fppkey,
+          boundRecorder,
         );
         _.set(param, newPath, injectedProperty);
       });
     } else {
+      const boundRecorder = recordInjectedActivity.bind(null, meta, paramIndex, null);
       params[paramIndex] = injectFunctionDynamically(
         param,
         meta,
-        paramIndex,
-        null,
+        boundRecorder,
       );
     }
   });

@@ -46,7 +46,7 @@ const transformFile = (fileName, whiteListedModules) => {
 
 const instrumentAllFiles = (entryPoint) => {
   const sourceDir = path.dirname(entryPoint);
-  const allFiles = walk(sourceDir);
+  const allFiles = walk(sourceDir).filter(f => f !== entryPoint);
 
   let whiteListedModules = { fs: true, axios: true };
   if (fs.existsSync('whitelist.json')) {

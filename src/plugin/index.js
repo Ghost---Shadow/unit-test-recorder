@@ -32,7 +32,7 @@ module.exports = (/* { types: t } */) => ({
   name: 'unit-test-recorder',
   visitor: {
     Program: {
-      enter() {
+      enter(path) {
         // Expected initial state
         // Filename of the file being traversed
         if (!this.fileName) throw new Error('fileName should be passed in state');
@@ -73,9 +73,11 @@ module.exports = (/* { types: t } */) => ({
         // Metadata for functions that are exported
         this.validFunctions = [];
         // All functions called by dependency injected objects
-        this.injectedFunctions = [];
+        this.injectedFunctions = {};
         // Dont inject these functions
         this.injectionBlackList = getBlackList();
+        // All variables bound to program level scope
+        this.topLevelBindings = path.scope.bindings;
       },
       exit(path) {
         // The identifier has to be a function and exported

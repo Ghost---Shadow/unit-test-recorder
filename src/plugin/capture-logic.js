@@ -191,17 +191,17 @@ const getParamBindingsInScope = path => Object
   .map(obj => obj.identifier.name);
 
 
-// const fun = p => p => p
-const isHigherOrderFunction = (path) => {
-  const functor = p => p.isArrowFunctionExpression()
-    || p.isFunctionDeclaration()
-    || p.isFunctionExpression();
-  const path1 = path.findParent(functor);
-  if (!path1) return false;
-  const path2 = path1.findParent(functor);
-  if (!path2) return false;
-  return true;
-};
+// // const fun = p => p => p
+// const isHigherOrderFunction = (path) => {
+//   const functor = p => p.isArrowFunctionExpression()
+//     || p.isFunctionDeclaration()
+//     || p.isFunctionExpression();
+//   const path1 = path.findParent(functor);
+//   if (!path1) return false;
+//   const path2 = path1.findParent(functor);
+//   if (!path2) return false;
+//   return true;
+// };
 
 // const fun = p => p
 // parentFunctionName = fun
@@ -218,13 +218,13 @@ const getParentFunctionName = (path) => {
   return n1 || n2 || null;
 };
 
-// const obj = {fun: p => p, fun2(p){return p}}
-const isWithinObject = (path) => {
-  const functor = p => p.isObjectMethod() || p.isObjectProperty();
-  const path1 = path.findParent(functor);
-  if (!path1) return false;
-  return true;
-};
+// // const obj = {fun: p => p, fun2(p){return p}}
+// const isWithinObject = (path) => {
+//   const functor = p => p.isObjectMethod() || p.isObjectProperty();
+//   const path1 = path.findParent(functor);
+//   if (!path1) return false;
+//   return true;
+// };
 
 // Capture called functions for dependency injections
 function captureFunForDi(path) {
@@ -248,23 +248,18 @@ function captureFunForDi(path) {
     const parentFunctionName = getParentFunctionName(path);
     if (!parentFunctionName) return;
 
-    // TODO: WIP: Dont process higher order functions
-    if (isHigherOrderFunction(path)) return;
+    // // TODO: WIP: Dont process higher order functions
+    // if (isHigherOrderFunction(path)) return;
 
-    // TODO: WIP: Dont process if function is within an object
-    if (isWithinObject(path)) return;
+    // // TODO: WIP: Dont process if function is within an object
+    // if (isWithinObject(path)) return;
 
     const functionPath = path.get('callee').get('property');
-    const index = _.findIndex(this.injectedFunctions, { name: functionName });
-    if (index === -1) {
-      this.injectedFunctions.push({
-        name: functionName,
-        paths: [functionPath],
-        parentFunctionName,
-      });
-      return;
+    const addr = [functionName, parentFunctionName, 'paths'];
+    if (!_.get(this.injectedFunctions, addr)) {
+      _.set(this.injectedFunctions, addr, []);
     }
-    this.injectedFunctions[index].paths.push(functionPath);
+    this.injectedFunctions[functionName][parentFunctionName].paths.push(functionPath);
   }
 }
 

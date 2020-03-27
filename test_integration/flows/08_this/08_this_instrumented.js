@@ -5,7 +5,7 @@ const newTarget = (...p) =>
       path: 'test_integration/flows/08_this/08_this.js',
       name: 'newTarget',
       paramIds: ['obj'],
-      injectionWhitelist: ['InjectedPromise', 'fun1', 'fun2'],
+      injectionWhitelist: ['InjectedPromise', 'fun2'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false
@@ -23,7 +23,7 @@ const sample = (...p) =>
       path: 'test_integration/flows/08_this/08_this.js',
       name: 'sample',
       paramIds: [],
-      injectionWhitelist: ['InjectedPromise', 'fun1', 'fun2'],
+      injectionWhitelist: ['InjectedPromise', 'fun2'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false
@@ -42,7 +42,7 @@ Foo.prototype.fun1 = function fun1() {
 };
 
 Foo.prototype.fun2 = function fun2() {
-  return this.testIntegrationFlows08This08ThisJsFun1();
+  return this.fun1();
 };
 
 const protoOverwriteHelper = (...p) =>
@@ -51,7 +51,7 @@ const protoOverwriteHelper = (...p) =>
       path: 'test_integration/flows/08_this/08_this.js',
       name: 'protoOverwriteHelper',
       paramIds: ['foo'],
-      injectionWhitelist: ['InjectedPromise', 'fun1', 'fun2'],
+      injectionWhitelist: ['InjectedPromise', 'fun2'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false
@@ -66,7 +66,7 @@ const protoOverwrite = (...p) =>
       path: 'test_integration/flows/08_this/08_this.js',
       name: 'protoOverwrite',
       paramIds: [],
-      injectionWhitelist: ['InjectedPromise', 'fun1', 'fun2'],
+      injectionWhitelist: ['InjectedPromise', 'fun2'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false

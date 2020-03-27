@@ -22,7 +22,7 @@ const validFun = param => param.someFun();
 const rObj = { foo: f => p => f(p) };
 const secondary1 = rObj.foo(p => p.someFun());
 // eslint-disable-next-line
-const secondary2 = rObj.foo(function(p){
+const secondary2 = rObj.foo(function f(p){
   return p.someFun();
 });
 

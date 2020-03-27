@@ -10,7 +10,6 @@
           ],
           "injectionWhitelist": [
             "InjectedPromise",
-            "fun1",
             "fun2"
           ],
           "isDefault": false,
@@ -44,7 +43,6 @@
           "paramIds": [],
           "injectionWhitelist": [
             "InjectedPromise",
-            "fun1",
             "fun2"
           ],
           "isDefault": false,
@@ -72,7 +70,6 @@
           "paramIds": [],
           "injectionWhitelist": [
             "InjectedPromise",
-            "fun1",
             "fun2"
           ],
           "isDefault": false,
@@ -103,7 +100,6 @@
           ],
           "injectionWhitelist": [
             "InjectedPromise",
-            "fun1",
             "fun2"
           ],
           "isDefault": false,
@@ -114,21 +110,6 @@
         "captures": [
           {
             "injections": {
-              "foo.__proto__.fun1": {
-                "captures": [
-                  {
-                    "params": [],
-                    "result": 2,
-                    "types": {
-                      "params": [],
-                      "result": "Number"
-                    }
-                  }
-                ],
-                "hashTable": {
-                  "11FxOYiYfpMxmANj4kGJzg==": true
-                }
-              },
               "foo.__proto__.fun2": {
                 "captures": [
                   {

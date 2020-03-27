@@ -104,6 +104,7 @@ describe('driver', () => {
       await mocks.getTodo();
       await mocks.localMocksTest();
       // mocks.datesTest(); // TODO
+      // await mocks.higherOrderTest(); // TODO
       const outputFileName = getSnapshotFileName('06_mocks');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

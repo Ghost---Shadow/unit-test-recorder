@@ -12,6 +12,8 @@ const foo4 = () => JSON.parse(fs.readFileSync('test_integration/flows/06_mocks/r
 
 const foo5 = () => new Date(2020, 1, 1);
 
+const higherOrder = a => b => a + b;
+
 module.exports = {
-  foo1, foo2, foo4, foo5,
+  foo1, foo2, foo4, foo5, higherOrder,
 };

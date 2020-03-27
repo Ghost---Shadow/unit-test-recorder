@@ -11,7 +11,17 @@ fileSystem.testIntegrationFlows06Mocks06MocksJsReadFileSync = (...p) =>
     fileSystem.readFileSync,
     ...p
   );
-const { foo1, foo2: foo3, foo4, foo5 } = require('./auxilary1');
+const { foo1, foo2: foo3, foo4, foo5, higherOrder } = require('./auxilary1');
+const testIntegrationFlows06Mocks06MocksJsHigherOrder = (...p) =>
+  mockRecorderWrapper(
+    {
+      path: 'test_integration/flows/06_mocks/06_mocks.js',
+      moduleName: './auxilary1',
+      name: 'higherOrder'
+    },
+    higherOrder,
+    ...p
+  );
 const testIntegrationFlows06Mocks06MocksJsFoo5 = (...p) =>
   mockRecorderWrapper(
     {
@@ -106,6 +116,7 @@ const localMocksTest = async (...p) =>
     ...p
   );
 
+// TODO: Not implemented
 const datesTest = (...p) =>
   recorderWrapper(
     {
@@ -121,4 +132,28 @@ const datesTest = (...p) =>
     ...p
   );
 
-module.exports = { getTodo, localMocksTest, datesTest };
+// TODO: Not implemented
+const higherOrderTest = (...p) =>
+  recorderWrapper(
+    {
+      path: 'test_integration/flows/06_mocks/06_mocks.js',
+      name: 'higherOrderTest',
+      paramIds: [],
+      injectionWhitelist: [],
+      isDefault: false,
+      isEcmaDefault: false,
+      isAsync: false
+    },
+    () => {
+      const gen = testIntegrationFlows06Mocks06MocksJsHigherOrder(1);
+      return gen(2);
+    },
+    ...p
+  );
+
+module.exports = {
+  getTodo,
+  localMocksTest,
+  datesTest,
+  higherOrderTest
+};

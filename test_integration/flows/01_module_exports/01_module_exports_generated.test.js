@@ -22,15 +22,6 @@ describe('01_module_exports', () => {
       const actual = foo(a, b);
       expect(actual).toEqual(result);
     });
-
-    it('test 2', () => {
-      let a = 2;
-      let b = 1;
-
-      let result = 3;
-      const actual = foo(a, b);
-      expect(actual).toEqual(result);
-    });
   });
 
   describe('bar', () => {

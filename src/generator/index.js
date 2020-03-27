@@ -48,9 +48,11 @@ const generateComments = (meta) => {
   return { failure: false, startComments: '', endComments: '' };
 };
 
-const generateTestsFromFunctionActivity = (functionName, functionActivity) => {
+const generateTestsFromFunctionActivity = (functionName, functionActivity, maxTestsPerFunction) => {
   const { meta, captures } = functionActivity;
-  const testData = captures
+  const slicedCaptures = maxTestsPerFunction === -1
+    ? captures : captures.slice(0, maxTestsPerFunction);
+  const testData = slicedCaptures
     .map((capture, index) => generateTestFromCapture(
       functionName,
       meta,
@@ -70,7 +72,7 @@ const generateTestsFromFunctionActivity = (functionName, functionActivity) => {
   return { describeBlock, externalData, failure };
 };
 
-const generateTestsFromActivity = (fileName, filePath, activity) => {
+const generateTestsFromActivity = (fileName, filePath, activity, maxTestsPerFunction) => {
   const { mocks, exportedFunctions } = activity;
   const describeData = Object
     .keys(exportedFunctions)
@@ -78,6 +80,7 @@ const generateTestsFromActivity = (fileName, filePath, activity) => {
       const { describeBlock, externalData } = generateTestsFromFunctionActivity(
         functionName,
         exportedFunctions[functionName],
+        maxTestsPerFunction,
       );
       return { describeBlock, externalData };
     });
@@ -112,7 +115,8 @@ const generateTestsFromActivity = (fileName, filePath, activity) => {
   return { fileString, externalData: allExternalData };
 };
 
-const extractTestsFromState = state => Object
+// maxTestsPerFunction: -1 == inf
+const extractTestsFromState = (state, maxTestsPerFunction = -1) => Object
   .keys(state)
   .map((filePath) => {
     try {
@@ -121,7 +125,7 @@ const extractTestsFromState = state => Object
       const {
         fileString,
         externalData,
-      } = generateTestsFromActivity(fileName, filePath, state[filePath]);
+      } = generateTestsFromActivity(fileName, filePath, state[filePath], maxTestsPerFunction);
       return { filePath, fileString, externalData };
     } catch (e) {
       console.error('Error tests for ', filePath);

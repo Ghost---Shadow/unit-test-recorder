@@ -152,6 +152,8 @@ describe('driver', () => {
       hoi.obj.fun({ anotherFun: () => 3 });
       hoi.obj.fun2({ anotherFun: () => 4 });
       hoi.validFun({ someFun: () => 5 });
+      hoi.secondary1({ someFun: () => 1 });
+      hoi.secondary2({ someFun: () => 1 });
       const outputFileName = getSnapshotFileName('11_higher_order');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

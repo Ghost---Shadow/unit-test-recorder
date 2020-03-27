@@ -203,6 +203,21 @@ const isHigherOrderFunction = (path) => {
   return true;
 };
 
+// const fun = p => p
+// parentFunctionName = fun
+const getParentFunctionName = (path) => {
+  const functor = p => p.isArrowFunctionExpression()
+    || p.isFunctionDeclaration()
+    || p.isFunctionExpression();
+  const parentPath = path.findParent(functor);
+  if (!parentPath) return null;
+  // Function likes
+  const n1 = _.get(parentPath, 'node.id.name');
+  // Arrow functions
+  const n2 = _.get(parentPath, 'parent.id.name');
+  return n1 || n2 || null;
+};
+
 // const obj = {fun: p => p, fun2(p){return p}}
 const isWithinObject = (path) => {
   const functor = p => p.isObjectMethod() || p.isObjectProperty();
@@ -229,6 +244,10 @@ function captureFunForDi(path) {
     const { name: rootId } = getRootObject(path.node.callee);
     if (_.findIndex(params, p => p === rootId) === -1) return;
 
+    // Dont process anonymous functions
+    const parentFunctionName = getParentFunctionName(path);
+    if (!parentFunctionName) return;
+
     // TODO: WIP: Dont process higher order functions
     if (isHigherOrderFunction(path)) return;
 
@@ -241,6 +260,7 @@ function captureFunForDi(path) {
       this.injectedFunctions.push({
         name: functionName,
         paths: [functionPath],
+        parentFunctionName,
       });
       return;
     }

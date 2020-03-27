@@ -21,6 +21,7 @@ const {
 } = require('./capture-logic');
 
 const {
+  getValidInjections,
   unclobberInjections,
   addInjectedFunctionsToMeta,
 } = require('./dependency-injection');
@@ -60,6 +61,7 @@ module.exports = (/* { types: t } */) => ({
         this.captureFunForDi = captureFunForDi.bind(this);
 
         // Function bindings for dependency-injection
+        this.getValidInjections = getValidInjections.bind(this);
         this.unclobberInjections = unclobberInjections.bind(this);
         this.addInjectedFunctionsToMeta = addInjectedFunctionsToMeta.bind(this);
 
@@ -78,6 +80,9 @@ module.exports = (/* { types: t } */) => ({
       exit(path) {
         // The identifier has to be a function and exported
         this.validFunctions = this.getValidFunctions();
+
+        // Only these dependency injections are captureable
+        this.validDependencyInjections = this.getValidInjections();
 
         // Rename all the dependency injected functions
         this.unclobberInjections();

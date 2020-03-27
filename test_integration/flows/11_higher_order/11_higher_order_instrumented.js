@@ -42,7 +42,7 @@ const obj = {
   fun2: param => param.anotherFun()
 };
 
-export const validFun = (...p) =>
+const validFun = (...p) =>
   recorderWrapper(
     {
       path: 'test_integration/flows/11_higher_order/11_higher_order.js',
@@ -57,4 +57,19 @@ export const validFun = (...p) =>
     ...p
   );
 
-export { base, base2, obj };
+const rObj = { foo: f => p => f(p) };
+const secondary1 = rObj.foo(p => p.someFun());
+// eslint-disable-next-line
+const secondary2 = rObj.foo(function(p) {
+  return p.someFun();
+});
+
+module.exports = {
+  base,
+  base2,
+  obj,
+  rObj,
+  secondary1,
+  secondary2,
+  validFun
+};

@@ -17,6 +17,15 @@ const obj = {
   fun2: param => param.anotherFun(),
 };
 
-export const validFun = param => param.someFun();
+const validFun = param => param.someFun();
 
-export { base, base2, obj };
+const rObj = { foo: f => p => f(p) };
+const secondary1 = rObj.foo(p => p.someFun());
+// eslint-disable-next-line
+const secondary2 = rObj.foo(function(p){
+  return p.someFun();
+});
+
+module.exports = {
+  base, base2, obj, rObj, secondary1, secondary2, validFun,
+};

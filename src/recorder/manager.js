@@ -1,4 +1,4 @@
-const { safeStringify, removeNullCaptures } = require('./utils/manager-helpers');
+const { safeStringify, removeNullCaptures, removeEmptyFiles } = require('./utils/manager-helpers');
 
 // TODO: Use redux
 const RecorderManager = {
@@ -8,6 +8,7 @@ const RecorderManager = {
   },
   getSerialized() {
     this.recorderState = removeNullCaptures(this.recorderState);
+    this.recorderState = removeEmptyFiles(this.recorderState);
     return safeStringify(this.recorderState);
   },
 };

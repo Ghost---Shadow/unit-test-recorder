@@ -1,4 +1,4 @@
-const { safeStringify, removeNullCaptures } = require('./manager-helpers');
+const { safeStringify, removeNullCaptures, removeEmptyFiles } = require('./manager-helpers');
 
 describe('recorder.utils', () => {
   describe('safeStringify', () => {
@@ -67,6 +67,51 @@ describe('recorder.utils', () => {
         },
       };
       expect(removeNullCaptures(recorderState)).toEqual(expected);
+    });
+  });
+  describe('removeEmptyFiles', () => {
+    it('should remove empty files', () => {
+      const recorderState = {
+        file1: {
+          exportedFunctions: {
+            function1: {
+              meta: {},
+              captures: [],
+            },
+            function2: {
+              meta: {},
+              captures: [{ params: [], result: null }],
+            },
+          },
+        },
+        file2: {
+          exportedFunctions: {
+            function1: {
+              meta: {},
+              captures: [],
+            },
+            function2: {
+              meta: {},
+              captures: [],
+            },
+          },
+        },
+      };
+      const expected = {
+        file1: {
+          exportedFunctions: {
+            function1: {
+              meta: {},
+              captures: [],
+            },
+            function2: {
+              meta: {},
+              captures: [{ params: [], result: null }],
+            },
+          },
+        },
+      };
+      expect(removeEmptyFiles(recorderState)).toEqual(expected);
     });
   });
 });

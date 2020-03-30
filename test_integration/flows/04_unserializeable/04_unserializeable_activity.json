@@ -101,6 +101,37 @@
         "hashTable": {
           "Er+sr8i14pQtLU46YaceVw==": true
         }
+      },
+      "returnsNaN": {
+        "meta": {
+          "path": "test_integration/flows/04_unserializeable/04_unserializeable.js",
+          "name": "returnsNaN",
+          "paramIds": [
+            "a"
+          ],
+          "injectionWhitelist": [],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              "a"
+            ],
+            "result": null,
+            "types": {
+              "params": [
+                "String"
+              ],
+              "result": "Number"
+            }
+          }
+        ],
+        "hashTable": {
+          "dYe2uh7/JcA1jFdJXBGNUw==": true
+        }
       }
     }
   }

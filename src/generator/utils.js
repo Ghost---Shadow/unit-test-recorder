@@ -10,6 +10,7 @@ const wrapSafely = (param, paramType = typeof (param)) => {
   paramType = paramType.toLowerCase();
   const result = {
     date: `new Date('${param}')`,
+    number: param === null ? 'Number.NaN' : param,
   }[paramType];
   // Circular jsons should never exist in activity
   return result || JSON.stringify(param, null, 2);

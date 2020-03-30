@@ -54,8 +54,24 @@ const getElapsedTime = (...p) =>
     ...p
   );
 
+const returnsNaN = (...p) =>
+  recorderWrapper(
+    {
+      path: 'test_integration/flows/04_unserializeable/04_unserializeable.js',
+      name: 'returnsNaN',
+      paramIds: ['a'],
+      injectionWhitelist: [],
+      isDefault: false,
+      isEcmaDefault: false,
+      isAsync: false
+    },
+    a => Number.parseFloat(a),
+    ...p
+  );
+
 module.exports = {
   circularReference,
   returnAFunction,
-  getElapsedTime
+  getElapsedTime,
+  returnsNaN
 };

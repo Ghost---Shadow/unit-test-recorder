@@ -1,6 +1,7 @@
 const { circularReference } = require('./04_unserializeable');
 const { returnAFunction } = require('./04_unserializeable');
 const { getElapsedTime } = require('./04_unserializeable');
+const { returnsNaN } = require('./04_unserializeable');
 
 describe('04_unserializeable', () => {
   describe('circularReference', () => {
@@ -33,6 +34,16 @@ describe('04_unserializeable', () => {
 
       let result = new Date('2001-01-30T18:30:00.000Z');
       const actual = getElapsedTime(start, end);
+      expect(actual).toEqual(result);
+    });
+  });
+
+  describe('returnsNaN', () => {
+    it('test 0', () => {
+      let a = 'a';
+
+      let result = Number.NaN;
+      const actual = returnsNaN(a);
       expect(actual).toEqual(result);
     });
   });

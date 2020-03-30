@@ -14,8 +14,11 @@ const getElapsedTime = (start, end) => {
   return result;
 };
 
+const returnsNaN = a => Number.parseFloat(a);
+
 module.exports = {
   circularReference,
   returnAFunction,
   getElapsedTime,
+  returnsNaN,
 };

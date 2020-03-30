@@ -79,8 +79,9 @@ function captureEfFromEp(path) {
 
   if (isExports && effectiveFunctionName) {
     const old = this.functionsToReplace[effectiveFunctionName];
+    const fixedExportedAs = effectiveFunctionName === 'default' ? ANON_DEFAULT_IDENTIFIER : exportedAs;
     this.functionsToReplace[effectiveFunctionName] = _.merge(old, {
-      exportedAs,
+      exportedAs: fixedExportedAs,
       isExported: true,
       isDefault: false,
       isEcmaDefault: exportedAs === 'default',

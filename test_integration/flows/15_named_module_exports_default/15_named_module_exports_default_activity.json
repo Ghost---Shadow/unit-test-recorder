@@ -1,0 +1,37 @@
+{
+  "test_integration/flows/15_named_module_exports_default/15_named_module_exports_default.js": {
+    "exportedFunctions": {
+      "foo": {
+        "meta": {
+          "path": "test_integration/flows/15_named_module_exports_default/15_named_module_exports_default.js",
+          "name": "foo",
+          "paramIds": [
+            "a"
+          ],
+          "injectionWhitelist": [],
+          "isDefault": true,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              1
+            ],
+            "result": 1,
+            "types": {
+              "params": [
+                "Number"
+              ],
+              "result": "Number"
+            }
+          }
+        ],
+        "hashTable": {
+          "zzvvHO4JAn0vNgcX2g7OrA==": true
+        }
+      }
+    }
+  }
+}

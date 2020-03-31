@@ -134,4 +134,11 @@ describe('plugin.test', () => {
       expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
     });
   });
+  describe('15_named_module_exports_default', () => {
+    it('should match instrumented code snapshot', () => {
+      const filename = '15_named_module_exports_default';
+      const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
+      expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
+    });
+  });
 });

@@ -18,7 +18,7 @@ const { instrumentAllFiles } = require('./instrumentation');
 const { generateAllTests } = require('./generation');
 
 const entryPoint = argv._[0];
-const maxTestsPerFunction = argv.maxTests;
+const maxTestsPerFunction = parseInt(argv.maxTests, 10) || -1;
 const debug = argv.d;
 
 // Instrument all files

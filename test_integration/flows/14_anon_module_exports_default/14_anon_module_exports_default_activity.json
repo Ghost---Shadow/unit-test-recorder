@@ -1,0 +1,37 @@
+{
+  "test_integration/flows/14_anon_module_exports_default/14_anon_module_exports_default.js": {
+    "exportedFunctions": {
+      "defaultExport": {
+        "meta": {
+          "path": "test_integration/flows/14_anon_module_exports_default/14_anon_module_exports_default.js",
+          "name": "defaultExport",
+          "paramIds": [
+            "a"
+          ],
+          "injectionWhitelist": [],
+          "isDefault": true,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              1
+            ],
+            "result": 1,
+            "types": {
+              "params": [
+                "Number"
+              ],
+              "result": "Number"
+            }
+          }
+        ],
+        "hashTable": {
+          "zzvvHO4JAn0vNgcX2g7OrA==": true
+        }
+      }
+    }
+  }
+}

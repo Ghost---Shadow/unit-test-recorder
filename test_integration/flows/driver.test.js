@@ -16,6 +16,7 @@ const { default: edTest } = require('./10_anon_export_default/10_anon_export_def
 const hoi = require('./11_higher_order/11_higher_order_instrumented');
 const ui = require('./12_unwanted_injections/12_unwanted_injections_instrumented');
 const anonTs = require('./13_anon_ts_export_default/13_anon_ts_export_default_instrumented');
+const anonMe = require('./14_anon_module_exports_default/14_anon_module_exports_default_instrumented');
 
 expect.extend({ toMatchFile });
 
@@ -176,6 +177,14 @@ describe('driver', () => {
       RecorderManager.clear();
       anonTs.default(1, 2);
       const outputFileName = getSnapshotFileName('13_anon_ts_export_default');
+      expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
+    });
+  });
+  describe('14_anon_module_exports_default', () => {
+    it('should record activity', async () => {
+      RecorderManager.clear();
+      anonMe(1);
+      const outputFileName = getSnapshotFileName('14_anon_module_exports_default');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });
   });

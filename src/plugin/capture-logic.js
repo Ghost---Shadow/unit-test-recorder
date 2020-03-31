@@ -41,7 +41,7 @@ function captureEfFromMe(path) {
         isDefault: true,
         isEcmaDefault: false,
       });
-    } else {
+    } else if (t.isObjectExpression(right)) {
       // module.exports = { foo, bar }
       path.traverse({
         ObjectProperty(innerPath) {
@@ -57,7 +57,17 @@ function captureEfFromMe(path) {
           });
         },
       }, this);
+    } else if (t.isArrowFunctionExpression(right)) {
+      // module.exports = a => a
+      const functionName = ANON_DEFAULT_IDENTIFIER;
+      const old = this.functionsToReplace[functionName];
+      this.functionsToReplace[functionName] = _.merge(old, {
+        isExported: true,
+        isDefault: true,
+        isEcmaDefault: false,
+      });
     }
+    // TODO: Function expression
   }
 }
 
@@ -169,10 +179,12 @@ function captureFunFromAf(path) {
   const functionName = _.get(path, 'parent.id.name');
   // module.exports.foo = () => 42
   const exportedAs = _.get(path, 'parent.left.property.name');
+  // module.exports = () => 42
+  const effectiveExportedAs = exportedAs === 'exports' ? ANON_DEFAULT_IDENTIFIER : exportedAs;
   // Is anonymous export default
   const isAnonDefault = _.get(path, 'parent.type') === 'ExportDefaultDeclaration' ? ANON_DEFAULT_IDENTIFIER : undefined;
 
-  const effectiveFunctionName = functionName || exportedAs || isAnonDefault;
+  const effectiveFunctionName = functionName || effectiveExportedAs || isAnonDefault;
 
   if (effectiveFunctionName) {
     const isAsync = !!path.node.async;

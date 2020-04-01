@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
-const cp = require('child_process');
 const { promisify } = require('util');
 
 const { RecorderManager } = require('../recorder');
@@ -10,15 +9,6 @@ const { getTestFileNameForFile } = require('../util/misc');
 
 const writeFileAsync = promisify(fs.writeFile);
 const readFileAsync = promisify(fs.readFile);
-
-const gitResetHard = () => {
-  try {
-    console.log('Using git to reset changes');
-    cp.execSync('git reset --hard');
-  } catch (e) {
-    console.error(e);
-  }
-};
 
 const writeAndFetchSerializedState = async (fileName) => {
   console.log('Dumping activity to disk');
@@ -43,9 +33,6 @@ const writeTestAndExternalData = async ({ testObj, packagedArguments }) => {
 };
 
 const generateAllTests = async (packagedArguments) => {
-  // Undo all the instrumentation
-  gitResetHard();
-
   try {
     // Make sure activity.json is the source of truth for generaton
     const newState = await writeAndFetchSerializedState('activity.json');

@@ -1,3 +1,4 @@
+const cp = require('child_process');
 const path = require('path');
 const { argv } = require('yargs')
   .usage('Usage: $0 [entrypoint.js] [options]')
@@ -40,9 +41,17 @@ const packagedArguments = {
 // Instrument all files
 instrumentAllFiles(packagedArguments);
 
-// Generate the test cases
 process.on('SIGINT', async () => {
+  // Dont reset or generate tests if debug mode
   if (debug) { process.exit(0); }
+  // Undo all the instrumentation
+  try {
+    console.log('Using git to reset changes');
+    cp.execSync('git reset --hard');
+  } catch (e) {
+    console.error(e);
+  }
+  // Generate the test cases
   await generateAllTests(packagedArguments);
 });
 

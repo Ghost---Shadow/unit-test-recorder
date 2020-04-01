@@ -30,23 +30,18 @@ describe('generator.test', () => {
     it('should match generated test code snapshot', () => {
       const testFiles = extractTestsFromState('{}');
       // Only one file per test
-      expect(testFiles[0]).toMatchInlineSnapshot(`
+      expect(testFiles[0]).toMatchInlineSnapshot(
+        {
+          fileString: expect.any(String), // Error message
+        },
+        `
         Object {
           "externalData": Array [],
           "filePath": "0",
-          "fileString": "'TypeError: Cannot destructure property \`outputDir\` of 'undefined' or 'null'.
-            at map (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:126:29)
-            at Array.map (<anonymous>)
-            at extractTestsFromState (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:123:4)
-            at Object.it (/mnt/c/Users/windows/Desktop/unit-test-recorder/test_integration/flows/generator.test.js:31:25)
-            at Object.asyncJestTest (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:102:37)
-            at resolve (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/queueRunner.js:43:12)
-            at new Promise (<anonymous>)
-            at mapper (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/queueRunner.js:26:19)
-            at promise.then (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/queueRunner.js:73:41)
-            at process._tickCallback (internal/process/next_tick.js:68:7)'",
+          "fileString": Any<String>,
         }
-      `);
+      `,
+      );
     });
   });
   describe('01_module_exports', () => {

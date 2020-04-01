@@ -3,7 +3,7 @@ const _ = require('lodash');
 const { captureArrayToLutFun } = require('./lutFunGen');
 const { reduceExternalImports } = require('./utils');
 
-const generateMocksFromActivity = (fileName, mocks, relativePath) => {
+const generateMocksFromActivity = (fileName, mocks, relativePath, packagedArguments) => {
   if (!mocks) {
     return {
       mockStatements: '',
@@ -25,7 +25,7 @@ const generateMocksFromActivity = (fileName, mocks, relativePath) => {
             relativePath,
           };
           const { code, externalData } = captureArrayToLutFun(
-            captures, lIdentifier, meta, testIndex,
+            captures, lIdentifier, meta, testIndex, packagedArguments,
           );
           // Mark it as mock so that the import generator
           // Doesnt generate it again

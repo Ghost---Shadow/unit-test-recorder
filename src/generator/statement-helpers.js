@@ -7,8 +7,11 @@ const {
   packageDataForExternal,
 } = require('./utils');
 
-const generateAssignmentOperation = (maybeObject, lIdentifier, meta, captureIndex, paramType) => {
-  if (!shouldMoveToExternal(maybeObject)) {
+const generateAssignmentOperation = (
+  maybeObject, lIdentifier, meta, captureIndex, paramType, packagedArguments,
+) => {
+  const { sizeLimit } = packagedArguments;
+  if (!shouldMoveToExternal(maybeObject, sizeLimit)) {
     const statement = `let ${lIdentifier} = ${wrapSafely(maybeObject, paramType)}`;
     return { statement, externalData: [] };
   }
@@ -26,7 +29,7 @@ const generateAssignmentOperation = (maybeObject, lIdentifier, meta, captureInde
   return { statement, externalData };
 };
 
-const generateRegularInputAssignments = (capture, meta, testIndex) => {
+const generateRegularInputAssignments = (capture, meta, testIndex, packagedArguments) => {
   const { paramIds } = meta;
   const { params, types } = capture;
   const paramTypes = _.get(types, 'params', []);
@@ -38,7 +41,7 @@ const generateRegularInputAssignments = (capture, meta, testIndex) => {
       const captureIndex = testIndex;
       const paramType = paramTypes[index];
       const { statement, externalData } = generateAssignmentOperation(
-        maybeObject, lIdentifier, meta, captureIndex, paramType,
+        maybeObject, lIdentifier, meta, captureIndex, paramType, packagedArguments,
       );
       return { statement, externalData };
     });
@@ -66,7 +69,7 @@ const dropProtoFromInjections = (injections) => {
   }, {});
 };
 
-const generateInputAssignmentsWithInjections = (capture, meta, testIndex) => {
+const generateInputAssignmentsWithInjections = (capture, meta, testIndex, packagedArguments) => {
   const functionMockExternalData = [];
   if (!capture.injections) {
     return {
@@ -84,7 +87,7 @@ const generateInputAssignmentsWithInjections = (capture, meta, testIndex) => {
       const lIdentifier = injPath;
       const { captures } = capture.injections[injPath];
       const { code, externalData } = captureArrayToLutFun(
-        captures, lIdentifier, meta, testIndex,
+        captures, lIdentifier, meta, testIndex, packagedArguments,
       );
       functionMockExternalData.push(...externalData);
       return `${lIdentifier} = ${code}`;

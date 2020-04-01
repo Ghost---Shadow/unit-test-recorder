@@ -23,6 +23,7 @@ const defaultPackagedArguments = {
   debug: false,
   outputDir: null,
   testExt: 'test.js',
+  sizeLimit: 500,
 };
 
 describe('generator.test', () => {
@@ -49,7 +50,10 @@ describe('generator.test', () => {
       const filename = '01_module_exports';
       const { outputPath, state } = getInputAndOutputPathForTests(filename);
       const maxTestsPerFunction = 2;
-      const testFiles = extractTestsFromState(state, { maxTestsPerFunction });
+      const testFiles = extractTestsFromState(state, {
+        ...defaultPackagedArguments,
+        maxTestsPerFunction,
+      });
       // Only one file per test
       expect(testFiles[0].fileString).toMatchFile(outputPath);
       testFiles[0].externalData.forEach((ed) => {

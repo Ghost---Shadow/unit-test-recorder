@@ -20,6 +20,9 @@ const { argv } = require('yargs')
   .default('test-ext', 'test.js')
   .describe('test-ext', 'Extension for test files (.spec.js/.test.ts)')
 
+  .default('size-limit', 500)
+  .describe('size-limit', 'Objects larger than this limit will be moved to a different file')
+
   .boolean(['d']); // Debug
 
 const { instrumentAllFiles } = require('./instrumentation');
@@ -29,13 +32,14 @@ const { generateAllTests } = require('./generation');
 const entryPoint = argv._[0];
 const maxTestsPerFunction = parseInt(argv.maxTests, 10) || -1;
 const debug = argv.d;
-const { outputDir, testExt } = argv;
+const { outputDir, testExt, sizeLimit } = argv;
 const packagedArguments = {
   entryPoint,
   maxTestsPerFunction,
   debug,
   outputDir,
   testExt,
+  sizeLimit,
 };
 
 // Instrument all files

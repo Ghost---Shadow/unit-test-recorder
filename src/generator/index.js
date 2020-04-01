@@ -9,17 +9,19 @@ const {
   generateResultStatement,
 } = require('./statement-genenerators');
 
-const generateTestFromCapture = (functionIdentifier, meta, capture, testIndex) => {
+const generateTestFromCapture = (
+  functionIdentifier, meta, capture, testIndex, packagedArguments,
+) => {
   const { doesReturnPromise } = meta;
   const {
     inputStatements,
     injectedFunctionMocks,
     inputStatementExternalData,
-  } = generateInputStatements(capture, meta, testIndex);
+  } = generateInputStatements(capture, meta, testIndex, packagedArguments);
   const {
     resultStatement,
     resultStatementExternalData,
-  } = generateResultStatement(capture, meta, testIndex);
+  } = generateResultStatement(capture, meta, testIndex, packagedArguments);
   const expectStatement = generateExpectStatement(
     functionIdentifier, capture, meta,
   );
@@ -48,8 +50,9 @@ const generateComments = (meta) => {
   return { failure: false, startComments: '', endComments: '' };
 };
 
-const generateTestsFromFunctionActivity = (functionName, functionActivity, maxTestsPerFunction) => {
+const generateTestsFromFunctionActivity = (functionName, functionActivity, packagedArguments) => {
   const { meta, captures } = functionActivity;
+  const { maxTestsPerFunction } = packagedArguments;
   const slicedCaptures = maxTestsPerFunction === -1
     ? captures : captures.slice(0, maxTestsPerFunction);
   const testData = slicedCaptures
@@ -58,6 +61,7 @@ const generateTestsFromFunctionActivity = (functionName, functionActivity, maxTe
       meta,
       capture,
       index,
+      packagedArguments,
     ));
   const tests = testData.map(t => t.testString).join('\n');
   const externalData = testData.reduce((acc, d) => acc.concat(d.externalData), []);
@@ -72,7 +76,7 @@ const generateTestsFromFunctionActivity = (functionName, functionActivity, maxTe
   return { describeBlock, externalData, failure };
 };
 
-const generateTestsFromActivity = (fileName, filePath, activity, maxTestsPerFunction) => {
+const generateTestsFromActivity = (fileName, filePath, activity, packagedArguments) => {
   const { mocks, exportedFunctions, relativePath } = activity;
   const describeData = Object
     .keys(exportedFunctions)
@@ -80,7 +84,7 @@ const generateTestsFromActivity = (fileName, filePath, activity, maxTestsPerFunc
       const { describeBlock, externalData } = generateTestsFromFunctionActivity(
         functionName,
         exportedFunctions[functionName],
-        maxTestsPerFunction,
+        packagedArguments,
       );
       return { describeBlock, externalData };
     });
@@ -91,7 +95,7 @@ const generateTestsFromActivity = (fileName, filePath, activity, maxTestsPerFunc
   const {
     mockStatements,
     externalMocks,
-  } = generateMocksFromActivity(filePath, mocks, relativePath);
+  } = generateMocksFromActivity(filePath, mocks, relativePath, packagedArguments);
   const allExternalData = externalData.concat(externalMocks);
   const importStatements = generateImportStatementFromActivity(exportedFunctions, allExternalData);
 
@@ -137,12 +141,11 @@ const extractTestsFromState = (state, packagedArguments) => Object
 
       // Generate tests
       console.log('Generating tests for ', fileName);
-      const { maxTestsPerFunction } = packagedArguments;
       const {
         fileString,
         externalData,
       } = generateTestsFromActivity(
-        fileName, filePath, state[filePath], maxTestsPerFunction,
+        fileName, filePath, state[filePath], packagedArguments,
       );
 
       return { filePath: outputFilePath, fileString, externalData };

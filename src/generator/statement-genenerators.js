@@ -27,21 +27,21 @@ const generateImportStatementFromActivity = (activity, allExternalData) => {
   return scriptImports + externalDataImports;
 };
 
-const generateInputStatements = (capture, meta, testIndex) => {
+const generateInputStatements = (capture, meta, testIndex, packagedArguments) => {
   const allExternalData = [];
 
   // Generate all the assignment operations
   const {
     inputStatements,
     inputStatementExternalData,
-  } = generateRegularInputAssignments(capture, meta, testIndex);
+  } = generateRegularInputAssignments(capture, meta, testIndex, packagedArguments);
   allExternalData.push(...inputStatementExternalData);
 
   // Generate injected function assignments if any
   const {
     injectedFunctionMocks,
     functionMockExternalData,
-  } = generateInputAssignmentsWithInjections(capture, meta, testIndex);
+  } = generateInputAssignmentsWithInjections(capture, meta, testIndex, packagedArguments);
   allExternalData.push(...functionMockExternalData);
 
   return {
@@ -65,12 +65,12 @@ const generateExpectStatement = (functionIdentifier, capture, meta) => {
   }[resultType] || defaultReturn;
 };
 
-const generateResultStatement = (capture, meta, captureIndex) => {
+const generateResultStatement = (capture, meta, captureIndex, packagedArguments) => {
   const maybeObject = capture.result;
   const resultType = _.get(capture, 'types.result');
   const lIdentifier = 'result';
   const { statement, externalData } = generateAssignmentOperation(
-    maybeObject, lIdentifier, meta, captureIndex, resultType,
+    maybeObject, lIdentifier, meta, captureIndex, resultType, packagedArguments,
   );
   return { resultStatement: statement, resultStatementExternalData: externalData };
 };

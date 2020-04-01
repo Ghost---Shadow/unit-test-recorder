@@ -15,11 +15,13 @@ describe('lutFunGen', () => {
       const lIdentifier = 'lIdentifier.foo.bar';
       const meta = { path: 'path', name: 'name', relativePath: './' };
       const captureIndex = 0;
+      const packagedArguments = { sizeLimit: 500 };
       const { code, externalData } = captureArrayToLutFun(
         captures,
         lIdentifier,
         meta,
         captureIndex,
+        packagedArguments,
       );
       const formattedCode = prettier.format(code, {
         singleQuote: true,
@@ -77,12 +79,13 @@ describe('lutFunGen', () => {
       const meta = { path: 'path', name: 'name', relativePath: './' };
       const captureIndex = 0;
       const limit = 10;
+      const packagedArguments = { sizeLimit: limit };
       const { code, externalData } = captureArrayToLutFun(
         captures,
         lIdentifier,
         meta,
         captureIndex,
-        limit,
+        packagedArguments,
       );
       const formattedCode = prettier.format(code, {
         singleQuote: true,
@@ -118,12 +121,13 @@ describe('lutFunGen', () => {
       const captureIndex = 0;
       const limit = 500;
       const keyLimit = 2;
+      const packagedArguments = { sizeLimit: limit };
       const { code } = captureArrayToLutFun(
         captures,
         lIdentifier,
         meta,
         captureIndex,
-        limit,
+        packagedArguments,
         keyLimit,
       );
       const formattedCode = prettier.format(code, {
@@ -169,12 +173,13 @@ describe('lutFunGen', () => {
       const captureIndex = 0;
       const limit = 5;
       const keyLimit = 5;
+      const packagedArguments = { sizeLimit: limit };
       const { code, externalData } = captureArrayToLutFun(
         captures,
         lIdentifier,
         meta,
         captureIndex,
-        limit,
+        packagedArguments,
         keyLimit,
       );
       const formattedCode = prettier.format(code, {

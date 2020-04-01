@@ -43,8 +43,7 @@ const wrapSafely = (param, paramType = typeof (param)) => {
 
 // If the stringified payload > 500 chars long
 // then it should be used as an external file
-// TODO: Make configurable from CLI
-const shouldMoveToExternal = (obj, limit = 500) => obj && JSON.stringify(obj).length > limit;
+const shouldMoveToExternal = (obj, limit) => obj && JSON.stringify(obj).length > limit;
 
 const generateNameForExternal = (meta, captureIndex, identifierName) => {
   const { path: sourceFilePath, name: functionName, relativePath } = meta;

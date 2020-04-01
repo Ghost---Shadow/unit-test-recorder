@@ -18,7 +18,7 @@ const { argv } = require('yargs')
   .alias('o', 'output-dir')
 
   .default('test-ext', 'test.js')
-  .describe('test-ext', 'Extension for test files (.spec.js/.test.ts)')
+  .describe('test-ext', 'Extension for test files (spec.js/test.ts)')
 
   .default('size-limit', 500)
   .describe('size-limit', 'Objects larger than this limit will be moved to a different file')

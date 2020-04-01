@@ -9,7 +9,7 @@ const { argv } = require('yargs')
   .describe('whitelist', 'Specify the path to whitelist json')
   .alias('w', 'whitelist')
 
-  .default('max-tests', '-1')
+  .default('max-tests', '5')
   .describe('max-tests', 'Maximum number of generated tests per function. Type -1 for infinity')
   .alias('t', 'max-tests')
 

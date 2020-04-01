@@ -12,7 +12,7 @@ const { argv } = require('yargs')
   .describe('max-tests', 'Maximum number of generated tests per function. Type -1 for infinity')
   .alias('t', 'max-tests')
 
-  .default('output-dir', './')
+  .default('output-dir', null)
   .describe('output-dir', 'The directory in which the tests would be written to.')
   .alias('o', 'output-dir')
 

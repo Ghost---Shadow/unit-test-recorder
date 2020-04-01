@@ -117,15 +117,18 @@ const generateTestsFromActivity = (fileName, filePath, activity, maxTestsPerFunc
 };
 
 // maxTestsPerFunction: -1 == inf
-const extractTestsFromState = (state, maxTestsPerFunction = -1, outputDir = './') => Object
+// outputDir === null means use the same directory as inputDir
+const extractTestsFromState = (state, maxTestsPerFunction = -1, outputDir = null) => Object
   .keys(state)
   .map((filePath) => {
     try {
       // Generate output file path and store it in the state meta
-      const { outputFilePath, relativePath } = getOutputFilePath(filePath, outputDir);
+      const { outputFilePath, importPath, relativePath } = getOutputFilePath(filePath, outputDir);
       Object.keys(state[filePath].exportedFunctions).forEach((functionName) => {
+        state[filePath].exportedFunctions[functionName].meta.importPath = importPath;
         state[filePath].exportedFunctions[functionName].meta.relativePath = relativePath;
       });
+      state[filePath].importPath = importPath;
       state[filePath].relativePath = relativePath;
 
       // Generate file name from file path

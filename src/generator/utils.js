@@ -1,16 +1,29 @@
 const path = require('path');
 const prettier = require('prettier');
 
-const filePathToFileName = (filePath) => {
-  const basePath = path.basename(filePath);
-  return basePath.substring(0, basePath.length - 3);
-};
+const filePathToFileName = filePath => path.parse(filePath).name;
 
-// TODO
-const getOutputFilePath = (filePath /* outputDir */) => {
-  const relativePath = './';
-  const outputFilePath = filePath;
-  return { outputFilePath, relativePath };
+const getOutputFilePath = (filePath, outputDir) => {
+  const fileName = filePathToFileName(filePath);
+
+  // outputDir === null means use the same directory as inputDir
+  if (outputDir === null) {
+    return {
+      outputFilePath: filePath,
+      importPath: `./${fileName}`,
+      relativePath: './',
+    };
+  }
+  const inputDir = path.dirname(filePath);
+  const baseName = path.basename(filePath);
+
+  const outputFilePath = path.join(outputDir, inputDir, baseName);
+  const finalOutputDir = path.dirname(outputFilePath);
+  const importPath = path.join(path.normalize(path.relative(finalOutputDir, inputDir)), '/', fileName);
+  const relativePath = path.join(path.normalize(path.relative(inputDir, finalOutputDir)), '/');
+  const formatedImportPath = importPath.startsWith('.') ? importPath : `./${importPath}`;
+
+  return { outputFilePath, importPath: formatedImportPath, relativePath };
 };
 
 const wrapSafely = (param, paramType = typeof (param)) => {
@@ -32,7 +45,7 @@ const generateNameForExternal = (meta, captureIndex, identifierName) => {
   const { path: sourceFilePath, name: functionName, relativePath } = meta;
   const sourceFileDir = path.dirname(path.join('.', sourceFilePath));
   const outputDir = path.normalize(path.join(sourceFileDir, relativePath));
-  const fileName = path.parse(sourceFilePath).name;
+  const fileName = filePathToFileName(sourceFilePath);
   const externalName = `${functionName}_${captureIndex}_${identifierName}.mock.js`;
   const filePath = path.join(outputDir, fileName, externalName);
   const importPath = `./${path.join(fileName, externalName)}`;

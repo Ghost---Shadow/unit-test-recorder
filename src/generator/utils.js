@@ -3,24 +3,29 @@ const prettier = require('prettier');
 
 const filePathToFileName = filePath => path.parse(filePath).name;
 
-const getOutputFilePath = (filePath, outputDir) => {
+const getOutputFilePath = (rawFilePath, rawOutputDir) => {
+  // Handle Windows file paths
+  const filePath = rawFilePath.replace(/\\/g, '/');
   const fileName = filePathToFileName(filePath);
 
-  // outputDir === null means use the same directory as inputDir
-  if (!outputDir) {
+  // rawOutputDir === null means use the same directory as inputDir
+  if (!rawOutputDir) {
     return {
       outputFilePath: filePath,
       importPath: `./${fileName}`,
       relativePath: './',
     };
   }
-  const inputDir = path.dirname(filePath);
-  const baseName = path.basename(filePath);
+  const outputDir = rawOutputDir.replace(/\\/g, '/');
 
-  const outputFilePath = path.join(outputDir, inputDir, baseName);
-  const finalOutputDir = path.dirname(outputFilePath);
-  const importPath = path.join(path.normalize(path.relative(finalOutputDir, inputDir)), '/', fileName);
-  const relativePath = path.join(path.normalize(path.relative(inputDir, finalOutputDir)), '/');
+  const inputDir = path.posix.dirname(filePath);
+  const baseName = path.posix.basename(filePath);
+
+  // https://github.com/nodejs/node/issues/1904#issuecomment-109341435
+  const outputFilePath = path.posix.join(outputDir, inputDir, baseName);
+  const finalOutputDir = path.posix.dirname(outputFilePath);
+  const importPath = path.posix.join(path.posix.normalize(path.posix.relative(finalOutputDir, inputDir)), '/', fileName);
+  const relativePath = path.posix.join(path.posix.normalize(path.posix.relative(inputDir, finalOutputDir)), '/');
   const formatedImportPath = importPath.startsWith('.') ? importPath : `./${importPath}`;
 
   return { outputFilePath, importPath: formatedImportPath, relativePath };
@@ -43,12 +48,12 @@ const shouldMoveToExternal = (obj, limit = 500) => obj && JSON.stringify(obj).le
 
 const generateNameForExternal = (meta, captureIndex, identifierName) => {
   const { path: sourceFilePath, name: functionName, relativePath } = meta;
-  const sourceFileDir = path.dirname(path.join('.', sourceFilePath));
-  const outputDir = path.normalize(path.join(sourceFileDir, relativePath));
+  const sourceFileDir = path.posix.dirname(path.posix.join('.', sourceFilePath));
+  const outputDir = path.posix.normalize(path.posix.join(sourceFileDir, relativePath));
   const fileName = filePathToFileName(sourceFilePath);
   const externalName = `${functionName}_${captureIndex}_${identifierName}.mock.js`;
-  const filePath = path.join(outputDir, fileName, externalName);
-  const importPath = `./${path.join(fileName, externalName)}`;
+  const filePath = path.posix.join(outputDir, fileName, externalName);
+  const importPath = `./${path.posix.join(fileName, externalName)}`;
   const identifier = `${functionName}${captureIndex}${identifierName}`;
   return { identifier, filePath, importPath };
 };

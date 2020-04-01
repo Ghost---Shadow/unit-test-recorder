@@ -51,5 +51,16 @@ describe('generator_utils', () => {
       };
       expect(actual).toEqual(expected);
     });
+    it('should work on windows', () => {
+      const filePath = 'dir1\\dir2\\foo.js';
+      const outputDir = '.\\dir3';
+      const actual = getOutputFilePath(filePath, outputDir);
+      const expected = {
+        outputFilePath: 'dir3/dir1/dir2/foo.js',
+        importPath: '../../../dir1/dir2/foo',
+        relativePath: '../../dir3/dir1/dir2/',
+      };
+      expect(actual).toEqual(expected);
+    });
   });
 });

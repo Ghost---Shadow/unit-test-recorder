@@ -27,10 +27,11 @@ const writeAndFetchSerializedState = async (fileName) => {
   return JSON.parse(nonCircularState.toString());
 };
 
-const writeTestAndExternalData = async (testObj) => {
+const writeTestAndExternalData = async ({ testObj, packagedArguments }) => {
   console.log('Writing test for: ', testObj.filePath);
   mkdirp.sync(path.dirname(testObj.filePath));
-  const testFileName = getTestFileNameForFile(testObj.filePath);
+  const { testExt } = packagedArguments;
+  const testFileName = getTestFileNameForFile(testObj.filePath, testExt);
   const testFilePromise = writeFileAsync(testFileName, testObj.fileString);
   const externalDataPromises = testObj.externalData.map((ed) => {
     console.log('Creating dir:', path.dirname(ed.filePath));
@@ -53,7 +54,9 @@ const generateAllTests = async (packagedArguments) => {
     const testData = await extractTestsFromState(newState, packagedArguments);
 
     console.log('Dumping test cases to disk');
-    const writePromises = testData.map(writeTestAndExternalData);
+    const writePromises = testData
+      .map(testObj => ({ testObj, packagedArguments }))
+      .map(writeTestAndExternalData);
     await Promise.all(writePromises);
     process.exit();
   } catch (e) {

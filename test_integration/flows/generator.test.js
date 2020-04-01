@@ -22,6 +22,7 @@ const defaultPackagedArguments = {
   maxTestsPerFunction: -1,
   debug: false,
   outputDir: null,
+  testExt: 'test.js',
 };
 
 describe('generator.test', () => {
@@ -37,7 +38,7 @@ describe('generator.test', () => {
             at map (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:126:29)
             at Array.map (<anonymous>)
             at extractTestsFromState (/mnt/c/Users/windows/Desktop/unit-test-recorder/src/generator/index.js:123:4)
-            at Object.it (/mnt/c/Users/windows/Desktop/unit-test-recorder/test_integration/flows/generator.test.js:30:25)
+            at Object.it (/mnt/c/Users/windows/Desktop/unit-test-recorder/test_integration/flows/generator.test.js:31:25)
             at Object.asyncJestTest (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:102:37)
             at resolve (/mnt/c/Users/windows/Desktop/unit-test-recorder/node_modules/jest-jasmine2/build/queueRunner.js:43:12)
             at new Promise (<anonymous>)

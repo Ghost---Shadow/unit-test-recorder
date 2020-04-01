@@ -16,6 +16,9 @@ const { argv } = require('yargs')
   .describe('output-dir', 'The directory in which the tests would be written to.')
   .alias('o', 'output-dir')
 
+  .default('test-ext', 'test.js')
+  .describe('test-ext', 'Extension for test files (.spec.js/.test.ts)')
+
   .boolean(['d']); // Debug
 
 const { instrumentAllFiles } = require('./instrumentation');
@@ -25,12 +28,13 @@ const { generateAllTests } = require('./generation');
 const entryPoint = argv._[0];
 const maxTestsPerFunction = parseInt(argv.maxTests, 10) || -1;
 const debug = argv.d;
-const { outputDir } = argv;
+const { outputDir, testExt } = argv;
 const packagedArguments = {
   entryPoint,
   maxTestsPerFunction,
   debug,
   outputDir,
+  testExt,
 };
 
 // Instrument all files

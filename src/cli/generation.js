@@ -29,6 +29,7 @@ const writeAndFetchSerializedState = async (fileName) => {
 
 const writeTestAndExternalData = async (testObj) => {
   console.log('Writing test for: ', testObj.filePath);
+  mkdirp.sync(path.dirname(testObj.filePath));
   const testFileName = getTestFileNameForFile(testObj.filePath);
   const testFilePromise = writeFileAsync(testFileName, testObj.fileString);
   const externalDataPromises = testObj.externalData.map((ed) => {

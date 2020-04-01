@@ -1,6 +1,6 @@
 // TODO: Use babel template
 const prettier = require('prettier');
-const { filePathToFileName } = require('./utils');
+const { filePathToFileName, getOutputFilePath } = require('./utils');
 const { generateMocksFromActivity } = require('./mocks');
 const {
   generateInputStatements,
@@ -73,7 +73,7 @@ const generateTestsFromFunctionActivity = (functionName, functionActivity, maxTe
 };
 
 const generateTestsFromActivity = (fileName, filePath, activity, maxTestsPerFunction) => {
-  const { mocks, exportedFunctions } = activity;
+  const { mocks, exportedFunctions, relativePath } = activity;
   const describeData = Object
     .keys(exportedFunctions)
     .map((functionName) => {
@@ -88,11 +88,12 @@ const generateTestsFromActivity = (fileName, filePath, activity, maxTestsPerFunc
   const describeBlocks = describeData.map(d => d.describeBlock).join('\n');
   const externalData = describeData.reduce((acc, d) => acc.concat(d.externalData), []);
 
-  const { mockStatements, externalMocks } = generateMocksFromActivity(filePath, mocks);
+  const {
+    mockStatements,
+    externalMocks,
+  } = generateMocksFromActivity(filePath, mocks, relativePath);
   const allExternalData = externalData.concat(externalMocks);
-  const importStatements = generateImportStatementFromActivity(
-    exportedFunctions, fileName, allExternalData,
-  );
+  const importStatements = generateImportStatementFromActivity(exportedFunctions, allExternalData);
 
   const result = `
   ${importStatements}
@@ -116,17 +117,30 @@ const generateTestsFromActivity = (fileName, filePath, activity, maxTestsPerFunc
 };
 
 // maxTestsPerFunction: -1 == inf
-const extractTestsFromState = (state, maxTestsPerFunction = -1) => Object
+const extractTestsFromState = (state, maxTestsPerFunction = -1, outputDir = './') => Object
   .keys(state)
   .map((filePath) => {
     try {
+      // Generate output file path and store it in the state meta
+      const { outputFilePath, relativePath } = getOutputFilePath(filePath, outputDir);
+      Object.keys(state[filePath].exportedFunctions).forEach((functionName) => {
+        state[filePath].exportedFunctions[functionName].meta.relativePath = relativePath;
+      });
+      state[filePath].relativePath = relativePath;
+
+      // Generate file name from file path
       const fileName = filePathToFileName(filePath);
+
+      // Generate tests
       console.log('Generating tests for ', fileName);
       const {
         fileString,
         externalData,
-      } = generateTestsFromActivity(fileName, filePath, state[filePath], maxTestsPerFunction);
-      return { filePath, fileString, externalData };
+      } = generateTestsFromActivity(
+        fileName, filePath, state[filePath], maxTestsPerFunction,
+      );
+
+      return { filePath: outputFilePath, fileString, externalData };
     } catch (e) {
       console.error('Error tests for ', filePath);
       return { filePath, fileString: `'${e.stack.toString()}'`, externalData: [] };

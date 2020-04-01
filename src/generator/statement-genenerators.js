@@ -1,5 +1,7 @@
 const _ = require('lodash');
 
+const { filePathToFileName } = require('./utils');
+
 const {
   generateAssignmentOperation,
   generateRegularInputAssignments,
@@ -8,13 +10,17 @@ const {
 
 const { reduceExternalImports } = require('./utils');
 
-const generateImportStatementFromActivity = (activity, fileName, allExternalData) => {
+const generateImportStatementFromActivity = (activity, allExternalData) => {
   const importedFunctions = Object.keys(activity);
   const scriptImports = importedFunctions.reduce((acc, importedFunction) => {
-    const { isDefault, isEcmaDefault } = activity[importedFunction].meta;
-    if (isEcmaDefault) return `${acc}\nconst {default:${importedFunction}} = require('./${fileName}')`;
-    if (isDefault) return `${acc}\nconst ${importedFunction} = require('./${fileName}')`;
-    return `${acc}\nconst {${importedFunction}} = require('./${fileName}')`;
+    const {
+      isDefault, isEcmaDefault, path, relativePath,
+    } = activity[importedFunction].meta;
+    const fileName = filePathToFileName(path);
+    const fullFileName = `${relativePath}${fileName}`;
+    if (isEcmaDefault) return `${acc}\nconst {default:${importedFunction}} = require('${fullFileName}')`;
+    if (isDefault) return `${acc}\nconst ${importedFunction} = require('${fullFileName}')`;
+    return `${acc}\nconst {${importedFunction}} = require('${fullFileName}')`;
   }, '');
 
   // Mocks are imported in a separate place

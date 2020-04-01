@@ -3,7 +3,7 @@ const _ = require('lodash');
 const { captureArrayToLutFun } = require('./lutFunGen');
 const { reduceExternalImports } = require('./utils');
 
-const generateMocksFromActivity = (fileName, mocks) => {
+const generateMocksFromActivity = (fileName, mocks, relativePath) => {
   if (!mocks) {
     return {
       mockStatements: '',
@@ -22,6 +22,7 @@ const generateMocksFromActivity = (fileName, mocks) => {
           const meta = {
             path: fileName,
             name: _.camelCase(moduleId), // TODO: Add tests for large payload mocks
+            relativePath,
           };
           const { code, externalData } = captureArrayToLutFun(
             captures, lIdentifier, meta, testIndex,

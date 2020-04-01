@@ -1,4 +1,4 @@
-const { generateNameForExternal } = require('./utils');
+const { generateNameForExternal, getOutputFilePath } = require('./utils');
 
 describe('generator_utils', () => {
   describe('generateNameForExternal', () => {
@@ -7,13 +7,23 @@ describe('generator_utils', () => {
       const functionName = 'getClickCounts';
       const captureIndex = 1;
       const identifierName = 'result';
-      const meta = { path: sourceFilePath, name: functionName };
+      const relativePath = './';
+      const meta = { path: sourceFilePath, name: functionName, relativePath };
       const actual = generateNameForExternal(meta, captureIndex, identifierName);
       expect(actual).toEqual({
         identifier: 'getClickCounts1result',
         filePath: 'test_integration/flows/07_large_payload/07_large_payload/getClickCounts_1_result.mock.js',
         importPath: './07_large_payload/getClickCounts_1_result.mock.js',
       });
+    });
+  });
+  describe('getOutputFilePath', () => {
+    describe('should work for relative paths', () => {
+      const filePath = 'dir1/dir2/foo.js';
+      const outputDir = './';
+      const actual = getOutputFilePath(filePath, outputDir);
+      const expected = { outputFilePath: 'dir1/dir2/foo.js', relativePath: './' };
+      expect(actual).toEqual(expected);
     });
   });
 });

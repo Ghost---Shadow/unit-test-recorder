@@ -6,6 +6,13 @@ const filePathToFileName = (filePath) => {
   return basePath.substring(0, basePath.length - 3);
 };
 
+// TODO
+const getOutputFilePath = (filePath /* outputDir */) => {
+  const relativePath = './';
+  const outputFilePath = filePath;
+  return { outputFilePath, relativePath };
+};
+
 const wrapSafely = (param, paramType = typeof (param)) => {
   paramType = paramType.toLowerCase();
   const result = {
@@ -22,11 +29,12 @@ const wrapSafely = (param, paramType = typeof (param)) => {
 const shouldMoveToExternal = (obj, limit = 500) => obj && JSON.stringify(obj).length > limit;
 
 const generateNameForExternal = (meta, captureIndex, identifierName) => {
-  const { path: sourceFilePath, name: functionName } = meta;
+  const { path: sourceFilePath, name: functionName, relativePath } = meta;
   const sourceFileDir = path.dirname(path.join('.', sourceFilePath));
+  const outputDir = path.normalize(path.join(sourceFileDir, relativePath));
   const fileName = path.parse(sourceFilePath).name;
   const externalName = `${functionName}_${captureIndex}_${identifierName}.mock.js`;
-  const filePath = path.join(sourceFileDir, fileName, externalName);
+  const filePath = path.join(outputDir, fileName, externalName);
   const importPath = `./${path.join(fileName, externalName)}`;
   const identifier = `${functionName}${captureIndex}${identifierName}`;
   return { identifier, filePath, importPath };
@@ -52,4 +60,5 @@ module.exports = {
   generateNameForExternal,
   packageDataForExternal,
   reduceExternalImports,
+  getOutputFilePath,
 };

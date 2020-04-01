@@ -13,7 +13,7 @@ describe('lutFunGen', () => {
         { params: [], result: { loo: 'car' } },
       ];
       const lIdentifier = 'lIdentifier.foo.bar';
-      const meta = { path: 'path', name: 'name' };
+      const meta = { path: 'path', name: 'name', relativePath: './' };
       const captureIndex = 0;
       const { code, externalData } = captureArrayToLutFun(
         captures,
@@ -74,7 +74,7 @@ describe('lutFunGen', () => {
         },
       ];
       const lIdentifier = 'lIdentifier.foo.bar';
-      const meta = { path: 'path', name: 'name' };
+      const meta = { path: 'path', name: 'name', relativePath: './' };
       const captureIndex = 0;
       const limit = 10;
       const { code, externalData } = captureArrayToLutFun(
@@ -114,7 +114,7 @@ describe('lutFunGen', () => {
     it('should work if key is too large', () => {
       const captures = [{ params: [{ message: 'Large key' }], result: 42 }];
       const lIdentifier = 'lIdentifier.foo.bar';
-      const meta = { path: 'path', name: 'name' };
+      const meta = { path: 'path', name: 'name', relativePath: './' };
       const captureIndex = 0;
       const limit = 500;
       const keyLimit = 2;
@@ -165,7 +165,7 @@ describe('lutFunGen', () => {
         },
       ];
       const lIdentifier = 'lIdentifier.foo.bar';
-      const meta = { path: 'path', name: 'name' };
+      const meta = { path: 'path', name: 'name', relativePath: './' };
       const captureIndex = 0;
       const limit = 5;
       const keyLimit = 5;

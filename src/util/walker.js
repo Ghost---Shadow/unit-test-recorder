@@ -13,19 +13,26 @@ const checkIfFileShouldBeIgnored = (fullPath) => {
   return !(hasJsExtension && !isTestFile);
 };
 
-const walk = (rootDir, allFiles = []) => {
+const walkHelper = (rootDir, allFiles = []) => {
   const files = fs.readdirSync(rootDir);
   files.forEach((file) => {
     const fullPath = path.join(rootDir, file);
     if (fs.statSync(fullPath).isDirectory()) {
       if (!checkIfDirectoryShouldBeIgnored(fullPath)) {
-        walk(fullPath, allFiles);
+        walkHelper(fullPath, allFiles);
       }
     } else if (!checkIfFileShouldBeIgnored(fullPath)) {
       allFiles.push(fullPath);
     }
   });
   return allFiles;
+};
+
+const walk = (rootDir) => {
+  const allFiles = walkHelper(rootDir);
+  // Dont use windows style paths
+  const rectifiedPaths = allFiles.map(p => p.replace(/\\/g, '/'));
+  return rectifiedPaths;
 };
 
 module.exports = {

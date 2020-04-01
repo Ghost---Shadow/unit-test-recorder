@@ -2,7 +2,7 @@ const { generateNameForExternal, getOutputFilePath } = require('./utils');
 
 describe('generator_utils', () => {
   describe('generateNameForExternal', () => {
-    it('should work for happy path', () => {
+    it('should work for same directory', () => {
       const sourceFilePath = 'test_integration/flows/07_large_payload/07_large_payload.js';
       const functionName = 'getClickCounts';
       const captureIndex = 1;

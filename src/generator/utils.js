@@ -7,7 +7,7 @@ const getOutputFilePath = (filePath, outputDir) => {
   const fileName = filePathToFileName(filePath);
 
   // outputDir === null means use the same directory as inputDir
-  if (outputDir === null) {
+  if (!outputDir) {
     return {
       outputFilePath: filePath,
       importPath: `./${fileName}`,

@@ -21,18 +21,25 @@ const { argv } = require('yargs')
 const { instrumentAllFiles } = require('./instrumentation');
 const { generateAllTests } = require('./generation');
 
+// Process and package arguments
 const entryPoint = argv._[0];
 const maxTestsPerFunction = parseInt(argv.maxTests, 10) || -1;
 const debug = argv.d;
 const { outputDir } = argv;
+const packagedArguments = {
+  entryPoint,
+  maxTestsPerFunction,
+  debug,
+  outputDir,
+};
 
 // Instrument all files
-instrumentAllFiles(entryPoint);
+instrumentAllFiles(packagedArguments);
 
 // Generate the test cases
 process.on('SIGINT', async () => {
   if (debug) { process.exit(0); }
-  await generateAllTests(maxTestsPerFunction, outputDir);
+  await generateAllTests(packagedArguments);
 });
 
 // setInterval(() => {

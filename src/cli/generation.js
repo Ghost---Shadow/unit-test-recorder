@@ -41,7 +41,7 @@ const writeTestAndExternalData = async (testObj) => {
   return Promise.all([testFilePromise, ...externalDataPromises]);
 };
 
-const generateAllTests = async (maxTestsPerFunction, outputDir) => {
+const generateAllTests = async (packagedArguments) => {
   // Undo all the instrumentation
   gitResetHard();
 
@@ -50,7 +50,7 @@ const generateAllTests = async (maxTestsPerFunction, outputDir) => {
     const newState = await writeAndFetchSerializedState('activity.json');
 
     console.log('Generating test cases');
-    const testData = await extractTestsFromState(newState, maxTestsPerFunction, outputDir);
+    const testData = await extractTestsFromState(newState, packagedArguments);
 
     console.log('Dumping test cases to disk');
     const writePromises = testData.map(writeTestAndExternalData);

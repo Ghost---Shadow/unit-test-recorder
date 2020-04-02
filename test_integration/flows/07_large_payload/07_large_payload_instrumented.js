@@ -8,7 +8,8 @@ const getClickCountsHelper = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     requestDataCb => {
       const imgObjs = requestDataCb();
@@ -30,7 +31,8 @@ const getClickCounts = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     () => {
       const requestDataCb = () =>

@@ -72,7 +72,8 @@ const getTodo = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     () => {
       fileSystem
@@ -104,7 +105,8 @@ const localMocksTest = async (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: true
+      isAsync: true,
+      isObject: false
     },
     async () => {
       const result =
@@ -126,7 +128,8 @@ const datesTest = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     () => testIntegrationFlows06Mocks06MocksJsFoo5(),
     ...p
@@ -142,7 +145,8 @@ const higherOrderTest = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     () => {
       const gen = testIntegrationFlows06Mocks06MocksJsHigherOrder(1);

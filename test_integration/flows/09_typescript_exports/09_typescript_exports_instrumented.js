@@ -11,7 +11,8 @@ const exportTest1 = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     a => a,
     ...p
@@ -28,7 +29,8 @@ const exportTest2 = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: true,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     a => b => [a, b],
     ...p
@@ -46,7 +48,8 @@ exports.exportTest3 = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     a => 2 * a,
     ...p

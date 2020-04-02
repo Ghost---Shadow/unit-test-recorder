@@ -11,7 +11,8 @@ const base = (...p) =>
       injectionWhitelist: ['someFun'],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     param1 => param2 => param1.someFun() + param2.someOtherFun(),
     ...p
@@ -25,7 +26,8 @@ const base2 = (...p) =>
       injectionWhitelist: ['someFun'],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     function base2(param1) {
       return function base3(param2) {
@@ -51,7 +53,8 @@ const validFun = (...p) =>
       injectionWhitelist: ['someFun'],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     param => param.testIntegrationFlows11HigherOrder11HigherOrderJsSomeFun(),
     ...p

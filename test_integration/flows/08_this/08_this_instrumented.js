@@ -8,7 +8,8 @@ const newTarget = (...p) =>
       injectionWhitelist: ['InjectedPromise', 'fun2'],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     obj =>
       new obj.testIntegrationFlows08This08ThisJsInjectedPromise(resolve =>
@@ -26,7 +27,8 @@ const sample = (...p) =>
       injectionWhitelist: ['InjectedPromise', 'fun2'],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     () => {},
     ...p
@@ -54,7 +56,8 @@ const protoOverwriteHelper = (...p) =>
       injectionWhitelist: ['InjectedPromise', 'fun2'],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     foo => foo.testIntegrationFlows08This08ThisJsFun2(),
     ...p
@@ -69,7 +72,8 @@ const protoOverwrite = (...p) =>
       injectionWhitelist: ['InjectedPromise', 'fun2'],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     () => {
       const foo = new Foo();

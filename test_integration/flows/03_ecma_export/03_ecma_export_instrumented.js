@@ -8,7 +8,8 @@ export const ecma1 = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     (a, b) => a + b,
     ...p
@@ -23,7 +24,8 @@ const ecma2 = (...p) =>
       injectionWhitelist: [],
       isDefault: true,
       isEcmaDefault: true,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     b => b * 3,
     ...p
@@ -38,7 +40,8 @@ const ecma33 = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     a => a / 2,
     ...p
@@ -52,7 +55,8 @@ const ecma4 = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     a => a / 4,
     ...p

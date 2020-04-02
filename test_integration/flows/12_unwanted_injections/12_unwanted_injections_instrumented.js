@@ -9,7 +9,8 @@ const fun = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     arr => arr.map(e => 2 * e),
     ...p
@@ -25,7 +26,8 @@ const fun2 = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     num => num.toLocaleString(),
     ...p
@@ -41,7 +43,8 @@ const fun3 = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     f => f.call(null, 2),
     ...p

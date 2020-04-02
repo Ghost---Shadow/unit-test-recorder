@@ -166,6 +166,7 @@ function captureFunFromFd(path) {
     const old = this.functionsToReplace[functionName];
     this.functionsToReplace[functionName] = _.merge(old, {
       isFunction: true,
+      isObject: false,
       paramIds,
       path,
       isAsync,
@@ -191,7 +192,11 @@ function captureFunFromAf(path) {
     const paramIds = generateSafeParamIds(path);
     const old = this.functionsToReplace[effectiveFunctionName];
     this.functionsToReplace[effectiveFunctionName] = _.merge(old, {
-      isFunction: true, paramIds, path, isAsync,
+      isObject: false,
+      isFunction: true,
+      paramIds,
+      path,
+      isAsync,
     });
   }
 }

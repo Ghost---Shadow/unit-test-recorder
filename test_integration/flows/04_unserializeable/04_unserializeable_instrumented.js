@@ -8,7 +8,8 @@ const circularReference = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     a => {
       const obj = { a };
@@ -27,7 +28,8 @@ const returnAFunction = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     (a, f2) => b => a + f2(b),
     ...p
@@ -42,7 +44,8 @@ const getElapsedTime = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     (start, end) => {
       const y2k = new Date(2000, 1, 1);
@@ -63,7 +66,8 @@ const returnsNaN = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     a => Number.parseFloat(a),
     ...p

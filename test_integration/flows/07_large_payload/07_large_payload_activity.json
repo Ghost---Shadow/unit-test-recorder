@@ -10,6 +10,7 @@
           "isDefault": false,
           "isEcmaDefault": false,
           "isAsync": false,
+          "isObject": false,
           "doesReturnPromise": false
         },
         "captures": [
@@ -438,6 +439,7 @@
           "isDefault": false,
           "isEcmaDefault": false,
           "isAsync": false,
+          "isObject": false,
           "doesReturnPromise": false
         },
         "captures": [

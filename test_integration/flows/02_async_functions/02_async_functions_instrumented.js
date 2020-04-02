@@ -15,7 +15,8 @@ const getSocialInfo = async (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: true
+      isAsync: true,
+      isObject: false
     },
     async email => {
       const facebookInfo = await mocksios(email, 'facebook');
@@ -35,7 +36,8 @@ const getFacebookInfoHelper = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     email => mocksios(email, 'facebook'),
     ...p

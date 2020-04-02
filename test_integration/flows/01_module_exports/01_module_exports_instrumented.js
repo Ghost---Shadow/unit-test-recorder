@@ -8,7 +8,8 @@ const foo1 = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     (a, b) => a + b,
     ...p
@@ -22,7 +23,8 @@ const bar = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     function bar(a, b) {
       const c = a - b;
@@ -42,7 +44,8 @@ const specialParams = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     (a, { b, c }, d = 1) => a + b + c + d,
     ...p
@@ -56,7 +59,8 @@ const specialParams2 = (...p) =>
       injectionWhitelist: [],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     function specialParams2(a, { b, c }, d = 1) {
       return a + b + c + d;

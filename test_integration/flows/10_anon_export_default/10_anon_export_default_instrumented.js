@@ -9,7 +9,8 @@ export default (...p) =>
       injectionWhitelist: [],
       isDefault: true,
       isEcmaDefault: true,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     (a, b) => a + b,
     ...p

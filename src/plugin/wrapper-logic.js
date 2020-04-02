@@ -47,7 +47,7 @@ const expgen = template.expression('(...p) => recorderWrapper(META, FUN_AST, ...
 
 const metaGenerator = (path, funObj) => {
   const {
-    name, isAsync, paramIds, isDefault, isEcmaDefault, injectionWhitelist,
+    name, isAsync, paramIds, isDefault, isEcmaDefault, injectionWhitelist, isObject,
   } = funObj;
   return t.objectExpression([
     t.objectProperty(t.identifier('path'), t.stringLiteral(path)),
@@ -58,6 +58,7 @@ const metaGenerator = (path, funObj) => {
     t.objectProperty(t.identifier('isDefault'), t.booleanLiteral(isDefault)),
     t.objectProperty(t.identifier('isEcmaDefault'), t.booleanLiteral(isEcmaDefault)),
     t.objectProperty(t.identifier('isAsync'), t.booleanLiteral(isAsync)),
+    t.objectProperty(t.identifier('isObject'), t.booleanLiteral(isObject)),
   ]);
 };
 

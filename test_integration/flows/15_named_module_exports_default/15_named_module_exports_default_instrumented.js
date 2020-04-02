@@ -9,7 +9,8 @@ const foo = (...p) =>
       injectionWhitelist: [],
       isDefault: true,
       isEcmaDefault: false,
-      isAsync: false
+      isAsync: false,
+      isObject: false
     },
     a => a,
     ...p

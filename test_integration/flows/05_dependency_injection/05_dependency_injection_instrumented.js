@@ -15,7 +15,8 @@ const getPostComments = async (...p) =>
       injectionWhitelist: ['query', 'pooledQuery', 'commitSync'],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: true
+      isAsync: true,
+      isObject: false
     },
     async (client, postId, redisCache) => {
       const votes = await redisCache(postId + 1);
@@ -43,7 +44,8 @@ const getPost = async (...p) =>
       injectionWhitelist: ['query', 'pooledQuery', 'commitSync'],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: true
+      isAsync: true,
+      isObject: false
     },
     async (dbClient, postId, redisCache) => {
       await getPostContent(dbClient, postId);

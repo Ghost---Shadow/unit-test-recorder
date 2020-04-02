@@ -12,6 +12,7 @@
           "isDefault": true,
           "isEcmaDefault": false,
           "isAsync": false,
+          "isObject": false,
           "doesReturnPromise": false
         },
         "captures": [

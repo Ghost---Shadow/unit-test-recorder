@@ -18,6 +18,7 @@ const ui = require('./12_unwanted_injections/12_unwanted_injections_instrumented
 const anonTs = require('./13_anon_ts_export_default/13_anon_ts_export_default_instrumented');
 const anonMe = require('./14_anon_module_exports_default/14_anon_module_exports_default_instrumented');
 const namedMe = require('./15_named_module_exports_default/15_named_module_exports_default_instrumented');
+const exportedObj = require('./16_exported_objects/16_exported_objects_instrumented');
 
 expect.extend({ toMatchFile });
 
@@ -154,8 +155,6 @@ describe('driver', () => {
     it('should record activity', async () => {
       RecorderManager.clear();
       hoi.base({ someFun: () => 1 })({ someOtherFun: () => 2 });
-      hoi.obj.fun({ anotherFun: () => 3 });
-      hoi.obj.fun2({ anotherFun: () => 4 });
       hoi.validFun({ someFun: () => 5 });
       hoi.secondary1({ someFun: () => 1 });
       hoi.secondary2({ someFun: () => 1 });
@@ -194,6 +193,18 @@ describe('driver', () => {
       RecorderManager.clear();
       namedMe(1);
       const outputFileName = getSnapshotFileName('15_named_module_exports_default');
+      expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
+    });
+  });
+  describe('16_exported_objects', () => {
+    it('should record activity', async () => {
+      RecorderManager.clear();
+      exportedObj.obj1.foo1(1, 2);
+      exportedObj.obj1.foo2();
+      exportedObj.obj2.bar(2, 1);
+      exportedObj.obj2.deep.fun(1);
+      exportedObj.obj2.higher(1)(2);
+      const outputFileName = getSnapshotFileName('16_exported_objects');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });
   });

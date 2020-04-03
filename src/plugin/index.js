@@ -26,6 +26,11 @@ const {
   addInjectedFunctionsToMeta,
 } = require('./dependency-injection');
 
+const {
+  captureObjFromOe,
+  instrumentValidObjects,
+} = require('./object-capture-logic');
+
 const { getBlackList } = require('./blacklist-generator');
 
 module.exports = (/* { types: t } */) => ({
@@ -65,11 +70,17 @@ module.exports = (/* { types: t } */) => ({
         this.unclobberInjections = unclobberInjections.bind(this);
         this.addInjectedFunctionsToMeta = addInjectedFunctionsToMeta.bind(this);
 
+        // Function bindings for object capture logic
+        this.captureObjFromOe = captureObjFromOe.bind(this);
+        this.instrumentValidObjects = instrumentValidObjects.bind(this);
+
         // States
         // Imported modules which are candidates for mocking
         this.importedModules = {};
         // Metadata for identifiers that are maybe functions and exported
         this.functionsToReplace = {};
+        // Metadata for objects that have functions in them
+        this.capturedObjects = {};
         // Metadata for functions that are exported
         this.validFunctions = [];
         // All functions called by dependency injected objects
@@ -93,6 +104,9 @@ module.exports = (/* { types: t } */) => ({
 
         // Instrument functions which match criteria
         this.injectValidFunctions();
+
+        // Instrument exported objects
+        this.instrumentValidObjects();
 
         // Instrument mocks of whitelisted modules
         this.mockInjectedFunctions();
@@ -136,6 +150,10 @@ module.exports = (/* { types: t } */) => ({
     NewExpression(path) {
       // Capture called functions for dependency injections
       this.captureFunForDi(path);
+    },
+    ObjectExpression(path) {
+      // Capture functions in object from object expression
+      this.captureObjFromOe(path);
     },
   },
 });

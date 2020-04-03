@@ -1,12 +1,13 @@
 const { default: template } = require('@babel/template');
 const t = require('@babel/types');
+const { metaGenerator } = require('./meta');
 
 const buildRequire = template(`
   const { IDENTIFIER } = require(SOURCE);
 `);
 
 function maybeAddImportStatement(path) {
-  if (this.validFunctions.length) {
+  if (this.validFunctions.length || this.atLeastOneRecorderWrapperUsed) {
     const recorderImportStatement = buildRequire({
       SOURCE: t.stringLiteral(this.importPath),
       IDENTIFIER: t.identifier('recorderWrapper'),
@@ -44,23 +45,6 @@ function getValidFunctions() {
 }
 
 const expgen = template.expression('(...p) => recorderWrapper(META, FUN_AST, ...p)');
-
-const metaGenerator = (path, funObj) => {
-  const {
-    name, isAsync, paramIds, isDefault, isEcmaDefault, injectionWhitelist, isObject,
-  } = funObj;
-  return t.objectExpression([
-    t.objectProperty(t.identifier('path'), t.stringLiteral(path)),
-    t.objectProperty(t.identifier('name'), t.stringLiteral(name)),
-    // t.objectProperty(t.identifier('localName'), t.stringLiteral(localName)),
-    t.objectProperty(t.identifier('paramIds'), t.arrayExpression(paramIds.map(pid => t.stringLiteral(pid)))),
-    t.objectProperty(t.identifier('injectionWhitelist'), t.arrayExpression(injectionWhitelist.map(wl => t.stringLiteral(wl)))),
-    t.objectProperty(t.identifier('isDefault'), t.booleanLiteral(isDefault)),
-    t.objectProperty(t.identifier('isEcmaDefault'), t.booleanLiteral(isEcmaDefault)),
-    t.objectProperty(t.identifier('isAsync'), t.booleanLiteral(isAsync)),
-    t.objectProperty(t.identifier('isObject'), t.booleanLiteral(isObject)),
-  ]);
-};
 
 const getAstWithWrapper = (
   filePath,

@@ -1,5 +1,5 @@
 const obj1 = {
-  foo1(a, b) {
+  async foo1(a, b) {
     return a + b;
   },
   foo2() { },
@@ -8,8 +8,8 @@ const obj1 = {
 
 let obj2 = {};
 obj2 = {
-  bar: (a, b) => a - b,
-  deep: { fun: a => a },
+  bar: async (a, b) => a - b,
+  deep: { fun: async a => a },
   higher: a => b => a * b,
 };
 

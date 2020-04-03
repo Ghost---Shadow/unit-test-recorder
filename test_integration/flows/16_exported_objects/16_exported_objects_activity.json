@@ -1,0 +1,175 @@
+{
+  "test_integration/flows/16_exported_objects/16_exported_objects.js": {
+    "exportedFunctions": {
+      "obj1.foo1": {
+        "meta": {
+          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js",
+          "name": "obj1.foo1",
+          "paramIds": [
+            "a",
+            "b"
+          ],
+          "injectionWhitelist": [
+            "TODO"
+          ],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": true,
+          "isObject": true,
+          "doesReturnPromise": true
+        },
+        "captures": [
+          {
+            "params": [
+              1,
+              2
+            ],
+            "result": 3,
+            "types": {
+              "params": [
+                "Number",
+                "Number"
+              ],
+              "result": "Number"
+            }
+          }
+        ],
+        "hashTable": {
+          "lU1KnBLnuGAnpefgxib3kA==": true
+        }
+      },
+      "obj1.foo2": {
+        "meta": {
+          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js",
+          "name": "obj1.foo2",
+          "paramIds": [],
+          "injectionWhitelist": [
+            "TODO"
+          ],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "isObject": true,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [],
+            "types": {
+              "params": [],
+              "result": "Undefined"
+            }
+          }
+        ],
+        "hashTable": {
+          "11FxOYiYfpMxmANj4kGJzg==": true
+        }
+      },
+      "obj2.bar": {
+        "meta": {
+          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js",
+          "name": "obj2.bar",
+          "paramIds": [
+            "a",
+            "b"
+          ],
+          "injectionWhitelist": [
+            "TODO"
+          ],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": true,
+          "isObject": true,
+          "doesReturnPromise": true
+        },
+        "captures": [
+          {
+            "params": [
+              2,
+              1
+            ],
+            "result": 1,
+            "types": {
+              "params": [
+                "Number",
+                "Number"
+              ],
+              "result": "Number"
+            }
+          }
+        ],
+        "hashTable": {
+          "YW0oQXh3Ymqvqhu85eKrLA==": true
+        }
+      },
+      "obj2.deep.fun": {
+        "meta": {
+          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js",
+          "name": "obj2.deep.fun",
+          "paramIds": [
+            "a"
+          ],
+          "injectionWhitelist": [
+            "TODO"
+          ],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": true,
+          "isObject": true,
+          "doesReturnPromise": true
+        },
+        "captures": [
+          {
+            "params": [
+              1
+            ],
+            "result": 1,
+            "types": {
+              "params": [
+                "Number"
+              ],
+              "result": "Number"
+            }
+          }
+        ],
+        "hashTable": {
+          "zzvvHO4JAn0vNgcX2g7OrA==": true
+        }
+      },
+      "obj2.higher": {
+        "meta": {
+          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js",
+          "name": "obj2.higher",
+          "paramIds": [
+            "a"
+          ],
+          "injectionWhitelist": [
+            "TODO"
+          ],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "isObject": true,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              1
+            ],
+            "result": "b => a * b",
+            "types": {
+              "params": [
+                "Number"
+              ],
+              "result": "Function"
+            }
+          }
+        ],
+        "hashTable": {
+          "zzvvHO4JAn0vNgcX2g7OrA==": true
+        }
+      }
+    }
+  }
+}

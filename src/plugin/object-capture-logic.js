@@ -61,19 +61,23 @@ const traverseProperties = (objName, objectProperties) => {
   objectProperties.forEach((property) => {
     const name = `${objName}.${property.key.name}`;
     if (t.isArrowFunctionExpression(property.value)) {
+      const paramIds = property.value.params.map(p => p.name);
+      const isAsync = !!property.value.async;
       result.push({
         name,
-        paramIds: [], // TODO
-        injectionWhitelist: [], // TODO
-        isAsync: false, // TODO
+        paramIds,
+        injectionWhitelist: ['TODO'], // TODO
+        isAsync,
       });
     }
     if (t.isObjectMethod(property)) {
+      const paramIds = property.params.map(p => p.name);
+      const isAsync = !!property.async;
       result.push({
         name,
-        paramIds: [], // TODO
-        injectionWhitelist: [], // TODO
-        isAsync: false, // TODO
+        paramIds,
+        injectionWhitelist: ['TODO'], // TODO
+        isAsync,
       });
     }
     if (t.isObjectExpression(property.value)) {

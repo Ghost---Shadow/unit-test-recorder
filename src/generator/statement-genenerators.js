@@ -10,10 +10,13 @@ const { reduceExternalImports } = require('./utils');
 
 const generateImportStatementFromActivity = (activity, allExternalData) => {
   const importedFunctions = Object.keys(activity);
-  const scriptImports = importedFunctions.reduce((acc, importedFunction) => {
-    const {
-      isDefault, isEcmaDefault, importPath,
-    } = activity[importedFunction].meta;
+  // Functions in objects have names like obj.fun1, obj.fun2
+  const cleanImportedFunctions = _.uniqBy(
+    importedFunctions.map(name => ({ importedFunction: name.split('.')[0], meta: activity[name].meta })),
+    'importedFunction',
+  );
+  const scriptImports = cleanImportedFunctions.reduce((acc, { importedFunction, meta }) => {
+    const { isDefault, isEcmaDefault, importPath } = meta;
     if (isEcmaDefault) return `${acc}\nconst {default:${importedFunction}} = require('${importPath}')`;
     if (isDefault) return `${acc}\nconst ${importedFunction} = require('${importPath}')`;
     return `${acc}\nconst {${importedFunction}} = require('${importPath}')`;

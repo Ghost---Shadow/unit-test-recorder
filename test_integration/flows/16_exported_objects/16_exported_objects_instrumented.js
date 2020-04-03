@@ -1,6 +1,6 @@
 const { recorderWrapper } = require('../../../src/recorder');
 const obj1 = {
-  foo1(a, b) {
+  async foo1(a, b) {
     return a + b;
   },
   foo2() {},
@@ -13,7 +13,7 @@ obj1.foo2 = (...p) =>
       path: 'test_integration/flows/16_exported_objects/16_exported_objects.js',
       name: 'obj1.foo2',
       paramIds: [],
-      injectionWhitelist: [],
+      injectionWhitelist: ['TODO'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
@@ -28,11 +28,11 @@ obj1.foo1 = (...p) =>
     {
       path: 'test_integration/flows/16_exported_objects/16_exported_objects.js',
       name: 'obj1.foo1',
-      paramIds: [],
-      injectionWhitelist: [],
+      paramIds: ['a', 'b'],
+      injectionWhitelist: ['TODO'],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false,
+      isAsync: true,
       isObject: true
     },
     obj1.ORIGINAL_foo1,
@@ -41,8 +41,8 @@ obj1.foo1 = (...p) =>
 
 let obj2 = {};
 obj2 = {
-  bar: (a, b) => a - b,
-  deep: { fun: a => a },
+  bar: async (a, b) => a - b,
+  deep: { fun: async a => a },
   higher: a => b => a * b
 };
 obj2.ORIGINAL_higher = obj2.higher;
@@ -51,8 +51,8 @@ obj2.higher = (...p) =>
     {
       path: 'test_integration/flows/16_exported_objects/16_exported_objects.js',
       name: 'obj2.higher',
-      paramIds: [],
-      injectionWhitelist: [],
+      paramIds: ['a'],
+      injectionWhitelist: ['TODO'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
@@ -67,11 +67,11 @@ obj2.deep.fun = (...p) =>
     {
       path: 'test_integration/flows/16_exported_objects/16_exported_objects.js',
       name: 'obj2.deep.fun',
-      paramIds: [],
-      injectionWhitelist: [],
+      paramIds: ['a'],
+      injectionWhitelist: ['TODO'],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false,
+      isAsync: true,
       isObject: true
     },
     obj2.deep.ORIGINAL_fun,
@@ -83,11 +83,11 @@ obj2.bar = (...p) =>
     {
       path: 'test_integration/flows/16_exported_objects/16_exported_objects.js',
       name: 'obj2.bar',
-      paramIds: [],
-      injectionWhitelist: [],
+      paramIds: ['a', 'b'],
+      injectionWhitelist: ['TODO'],
       isDefault: false,
       isEcmaDefault: false,
-      isAsync: false,
+      isAsync: true,
       isObject: true
     },
     obj2.ORIGINAL_bar,

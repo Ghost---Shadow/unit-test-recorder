@@ -49,7 +49,7 @@ const injectFunctionDynamically = (maybeFunction, meta, boundRecorder) => {
         // https://stackoverflow.com/a/47469377/1217998
         return new OldFp(...paramsOfInjected);
       }
-      const result = OldFp.bind(this)(...paramsOfInjected);
+      const result = OldFp.apply(this, paramsOfInjected);
       if (result && _.isFunction(result.then)) {
         // It might be a promise
         result.then((res) => {

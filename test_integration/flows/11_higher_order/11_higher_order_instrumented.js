@@ -37,13 +37,6 @@ const base2 = (...p) =>
     ...p
   );
 
-const obj = {
-  fun(param) {
-    return param.anotherFun();
-  },
-  fun2: param => param.anotherFun()
-};
-
 const validFun = (...p) =>
   recorderWrapper(
     {
@@ -61,6 +54,22 @@ const validFun = (...p) =>
   );
 
 const rObj = { foo: f => p => f(p) };
+rObj.ORIGINAL_foo = rObj.foo;
+rObj.foo = (...p) =>
+  recorderWrapper(
+    {
+      path: 'test_integration/flows/11_higher_order/11_higher_order.js',
+      name: 'rObj.foo',
+      paramIds: ['f'],
+      injectionWhitelist: ['TODO'],
+      isDefault: false,
+      isEcmaDefault: false,
+      isAsync: false,
+      isObject: true
+    },
+    rObj.ORIGINAL_foo,
+    ...p
+  );
 const secondary1 = rObj.foo(p => p.someFun());
 // eslint-disable-next-line
 const secondary2 = rObj.foo(function f(p) {
@@ -70,7 +79,6 @@ const secondary2 = rObj.foo(function f(p) {
 module.exports = {
   base,
   base2,
-  obj,
   rObj,
   secondary1,
   secondary2,

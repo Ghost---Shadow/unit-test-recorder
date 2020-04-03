@@ -33,4 +33,30 @@ const removeEmptyFiles = (recorderState) => {
   return _.omit(recorderState, filesToOmit);
 };
 
-module.exports = { safeStringify, removeNullCaptures, removeEmptyFiles };
+const removeInvalidFunctions = (recorderState) => {
+  // RecorderManager.recorderState[path].exportedFunctions[name].captures[captureIndex]
+  const isFunctionValid = funObj => funObj.meta && funObj.captures && funObj.captures.length;
+  const expFunReducer = exportedFunctions => Object.keys(exportedFunctions)
+    .reduce((acc, functionName) => {
+      const funObj = exportedFunctions[functionName];
+      if (isFunctionValid(funObj)) {
+        return { ...acc, [functionName]: funObj };
+      }
+      return acc;
+    }, {});
+  const processFile = fileObj => ({
+    ...fileObj,
+    exportedFunctions: expFunReducer(_.get(fileObj, 'exportedFunctions', {})),
+  });
+  return Object.keys(recorderState).reduce((acc, path) => ({
+    ...acc,
+    [path]: processFile(recorderState[path]),
+  }), {});
+};
+
+module.exports = {
+  safeStringify,
+  removeNullCaptures,
+  removeEmptyFiles,
+  removeInvalidFunctions,
+};

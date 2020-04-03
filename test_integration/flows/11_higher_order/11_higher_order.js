@@ -10,13 +10,6 @@ function base2(param1) {
   };
 }
 
-const obj = {
-  fun(param) {
-    return param.anotherFun();
-  },
-  fun2: param => param.anotherFun(),
-};
-
 const validFun = param => param.someFun();
 
 const rObj = { foo: f => p => f(p) };
@@ -27,5 +20,5 @@ const secondary2 = rObj.foo(function f(p){
 });
 
 module.exports = {
-  base, base2, obj, rObj, secondary1, secondary2, validFun,
+  base, base2, rObj, secondary1, secondary2, validFun,
 };

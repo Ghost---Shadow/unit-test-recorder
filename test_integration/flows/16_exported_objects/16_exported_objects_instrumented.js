@@ -1,7 +1,8 @@
 const { recorderWrapper } = require('../../../src/recorder');
 const obj1 = {
   async foo1(a, b) {
-    return a + b;
+    const res = await a.testIntegrationFlows16ExportedObjects16ExportedObjectsJsSomeFun();
+    return res + b;
   },
   foo2() {},
   baz: 42
@@ -13,7 +14,7 @@ obj1.foo2 = (...p) =>
       path: 'test_integration/flows/16_exported_objects/16_exported_objects.js',
       name: 'obj1.foo2',
       paramIds: [],
-      injectionWhitelist: ['TODO'],
+      injectionWhitelist: ['someFun', 'anotherFun'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
@@ -29,7 +30,7 @@ obj1.foo1 = (...p) =>
       path: 'test_integration/flows/16_exported_objects/16_exported_objects.js',
       name: 'obj1.foo1',
       paramIds: ['a', 'b'],
-      injectionWhitelist: ['TODO'],
+      injectionWhitelist: ['someFun', 'anotherFun'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: true,
@@ -42,7 +43,10 @@ obj1.foo1 = (...p) =>
 let obj2 = {};
 obj2 = {
   bar: async (a, b) => a - b,
-  deep: { fun: async a => a },
+  deep: {
+    fun: async a =>
+      a.testIntegrationFlows16ExportedObjects16ExportedObjectsJsAnotherFun()
+  },
   higher: a => b => a * b
 };
 obj2.ORIGINAL_higher = obj2.higher;
@@ -52,7 +56,7 @@ obj2.higher = (...p) =>
       path: 'test_integration/flows/16_exported_objects/16_exported_objects.js',
       name: 'obj2.higher',
       paramIds: ['a'],
-      injectionWhitelist: ['TODO'],
+      injectionWhitelist: ['someFun', 'anotherFun'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
@@ -68,7 +72,7 @@ obj2.deep.fun = (...p) =>
       path: 'test_integration/flows/16_exported_objects/16_exported_objects.js',
       name: 'obj2.deep.fun',
       paramIds: ['a'],
-      injectionWhitelist: ['TODO'],
+      injectionWhitelist: ['someFun', 'anotherFun'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: true,
@@ -84,7 +88,7 @@ obj2.bar = (...p) =>
       path: 'test_integration/flows/16_exported_objects/16_exported_objects.js',
       name: 'obj2.bar',
       paramIds: ['a', 'b'],
-      injectionWhitelist: ['TODO'],
+      injectionWhitelist: ['someFun', 'anotherFun'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: true,

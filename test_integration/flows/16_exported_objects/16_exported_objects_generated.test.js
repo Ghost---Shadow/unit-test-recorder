@@ -4,8 +4,23 @@ const { obj2 } = require('./16_exported_objects');
 describe('16_exported_objects', () => {
   describe('obj1.foo1', () => {
     it('test 0', async () => {
-      let a = 1;
+      let a = {};
       let b = 2;
+      a.someFun = (...params) => {
+        const safeParams = params.length === 0 ? [undefined] : params;
+        return safeParams.reduce(
+          (acc, param) => {
+            if (typeof param === 'string') return acc[param];
+            const stringifiedParam = JSON.stringify(param);
+            if (stringifiedParam && stringifiedParam.length > 10000)
+              return acc['KEY_TOO_LARGE'];
+            return acc[stringifiedParam];
+          },
+          {
+            undefined: 1
+          }
+        );
+      };
 
       let result = 3;
       const actual = await obj1.foo1(a, b);
@@ -34,7 +49,22 @@ describe('16_exported_objects', () => {
 
   describe('obj2.deep.fun', () => {
     it('test 0', async () => {
-      let a = 1;
+      let a = {};
+      a.anotherFun = (...params) => {
+        const safeParams = params.length === 0 ? [undefined] : params;
+        return safeParams.reduce(
+          (acc, param) => {
+            if (typeof param === 'string') return acc[param];
+            const stringifiedParam = JSON.stringify(param);
+            if (stringifiedParam && stringifiedParam.length > 10000)
+              return acc['KEY_TOO_LARGE'];
+            return acc[stringifiedParam];
+          },
+          {
+            undefined: 1
+          }
+        );
+      };
 
       let result = 1;
       const actual = await obj2.deep.fun(a);

@@ -59,14 +59,15 @@ function instrumentValidObjects() {
 const traverseProperties = (objName, objectProperties) => {
   const result = [];
   objectProperties.forEach((property) => {
-    const name = `${objName}.${property.key.name}`;
+    const functionName = property.key.name;
+    const name = `${objName}.${functionName}`;
     if (t.isArrowFunctionExpression(property.value)) {
       const paramIds = property.value.params.map(p => p.name);
       const isAsync = !!property.value.async;
       result.push({
         name,
+        functionName,
         paramIds,
-        injectionWhitelist: ['TODO'], // TODO
         isAsync,
       });
     }
@@ -75,8 +76,8 @@ const traverseProperties = (objName, objectProperties) => {
       const isAsync = !!property.async;
       result.push({
         name,
+        functionName,
         paramIds,
-        injectionWhitelist: ['TODO'], // TODO
         isAsync,
       });
     }

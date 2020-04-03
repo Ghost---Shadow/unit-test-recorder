@@ -1,6 +1,7 @@
 const obj1 = {
   async foo1(a, b) {
-    return a + b;
+    const res = await a.someFun();
+    return res + b;
   },
   foo2() { },
   baz: 42,
@@ -9,7 +10,7 @@ const obj1 = {
 let obj2 = {};
 obj2 = {
   bar: async (a, b) => a - b,
-  deep: { fun: async a => a },
+  deep: { fun: async a => a.anotherFun() },
   higher: a => b => a * b,
 };
 

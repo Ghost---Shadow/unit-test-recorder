@@ -8,7 +8,10 @@ function getValidInjections() {
   const result = Object.keys(this.injectedFunctions).reduce((acc, name) => {
     const parentFunctionNames = Object.keys(this.injectedFunctions[name]);
     const innerObjs = parentFunctionNames.reduce((innerAcc, parentFunctionName) => {
-      if (!this.topLevelBindings[parentFunctionName]) return innerAcc;
+      const { objName } = this.injectedFunctions[name][parentFunctionName];
+      const isParentFunctionTopLevel = this.topLevelBindings[parentFunctionName];
+      const isParentObjTopLevel = this.topLevelBindings[objName];
+      if (!isParentFunctionTopLevel && !isParentObjTopLevel) return innerAcc;
       const { paths } = this.injectedFunctions[name][parentFunctionName];
       return innerAcc.concat([{ paths, name, parentFunctionName }]);
     }, []);
@@ -35,8 +38,18 @@ function unclobberInjections() {
 function addInjectedFunctionsToMeta() {
   const injectionWhitelist = _.uniq(this.validDependencyInjections.map(({ name }) => name));
 
+  // Instrument injected functions
   this.validFunctions = this.validFunctions
     .map(funObj => _.merge(funObj, { injectionWhitelist }));
+
+  // Instrument injected functions in exported objects
+  Object.keys(this.capturedObjects).forEach((objName) => {
+    const numFuns = this.capturedObjects[objName].funObjs.length;
+    for (let i = 0; i < numFuns; i += 1) {
+      const old = this.capturedObjects[objName].funObjs[i];
+      this.capturedObjects[objName].funObjs[i] = _.merge(old, { injectionWhitelist });
+    }
+  });
 }
 
 module.exports = { unclobberInjections, addInjectedFunctionsToMeta, getValidInjections };

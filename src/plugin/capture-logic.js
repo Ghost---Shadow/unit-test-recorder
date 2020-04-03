@@ -226,23 +226,36 @@ const getParamBindingsInScope = path => Object
 const getParentFunctionName = (path) => {
   const functor = p => p.isArrowFunctionExpression()
     || p.isFunctionDeclaration()
-    || p.isFunctionExpression();
+    || p.isFunctionExpression()
+    || p.isObjectMethod();
   const parentPath = path.findParent(functor);
   if (!parentPath) return null;
   // Function likes
   const n1 = _.get(parentPath, 'node.id.name');
   // Arrow functions
   const n2 = _.get(parentPath, 'parent.id.name');
-  return n1 || n2 || null;
+  // Object method
+  const n3 = _.get(parentPath, 'node.key.name');
+  // Object property arrow function
+  const n4 = _.get(parentPath, 'parent.key.name');
+  return n1 || n2 || n3 || n4 || null;
 };
 
-// // const obj = {fun: p => p, fun2(p){return p}}
-// const isWithinObject = (path) => {
-//   const functor = p => p.isObjectMethod() || p.isObjectProperty();
-//   const path1 = path.findParent(functor);
-//   if (!path1) return false;
-//   return true;
-// };
+// const obj = {fun: p => p, fun2(p){return p}}
+const getOutermostObjectName = (path) => {
+  const functor = p => p.isObjectExpression();
+  let oePath = path.findParent(functor);
+  if (!oePath) return null;
+  let lastOePath;
+  while (oePath) {
+    lastOePath = oePath;
+    oePath = oePath.findParent(functor);
+  }
+
+  const leftName = _.get(lastOePath, 'parent.left.name');
+  const idName = _.get(lastOePath, 'parent.id.name');
+  return leftName || idName || null;
+};
 
 // Capture called functions for dependency injections
 function captureFunForDi(path) {
@@ -269,8 +282,8 @@ function captureFunForDi(path) {
     // // TODO: WIP: Dont process higher order functions
     // if (isHigherOrderFunction(path)) return;
 
-    // // TODO: WIP: Dont process if function is within an object
-    // if (isWithinObject(path)) return;
+    // If outermost object is whitelisted then it is also valid
+    const outermostObjName = getOutermostObjectName(path);
 
     const functionPath = path.get('callee').get('property');
     const addr = [functionName, parentFunctionName, 'paths'];
@@ -278,6 +291,7 @@ function captureFunForDi(path) {
       _.set(this.injectedFunctions, addr, []);
     }
     this.injectedFunctions[functionName][parentFunctionName].paths.push(functionPath);
+    this.injectedFunctions[functionName][parentFunctionName].objName = outermostObjName;
   }
 }
 

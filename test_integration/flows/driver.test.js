@@ -199,10 +199,10 @@ describe('driver', () => {
   describe('16_exported_objects', () => {
     it('should record activity', async () => {
       RecorderManager.clear();
-      await exportedObj.obj1.foo1(1, 2);
+      await exportedObj.obj1.foo1({ someFun: () => Promise.resolve(1) }, 2);
       await exportedObj.obj1.foo2();
       await exportedObj.obj2.bar(2, 1);
-      await exportedObj.obj2.deep.fun(1);
+      await exportedObj.obj2.deep.fun({ anotherFun: () => 1 });
       await exportedObj.obj2.higher(1)(2);
       const outputFileName = getSnapshotFileName('16_exported_objects');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);

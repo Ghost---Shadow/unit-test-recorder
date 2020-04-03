@@ -61,7 +61,7 @@ rObj.foo = (...p) =>
       path: 'test_integration/flows/11_higher_order/11_higher_order.js',
       name: 'rObj.foo',
       paramIds: ['f'],
-      injectionWhitelist: ['TODO'],
+      injectionWhitelist: ['someFun'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,

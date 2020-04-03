@@ -10,7 +10,8 @@
             "b"
           ],
           "injectionWhitelist": [
-            "TODO"
+            "someFun",
+            "anotherFun"
           ],
           "isDefault": false,
           "isEcmaDefault": false,
@@ -20,14 +21,31 @@
         },
         "captures": [
           {
+            "injections": {
+              "a.someFun": {
+                "captures": [
+                  {
+                    "params": [],
+                    "result": 1,
+                    "types": {
+                      "params": [],
+                      "result": "Number"
+                    }
+                  }
+                ],
+                "hashTable": {
+                  "11FxOYiYfpMxmANj4kGJzg==": true
+                }
+              }
+            },
             "params": [
-              1,
+              {},
               2
             ],
             "result": 3,
             "types": {
               "params": [
-                "Number",
+                "Object",
                 "Number"
               ],
               "result": "Number"
@@ -35,7 +53,7 @@
           }
         ],
         "hashTable": {
-          "lU1KnBLnuGAnpefgxib3kA==": true
+          "InvOkAJ8k84kLpPNjuwSYA==": true
         }
       },
       "obj1.foo2": {
@@ -44,7 +62,8 @@
           "name": "obj1.foo2",
           "paramIds": [],
           "injectionWhitelist": [
-            "TODO"
+            "someFun",
+            "anotherFun"
           ],
           "isDefault": false,
           "isEcmaDefault": false,
@@ -74,7 +93,8 @@
             "b"
           ],
           "injectionWhitelist": [
-            "TODO"
+            "someFun",
+            "anotherFun"
           ],
           "isDefault": false,
           "isEcmaDefault": false,
@@ -110,7 +130,8 @@
             "a"
           ],
           "injectionWhitelist": [
-            "TODO"
+            "someFun",
+            "anotherFun"
           ],
           "isDefault": false,
           "isEcmaDefault": false,
@@ -120,20 +141,37 @@
         },
         "captures": [
           {
+            "injections": {
+              "a.anotherFun": {
+                "captures": [
+                  {
+                    "params": [],
+                    "result": 1,
+                    "types": {
+                      "params": [],
+                      "result": "Number"
+                    }
+                  }
+                ],
+                "hashTable": {
+                  "11FxOYiYfpMxmANj4kGJzg==": true
+                }
+              }
+            },
             "params": [
-              1
+              {}
             ],
             "result": 1,
             "types": {
               "params": [
-                "Number"
+                "Object"
               ],
               "result": "Number"
             }
           }
         ],
         "hashTable": {
-          "zzvvHO4JAn0vNgcX2g7OrA==": true
+          "VE/M8Yddsxc+gCUTVJ8cxA==": true
         }
       },
       "obj2.higher": {
@@ -144,7 +182,8 @@
             "a"
           ],
           "injectionWhitelist": [
-            "TODO"
+            "someFun",
+            "anotherFun"
           ],
           "isDefault": false,
           "isEcmaDefault": false,

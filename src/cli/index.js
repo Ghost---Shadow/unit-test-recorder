@@ -23,6 +23,12 @@ const { argv } = require('yargs')
   .default('size-limit', 500)
   .describe('size-limit', 'Objects larger than this limit will be moved to a different file')
 
+  .default('except', [])
+  .describe('except', 'Dont run on these files (relative path, comma separated)')
+
+  .default('only', [])
+  .describe('only', 'Run only on these files (relative path, comma separated)')
+
   .boolean(['d']); // Debug
 
 const { instrumentAllFiles } = require('./instrumentation');
@@ -33,6 +39,8 @@ const entryPoint = argv._[0];
 const maxTestsPerFunction = parseInt(argv.maxTests, 10) || -1;
 const debug = argv.d;
 const { outputDir, testExt, sizeLimit } = argv;
+const exceptFiles = typeof argv.except === 'string' ? argv.except.split(',') : [];
+const onlyFiles = typeof argv.only === 'string' ? argv.only.split(',') : [];
 const packagedArguments = {
   entryPoint,
   maxTestsPerFunction,
@@ -40,6 +48,8 @@ const packagedArguments = {
   outputDir,
   testExt,
   sizeLimit,
+  exceptFiles,
+  onlyFiles,
 };
 
 // Instrument all files

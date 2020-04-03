@@ -44,9 +44,23 @@ const transformFile = (fileName, whiteListedModules) => {
   }
 };
 
-const instrumentAllFiles = ({ entryPoint }) => {
+const filterFiles = (packagedArguments, allFiles) => {
+  const { entryPoint, exceptFiles, onlyFiles } = packagedArguments;
+
+  const lut = { };
+  allFiles.forEach((fileName) => { lut[path.resolve(fileName)] = !onlyFiles.length; });
+  lut[path.resolve(entryPoint)] = false;
+  onlyFiles.forEach((fileName) => { lut[path.resolve(fileName)] = true; });
+  exceptFiles.forEach((fileName) => { lut[path.resolve(fileName)] = false; });
+
+  return allFiles.filter(fileName => lut[path.resolve(fileName)]);
+};
+
+const instrumentAllFiles = (packagedArguments) => {
+  const { entryPoint } = packagedArguments;
   const sourceDir = path.dirname(entryPoint);
-  const allFiles = walk(sourceDir).filter(f => path.resolve(f) !== path.resolve(entryPoint));
+  const allFiles = walk(sourceDir);
+  const filteredFiles = filterFiles(packagedArguments, allFiles);
 
   let whiteListedModules = { fs: true, axios: true };
   if (fs.existsSync('whitelist.json')) {
@@ -63,7 +77,7 @@ const instrumentAllFiles = ({ entryPoint }) => {
     console.log('Please create ./whitelist.json if you wish to modify the whitelist');
   }
 
-  allFiles.forEach(fileName => transformFile(fileName, whiteListedModules));
+  filteredFiles.forEach(fileName => transformFile(fileName, whiteListedModules));
 
   if (fs.existsSync('activity.json')) {
     console.log('Found existing state');

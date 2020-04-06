@@ -5,6 +5,12 @@ const getPostContent = (client, postId) =>
     postId
   );
 
+const getModerator = (pool, postId) =>
+  pool.testIntegrationFlows05DependencyInjection05DependencyInjectionJsPooledQuery(
+    'SELECT * FROM users WHERE moderator=true AND postid=?',
+    postId
+  );
+
 const getPostComments = async (...p) =>
   recorderWrapper(
     {
@@ -52,8 +58,14 @@ const getPost = async (...p) =>
       const content = await getPostContent(dbClient, postId);
       const comments = await getPostComments(dbClient, postId, redisCache);
       const votes = await redisCache(postId);
+      const moderator = await getModerator(dbClient.pool, postId);
       dbClient.testIntegrationFlows05DependencyInjection05DependencyInjectionJsCommitSync();
-      return { content, comments, votes };
+      return {
+        content,
+        comments,
+        votes,
+        moderator
+      };
     },
     ...p
   );

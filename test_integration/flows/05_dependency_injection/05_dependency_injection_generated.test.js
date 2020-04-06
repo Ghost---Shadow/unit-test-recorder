@@ -77,6 +77,16 @@ describe('05_dependency_injection', () => {
                   ]
                 }
               }
+            },
+            'SELECT * FROM users WHERE moderator=true AND postid=?': {
+              '1': [
+                {
+                  comment: 'comment 1'
+                },
+                {
+                  comment: 'comment 2'
+                }
+              ]
             }
           }
         );
@@ -105,7 +115,15 @@ describe('05_dependency_injection', () => {
             comment: 'comment 2'
           }
         ],
-        votes: 350
+        votes: 350,
+        moderator: [
+          {
+            comment: 'comment 1'
+          },
+          {
+            comment: 'comment 2'
+          }
+        ]
       };
       const actual = await getPost(dbClient, postId, redisCache);
       expect(actual).toMatchObject(result);
@@ -182,6 +200,16 @@ describe('05_dependency_injection', () => {
                   ]
                 }
               }
+            },
+            'SELECT * FROM users WHERE moderator=true AND postid=?': {
+              '1': [
+                {
+                  comment: 'comment 1'
+                },
+                {
+                  comment: 'comment 2'
+                }
+              ]
             }
           }
         );

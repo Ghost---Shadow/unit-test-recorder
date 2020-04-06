@@ -120,10 +120,32 @@
                       ],
                       "result": "Array"
                     }
+                  },
+                  {
+                    "params": [
+                      "SELECT * FROM users WHERE moderator=true AND postid=?",
+                      1
+                    ],
+                    "result": [
+                      {
+                        "comment": "comment 1"
+                      },
+                      {
+                        "comment": "comment 2"
+                      }
+                    ],
+                    "types": {
+                      "params": [
+                        "String",
+                        "Number"
+                      ],
+                      "result": "Array"
+                    }
                   }
                 ],
                 "hashTable": {
-                  "QIybPf98iP7LjExe0vm0tw==": true
+                  "QIybPf98iP7LjExe0vm0tw==": true,
+                  "TS05dZS3nn2mj0wuOTWKFQ==": true
                 }
               },
               "dbClient.commitSync": {
@@ -164,7 +186,15 @@
                   "comment": "comment 2"
                 }
               ],
-              "votes": 350
+              "votes": 350,
+              "moderator": [
+                {
+                  "comment": "comment 1"
+                },
+                {
+                  "comment": "comment 2"
+                }
+              ]
             },
             "types": {
               "params": [
@@ -282,10 +312,32 @@
                       ],
                       "result": "Array"
                     }
+                  },
+                  {
+                    "params": [
+                      "SELECT * FROM users WHERE moderator=true AND postid=?",
+                      1
+                    ],
+                    "result": [
+                      {
+                        "comment": "comment 1"
+                      },
+                      {
+                        "comment": "comment 2"
+                      }
+                    ],
+                    "types": {
+                      "params": [
+                        "String",
+                        "Number"
+                      ],
+                      "result": "Array"
+                    }
                   }
                 ],
                 "hashTable": {
-                  "QIybPf98iP7LjExe0vm0tw==": true
+                  "QIybPf98iP7LjExe0vm0tw==": true,
+                  "TS05dZS3nn2mj0wuOTWKFQ==": true
                 }
               },
               "client.commitSync": {

@@ -1,7 +1,10 @@
 const _ = require('lodash');
-
+const { getBlackList } = require('../../plugin/blacklist-generator');
 // https://stackoverflow.com/a/44536464/1217998
 const isGetter = (obj, prop) => !!_.get(Object.getOwnPropertyDescriptor(obj, prop), 'get');
+
+// Compute once
+const blacklist = getBlackList();
 
 const traverse = (objRoot) => {
   const result = [];
@@ -14,7 +17,9 @@ const traverse = (objRoot) => {
     }
     const appendProto = Object.getPrototypeOf(obj) !== null;
     const toConcat = appendProto ? ['__proto__'] : [];
-    const keys = Object.keys(obj).concat(toConcat);
+    const keys = Object.getOwnPropertyNames(obj)
+      .filter(k => !blacklist[k])
+      .concat(toConcat);
     keys.forEach((key) => {
       try {
         // Ignore getters

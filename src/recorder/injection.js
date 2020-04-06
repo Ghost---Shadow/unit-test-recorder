@@ -81,8 +81,8 @@ const injectDependencyInjections = (params, meta) => {
     // TODO: Handle array of functions
     if (_.isObject(param) && !_.isArray(param) && !_.isFunction(param)) {
       const paths = traverse(param);
-      paths.forEach((path) => {
-        if (!isWhitelisted(injectionWhitelist, path)) return;
+      const validPaths = paths.filter(p => isWhitelisted(injectionWhitelist, p));
+      validPaths.forEach((path) => {
         const existingProperty = _.get(param, path);
         const lIndex = path.length - 1;
         const newFnName = newFunctionNameGenerator(path[lIndex], fileName);

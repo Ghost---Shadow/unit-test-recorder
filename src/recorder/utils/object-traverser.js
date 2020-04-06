@@ -1,3 +1,8 @@
+const _ = require('lodash');
+
+// https://stackoverflow.com/a/44536464/1217998
+const isGetter = (obj, prop) => !!_.get(Object.getOwnPropertyDescriptor(obj, prop), 'get');
+
 const traverse = (objRoot) => {
   const result = [];
   const stack = [objRoot];
@@ -12,11 +17,12 @@ const traverse = (objRoot) => {
     const keys = Object.keys(obj).concat(toConcat);
     keys.forEach((key) => {
       try {
+        // Ignore getters
+        if (isGetter(obj, key)) return;
         const child = obj[key];
         // Cycle found
         if (stack.indexOf(child) !== -1) return;
         stack.push(child);
-        // Getter function exists but it throws exception
         traverseInner(child, path.concat(key));
         stack.pop();
       } catch (e) {

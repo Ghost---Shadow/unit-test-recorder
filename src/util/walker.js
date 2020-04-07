@@ -38,13 +38,16 @@ const walk = (rootDir) => {
 const filterFiles = (packagedArguments, allFiles) => {
   const { entryPoint, exceptFiles, onlyFiles } = packagedArguments;
 
-  const lut = { };
-  allFiles.forEach((fileName) => { lut[path.resolve(fileName)] = !onlyFiles.length; });
-  lut[path.resolve(entryPoint)] = false;
-  onlyFiles.forEach((fileName) => { lut[path.resolve(fileName)] = true; });
-  exceptFiles.forEach((fileName) => { lut[path.resolve(fileName)] = false; });
+  const matchesAny = (val, arr) => arr
+    .reduce((acc, next) => acc || val.match(new RegExp(next)), false);
 
-  return allFiles.filter(fileName => lut[path.resolve(fileName)]);
+  return allFiles.filter((fileName) => {
+    const isBlacklisted = matchesAny(fileName, exceptFiles.concat(entryPoint));
+    if (isBlacklisted) return false;
+    const isWhitelisted = matchesAny(fileName, onlyFiles);
+    // if whitelist is empty then allow all
+    return isWhitelisted || !onlyFiles.length;
+  });
 };
 
 module.exports = {

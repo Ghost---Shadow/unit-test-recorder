@@ -66,5 +66,15 @@ describe('walker', () => {
       const expected = ['dir1/file2.js'];
       expect(filterFiles(packagedArguments, allFiles)).toEqual(expected);
     });
+    it('should should support regex', () => {
+      const packagedArguments = {
+        entryPoint: 'entrypoint.js',
+        exceptFiles: [],
+        onlyFiles: ['dir1/*', '.*file4.js'],
+      };
+      const allFiles = ['entrypoint.js', 'dir1/file1.js', 'dir1/file2.js', 'dir2/file2.js', 'dir3/file4.js'];
+      const expected = ['dir1/file1.js', 'dir1/file2.js', 'dir3/file4.js'];
+      expect(filterFiles(packagedArguments, allFiles)).toEqual(expected);
+    });
   });
 });

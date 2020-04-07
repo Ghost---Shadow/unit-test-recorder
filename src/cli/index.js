@@ -24,10 +24,10 @@ const { argv } = require('yargs')
   .describe('size-limit', 'Objects larger than this limit will be moved to a different file')
 
   .default('except', [])
-  .describe('except', 'Dont run on these files (relative path, comma separated)')
+  .describe('except', 'Dont run on these files (relative path, comma separated, supports RegExp)')
 
   .default('only', [])
-  .describe('only', 'Run only on these files (relative path, comma separated)')
+  .describe('only', 'Run only on these files (relative path, comma separated, supports RegExp)')
 
   .boolean(['d']); // Debug
 

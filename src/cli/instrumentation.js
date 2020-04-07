@@ -8,7 +8,7 @@ const { default: traverse } = require('@babel/traverse');
 const prettier = require('prettier');
 
 const myPlugin = require('../plugin');
-const { walk } = require('../util/walker');
+const { walk, filterFiles } = require('../util/walker');
 const { parserPlugins, generatorOptions } = require('../plugin/used-plugins');
 const { RecorderManager } = require('../recorder');
 
@@ -42,18 +42,6 @@ const transformFile = (fileName, whiteListedModules) => {
     console.error('Error for file:', fileName);
     console.error(err);
   }
-};
-
-const filterFiles = (packagedArguments, allFiles) => {
-  const { entryPoint, exceptFiles, onlyFiles } = packagedArguments;
-
-  const lut = { };
-  allFiles.forEach((fileName) => { lut[path.resolve(fileName)] = !onlyFiles.length; });
-  lut[path.resolve(entryPoint)] = false;
-  onlyFiles.forEach((fileName) => { lut[path.resolve(fileName)] = true; });
-  exceptFiles.forEach((fileName) => { lut[path.resolve(fileName)] = false; });
-
-  return allFiles.filter(fileName => lut[path.resolve(fileName)]);
 };
 
 const instrumentAllFiles = (packagedArguments) => {

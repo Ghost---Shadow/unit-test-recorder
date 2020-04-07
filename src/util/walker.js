@@ -35,8 +35,21 @@ const walk = (rootDir) => {
   return rectifiedPaths;
 };
 
+const filterFiles = (packagedArguments, allFiles) => {
+  const { entryPoint, exceptFiles, onlyFiles } = packagedArguments;
+
+  const lut = { };
+  allFiles.forEach((fileName) => { lut[path.resolve(fileName)] = !onlyFiles.length; });
+  lut[path.resolve(entryPoint)] = false;
+  onlyFiles.forEach((fileName) => { lut[path.resolve(fileName)] = true; });
+  exceptFiles.forEach((fileName) => { lut[path.resolve(fileName)] = false; });
+
+  return allFiles.filter(fileName => lut[path.resolve(fileName)]);
+};
+
 module.exports = {
   walk,
+  filterFiles,
   checkIfDirectoryShouldBeIgnored,
   checkIfFileShouldBeIgnored,
 };

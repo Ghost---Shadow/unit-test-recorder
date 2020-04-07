@@ -57,20 +57,36 @@ const captureUserFunction = ({
 };
 
 const recorderWrapper = (meta, innerFunction, ...p) => {
-  const {
-    path, name, captureIndex, params,
-  } = pre({ meta, p });
-  const result = innerFunction(...p);
-  if (result && _.isFunction(result.then)) {
-    // It might be a promise
-    result.then(res => captureUserFunction({
-      result: res, path, name, captureIndex, params, doesReturnPromise: true,
-    }));
-  } else {
-    captureUserFunction({
-      result, path, name, captureIndex, params, doesReturnPromise: false,
-    });
+  const originalParams = _.clone(p);
+  let preObj;
+  try {
+    preObj = pre({ meta, p });
+  } catch (e) {
+    console.error(e);
+    // Dont try to record if pre fails
+    return innerFunction(...originalParams);
   }
+  // If the function itself throws exception then
+  // the user should handle it
+  const result = innerFunction(...p);
+  try {
+    const {
+      path, name, captureIndex, params,
+    } = preObj;
+    if (result && _.isFunction(result.then)) {
+      // It might be a promise
+      result.then(res => captureUserFunction({
+        result: res, path, name, captureIndex, params, doesReturnPromise: true,
+      }));
+    } else {
+      captureUserFunction({
+        result, path, name, captureIndex, params, doesReturnPromise: false,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
   return result;
 };
 

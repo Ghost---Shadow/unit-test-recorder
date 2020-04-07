@@ -25,12 +25,16 @@ const captureMockActivity = (meta, params, result) => {
 const mockRecorderWrapper = (meta, oldFp, ...p) => {
   const params = p;
   const result = oldFp(...p);
-  if (typeof (result.then) === 'function') {
-    result.then((res) => {
-      captureMockActivity(meta, params, res);
-    });
-  } else {
-    captureMockActivity(meta, params, result);
+  try {
+    if (typeof (result.then) === 'function') {
+      result.then((res) => {
+        captureMockActivity(meta, params, res);
+      });
+    } else {
+      captureMockActivity(meta, params, result);
+    }
+  } catch (e) {
+    console.error(e);
   }
   return result;
 };

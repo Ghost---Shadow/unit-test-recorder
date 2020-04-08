@@ -86,34 +86,39 @@ const isWhitelisted = (injectionWhitelist, path) => injectionWhitelist
 const injectDependencyInjections = (params, meta) => {
   const { injectionWhitelist, path: fileName } = meta;
   params.forEach((param, paramIndex) => {
-    // If param is an object with functions
-    // TODO: Handle array of functions
-    if (_.isObject(param) && !_.isArray(param) && !_.isFunction(param)) {
-      const paths = traverse(param);
-      const validPaths = paths.filter(p => isWhitelisted(injectionWhitelist, p));
-      validPaths.forEach((path) => {
-        const existingProperty = _.get(param, path);
-        const lIndex = path.length - 1;
-        const newFnName = newFunctionNameGenerator(path[lIndex], fileName);
-        const newPath = _.clone(path);
-        newPath[lIndex] = newFnName;
-        const fppkey = path.join('.');
-        const boundRecorder = getBoundRecorder(meta, paramIndex, fppkey);
-        const propertyToInject = _.get(param, newPath, existingProperty);
-        const injectedProperty = injectFunctionDynamically(
-          propertyToInject,
+    try {
+      // If param is an object with functions
+      // TODO: Handle array of functions
+      if (_.isObject(param) && !_.isArray(param) && !_.isFunction(param)) {
+        const paths = traverse(param);
+        const validPaths = paths.filter(p => isWhitelisted(injectionWhitelist, p));
+        validPaths.forEach((path) => {
+          const existingProperty = _.get(param, path);
+          const lIndex = path.length - 1;
+          const newFnName = newFunctionNameGenerator(path[lIndex], fileName);
+          const newPath = _.clone(path);
+          newPath[lIndex] = newFnName;
+          const fppkey = path.join('.');
+          const boundRecorder = getBoundRecorder(meta, paramIndex, fppkey);
+          const propertyToInject = _.get(param, newPath, existingProperty);
+          const injectedProperty = injectFunctionDynamically(
+            propertyToInject,
+            meta,
+            boundRecorder,
+          );
+          _.set(param, newPath, injectedProperty);
+        });
+      } else {
+        const boundRecorder = getBoundRecorder(meta, paramIndex, null);
+        params[paramIndex] = injectFunctionDynamically(
+          param,
           meta,
           boundRecorder,
         );
-        _.set(param, newPath, injectedProperty);
-      });
-    } else {
-      const boundRecorder = getBoundRecorder(meta, paramIndex, null);
-      params[paramIndex] = injectFunctionDynamically(
-        param,
-        meta,
-        boundRecorder,
-      );
+      }
+    } catch (e) {
+      // Ignore this param
+      console.error(e);
     }
   });
 };

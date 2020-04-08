@@ -12,7 +12,12 @@ const markForConstructorInjection = (meta) => {
   // No tests will be generated for this
   // For now
   const address = ['recorderState', path, 'exportedFunctions', name, 'meta', 'requiresContructorInjection'];
-  RecorderManager.record(address, true);
+  try {
+    RecorderManager.record(address, true);
+  } catch (e) {
+    console.error(e);
+    // Do nothing?
+  }
 };
 
 const recordInjectedActivity = (meta, paramIndex, fppkey, params, result) => {

@@ -15,11 +15,9 @@ const captureMockActivity = (meta, params, result) => {
   }
   // Record types from this capture
   const types = generateTypesObj({ params, result });
-  RecorderManager.recorderState[path].mocks[moduleName][name].captures.push({
-    params,
-    result,
-    types,
-  });
+  const old = _.get(RecorderManager, address);
+  const newCapture = { params, result, types };
+  RecorderManager.record(address, old.concat([newCapture]), old);
 };
 
 const mockRecorderWrapper = (meta, oldFp, ...p) => {

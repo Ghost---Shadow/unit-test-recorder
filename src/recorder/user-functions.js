@@ -15,9 +15,10 @@ const pre = ({ meta, p }) => {
       captures: [],
     });
   }
-  RecorderManager.recorderState[path].exportedFunctions[name].captures.push({ });
-  const captureIndex = RecorderManager
-    .recorderState[path].exportedFunctions[name].captures.length - 1;
+  const capturesAddress = [...address, 'captures'];
+  const old = _.get(RecorderManager, capturesAddress);
+  RecorderManager.record(capturesAddress, old.concat([{}]), old);
+  const captureIndex = old.length;
   injectDependencyInjections(p, { ...meta, captureIndex });
   const params = p;
   return {
@@ -35,25 +36,24 @@ const captureUserFunction = ({
   if (_.isFunction(result)) {
     result = result.toString();
   }
-  RecorderManager.recorderState[path]
-    .exportedFunctions[name].meta.doesReturnPromise = doesReturnPromise;
+  const addrToCurrentFun = ['recorderState', path, 'exportedFunctions', name];
+  const addrToDoesReturnPromise = [...addrToCurrentFun, 'meta', 'doesReturnPromise'];
+  const addrToCaptureIndex = [...addrToCurrentFun, 'captures', captureIndex];
+
+  // Record if the function returned a promise
+  RecorderManager.record(addrToDoesReturnPromise, doesReturnPromise, false);
 
   const basePath = ['recorderState', path, 'exportedFunctions', name];
   if (checkAndSetHash(RecorderManager, basePath, params)) {
     // Capture already exists
-    RecorderManager.recorderState[path].exportedFunctions[name].captures[captureIndex] = null;
+    RecorderManager.record(addrToCaptureIndex, null, null);
     return;
   }
 
   // Merge with recordings of dependency injections
-  const existing = RecorderManager
-    .recorderState[path].exportedFunctions[name].captures[captureIndex];
-  RecorderManager.recorderState[path]
-    .exportedFunctions[name].captures[captureIndex] = _.merge(existing, {
-      params,
-      result,
-      types,
-    });
+  const existing = _.get(RecorderManager, addrToCaptureIndex);
+  const newCapture = { params, result, types };
+  RecorderManager.record(addrToCaptureIndex, _.merge(existing, newCapture), existing);
 };
 
 const recorderWrapper = (meta, innerFunction, ...p) => {

@@ -11,8 +11,8 @@ const markForConstructorInjection = (meta) => {
   const { path, name } = meta;
   // No tests will be generated for this
   // For now
-  RecorderManager.recorderState[path].exportedFunctions[name]
-    .meta.requiresContructorInjection = true;
+  const address = ['recorderState', path, 'exportedFunctions', name, 'meta', 'requiresContructorInjection'];
+  RecorderManager.record(address, true);
 };
 
 const recordInjectedActivity = (meta, paramIndex, fppkey, params, result) => {
@@ -31,8 +31,9 @@ const recordInjectedActivity = (meta, paramIndex, fppkey, params, result) => {
   }
   // Record types from this capture
   const types = generateTypesObj({ params, result });
-  RecorderManager.recorderState[path].exportedFunctions[name]
-    .captures[captureIndex].injections[fqn].captures.push({ params, result, types });
+  const old = _.get(RecorderManager, destinationPath);
+  const newCapture = { params, result, types };
+  RecorderManager.record(destinationPath, old.concat([newCapture]), old);
 };
 
 const getBoundRecorder = (meta, paramIndex, fppkey) => recordInjectedActivity

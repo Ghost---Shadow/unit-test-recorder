@@ -3,11 +3,8 @@ const t = require('@babel/types');
 const { default: template } = require('@babel/template');
 const { metaGenerator } = require('./meta');
 
-const reassignmentTemplate = template(`
-RHS_ME = LHS_ME
-`);
-
 const objectInjectorTemplate = template(`
+RHS_ME = LHS_ME;
 LHS_ME = (...p) => recorderWrapper(META, RHS_ME, ...p);
 `);
 
@@ -39,14 +36,12 @@ function instrumentValidObjects() {
       );
       const metaAst = metaGenerator(this.fileName, newFunObj);
       const { lhsAst, rhsAst } = generateMeAst(newFunObj.name);
-      const reassignmentAst = reassignmentTemplate({ RHS_ME: rhsAst, LHS_ME: lhsAst });
       const objectInjectorAst = objectInjectorTemplate({
         RHS_ME: rhsAst,
         LHS_ME: lhsAst,
         META: metaAst,
       });
       path.insertAfter(objectInjectorAst);
-      path.insertAfter(reassignmentAst);
 
       // Mark that wrapper must be imported
       this.atLeastOneRecorderWrapperUsed = true;

@@ -4,8 +4,8 @@ const { default: template } = require('@babel/template');
 const { metaGenerator } = require('./meta');
 
 const objectInjectorTemplate = template(`
-RHS_ME = LHS_ME;
-LHS_ME = (...p) => recorderWrapper(META, RHS_ME, ...p);
+const TEMP_FUN = LHS_ME;
+LHS_ME = (...p) => recorderWrapper(META, TEMP_FUN, ...p);
 `);
 
 const memberExpressionFromFqn = (fqn) => {
@@ -13,12 +13,11 @@ const memberExpressionFromFqn = (fqn) => {
   return fqnArr.reduce((acc, next) => t.memberExpression(acc, next));
 };
 
-const generateMeAst = (fqn) => {
+const generateMeAst = (path, fqn) => {
   const lhsAst = memberExpressionFromFqn(fqn);
   const rhsArr = fqn.split('.');
-  const rhsFqn = [...rhsArr.slice(0, rhsArr.length - 1), `ORIGINAL_${rhsArr[rhsArr.length - 1]}`].join('.');
-  const rhsAst = memberExpressionFromFqn(rhsFqn);
-  return { lhsAst, rhsAst };
+  const tempFun = path.scope.generateUidIdentifier(rhsArr[rhsArr.length - 1]);
+  return { lhsAst, tempFun };
 };
 
 function instrumentValidObjects() {
@@ -35,9 +34,9 @@ function instrumentValidObjects() {
         this.capturedObjects[objName],
       );
       const metaAst = metaGenerator(this.fileName, newFunObj);
-      const { lhsAst, rhsAst } = generateMeAst(newFunObj.name);
+      const { lhsAst, tempFun } = generateMeAst(path, newFunObj.name);
       const objectInjectorAst = objectInjectorTemplate({
-        RHS_ME: rhsAst,
+        TEMP_FUN: tempFun,
         LHS_ME: lhsAst,
         META: metaAst,
       });

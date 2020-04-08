@@ -54,7 +54,7 @@ const validFun = (...p) =>
   );
 
 const rObj = { foo: f => p => f(p) };
-rObj.ORIGINAL_foo = rObj.foo;
+const _foo = rObj.foo;
 rObj.foo = (...p) =>
   recorderWrapper(
     {
@@ -67,7 +67,7 @@ rObj.foo = (...p) =>
       isAsync: false,
       isObject: true
     },
-    rObj.ORIGINAL_foo,
+    _foo,
     ...p
   );
 const secondary1 = rObj.foo(p => p.someFun());

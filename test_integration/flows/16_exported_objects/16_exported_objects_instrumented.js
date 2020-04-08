@@ -7,7 +7,7 @@ const obj1 = {
   foo2() {},
   baz: 42
 };
-obj1.ORIGINAL_foo2 = obj1.foo2;
+const _foo2 = obj1.foo2;
 obj1.foo2 = (...p) =>
   recorderWrapper(
     {
@@ -20,10 +20,10 @@ obj1.foo2 = (...p) =>
       isAsync: false,
       isObject: true
     },
-    obj1.ORIGINAL_foo2,
+    _foo2,
     ...p
   );
-obj1.ORIGINAL_foo1 = obj1.foo1;
+const _foo = obj1.foo1;
 obj1.foo1 = (...p) =>
   recorderWrapper(
     {
@@ -36,7 +36,7 @@ obj1.foo1 = (...p) =>
       isAsync: true,
       isObject: true
     },
-    obj1.ORIGINAL_foo1,
+    _foo,
     ...p
   );
 
@@ -49,7 +49,7 @@ obj2 = {
   },
   higher: a => b => a * b
 };
-obj2.ORIGINAL_higher = obj2.higher;
+const _higher = obj2.higher;
 obj2.higher = (...p) =>
   recorderWrapper(
     {
@@ -62,10 +62,10 @@ obj2.higher = (...p) =>
       isAsync: false,
       isObject: true
     },
-    obj2.ORIGINAL_higher,
+    _higher,
     ...p
   );
-obj2.deep.ORIGINAL_fun = obj2.deep.fun;
+const _fun = obj2.deep.fun;
 obj2.deep.fun = (...p) =>
   recorderWrapper(
     {
@@ -78,10 +78,10 @@ obj2.deep.fun = (...p) =>
       isAsync: true,
       isObject: true
     },
-    obj2.deep.ORIGINAL_fun,
+    _fun,
     ...p
   );
-obj2.ORIGINAL_bar = obj2.bar;
+const _bar = obj2.bar;
 obj2.bar = (...p) =>
   recorderWrapper(
     {
@@ -94,7 +94,7 @@ obj2.bar = (...p) =>
       isAsync: true,
       isObject: true
     },
-    obj2.ORIGINAL_bar,
+    _bar,
     ...p
   );
 

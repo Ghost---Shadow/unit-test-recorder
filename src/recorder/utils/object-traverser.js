@@ -4,9 +4,9 @@ const { getBlackList } = require('../../plugin/blacklist-generator');
 const isGetter = (obj, prop) => !!_.get(Object.getOwnPropertyDescriptor(obj, prop), 'get');
 
 // Compute once
-const blacklist = getBlackList();
+const bl = getBlackList();
 
-const traverse = (objRoot) => {
+const traverse = (objRoot, blacklist = bl) => {
   const result = [];
   const stack = [objRoot];
   const traverseInner = (obj, path = []) => {

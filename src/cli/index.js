@@ -1,4 +1,5 @@
 const cp = require('child_process');
+const readline = require('readline');
 const path = require('path');
 const { argv } = require('yargs')
   .usage('Usage: $0 [entrypoint.js] [options]')
@@ -55,7 +56,10 @@ const packagedArguments = {
 // Instrument all files
 instrumentAllFiles(packagedArguments);
 
-process.on('SIGINT', async () => {
+readline.emitKeypressEvents(process.stdin);
+process.stdin.setRawMode(true);
+
+const shutdown = async () => {
   // Dont reset or generate tests if debug mode
   if (debug) { process.exit(0); }
   // Undo all the instrumentation
@@ -67,6 +71,17 @@ process.on('SIGINT', async () => {
   }
   // Generate the test cases
   await generateAllTests(packagedArguments);
+};
+
+process.stdin.on('keypress', async (str, key) => {
+  const isQuiting = (key.ctrl && key.name === 'c') || key.name === 'q';
+  if (isQuiting) {
+    await shutdown();
+  }
+});
+
+process.on('SIGINT', async () => {
+  await shutdown();
 });
 
 // setInterval(() => {

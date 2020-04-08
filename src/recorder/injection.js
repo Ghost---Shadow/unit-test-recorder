@@ -26,14 +26,18 @@ const recordInjectedActivity = (meta, paramIndex, fppkey, params, result) => {
   if (!_.get(RecorderManager, destinationPath)) {
     _.set(RecorderManager, destinationPath, []);
   }
-  if (checkAndSetHash(RecorderManager, basePath, params)) {
-    return;
+  try {
+    if (checkAndSetHash(RecorderManager, basePath, params)) {
+      return;
+    }
+    // Record types from this capture
+    const types = generateTypesObj({ params, result });
+    const old = _.get(RecorderManager, destinationPath);
+    const newCapture = { params, result, types };
+    RecorderManager.record(destinationPath, old.concat([newCapture]), old);
+  } catch (e) {
+    console.error(e);
   }
-  // Record types from this capture
-  const types = generateTypesObj({ params, result });
-  const old = _.get(RecorderManager, destinationPath);
-  const newCapture = { params, result, types };
-  RecorderManager.record(destinationPath, old.concat([newCapture]), old);
 };
 
 const getBoundRecorder = (meta, paramIndex, fppkey) => recordInjectedActivity
@@ -74,7 +78,6 @@ const injectFunctionDynamically = (maybeFunction, meta, boundRecorder) => {
 const isWhitelisted = (injectionWhitelist, path) => injectionWhitelist
   .reduce((acc, fnName) => acc || _.last(path) === fnName, false);
 
-
 const injectDependencyInjections = (params, meta) => {
   const { injectionWhitelist, path: fileName } = meta;
   params.forEach((param, paramIndex) => {
@@ -110,4 +113,9 @@ const injectDependencyInjections = (params, meta) => {
   });
 };
 
-module.exports = { injectDependencyInjections };
+module.exports = {
+  markForConstructorInjection,
+  recordInjectedActivity,
+  injectFunctionDynamically,
+  injectDependencyInjections,
+};

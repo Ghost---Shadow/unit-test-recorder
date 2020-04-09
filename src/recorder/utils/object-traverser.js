@@ -31,7 +31,10 @@ const traverse = (objRoot, blacklist = bl) => {
   const traverseInner = (obj, path = []) => {
     const type = inferTypeOfObject(obj);
     if (type !== 'Object' && type !== 'Array') {
-      result.push(path);
+      if (path.length) {
+        // Dont push empty paths
+        result.push(path);
+      }
       return;
     }
     const getKeys = {

@@ -79,5 +79,19 @@ describe('object-traverser', () => {
         [0, 'a'],
       ]);
     });
+    describe('empty likes', () => {
+      it('should not crash for empty objects', () => {
+        const paths = traverse({});
+        expect(paths).toEqual([]);
+      });
+      it('should not crash for empty arrays', () => {
+        const paths = traverse([]);
+        expect(paths).toEqual([]);
+      });
+      it('should not crash for primitives', () => {
+        const paths = traverse(1);
+        expect(paths).toEqual([]);
+      });
+    });
   });
 });

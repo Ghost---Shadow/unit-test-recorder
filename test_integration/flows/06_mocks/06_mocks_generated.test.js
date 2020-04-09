@@ -76,7 +76,7 @@ describe('06_mocks', () => {
     it('test 0', () => {
       let result = getTodo0result;
       const actual = getTodo();
-      expect(actual).toMatchObject(result);
+      expect(actual).toEqual(result);
     });
   });
 

@@ -1,8 +1,35 @@
 const _ = require('lodash');
-const stringify = require('json-stringify-safe');
+// const stringify = require('json-stringify-safe');
+const { traverse } = require('./object-traverser');
+const { inferTypeOfObject } = require('../utils/dynamic-type-inference');
 
 // https://stackoverflow.com/a/30204271/1217998
-const safeStringify = obj => stringify(obj, null, 2, () => undefined);
+// const safeStringify = obj => stringify(obj, null, 2, () => undefined);
+
+const safeStringify = (obj) => {
+  const paths = traverse(obj, {});
+  const type = inferTypeOfObject(obj);
+  const base = { Array: [], Object: {} }[type];
+  let decycledObj = obj;
+
+  if (base) {
+    decycledObj = paths.reduce((acc, path) => {
+      const prop = _.get(obj, path);
+      // Filter out __proto__ because immutability
+      const noProto = path.filter(p => p !== '__proto__');
+      _.set(acc, noProto, prop);
+      return acc;
+    }, base);
+  }
+
+  try {
+    // In case it is still cyclic
+    return JSON.stringify(decycledObj, null, 2);
+  } catch (e) {
+    console.error(e);
+    return JSON.stringify(base);
+  }
+};
 
 const removeNullCaptures = (recorderState) => {
   // RecorderManager.recorderState[path].exportedFunctions[name].captures[captureIndex]

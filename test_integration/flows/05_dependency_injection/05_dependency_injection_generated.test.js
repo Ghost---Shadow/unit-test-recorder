@@ -5,11 +5,7 @@ describe('05_dependency_injection', () => {
   describe('getPost', () => {
     it('test 0', async () => {
       let dbClient = {
-        __proto__: {
-          __proto__: {
-            pool: {}
-          }
-        }
+        pool: {}
       };
       let postId = 1;
       let redisCache = null;
@@ -133,11 +129,7 @@ describe('05_dependency_injection', () => {
   describe('getPostComments', () => {
     it('test 0', async () => {
       let client = {
-        __proto__: {
-          __proto__: {
-            pool: {}
-          }
-        }
+        pool: {}
       };
       let postId = 1;
       let redisCache = null;

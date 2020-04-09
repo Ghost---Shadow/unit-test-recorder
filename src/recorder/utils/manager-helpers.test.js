@@ -40,6 +40,27 @@ describe('recorder.utils', () => {
         }"
       `);
     });
+    it('should work with arrays', () => {
+      const obj = [{ a: 1 }];
+      obj[1] = obj;
+      expect(safeStringify(obj)).toMatchInlineSnapshot(`
+        "[
+          {
+            \\"a\\": 1
+          }
+        ]"
+      `);
+    });
+    it('should not coerce array like objects', () => {
+      const obj = { 0: 1, 1: 2, 2: 3 };
+      expect(safeStringify(obj)).toMatchInlineSnapshot(`
+        "{
+          \\"0\\": 1,
+          \\"1\\": 2,
+          \\"2\\": 3
+        }"
+      `);
+    });
   });
   describe('removeNullCaptures', () => {
     it('should remove null captures', () => {

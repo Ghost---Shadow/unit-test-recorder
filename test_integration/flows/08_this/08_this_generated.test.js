@@ -36,8 +36,7 @@ describe('08_this', () => {
   describe('protoOverwriteHelper', () => {
     it('test 0', () => {
       let foo = {
-        bar: 2,
-        __proto__: {}
+        bar: 2
       };
       foo.fun2 = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;

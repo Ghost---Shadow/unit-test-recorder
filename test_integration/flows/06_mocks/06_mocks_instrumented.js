@@ -91,7 +91,7 @@ const getTodo = (...p) =>
           .toString()
       );
       const b = testIntegrationFlows06Mocks06MocksJsFoo4();
-      return { ...a, ...b };
+      return a.concat(b);
     },
     ...p
   );

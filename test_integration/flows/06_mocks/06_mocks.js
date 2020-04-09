@@ -7,7 +7,7 @@ const getTodo = () => {
   fileSystem.readFileSync('test_integration/flows/06_mocks/response.json', 'utf8').toString();
   const a = JSON.parse(fileSystem.readFileSync('test_integration/flows/06_mocks/response.json', 'utf8').toString());
   const b = foo4();
-  return { ...a, ...b };
+  return a.concat(b);
 };
 
 const localMocksTest = async () => {

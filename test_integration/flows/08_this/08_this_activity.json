@@ -132,8 +132,7 @@
             },
             "params": [
               {
-                "bar": 2,
-                "__proto__": {}
+                "bar": 2
               }
             ],
             "result": 2,
@@ -146,7 +145,7 @@
           }
         ],
         "hashTable": {
-          "xgvnThk8//z+RKJZgeYBgg==": true
+          "YD/gdfHyFE+5+htdCytirQ==": true
         }
       }
     }

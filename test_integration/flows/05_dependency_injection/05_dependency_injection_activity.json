@@ -165,11 +165,7 @@
             },
             "params": [
               {
-                "__proto__": {
-                  "__proto__": {
-                    "pool": {}
-                  }
-                }
+                "pool": {}
               },
               1,
               null
@@ -207,7 +203,7 @@
           }
         ],
         "hashTable": {
-          "qqyOA7DF/CBDP6O3zAECJQ==": true
+          "G/CLNtpBTSg99zg16znCdw==": true
         }
       },
       "getPostComments": {
@@ -357,11 +353,7 @@
             },
             "params": [
               {
-                "__proto__": {
-                  "__proto__": {
-                    "pool": {}
-                  }
-                }
+                "pool": {}
               },
               1,
               null
@@ -385,7 +377,7 @@
           }
         ],
         "hashTable": {
-          "qqyOA7DF/CBDP6O3zAECJQ==": true
+          "G/CLNtpBTSg99zg16znCdw==": true
         }
       }
     }

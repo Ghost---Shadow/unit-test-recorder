@@ -56,8 +56,20 @@ describe('object-traverser', () => {
         [2, 2, 1],
       ]);
     });
-    it.skip('should retain paths to empty objects and arrays', () => {
-
+    it('should retain paths to empty objects and arrays', () => {
+      const obj = {
+        a: {},
+        b: [],
+        c: [[]],
+        d: { e: {} },
+      };
+      const paths = traverse(obj);
+      expect(paths).toEqual([
+        ['a'],
+        ['b'],
+        ['c', 0],
+        ['d', 'e'],
+      ]);
     });
     it.skip('should handle cyclic arraylike structures', () => {
 

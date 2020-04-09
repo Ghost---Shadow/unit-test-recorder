@@ -19,6 +19,12 @@ const getKeysForObject = (obj, blacklist) => {
 
 const getKeysForArray = arr => _.range(arr.length);
 
+const isObjectLikeEmpty = (type, keys, path) => {
+  const isObjectEmpty = type === 'Object' && keys.length === 1 && keys[0] === '__proto__';
+  const isArrayEmpty = type === 'Array' && keys.length === 0;
+  return (isObjectEmpty || isArrayEmpty) && path.length;
+};
+
 const traverse = (objRoot, blacklist = bl) => {
   const result = [];
   const stack = [objRoot];
@@ -33,6 +39,11 @@ const traverse = (objRoot, blacklist = bl) => {
       Object: getKeysForObject,
     }[type];
     const keys = getKeys(obj, blacklist);
+    if (isObjectLikeEmpty(type, keys, path)) {
+      // Retain empty objects and arrays
+      result.push(path);
+      return;
+    }
     keys.forEach((key) => {
       try {
         const child = obj[key];

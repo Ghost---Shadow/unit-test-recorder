@@ -44,5 +44,23 @@ describe('object-traverser', () => {
         ['bar', 'a'],
       ]);
     });
+    it('should handle arrays correctly', () => {
+      const arr = [{ a: 1 }, 3, [1, 2, [3, 4]]];
+      const paths = traverse(arr);
+      expect(paths).toEqual([
+        [0, 'a'],
+        [1],
+        [2, 0],
+        [2, 1],
+        [2, 2, 0],
+        [2, 2, 1],
+      ]);
+    });
+    it.skip('should retain paths to empty objects and arrays', () => {
+
+    });
+    it.skip('should handle cyclic arraylike structures', () => {
+
+    });
   });
 });

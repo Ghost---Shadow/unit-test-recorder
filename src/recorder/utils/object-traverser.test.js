@@ -71,8 +71,13 @@ describe('object-traverser', () => {
         ['d', 'e'],
       ]);
     });
-    it.skip('should handle cyclic arraylike structures', () => {
-
+    it('should handle cyclic arraylike structures', () => {
+      const obj = [{ a: 1 }];
+      obj[1] = obj;
+      const paths = traverse(obj);
+      expect(paths).toEqual([
+        [0, 'a'],
+      ]);
     });
   });
 });

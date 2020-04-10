@@ -1,5 +1,17 @@
 const { traverse } = require('./object-traverser');
 
+const degenerate = (iterator) => {
+  const arr = [];
+  for (
+    let path = iterator.next().value;
+    path !== undefined;
+    path = iterator.next().value
+  ) {
+    arr.push(path);
+  }
+  return arr;
+};
+
 describe('object-traverser', () => {
   describe('traverse', () => {
     it('should list all paths including prototypes', () => {
@@ -12,7 +24,7 @@ describe('object-traverser', () => {
           },
         },
       };
-      const paths = traverse(obj);
+      const paths = degenerate(traverse(obj));
       expect(paths).toEqual([
         ['fun'],
         ['__proto__', 'fun'],
@@ -25,20 +37,20 @@ describe('object-traverser', () => {
           throw new Error('sample');
         },
       };
-      const paths = traverse(obj);
+      const paths = degenerate(traverse(obj));
       expect(paths).toEqual([]);
     });
     it('should not crash if object is cyclic', () => {
       const obj = { a: 1, bar: {} };
       obj.obj = obj;
       obj.bar.obj = obj;
-      const paths = traverse(obj);
+      const paths = degenerate(traverse(obj));
       expect(paths).toEqual([['a']]);
     });
     it('should not remove if duplicate references', () => {
       const inner = { a: 1 };
       const outer = { foo: inner, bar: inner };
-      const paths = traverse(outer);
+      const paths = degenerate(traverse(outer));
       expect(paths).toEqual([
         ['foo', 'a'],
         ['bar', 'a'],
@@ -46,7 +58,7 @@ describe('object-traverser', () => {
     });
     it('should handle arrays correctly', () => {
       const arr = [{ a: 1 }, 3, [1, 2, [3, 4]]];
-      const paths = traverse(arr);
+      const paths = degenerate(traverse(arr));
       expect(paths).toEqual([
         [0, 'a'],
         [1],
@@ -63,7 +75,7 @@ describe('object-traverser', () => {
         c: [[]],
         d: { e: {} },
       };
-      const paths = traverse(obj);
+      const paths = degenerate(traverse(obj));
       expect(paths).toEqual([
         ['a'],
         ['b'],
@@ -74,22 +86,22 @@ describe('object-traverser', () => {
     it('should handle cyclic arraylike structures', () => {
       const obj = [{ a: 1 }];
       obj[1] = obj;
-      const paths = traverse(obj);
+      const paths = degenerate(traverse(obj));
       expect(paths).toEqual([
         [0, 'a'],
       ]);
     });
     describe('empty likes', () => {
       it('should not crash for empty objects', () => {
-        const paths = traverse({});
+        const paths = degenerate(traverse({}));
         expect(paths).toEqual([]);
       });
       it('should not crash for empty arrays', () => {
-        const paths = traverse([]);
+        const paths = degenerate(traverse([]));
         expect(paths).toEqual([]);
       });
       it('should not crash for primitives', () => {
-        const paths = traverse(1);
+        const paths = degenerate(traverse(1));
         expect(paths).toEqual([]);
       });
     });

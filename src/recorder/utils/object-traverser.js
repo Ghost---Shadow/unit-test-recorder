@@ -25,15 +25,14 @@ const isObjectLikeEmpty = (type, keys, path) => {
   return (isObjectEmpty || isArrayEmpty) && path.length;
 };
 
-const traverse = (objRoot, blacklist = bl) => {
-  const result = [];
+function* traverse(objRoot, blacklist = bl) {
   const stack = [objRoot];
-  const traverseInner = (obj, path = []) => {
+  function* traverseInner(obj, path = []) {
     const type = inferTypeOfObject(obj);
     if (type !== 'Object' && type !== 'Array') {
       if (path.length) {
         // Dont push empty paths
-        result.push(path);
+        yield path;
       }
       return;
     }
@@ -44,24 +43,24 @@ const traverse = (objRoot, blacklist = bl) => {
     const keys = getKeys(obj, blacklist);
     if (isObjectLikeEmpty(type, keys, path)) {
       // Retain empty objects and arrays
-      result.push(path);
+      yield path;
       return;
     }
-    keys.forEach((key) => {
+    for (let i = 0; i < keys.length; i += 1) {
+      const key = keys[i];
       try {
         const child = obj[key];
         // Cycle found
         if (stack.indexOf(child) !== -1) return;
         stack.push(child);
-        traverseInner(child, path.concat(key));
+        yield* traverseInner(child, path.concat(key));
         stack.pop();
       } catch (e) {
         console.error(e);
       }
-    });
-  };
-  traverseInner(objRoot);
-  return result;
-};
+    }
+  }
+  yield* traverseInner(objRoot);
+}
 
 module.exports = { traverse };

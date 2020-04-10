@@ -87,26 +87,31 @@ const injectDependencyInjections = (params, meta) => {
   const { injectionWhitelist, path: fileName } = meta;
   params.forEach((param, paramIndex) => {
     try {
-      // If param is an object with functions
-      if (_.isObject(param) && !_.isArray(param) && !_.isFunction(param)) {
-        const paths = traverse(param);
-        const validPaths = paths.filter(p => isWhitelisted(injectionWhitelist, p));
-        validPaths.forEach((path) => {
-          const existingProperty = _.get(param, path);
-          const lIndex = path.length - 1;
-          const newFnName = newFunctionNameGenerator(path[lIndex], fileName);
-          const newPath = _.clone(path);
-          newPath[lIndex] = newFnName;
-          const fppkey = path.join('.');
-          const boundRecorder = getBoundRecorder(meta, paramIndex, fppkey);
-          const propertyToInject = _.get(param, newPath, existingProperty);
-          const injectedProperty = injectFunctionDynamically(
-            propertyToInject,
-            meta,
-            boundRecorder,
-          );
-          _.set(param, newPath, injectedProperty);
-        });
+      // If param is an object/array with functions
+      if (_.isObject(param) && !_.isFunction(param)) {
+        const iterator = traverse(param);
+        for (
+          let path = iterator.next().value;
+          path !== undefined;
+          path = iterator.next().value
+        ) {
+          if (isWhitelisted(injectionWhitelist, path)) {
+            const existingProperty = _.get(param, path);
+            const lIndex = path.length - 1;
+            const newFnName = newFunctionNameGenerator(path[lIndex], fileName);
+            const newPath = _.clone(path);
+            newPath[lIndex] = newFnName;
+            const fppkey = path.join('.');
+            const boundRecorder = getBoundRecorder(meta, paramIndex, fppkey);
+            const propertyToInject = _.get(param, newPath, existingProperty);
+            const injectedProperty = injectFunctionDynamically(
+              propertyToInject,
+              meta,
+              boundRecorder,
+            );
+            _.set(param, newPath, injectedProperty);
+          }
+        }
       } else {
         const boundRecorder = getBoundRecorder(meta, paramIndex, null);
         params[paramIndex] = injectFunctionDynamically(

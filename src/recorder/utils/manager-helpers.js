@@ -7,25 +7,27 @@ const { inferTypeOfObject } = require('../utils/dynamic-type-inference');
 // const safeStringify = obj => stringify(obj, null, 2, () => undefined);
 
 const safeStringify = (obj) => {
-  const paths = traverse(obj, {});
   const type = inferTypeOfObject(obj);
   const base = { Array: [], Object: {} }[type];
-  let decycledObj = obj;
+  const decycledObj = base || obj;
 
   if (base) {
-    decycledObj = paths.reduce((acc, path) => {
+    const iterator = traverse(obj, {});
+    for (
+      let path = iterator.next().value;
+      path !== undefined;
+      path = iterator.next().value
+    ) {
       const prop = _.get(obj, path);
-      // Filter out __proto__ because immutability
       const noProto = path.filter(p => p !== '__proto__');
-      _.set(acc, noProto, prop);
-      return acc;
-    }, base);
+      _.set(decycledObj, noProto, prop);
+    }
   }
 
   try {
-    // In case it is still cyclic
     return JSON.stringify(decycledObj, null, 2);
   } catch (e) {
+    // In case it is somehow still cyclic
     console.error(e);
     return JSON.stringify(base);
   }

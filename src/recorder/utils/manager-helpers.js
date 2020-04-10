@@ -12,7 +12,7 @@ const safeStringify = (obj) => {
   const decycledObj = base || obj;
 
   if (base) {
-    const iterator = traverse(obj, {});
+    const iterator = traverse(obj, false, {});
     for (
       let path = iterator.next().value;
       path !== undefined;

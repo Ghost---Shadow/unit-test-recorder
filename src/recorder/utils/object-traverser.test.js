@@ -30,6 +30,21 @@ describe('object-traverser', () => {
         ['__proto__', 'fun'],
         ['__proto__', '__proto__', 'fun']]);
     });
+    it('should list all paths excluding prototypes when flagged', () => {
+      const obj = {
+        fun: () => 'baz',
+        __proto__: {
+          fun: () => 'foo',
+          __proto__: {
+            fun: () => 'bar',
+          },
+        },
+      };
+      const paths = degenerate(traverse(obj, false));
+      expect(paths).toEqual([
+        ['fun'],
+      ]);
+    });
     it('should not crash if getter throws exception', () => {
       console.error = () => null;
       const obj = {

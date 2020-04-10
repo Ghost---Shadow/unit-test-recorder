@@ -6,6 +6,7 @@ const {
   generateNameForExternal,
   packageDataForExternal,
 } = require('./utils');
+const { inferTypeOfObject } = require('../recorder/utils/dynamic-type-inference');
 
 const generateAssignmentOperation = (
   maybeObject, lIdentifier, meta, captureIndex, paramType, packagedArguments,
@@ -29,6 +30,20 @@ const generateAssignmentOperation = (
   return { statement, externalData };
 };
 
+const primeObjectForInjections = (maybeObject, paramId, injections) => {
+  if (inferTypeOfObject(injections) !== 'Object') return maybeObject;
+  const dropProto = injArr => injArr.filter(elem => elem !== '__proto__');
+  const allInjections = Object.keys(injections);
+  const injArray = allInjections.map(inj => inj.split('.'));
+  const injectionsOfCurrentParam = injArray.filter(injArr => injArr[0] === paramId);
+  const droppedProto = injectionsOfCurrentParam.map(dropProto);
+  const cleanedInjection = droppedProto.map(injArr => injArr.slice(1, injArr.length - 1));
+  cleanedInjection.forEach((inj) => {
+    _.set(maybeObject, inj, {});
+  });
+  return maybeObject;
+};
+
 const generateRegularInputAssignments = (capture, meta, testIndex, packagedArguments) => {
   const { paramIds } = meta;
   const { params, types } = capture;
@@ -40,8 +55,9 @@ const generateRegularInputAssignments = (capture, meta, testIndex, packagedArgum
       const lIdentifier = paramId;
       const captureIndex = testIndex;
       const paramType = paramTypes[index];
+      const maybePrimedObject = primeObjectForInjections(maybeObject, paramId, capture.injections);
       const { statement, externalData } = generateAssignmentOperation(
-        maybeObject, lIdentifier, meta, captureIndex, paramType, packagedArguments,
+        maybePrimedObject, lIdentifier, meta, captureIndex, paramType, packagedArguments,
       );
       return { statement, externalData };
     });
@@ -103,4 +119,5 @@ module.exports = {
   generateAssignmentOperation,
   generateRegularInputAssignments,
   generateInputAssignmentsWithInjections,
+  primeObjectForInjections,
 };

@@ -164,9 +164,7 @@
               }
             },
             "params": [
-              {
-                "pool": {}
-              },
+              {},
               1,
               null
             ],
@@ -203,7 +201,7 @@
           }
         ],
         "hashTable": {
-          "G/CLNtpBTSg99zg16znCdw==": true
+          "vzyeU7xwPsnOk+eFZqim0Q==": true
         }
       },
       "getPostComments": {
@@ -352,9 +350,7 @@
               }
             },
             "params": [
-              {
-                "pool": {}
-              },
+              {},
               1,
               null
             ],
@@ -377,7 +373,7 @@
           }
         ],
         "hashTable": {
-          "G/CLNtpBTSg99zg16znCdw==": true
+          "vzyeU7xwPsnOk+eFZqim0Q==": true
         }
       }
     }

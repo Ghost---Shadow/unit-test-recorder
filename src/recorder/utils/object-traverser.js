@@ -8,8 +8,8 @@ const isGetter = (obj, prop) => !!_.get(Object.getOwnPropertyDescriptor(obj, pro
 // Compute once
 const bl = getBlackList();
 
-const getKeysForObject = (obj, blacklist) => {
-  const appendProto = Object.getPrototypeOf(obj) !== null;
+const getKeysForObject = (obj, crawlProto, blacklist) => {
+  const appendProto = Object.getPrototypeOf(obj) !== null && crawlProto;
   const toConcat = appendProto ? ['__proto__'] : [];
   return Object.getOwnPropertyNames(obj)
     .filter(k => !blacklist[k])
@@ -25,7 +25,7 @@ const isObjectLikeEmpty = (type, keys, path) => {
   return (isObjectEmpty || isArrayEmpty) && path.length;
 };
 
-function* traverse(objRoot, blacklist = bl) {
+function* traverse(objRoot, crawlProto = true, blacklist = bl) {
   const stack = [objRoot];
   function* traverseInner(obj, path = []) {
     const type = inferTypeOfObject(obj);
@@ -40,7 +40,7 @@ function* traverse(objRoot, blacklist = bl) {
       Array: getKeysForArray,
       Object: getKeysForObject,
     }[type];
-    const keys = getKeys(obj, blacklist);
+    const keys = getKeys(obj, crawlProto, blacklist);
     if (isObjectLikeEmpty(type, keys, path)) {
       // Retain empty objects and arrays
       yield path;

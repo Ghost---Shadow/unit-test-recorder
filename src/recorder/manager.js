@@ -17,7 +17,8 @@ const RecorderManager = {
     this.recorderState = removeNullCaptures(this.recorderState);
     this.recorderState = removeEmptyFiles(this.recorderState);
     this.recorderState = removeInvalidFunctions(this.recorderState);
-    return safeStringify(this.recorderState);
+    // This JSON should be serializeable
+    return JSON.stringify(this.recorderState, null, 2);
   },
   record(address, obj, fallback = {}) {
     try {

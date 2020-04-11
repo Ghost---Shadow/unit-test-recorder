@@ -23,6 +23,8 @@ module.exports = {
   rules: {
     'react/jsx-filename-extension': 0,
     // Babel AST transform is not pure
-    'no-param-reassign': 0
+    'no-param-reassign': 0,
+    // Code is less "indenty" with continue
+    'no-continue': 0
   },
 };

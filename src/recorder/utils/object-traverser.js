@@ -63,4 +63,42 @@ function* traverse(objRoot, crawlProto = true, blacklist = bl) {
   yield* traverseInner(objRoot);
 }
 
-module.exports = { traverse };
+function* traverseBfs(objRoot, crawlProto = true, blacklist = bl) {
+  const queue = [{ path: [], node: objRoot, stack: [] }];
+  while (queue.length) {
+    const { path, node, stack } = queue.shift();
+    const type = inferTypeOfObject(node);
+    if (type !== 'Object' && type !== 'Array') {
+      if (path.length) {
+        // Dont push empty paths
+        yield path;
+      }
+      continue;
+    }
+    const getKeys = {
+      Array: getKeysForArray,
+      Object: getKeysForObject,
+    }[type];
+    const keys = getKeys(node, crawlProto, blacklist);
+    if (isObjectLikeEmpty(type, keys, path)) {
+      // Retain empty objects and arrays
+      yield path;
+      continue;
+    }
+    for (let i = 0; i < keys.length; i += 1) {
+      const key = keys[i];
+      const child = node[key];
+      const newStack = stack.concat([node]);
+      // Only push non-cyclic children
+      if (newStack.indexOf(child) === -1) {
+        queue.push({
+          path: path.concat([key]),
+          node: child,
+          stack: newStack,
+        });
+      }
+    }
+  }
+}
+
+module.exports = { traverse, traverseBfs };

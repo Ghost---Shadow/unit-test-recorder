@@ -9,7 +9,7 @@ const { inferTypeOfObject } = require('../utils/dynamic-type-inference');
 const safeStringify = (obj) => {
   const type = inferTypeOfObject(obj);
   const base = { Array: [], Object: {} }[type];
-  const decycledObj = base || obj;
+  const decycledObj = _.clone(base || obj);
 
   if (base) {
     const iterator = traverse(obj, false, {});

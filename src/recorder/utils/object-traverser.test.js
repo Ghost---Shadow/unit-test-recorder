@@ -148,7 +148,7 @@ describe('object-traverser', () => {
           },
         },
       };
-      const paths = degenerate(traverseBfs(obj, false));
+      const paths = degenerate(traverseBfs(obj, [], false));
       expect(paths).toEqual([
         ['fun'],
       ]);
@@ -212,6 +212,23 @@ describe('object-traverser', () => {
       const paths = degenerate(traverseBfs(obj));
       expect(paths).toEqual([
         [0, 'a'],
+      ]);
+    });
+    it('should early exit if all leaves are found', () => {
+      const leavesToFind = ['fun', 'fun2'];
+      const obj = {
+        fun: () => null,
+        a: {
+          arr: [{ a: { fun2: () => null } }],
+          b: { c: {}, d: { e: { f: {} } } },
+        },
+      };
+      const paths = degenerate(traverseBfs(obj, leavesToFind));
+      expect(paths).toEqual([
+        ['fun'],
+        ['a', 'b', 'c'],
+        ['a', 'arr', 0, 'a', 'fun2'],
+        // ['a', 'b', 'd', 'e', 'f'],
       ]);
     });
     describe('empty likes', () => {

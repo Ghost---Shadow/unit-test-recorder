@@ -26,9 +26,10 @@ describe('object-traverser', () => {
       };
       const paths = degenerate(traverse(obj));
       expect(paths).toEqual([
-        ['fun'],
+        ['__proto__', '__proto__', 'fun'],
         ['__proto__', 'fun'],
-        ['__proto__', '__proto__', 'fun']]);
+        ['fun'],
+      ]);
     });
     it('should list all paths excluding prototypes when flagged', () => {
       const obj = {
@@ -229,6 +230,25 @@ describe('object-traverser', () => {
         // ['a', 'b', 'c'],
         ['a', 'arr', 0, 'a', 'fun2'],
         // ['a', 'b', 'd', 'e', 'f'],
+      ]);
+    });
+    it('should crawl __proto__ before other properties', () => {
+      const obj = {
+        a: 1,
+        b: { c: 1 },
+        __proto__: {
+          d: 1,
+          e: { f: 1 },
+          __proto__: { f: 1 },
+        },
+      };
+      const paths = degenerate(traverseBfs(obj));
+      expect(paths).toEqual([
+        ['a'],
+        ['__proto__', 'd'],
+        ['b', 'c'],
+        ['__proto__', '__proto__', 'f'],
+        ['__proto__', 'e', 'f'],
       ]);
     });
     describe('empty likes', () => {

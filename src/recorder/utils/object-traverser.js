@@ -11,10 +11,10 @@ const bl = getBlackList();
 const getKeysForObject = (obj, crawlProto, blacklist) => {
   const appendProto = Object.getPrototypeOf(obj) !== null && crawlProto;
   const toConcat = appendProto ? ['__proto__'] : [];
-  return Object.getOwnPropertyNames(obj)
+  const validKeys = Object.getOwnPropertyNames(obj)
     .filter(k => !blacklist[k])
-    .filter(k => !isGetter(obj, k))
-    .concat(toConcat);
+    .filter(k => !isGetter(obj, k));
+  return toConcat.concat(validKeys);
 };
 
 const getKeysForArray = arr => _.range(arr.length);

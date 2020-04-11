@@ -80,9 +80,6 @@ const injectFunctionDynamically = (maybeFunction, meta, boundRecorder) => {
   return maybeFunction;
 };
 
-const isWhitelisted = (injectionWhitelist, path) => injectionWhitelist
-  .reduce((acc, fnName) => acc || _.last(path) === fnName, false);
-
 const injectDependencyInjections = (params, meta) => {
   const { injectionWhitelist, path: fileName } = meta;
   params.forEach((param, paramIndex) => {
@@ -95,22 +92,20 @@ const injectDependencyInjections = (params, meta) => {
           path !== undefined;
           path = iterator.next().value
         ) {
-          if (isWhitelisted(injectionWhitelist, path)) {
-            const existingProperty = _.get(param, path);
-            const lIndex = path.length - 1;
-            const newFnName = newFunctionNameGenerator(path[lIndex], fileName);
-            const newPath = _.clone(path);
-            newPath[lIndex] = newFnName;
-            const fppkey = path.join('.');
-            const boundRecorder = getBoundRecorder(meta, paramIndex, fppkey);
-            const propertyToInject = _.get(param, newPath, existingProperty);
-            const injectedProperty = injectFunctionDynamically(
-              propertyToInject,
-              meta,
-              boundRecorder,
-            );
-            _.set(param, newPath, injectedProperty);
-          }
+          const existingProperty = _.get(param, path);
+          const lIndex = path.length - 1;
+          const newFnName = newFunctionNameGenerator(path[lIndex], fileName);
+          const newPath = _.clone(path);
+          newPath[lIndex] = newFnName;
+          const fppkey = path.join('.');
+          const boundRecorder = getBoundRecorder(meta, paramIndex, fppkey);
+          const propertyToInject = _.get(param, newPath, existingProperty);
+          const injectedProperty = injectFunctionDynamically(
+            propertyToInject,
+            meta,
+            boundRecorder,
+          );
+          _.set(param, newPath, injectedProperty);
         }
       } else {
         const boundRecorder = getBoundRecorder(meta, paramIndex, null);

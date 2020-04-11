@@ -69,17 +69,21 @@ const haveFoundEverything = (lut) => {
   return _.every(values);
 };
 
-const updateLut = (lut, leavesToFind, path) => {
-  const lastPath = _.last(path);
-  if (leavesToFind.indexOf(lastPath) === -1) return false;
-  lut[lastPath] = true;
-  return haveFoundEverything(lut);
-};
-
-function* traverseBfs(objRoot, leavesToFind = [], crawlProto = true, blacklist = bl) {
+const updateLutGen = (leavesToFind) => {
   const lut = leavesToFind.reduce((acc, next) => ({
     ...acc, [next]: false,
   }), {});
+
+  return (path) => {
+    const lastPath = _.last(path);
+    if (leavesToFind.indexOf(lastPath) === -1) return false;
+    lut[lastPath] = true;
+    return haveFoundEverything(lut);
+  };
+};
+
+function* traverseBfs(objRoot, leavesToFind = [], crawlProto = true, blacklist = bl) {
+  const updateLut = updateLutGen(leavesToFind);
   const queue = [{ path: [], node: objRoot, stack: [] }];
   while (queue.length) {
     const { path, node, stack } = queue.shift();
@@ -88,7 +92,7 @@ function* traverseBfs(objRoot, leavesToFind = [], crawlProto = true, blacklist =
       if (path.length) {
         // Dont push empty paths
         yield path;
-        if (updateLut(lut, leavesToFind, path)) return;
+        if (updateLut(path)) return; // Early exit
       }
       continue;
     }
@@ -100,7 +104,7 @@ function* traverseBfs(objRoot, leavesToFind = [], crawlProto = true, blacklist =
     if (isObjectLikeEmpty(type, keys, path)) {
       // Retain empty objects and arrays
       yield path;
-      if (updateLut(lut, leavesToFind, path)) return;
+      if (updateLut(path)) return; // Early exit
       continue;
     }
     for (let i = 0; i < keys.length; i += 1) {

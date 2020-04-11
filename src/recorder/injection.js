@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
 const RecorderManager = require('./manager');
-const { traverse } = require('./utils/object-traverser');
+const { traverseBfs } = require('./utils/object-traverser');
 const { newFunctionNameGenerator } = require('../util/misc');
 const { checkAndSetHash } = require('./utils/hash-helper');
 const { generateTypesObj } = require('./utils/dynamic-type-inference');
@@ -89,7 +89,7 @@ const injectDependencyInjections = (params, meta) => {
     try {
       // If param is an object/array with functions
       if (_.isObject(param) && !_.isFunction(param)) {
-        const iterator = traverse(param);
+        const iterator = traverseBfs(param, injectionWhitelist);
         for (
           let path = iterator.next().value;
           path !== undefined;

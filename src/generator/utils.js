@@ -1,5 +1,6 @@
 const path = require('path');
 const prettier = require('prettier');
+const _ = require('lodash');
 
 const filePathToFileName = filePath => path.parse(filePath).name;
 
@@ -50,10 +51,11 @@ const generateNameForExternal = (meta, captureIndex, identifierName) => {
   const sourceFileDir = path.posix.dirname(path.posix.join('.', sourceFilePath));
   const outputDir = path.posix.normalize(path.posix.join(sourceFileDir, relativePath));
   const fileName = filePathToFileName(sourceFilePath);
-  const externalName = `${functionName}_${captureIndex}_${identifierName}.mock.js`;
+  const cameledFnName = _.camelCase(functionName);
+  const externalName = `${cameledFnName}_${captureIndex}_${identifierName}.mock.js`;
   const filePath = path.posix.join(outputDir, fileName, externalName);
   const importPath = `./${path.posix.join(fileName, externalName)}`;
-  const identifier = `${functionName}${captureIndex}${identifierName}`;
+  const identifier = `${cameledFnName}${captureIndex}${identifierName}`;
   return { identifier, filePath, importPath };
 };
 

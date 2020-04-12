@@ -1,5 +1,7 @@
 const { obj1 } = require('./16_exported_objects');
 const { obj2 } = require('./16_exported_objects');
+const { largeObj } = require('./16_exported_objects');
+const largeObjLargeFun0result = require('./16_exported_objects/largeObjLargeFun_0_result.mock.js');
 
 describe('16_exported_objects', () => {
   describe('obj1.foo1', () => {
@@ -79,6 +81,14 @@ describe('16_exported_objects', () => {
       let result = 'b => a * b';
       const actual = obj2.higher(a);
       expect(actual.toString()).toEqual(result);
+    });
+  });
+
+  describe('largeObj.largeFun', () => {
+    it('test 0', () => {
+      let result = largeObjLargeFun0result;
+      const actual = largeObj.largeFun();
+      expect(actual).toEqual(result);
     });
   });
 });

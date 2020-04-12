@@ -204,6 +204,7 @@ describe('driver', () => {
       await exportedObj.obj2.bar(2, 1);
       await exportedObj.obj2.deep.fun({ anotherFun: () => 1 });
       await exportedObj.obj2.higher(1)(2);
+      exportedObj.largeObj.largeFun();
       const outputFileName = getSnapshotFileName('16_exported_objects');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

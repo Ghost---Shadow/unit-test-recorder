@@ -98,6 +98,26 @@ obj2.bar = (...p) =>
     ...p
   );
 
+const largeObj = {
+  largeFun: () => [...Array(1000).keys()]
+};
+const _largeFun = largeObj.largeFun;
+largeObj.largeFun = (...p) =>
+  recorderWrapper(
+    {
+      path: 'test_integration/flows/16_exported_objects/16_exported_objects.js',
+      name: 'largeObj.largeFun',
+      paramIds: [],
+      injectionWhitelist: ['someFun', 'anotherFun'],
+      isDefault: false,
+      isEcmaDefault: false,
+      isAsync: false,
+      isObject: true
+    },
+    _largeFun,
+    ...p
+  );
+
 const obj3 = { poo: 1 };
 
 const empty = {};
@@ -106,5 +126,6 @@ module.exports = {
   obj1,
   obj2,
   obj3,
-  empty
+  empty,
+  largeObj
 };

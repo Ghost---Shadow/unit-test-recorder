@@ -1,7 +1,9 @@
 // https://github.com/lodash/lodash/issues/1845#issuecomment-339773840
 const inferTypeOfObject = (obj) => {
   try {
-    const matches = ({}).toString.call(obj).match(/\s([a-zA-Z]+)/);
+    // https://stackoverflow.com/a/59666904/1217998
+    if (obj && obj[Symbol.toStringTag]) return 'Object';
+    const matches = Object.prototype.toString.call(obj).match(/\s([a-zA-Z]+)/);
     if (matches === null) return matches;
     return matches[1];
   } catch (e) {

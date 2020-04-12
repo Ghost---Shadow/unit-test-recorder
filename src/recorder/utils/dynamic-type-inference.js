@@ -1,11 +1,15 @@
+const _ = require('lodash');
+
 // https://github.com/lodash/lodash/issues/1845#issuecomment-339773840
 const inferTypeOfObject = (obj) => {
   try {
-    // https://stackoverflow.com/a/59666904/1217998
-    if (obj && obj[Symbol.toStringTag]) return 'Object';
+    if (_.isArray(obj)) return 'Array';
+
     const matches = Object.prototype.toString.call(obj).match(/\s([a-zA-Z]+)/);
     if (matches === null) return matches;
-    return matches[1];
+    const inferedType = matches[1];
+    const isUnknownObject = ['Date', 'Function'].indexOf(inferedType) === -1 && _.isObjectLike(obj);
+    return isUnknownObject ? 'Object' : inferedType;
   } catch (e) {
     console.error(e);
     return null;

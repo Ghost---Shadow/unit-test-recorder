@@ -3,7 +3,7 @@ const _ = require('lodash');
 const RecorderManager = require('./manager');
 const { traverseBfs } = require('./utils/object-traverser');
 const { newFunctionNameGenerator } = require('../util/misc');
-const { checkAndSetHash } = require('./utils/hash-helper');
+// const { checkAndSetHash } = require('./utils/hash-helper');
 const { generateTypesObj } = require('./utils/dynamic-type-inference');
 const { broadcastFunctions } = require('./utils/broadcast-functions');
 
@@ -32,9 +32,10 @@ const recordInjectedActivity = (meta, paramIndex, fppkey, params, result) => {
     _.set(RecorderManager, destinationPath, []);
   }
   try {
-    if (checkAndSetHash(RecorderManager, basePath, params)) {
-      return;
-    }
+    // TODO: Put it back later
+    // if (checkAndSetHash(RecorderManager, basePath, params)) {
+    //   return;
+    // }
     // Record types from this capture
     const types = generateTypesObj({ params, result });
     const old = _.get(RecorderManager, destinationPath);

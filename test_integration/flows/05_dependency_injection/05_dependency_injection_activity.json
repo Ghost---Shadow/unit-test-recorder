@@ -44,6 +44,22 @@
                   },
                   {
                     "params": [
+                      "SELECT * FROM posts WHERE id=?",
+                      1
+                    ],
+                    "result": {
+                      "title": "content"
+                    },
+                    "types": {
+                      "params": [
+                        "String",
+                        "Number"
+                      ],
+                      "result": "Object"
+                    }
+                  },
+                  {
+                    "params": [
                       "SELECT region_id FROM regions where post_id=?",
                       1
                     ],
@@ -56,11 +72,7 @@
                       "result": "Number"
                     }
                   }
-                ],
-                "hashTable": {
-                  "dMf972OPP3nY45EvnbCSCw==": true,
-                  "T760nwO8CQPXxsyNlCfoXQ==": true
-                }
+                ]
               },
               "redisCache": {
                 "captures": [
@@ -88,11 +100,7 @@
                       "result": "Number"
                     }
                   }
-                ],
-                "hashTable": {
-                  "0AqRT9EPx92+k/YaoBk7Bg==": true,
-                  "zzvvHO4JAn0vNgcX2g7OrA==": true
-                }
+                ]
               },
               "dbClient.__proto__.__proto__.pool.pooledQuery": {
                 "captures": [
@@ -142,11 +150,7 @@
                       "result": "Array"
                     }
                   }
-                ],
-                "hashTable": {
-                  "QIybPf98iP7LjExe0vm0tw==": true,
-                  "TS05dZS3nn2mj0wuOTWKFQ==": true
-                }
+                ]
               },
               "dbClient.commitSync": {
                 "captures": [
@@ -157,10 +161,7 @@
                       "result": "Undefined"
                     }
                   }
-                ],
-                "hashTable": {
-                  "11FxOYiYfpMxmANj4kGJzg==": true
-                }
+                ]
               }
             },
             "params": [
@@ -253,11 +254,7 @@
                       "result": "Number"
                     }
                   }
-                ],
-                "hashTable": {
-                  "0AqRT9EPx92+k/YaoBk7Bg==": true,
-                  "zzvvHO4JAn0vNgcX2g7OrA==": true
-                }
+                ]
               },
               "client.__proto__.query": {
                 "captures": [
@@ -275,10 +272,7 @@
                       "result": "Number"
                     }
                   }
-                ],
-                "hashTable": {
-                  "T760nwO8CQPXxsyNlCfoXQ==": true
-                }
+                ]
               },
               "client.__proto__.__proto__.pool.pooledQuery": {
                 "captures": [
@@ -328,11 +322,7 @@
                       "result": "Array"
                     }
                   }
-                ],
-                "hashTable": {
-                  "QIybPf98iP7LjExe0vm0tw==": true,
-                  "TS05dZS3nn2mj0wuOTWKFQ==": true
-                }
+                ]
               },
               "client.commitSync": {
                 "captures": [
@@ -343,10 +333,7 @@
                       "result": "Undefined"
                     }
                   }
-                ],
-                "hashTable": {
-                  "11FxOYiYfpMxmANj4kGJzg==": true
-                }
+                ]
               }
             },
             "params": [

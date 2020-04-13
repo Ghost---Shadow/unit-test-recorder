@@ -31,6 +31,11 @@ describe('user-functions', () => {
           .mockImplementation(() => { throw new Error('sample'); });
         expect(fun(1, 2)).toBe(3);
       });
+      afterAll(() => {
+        injectionObj
+          .injectDependencyInjections
+          .mockReset();
+      });
     });
     describe('Continuation local storage', () => {
       it('should put meta in cls', () => {

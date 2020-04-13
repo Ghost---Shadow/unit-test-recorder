@@ -1,3 +1,5 @@
+const { getNamespace } = require('cls-hooked');
+
 jest.mock('./injection');
 
 const injectionObj = require('./injection');
@@ -28,6 +30,28 @@ describe('user-functions', () => {
           .injectDependencyInjections
           .mockImplementation(() => { throw new Error('sample'); });
         expect(fun(1, 2)).toBe(3);
+      });
+    });
+    describe('Continuation local storage', () => {
+      it('should put meta in cls', () => {
+        const session = getNamespace('default');
+        const meta = {
+          path: 'sample/script.js',
+          name: 'sampleFunction',
+          paramIds: [],
+          injectionWhitelist: [],
+          isDefault: false,
+          isEcmaDefault: false,
+          isAsync: false,
+          isObject: false,
+        };
+        const metaWithCaptureIndex = { ...meta, captureIndex: 0 };
+        const fun = (...p) => recorderWrapper(
+          meta,
+          () => session.get('meta'),
+          ...p,
+        );
+        expect(fun()).toEqual(metaWithCaptureIndex);
       });
     });
   });

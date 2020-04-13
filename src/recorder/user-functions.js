@@ -1,3 +1,4 @@
+const { createNamespace } = require('cls-hooked');
 const _ = require('lodash');
 
 const RecorderManager = require('./manager');
@@ -5,6 +6,8 @@ const RecorderManager = require('./manager');
 const { injectDependencyInjections } = require('./injection');
 const { checkAndSetHash } = require('./utils/hash-helper');
 const { generateTypesObj } = require('./utils/dynamic-type-inference');
+
+const session = createNamespace('default');
 
 const pre = ({ meta, p }) => {
   const { path, name, paramIds } = meta;
@@ -19,10 +22,16 @@ const pre = ({ meta, p }) => {
   const old = _.get(RecorderManager, capturesAddress);
   RecorderManager.record(capturesAddress, old.concat([{}]), old);
   const captureIndex = old.length;
-  injectDependencyInjections(p, { ...meta, captureIndex });
-  const params = p;
+  const metaWithCaptureIndex = { ...meta, captureIndex };
+
+  // Shim all dependency injections
+  injectDependencyInjections(p, metaWithCaptureIndex);
+
+  // Set meta in continuation local storage
+  session.set('meta', metaWithCaptureIndex);
+
   return {
-    path, name, captureIndex, params,
+    path, name, captureIndex, params: p,
   };
 };
 
@@ -90,6 +99,8 @@ const recorderWrapper = (meta, innerFunction, ...p) => {
   return result;
 };
 
+const boundRecorderWrapper = session.bind(recorderWrapper);
+
 module.exports = {
-  recorderWrapper,
+  recorderWrapper: boundRecorderWrapper,
 };

@@ -59,4 +59,4 @@ const InputAssignment = (props) => {
   return inputStatementData.concat(resultCode).join('\n');
 };
 
-module.exports = { InputAssignment };
+module.exports = { InputAssignment, primeObjectForInjections };

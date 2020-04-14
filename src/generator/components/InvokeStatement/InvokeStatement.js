@@ -1,5 +1,6 @@
 const InvokeStatement = (props) => {
-  const { functionIdentifier, meta } = props;
+  const { meta } = props;
+  const functionIdentifier = meta.name;
   const { doesReturnPromise, paramIds } = meta;
   const invokeExpression = `${functionIdentifier}(${paramIds.join(',')})`;
 

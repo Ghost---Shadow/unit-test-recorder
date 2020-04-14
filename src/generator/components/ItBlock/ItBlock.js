@@ -7,7 +7,6 @@ const ItBlock = (props) => {
   const {
     meta,
     captureIndex,
-    // functionIdentifier, // Required by children
     // packagedArguments, // Required by children
     // capture, // Required by children
   } = props;

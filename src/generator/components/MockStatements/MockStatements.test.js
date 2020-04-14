@@ -1,3 +1,5 @@
+const prettier = require('prettier');
+
 const { MockStatements } = require('./MockStatements');
 
 describe('MockStatements', () => {
@@ -27,25 +29,31 @@ describe('MockStatements', () => {
       };
 
       const code = MockStatements(props);
-      expect(code).toMatchInlineSnapshot(`
+      const formattedCode = prettier.format(code, {
+        singleQuote: true,
+        parser: 'babel',
+      });
+      expect(formattedCode).toMatchInlineSnapshot(`
         "jest.mock('fs', () => {
-                
-                return { readFileSync: 
-          (...params) => {
-            const safeParams = params.length === 0 ? [undefined] : params
-            return safeParams.reduce((acc, param) => {
-              if(typeof(param) === 'string') return acc[param]
-              const stringifiedParam = JSON.stringify(param)
-              if(stringifiedParam && stringifiedParam.length > 10000) return acc['KEY_TOO_LARGE'];
-              return acc[stringifiedParam]
-            },{
-          \\"a\\": [
-            \\"a\\"
-          ]
-        })
-          }
-          }
-              });"
+          return {
+            readFileSync: (...params) => {
+              const safeParams = params.length === 0 ? [undefined] : params;
+              return safeParams.reduce(
+                (acc, param) => {
+                  if (typeof param === 'string') return acc[param];
+                  const stringifiedParam = JSON.stringify(param);
+                  if (stringifiedParam && stringifiedParam.length > 10000)
+                    return acc['KEY_TOO_LARGE'];
+                  return acc[stringifiedParam];
+                },
+                {
+                  a: ['a']
+                }
+              );
+            }
+          };
+        });
+        "
       `);
     });
   });

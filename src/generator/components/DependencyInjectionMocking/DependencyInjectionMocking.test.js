@@ -1,3 +1,5 @@
+const prettier = require('prettier');
+
 const { DependencyInjectionMocking } = require('./DependencyInjectionMocking');
 const eda = require('../../external-data-aggregator');
 
@@ -53,24 +55,31 @@ describe('DependencyInjectionMocking', () => {
     const externalData = eda.AggregatorManager.addExternalData.mock.calls[0][1];
     expect(path).toEqual(meta.path);
     expect(externalData).toMatchInlineSnapshot('Array []');
-    expect(code).toMatchInlineSnapshot(`
-      "dbClient.pool.query = 
-        (...params) => {
-          const safeParams = params.length === 0 ? [undefined] : params
-          return safeParams.reduce((acc, param) => {
-            if(typeof(param) === 'string') return acc[param]
-            const stringifiedParam = JSON.stringify(param)
-            if(stringifiedParam && stringifiedParam.length > 10000) return acc['KEY_TOO_LARGE'];
-            return acc[stringifiedParam]
-          },{
-        \\"SELECT * FROM posts WHERE id=?\\": {
-          \\"1\\": {
-            \\"title\\": \\"content\\"
+    const formattedCode = prettier.format(code, {
+      singleQuote: true,
+      parser: 'babel',
+    });
+    expect(formattedCode).toMatchInlineSnapshot(`
+      "dbClient.pool.query = (...params) => {
+        const safeParams = params.length === 0 ? [undefined] : params;
+        return safeParams.reduce(
+          (acc, param) => {
+            if (typeof param === 'string') return acc[param];
+            const stringifiedParam = JSON.stringify(param);
+            if (stringifiedParam && stringifiedParam.length > 10000)
+              return acc['KEY_TOO_LARGE'];
+            return acc[stringifiedParam];
+          },
+          {
+            'SELECT * FROM posts WHERE id=?': {
+              '1': {
+                title: 'content'
+              }
+            }
           }
-        }
-      })
-        }
-        ;"
+        );
+      };
+      "
     `);
   });
 });

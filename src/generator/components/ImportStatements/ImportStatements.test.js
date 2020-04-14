@@ -1,3 +1,5 @@
+const prettier = require('prettier');
+
 const { ImportStatements } = require('./ImportStatements');
 
 jest.mock('../../external-data-aggregator', () => ({
@@ -48,11 +50,15 @@ describe('ImportStatements', () => {
       ]);
 
       const code = ImportStatements(props);
-      expect(code).toMatchInlineSnapshot(`
-        "const {fun1} = require('./fun1');
+      const formattedCode = prettier.format(code, {
+        singleQuote: true,
+        parser: 'babel',
+      });
+      expect(formattedCode).toMatchInlineSnapshot(`
+        "const { fun1 } = require('./fun1');
         const fun2 = require('./fun2');
-        const {default:fun3} = require('./fun3');
-        const {obj} = require('./fun4');
+        const { default: fun3 } = require('./fun3');
+        const { obj } = require('./fun4');
 
         const foo = require('dir1/foo.mock.js');
         const bar = require('dir1/bar.mock.js');

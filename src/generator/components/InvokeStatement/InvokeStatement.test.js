@@ -1,16 +1,13 @@
 const { InvokeStatement } = require('./InvokeStatement');
 
 describe('InvokeStatement', () => {
-  const functionIdentifier = 'functionIdentifier';
   const meta = {
     doesReturnPromise: true,
     paramIds: ['a', 'b'],
+    name: 'functionIdentifier',
   };
   it('should generate code', () => {
-    const props = {
-      functionIdentifier,
-      meta,
-    };
+    const props = { meta };
 
     const code = InvokeStatement(props);
     expect(code).toMatchInlineSnapshot(

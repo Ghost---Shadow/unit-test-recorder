@@ -1,3 +1,5 @@
+const prettier = require('prettier');
+
 const { ItBlock } = require('./ItBlock');
 
 describe('ItBlock', () => {
@@ -27,17 +29,20 @@ describe('ItBlock', () => {
     };
 
     const code = ItBlock(props);
-    expect(code).toMatchInlineSnapshot(`
-        "
-          it('should work for case 1', ()=>{
-            let a = 1
-        let b = 2
-        let result = 3
-            
-            const actual = functionName(a,b)
-            expect(actual).toEqual(result)
-          })
-          "
-      `);
+    const formattedCode = prettier.format(code, {
+      singleQuote: true,
+      parser: 'babel',
+    });
+    expect(formattedCode).toMatchInlineSnapshot(`
+      "it('should work for case 1', () => {
+        let a = 1;
+        let b = 2;
+        let result = 3;
+
+        const actual = functionName(a, b);
+        expect(actual).toEqual(result);
+      });
+      "
+    `);
   });
 });

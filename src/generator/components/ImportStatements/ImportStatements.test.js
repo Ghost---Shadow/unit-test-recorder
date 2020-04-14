@@ -44,6 +44,7 @@ describe('ImportStatements', () => {
       AggregatorManager.getExternalData.mockReturnValueOnce([
         { importPath: 'dir1/foo.mock.js', identifier: 'foo' },
         { importPath: 'dir1/bar.mock.js', identifier: 'bar' },
+        { importPath: 'dir1/baz.mock.js', identifier: 'baz', isMock: true },
       ]);
 
       const code = ImportStatements(props);

@@ -42,7 +42,8 @@ const FunctionImportStatements = ({ activity }) => {
 const ExternalDataImportStatements = (props) => {
   const { path } = props;
   const externalData = AggregatorManager.getExternalData(path);
-  const statements = externalData.map(DefaultImportStatement);
+  const externalsWithoutMocks = externalData.filter(ed => !ed.isMock);
+  const statements = externalsWithoutMocks.map(DefaultImportStatement);
   return statements.join('\n');
 };
 

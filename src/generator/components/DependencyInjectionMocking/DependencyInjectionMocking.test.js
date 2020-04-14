@@ -15,7 +15,7 @@ describe('DependencyInjectionMocking', () => {
   const packagedArguments = {
     sizeLimit: 1e3,
   };
-  const testIndex = 0;
+  const captureIndex = 0;
   const capture = {
     params: [{}],
     result: 3,
@@ -44,7 +44,7 @@ describe('DependencyInjectionMocking', () => {
     const props = {
       capture,
       meta,
-      testIndex,
+      captureIndex,
       packagedArguments,
     };
 

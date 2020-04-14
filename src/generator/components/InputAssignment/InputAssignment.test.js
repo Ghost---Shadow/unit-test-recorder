@@ -9,7 +9,7 @@ describe('InputAssignment', () => {
       paramIds: ['a', 'b'],
     };
     const packagedArguments = {};
-    const testIndex = 0;
+    const captureIndex = 0;
     const capture = {
       params: [1, 2],
       result: 3,
@@ -22,7 +22,7 @@ describe('InputAssignment', () => {
       const props = {
         capture,
         meta,
-        testIndex,
+        captureIndex,
         packagedArguments,
       };
 

@@ -21,7 +21,7 @@ const dropProtoFromInjections = (injections) => {
 
 const DependencyInjectionMocking = (props) => {
   const {
-    capture, meta, testIndex, packagedArguments,
+    capture, meta, captureIndex, packagedArguments,
   } = props;
   if (!capture.injections) return '';
 
@@ -36,7 +36,7 @@ const DependencyInjectionMocking = (props) => {
       const lIdentifier = injPath;
       const { captures } = capture.injections[injPath];
       const { code, externalData } = captureArrayToLutFun(
-        captures, lIdentifier, meta, testIndex, packagedArguments,
+        captures, lIdentifier, meta, captureIndex, packagedArguments,
       );
       AggregatorManager.addExternalData(path, externalData);
       return `${lIdentifier} = ${code};`;

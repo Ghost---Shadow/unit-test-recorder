@@ -19,14 +19,14 @@ const MockStatements = ({
         .map((usedFunction) => {
           const { captures } = mocks[moduleId][usedFunction];
           const lIdentifier = usedFunction;
-          const testIndex = ''; // There is only one
+          const captureIndex = ''; // There is only one
           const meta = {
             path: fileName,
             name: _.camelCase(moduleId), // TODO: Add tests for large payload mocks
             relativePath,
           };
           const { code, externalData } = captureArrayToLutFun(
-            captures, lIdentifier, meta, testIndex, packagedArguments,
+            captures, lIdentifier, meta, captureIndex, packagedArguments,
           );
           // Mark it as mock so that the import generator
           // Doesnt generate it again

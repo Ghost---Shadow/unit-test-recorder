@@ -13,8 +13,8 @@ const generateComments = (meta) => {
 };
 
 const DescribeFunctionBlock = (props) => {
-  const { activity, packagedArguments } = props;
-  const { meta, captures } = activity;
+  const { functionActivity, packagedArguments } = props;
+  const { meta, captures } = functionActivity;
   const { maxTestsPerFunction } = packagedArguments;
   const slicedCaptures = maxTestsPerFunction === -1
     ? captures : captures.slice(0, maxTestsPerFunction);

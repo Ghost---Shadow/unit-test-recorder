@@ -22,7 +22,7 @@ describe('MockStatements', () => {
         },
       };
       const props = {
-        fileName: 'dir/file.js',
+        filePath: 'dir/file.js',
         mocks,
         relativePath: './',
         packagedArguments: {},

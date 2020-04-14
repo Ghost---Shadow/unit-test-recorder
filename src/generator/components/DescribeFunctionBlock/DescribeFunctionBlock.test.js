@@ -18,10 +18,10 @@ describe('DescribeFunctionBlock', () => {
       result: 'Number',
     },
   };
-  const activity = { meta, captures: [capture, capture] };
+  const functionActivity = { meta, captures: [capture, capture] };
   it('should generate code', () => {
     const props = {
-      activity,
+      functionActivity,
       packagedArguments,
     };
 

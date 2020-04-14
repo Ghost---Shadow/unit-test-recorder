@@ -19,13 +19,13 @@ const DestructureImportStatement = (props) => {
   return `const {${identifier}} = require('${importPath}');`;
 };
 
-const FunctionImportStatements = ({ activity }) => {
-  const importedFunctions = Object.keys(activity);
+const FunctionImportStatements = ({ exportedFunctions }) => {
+  const importedFunctions = Object.keys(exportedFunctions);
   // Functions in objects have names like obj.fun1, obj.fun2
   const cleanImportedFunctions = _.uniqBy(
     importedFunctions.map(name => ({
       identifier: name.split('.')[0],
-      meta: activity[name].meta,
+      meta: exportedFunctions[name].meta,
     })),
     'identifier',
   );
@@ -48,9 +48,9 @@ const ExternalDataImportStatements = (props) => {
 };
 
 const ImportStatements = (props) => {
-  const { activity, path } = props;
+  const { exportedFunctions, path } = props;
 
-  const functionImportStatements = FunctionImportStatements({ activity });
+  const functionImportStatements = FunctionImportStatements({ exportedFunctions });
   const externalImportStatements = ExternalDataImportStatements({ path });
 
   return `${functionImportStatements}\n\n${externalImportStatements}\n`;

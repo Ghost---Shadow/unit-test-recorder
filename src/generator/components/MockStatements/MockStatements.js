@@ -7,7 +7,7 @@ const { DefaultImportStatement } = require('../ImportStatements/ImportStatements
 // } = require('../../external-data-aggregator');
 
 const MockStatements = ({
-  fileName, mocks, relativePath, packagedArguments,
+  filePath, mocks, relativePath, packagedArguments,
 }) => {
   if (!mocks) return '';
 
@@ -21,7 +21,7 @@ const MockStatements = ({
           const lIdentifier = usedFunction;
           const captureIndex = ''; // There is only one
           const meta = {
-            path: fileName,
+            path: filePath,
             name: _.camelCase(moduleId), // TODO: Add tests for large payload mocks
             relativePath,
           };

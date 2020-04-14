@@ -11,7 +11,7 @@ const { AggregatorManager } = require('../../external-data-aggregator');
 describe('ImportStatements', () => {
   describe('ImportStatements', () => {
     it('should generate code', () => {
-      const activity = {
+      const exportedFunctions = {
         fun1: {
           meta: {
             isDefault: false,
@@ -41,7 +41,8 @@ describe('ImportStatements', () => {
           },
         },
       };
-      const props = { activity };
+      const path = 'dir1/file.js';
+      const props = { exportedFunctions, path };
 
       AggregatorManager.getExternalData.mockReturnValueOnce([
         { importPath: 'dir1/foo.mock.js', identifier: 'foo' },

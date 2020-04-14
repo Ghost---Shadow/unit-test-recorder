@@ -3,7 +3,7 @@ const aggregatorManager = {
 };
 
 const addExternalData = (externalData) => {
-  aggregatorManager.concat(externalData);
+  aggregatorManager.externalData.concat(externalData);
 };
 
 module.exports = { aggregatorManager, addExternalData };

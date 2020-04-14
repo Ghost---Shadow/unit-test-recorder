@@ -21,7 +21,7 @@ const InputAssignment = (props) => {
   const {
     capture,
     meta,
-    testIndex,
+    captureIndex,
     packagedArguments,
   } = props;
   const { paramIds } = meta;
@@ -32,7 +32,6 @@ const InputAssignment = (props) => {
     .map((paramId, index) => {
       const maybeObject = params[index];
       const lIdentifier = paramId;
-      const captureIndex = testIndex;
       const paramType = paramTypes[index];
       const maybePrimedObject = primeObjectForInjections(maybeObject, paramId, capture.injections);
       const code = AssignmentOperation(
@@ -47,7 +46,17 @@ const InputAssignment = (props) => {
       );
       return code;
     });
-  return inputStatementData.join('\n');
+  const resultCode = AssignmentOperation(
+    {
+      meta,
+      packagedArguments,
+      maybeObject: capture.result,
+      lIdentifier: 'result',
+      captureIndex,
+      paramType: _.get(capture, 'types.result'),
+    },
+  );
+  return inputStatementData.concat(resultCode).join('\n');
 };
 
 module.exports = { InputAssignment };

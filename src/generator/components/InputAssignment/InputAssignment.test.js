@@ -28,7 +28,8 @@ describe('InputAssignment', () => {
     const code = InputAssignment(props);
     expect(code).toMatchInlineSnapshot(`
       "let a = 1
-      let b = 2"
+      let b = 2
+      let result = 3"
     `);
   });
 });

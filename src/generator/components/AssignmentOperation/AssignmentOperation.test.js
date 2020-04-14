@@ -8,7 +8,7 @@ jest.mock('../../utils', () => {
   };
 });
 jest.mock('../../external-data-aggregator', () => ({
-  addExternalData: jest.fn(),
+  AggregatorManager: { addExternalData: jest.fn() },
 }));
 
 const utils = require('../../utils');
@@ -43,7 +43,7 @@ describe('AssignmentOperation', () => {
 
     const code = AssignmentOperation(props);
     expect(code).toMatchInlineSnapshot('"let lIdentifier = 42"');
-    expect(eda.addExternalData.mock.calls.length).toBe(0);
+    expect(eda.AggregatorManager.addExternalData.mock.calls.length).toBe(0);
   });
   it('should generate code when payload is large', () => {
     const props = {
@@ -56,10 +56,12 @@ describe('AssignmentOperation', () => {
     };
     jest.spyOn(utils, 'shouldMoveToExternal').mockReturnValueOnce(true);
     const code = AssignmentOperation(props);
-    const externalData = eda.addExternalData.mock.calls[0][0];
+    const path = eda.AggregatorManager.addExternalData.mock.calls[0][0];
+    const externalData = eda.AggregatorManager.addExternalData.mock.calls[0][1];
     expect(code).toMatchInlineSnapshot(
       '"let lIdentifier = functionName0lIdentifier;"',
     );
+    expect(path).toEqual(meta.path);
     expect(externalData).toMatchInlineSnapshot(`
       Array [
         Object {

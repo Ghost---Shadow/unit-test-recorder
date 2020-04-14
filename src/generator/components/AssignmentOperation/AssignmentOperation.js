@@ -6,7 +6,7 @@ const {
 } = require('../../utils');
 
 const {
-  addExternalData,
+  AggregatorManager,
 } = require('../../external-data-aggregator');
 
 const AssignmentOperation = (props) => {
@@ -18,6 +18,7 @@ const AssignmentOperation = (props) => {
     captureIndex,
     paramType,
   } = props;
+  const { path } = meta;
 
   const { sizeLimit } = packagedArguments;
   if (!shouldMoveToExternal(maybeObject, sizeLimit)) {
@@ -35,7 +36,7 @@ const AssignmentOperation = (props) => {
     filePath,
     importPath,
   }];
-  addExternalData(externalData);
+  AggregatorManager.addExternalData(path, externalData);
 
   return code;
 };

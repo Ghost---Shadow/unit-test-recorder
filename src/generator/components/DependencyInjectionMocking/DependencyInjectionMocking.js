@@ -1,5 +1,5 @@
 const { captureArrayToLutFun } = require('../../lutFunGen');
-const { addExternalData } = require('../../external-data-aggregator');
+const { AggregatorManager } = require('../../external-data-aggregator');
 
 // Drop the __proto__ because we dont want to
 // deal with immutable stuff
@@ -25,6 +25,8 @@ const DependencyInjectionMocking = (props) => {
   } = props;
   if (!capture.injections) return '';
 
+  const { path } = meta;
+
   // Drop the __proto__ from keys
   capture.injections = dropProtoFromInjections(capture.injections);
 
@@ -36,7 +38,7 @@ const DependencyInjectionMocking = (props) => {
       const { code, externalData } = captureArrayToLutFun(
         captures, lIdentifier, meta, testIndex, packagedArguments,
       );
-      addExternalData(externalData);
+      AggregatorManager.addExternalData(path, externalData);
       return `${lIdentifier} = ${code};`;
     });
 

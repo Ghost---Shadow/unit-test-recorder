@@ -2,7 +2,7 @@ const { DependencyInjectionMocking } = require('./DependencyInjectionMocking');
 const eda = require('../../external-data-aggregator');
 
 jest.mock('../../external-data-aggregator', () => ({
-  addExternalData: jest.fn(),
+  AggregatorManager: { addExternalData: jest.fn() },
 }));
 
 describe('DependencyInjectionMocking', () => {
@@ -49,7 +49,9 @@ describe('DependencyInjectionMocking', () => {
     };
 
     const code = DependencyInjectionMocking(props);
-    const externalData = eda.addExternalData.mock.calls[0][0];
+    const path = eda.AggregatorManager.addExternalData.mock.calls[0][0];
+    const externalData = eda.AggregatorManager.addExternalData.mock.calls[0][1];
+    expect(path).toEqual(meta.path);
     expect(externalData).toMatchInlineSnapshot('Array []');
     expect(code).toMatchInlineSnapshot(`
       "dbClient.pool.query = 

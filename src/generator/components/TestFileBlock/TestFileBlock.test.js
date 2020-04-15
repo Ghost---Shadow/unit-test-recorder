@@ -17,15 +17,6 @@ describe('TestFileBlock', () => {
     paramIds: ['a', 'b'],
     importPath: './functionName',
   };
-  const packagedArguments = {};
-  const capture = {
-    params: [1, 2],
-    result: 3,
-    types: {
-      params: ['Number', 'Number'],
-      result: 'Number',
-    },
-  };
   const mocks = {
     fs: {
       readFileSync: {
@@ -42,6 +33,16 @@ describe('TestFileBlock', () => {
       },
     },
   };
+  const packagedArguments = {};
+  const capture = {
+    mocks,
+    params: [1, 2],
+    result: 3,
+    types: {
+      params: ['Number', 'Number'],
+      result: 'Number',
+    },
+  };
   const functionActivity = { meta, captures: [capture, capture] };
   it('should generate code', () => {
     AggregatorManager.getExternalData.mockReturnValueOnce([
@@ -54,7 +55,6 @@ describe('TestFileBlock', () => {
       fileName: 'file',
       filePath,
       fileData: {
-        mocks,
         exportedFunctions: {
           [meta.name]: functionActivity,
         },
@@ -74,25 +74,8 @@ describe('TestFileBlock', () => {
       const foo = require('dir1/foo.mock.js');
       const bar = require('dir1/bar.mock.js');
 
-      jest.mock('fs', () => {
-        return {
-          readFileSync: (...params) => {
-            const safeParams = params.length === 0 ? [undefined] : params;
-            return safeParams.reduce(
-              (acc, param) => {
-                if (typeof param === 'string') return acc[param];
-                const stringifiedParam = JSON.stringify(param);
-                if (stringifiedParam && stringifiedParam.length > 10000)
-                  return acc['KEY_TOO_LARGE'];
-                return acc[stringifiedParam];
-              },
-              {
-                a: ['a']
-              }
-            );
-          }
-        };
-      });
+      jest.mock('fs');
+
       describe('file', () => {
         describe('functionName', () => {
           it('should work for case 1', () => {

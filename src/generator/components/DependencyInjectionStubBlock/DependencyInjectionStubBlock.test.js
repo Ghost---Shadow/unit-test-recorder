@@ -1,13 +1,13 @@
 const prettier = require('prettier');
 
-const { DependencyInjectionMocking } = require('./DependencyInjectionMocking');
+const { DependencyInjectionStubBlock } = require('./DependencyInjectionStubBlock');
 const eda = require('../../external-data-aggregator');
 
 jest.mock('../../external-data-aggregator', () => ({
   AggregatorManager: { addExternalData: jest.fn() },
 }));
 
-describe('DependencyInjectionMocking', () => {
+describe('DependencyInjectionStubBlock', () => {
   const meta = {
     path: 'dir/file.js',
     name: 'functionName',
@@ -50,7 +50,7 @@ describe('DependencyInjectionMocking', () => {
       packagedArguments,
     };
 
-    const code = DependencyInjectionMocking(props);
+    const code = DependencyInjectionStubBlock(props);
     const path = eda.AggregatorManager.addExternalData.mock.calls[0][0];
     const externalData = eda.AggregatorManager.addExternalData.mock.calls[0][1];
     expect(path).toEqual(meta.path);

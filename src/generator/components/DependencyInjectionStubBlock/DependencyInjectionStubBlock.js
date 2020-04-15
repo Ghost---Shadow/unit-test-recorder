@@ -19,7 +19,7 @@ const dropProtoFromInjections = (injections) => {
   }, {});
 };
 
-const DependencyInjectionMocking = (props) => {
+const DependencyInjectionStubBlock = (props) => {
   const {
     capture, meta, captureIndex, packagedArguments,
   } = props;
@@ -45,4 +45,4 @@ const DependencyInjectionMocking = (props) => {
   return injectedFunctionMocks.join('\n');
 };
 
-module.exports = { DependencyInjectionMocking };
+module.exports = { DependencyInjectionStubBlock };

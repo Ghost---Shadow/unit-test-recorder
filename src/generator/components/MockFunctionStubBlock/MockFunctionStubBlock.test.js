@@ -15,13 +15,10 @@ const utils = require('../../utils');
 const eda = require('../../external-data-aggregator');
 
 const {
-  FunctionStubBlock,
-} = require('./FunctionStubBlock');
+  MockFunctionStubBlock,
+} = require('./MockFunctionStubBlock');
 
-describe('FunctionStubBlock', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
+describe('MockFunctionStubBlock', () => {
   const meta = {
     path: 'dir/file.js',
     name: 'functionName',
@@ -29,6 +26,9 @@ describe('FunctionStubBlock', () => {
   };
   const captureIndex = 0;
   const packagedArguments = {};
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   const capture = {
     mocks: {
       iid1: {
@@ -53,7 +53,7 @@ describe('FunctionStubBlock', () => {
   };
   it('should generate code when payload is small', () => {
     jest.spyOn(utils, 'shouldMoveToExternal').mockReturnValue(false);
-    const code = FunctionStubBlock(props);
+    const code = MockFunctionStubBlock(props);
     expect(code).toMatchInlineSnapshot(`
         "iid1.fn1.mockReturnValueOnce(1)
         iid1.fn1.mockReturnValueOnce(2)
@@ -64,7 +64,7 @@ describe('FunctionStubBlock', () => {
   });
   it('should generate code when payload is large', () => {
     jest.spyOn(utils, 'shouldMoveToExternal').mockReturnValue(true);
-    const code = FunctionStubBlock(props);
+    const code = MockFunctionStubBlock(props);
     const path = eda.AggregatorManager.addExternalData.mock.calls[0][0];
     const externalData = eda.AggregatorManager.addExternalData.mock.calls;
     expect(code).toMatchInlineSnapshot(`
@@ -134,7 +134,7 @@ describe('FunctionStubBlock', () => {
       packagedArguments,
       capture: {},
     };
-    const code = FunctionStubBlock(props1);
+    const code = MockFunctionStubBlock(props1);
     expect(code).toMatchInlineSnapshot('""');
   });
 });

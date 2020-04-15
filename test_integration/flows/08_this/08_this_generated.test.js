@@ -11,6 +11,7 @@ describe('08_this', () => {
     let obj = {}
 let result = 42
     
+    
     const actual = await newTarget(obj)
     expect(actual).toEqual(result)
   })
@@ -42,6 +43,7 @@ let result = 42
         bar: 2
       };
       let result = 2;
+
       foo.fun2 = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(

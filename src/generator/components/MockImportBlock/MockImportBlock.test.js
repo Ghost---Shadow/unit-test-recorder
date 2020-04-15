@@ -39,7 +39,12 @@ describe('MockImportBlock', () => {
         parser: 'babel',
       });
       expect(formattedCode).toMatchInlineSnapshot(`
-        "jest.mock('m1');
+        "const m1 = require('m1');
+        const m2 = require('m2');
+        const m3 = require('m3');
+        const m4 = require('m4');
+
+        jest.mock('m1');
         jest.mock('m2');
         jest.mock('m3');
         jest.mock('m4');

@@ -27,6 +27,7 @@ describe('12_unwanted_injections', () => {
     it('should work for case 1', () => {
       let f = null;
       let result = 2;
+
       f = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(

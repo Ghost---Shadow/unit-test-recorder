@@ -32,6 +32,7 @@ describe('TestFileBlock', () => {
         ],
       },
     },
+    '../../someScript': {},
   };
   const packagedArguments = {};
   const capture = {
@@ -69,12 +70,16 @@ describe('TestFileBlock', () => {
       parser: 'babel',
     });
     expect(formattedCode).toMatchInlineSnapshot(`
-      "const { functionName } = require('./functionName');
+      "const someScript = require('../../someScript');
+      const fs = require('fs');
+
+      jest.mock('../../someScript');
+      jest.mock('fs');
+
+      const { functionName } = require('./functionName');
 
       const foo = require('dir1/foo.mock.js');
       const bar = require('dir1/bar.mock.js');
-
-      jest.mock('fs');
 
       describe('file', () => {
         describe('functionName', () => {
@@ -82,6 +87,7 @@ describe('TestFileBlock', () => {
             let a = 1;
             let b = 2;
             let result = 3;
+            fs.readFileSync.mockReturnValueOnce(['a']);
 
             const actual = functionName(a, b);
             expect(actual).toEqual(result);
@@ -91,6 +97,7 @@ describe('TestFileBlock', () => {
             let a = 1;
             let b = 2;
             let result = 3;
+            fs.readFileSync.mockReturnValueOnce(['a']);
 
             const actual = functionName(a, b);
             expect(actual).toEqual(result);

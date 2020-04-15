@@ -31,6 +31,7 @@ describe('05_dependency_injection', () => {
           }
         ]
       };
+
       dbClient.query = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(
@@ -137,6 +138,7 @@ describe('05_dependency_injection', () => {
           comment: 'comment 2'
         }
       ];
+
       redisCache = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(

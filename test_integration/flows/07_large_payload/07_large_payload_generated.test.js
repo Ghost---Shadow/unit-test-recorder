@@ -19,6 +19,7 @@ describe('07_large_payload', () => {
     it('should work for case 1', () => {
       let requestDataCb = null;
       let result = getClickCountsHelper0result;
+
       requestDataCb = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce((acc, param) => {

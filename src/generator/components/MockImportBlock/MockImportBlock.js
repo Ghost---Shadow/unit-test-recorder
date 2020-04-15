@@ -1,5 +1,7 @@
 const _ = require('lodash');
 
+const { DefaultImportStatement } = require('../ImportStatements/ImportStatements');
+
 const JestMockStatement = ({ importPath }) => `jest.mock('${importPath}');`;
 
 const MockImportBlock = ({ exportedFunctions }) => {
@@ -15,7 +17,14 @@ const MockImportBlock = ({ exportedFunctions }) => {
 
   const mockStatements = uniqImportPaths
     .map(importPath => JestMockStatement({ importPath }));
-  return mockStatements.join('\n');
+
+  const importStatements = uniqImportPaths
+    .map(importPath => DefaultImportStatement({ importPath, identifier: _.camelCase(importPath) }));
+
+  const importStatementStr = importStatements.join('\n');
+  const mockStatementsStr = mockStatements.join('\n');
+
+  return `${importStatementStr}\n\n${mockStatementsStr}`;
 };
 
 module.exports = {

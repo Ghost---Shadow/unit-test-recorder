@@ -25,8 +25,9 @@ const TestFileBlock = (props) => {
   const mockImportStatements = MockImportBlock({ exportedFunctions });
 
   const result = `
-  ${importStatements}
   ${mockImportStatements}
+
+  ${importStatements}
 
   describe('${fileName}',()=>{
     ${describeBlocks.join('\n')}

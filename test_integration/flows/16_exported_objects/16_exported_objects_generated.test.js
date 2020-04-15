@@ -10,6 +10,7 @@ describe('16_exported_objects', () => {
       let a = {};
       let b = 2;
       let result = 3;
+
       a.someFun = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(
@@ -54,6 +55,7 @@ describe('16_exported_objects', () => {
     it('should work for case 1', async () => {
       let a = {};
       let result = 1;
+
       a.anotherFun = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(

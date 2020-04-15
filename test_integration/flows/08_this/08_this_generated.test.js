@@ -11,7 +11,7 @@ describe('08_this', () => {
     let obj = {}
 let result = 42
     
-    
+
     const actual = await newTarget(obj)
     expect(actual).toEqual(result)
   })

@@ -38,7 +38,9 @@ const DependencyInjectionStubBlock = (props) => {
       const { code, externalData } = captureArrayToLutFun(
         captures, lIdentifier, meta, captureIndex, packagedArguments,
       );
-      AggregatorManager.addExternalData(path, externalData);
+      if (externalData.length) {
+        AggregatorManager.addExternalData(path, externalData);
+      }
       return `${lIdentifier} = ${code};`;
     });
 

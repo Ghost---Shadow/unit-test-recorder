@@ -11,21 +11,8 @@ describe('16_exported_objects', () => {
       let b = 2;
       let result = 3;
 
-      a.someFun = (...params) => {
-        const safeParams = params.length === 0 ? [undefined] : params;
-        return safeParams.reduce(
-          (acc, param) => {
-            if (typeof param === 'string') return acc[param];
-            const stringifiedParam = JSON.stringify(param);
-            if (stringifiedParam && stringifiedParam.length > 10000)
-              return acc['KEY_TOO_LARGE'];
-            return acc[stringifiedParam];
-          },
-          {
-            undefined: 1
-          }
-        );
-      };
+      a.someFun = jest.fn();
+      a.someFun.mockReturnValueOnce(1);
       const actual = await obj1.foo1(a, b);
       expect(actual).toEqual(result);
     });
@@ -56,21 +43,8 @@ describe('16_exported_objects', () => {
       let a = {};
       let result = 1;
 
-      a.anotherFun = (...params) => {
-        const safeParams = params.length === 0 ? [undefined] : params;
-        return safeParams.reduce(
-          (acc, param) => {
-            if (typeof param === 'string') return acc[param];
-            const stringifiedParam = JSON.stringify(param);
-            if (stringifiedParam && stringifiedParam.length > 10000)
-              return acc['KEY_TOO_LARGE'];
-            return acc[stringifiedParam];
-          },
-          {
-            undefined: 1
-          }
-        );
-      };
+      a.anotherFun = jest.fn();
+      a.anotherFun.mockReturnValueOnce(1);
       const actual = await obj2.deep.fun(a);
       expect(actual).toEqual(result);
     });

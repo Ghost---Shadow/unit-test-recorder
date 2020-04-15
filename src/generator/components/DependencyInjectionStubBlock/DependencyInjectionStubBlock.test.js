@@ -16,6 +16,7 @@ const eda = require('../../external-data-aggregator');
 
 const {
   DependencyInjectionStubBlock,
+  JestMockDeclaration,
 } = require('./DependencyInjectionStubBlock');
 
 describe('DependencyInjectionStubBlock', () => {
@@ -61,23 +62,10 @@ describe('DependencyInjectionStubBlock', () => {
     jest.spyOn(utils, 'shouldMoveToExternal').mockReturnValue(false);
     const code = DependencyInjectionStubBlock(props);
     expect(code).toMatchInlineSnapshot(`
-      "dbClient.pool.query = 
-        (...params) => {
-          const safeParams = params.length === 0 ? [undefined] : params
-          return safeParams.reduce((acc, param) => {
-            if(typeof(param) === 'string') return acc[param]
-            const stringifiedParam = JSON.stringify(param)
-            if(stringifiedParam && stringifiedParam.length > 10000) return acc['KEY_TOO_LARGE'];
-            return acc[stringifiedParam]
-          },{
-        \\"SELECT * FROM posts WHERE id=?\\": {
-          \\"1\\": {
-            \\"title\\": \\"content\\"
-          }
-        }
-      })
-        }
-        ;"
+      "dbClient.pool.query = jest.fn()
+      dbClient.pool.query.mockReturnValueOnce({
+        \\"title\\": \\"content\\"
+      })"
     `);
     expect(eda.AggregatorManager.addExternalData.mock.calls.length).toBe(0);
   });
@@ -87,17 +75,8 @@ describe('DependencyInjectionStubBlock', () => {
     const path = eda.AggregatorManager.addExternalData.mock.calls[0][0];
     const externalData = eda.AggregatorManager.addExternalData.mock.calls;
     expect(code).toMatchInlineSnapshot(`
-      "dbClient.pool.query = 
-        (...params) => {
-          const safeParams = params.length === 0 ? [undefined] : params
-          return safeParams.reduce((acc, param) => {
-            if(typeof(param) === 'string') return acc[param]
-            const stringifiedParam = JSON.stringify(param)
-            if(stringifiedParam && stringifiedParam.length > 10000) return acc['KEY_TOO_LARGE'];
-            return acc[stringifiedParam]
-          },functionName0dbClientPoolQuery)
-        }
-        ;"
+      "dbClient.pool.query = jest.fn()
+      dbClient.pool.query.mockReturnValueOnce(functionName0dbClientPoolQuery0)"
     `);
     expect(path).toEqual(meta.path);
     expect(externalData).toMatchInlineSnapshot(`
@@ -106,17 +85,13 @@ describe('DependencyInjectionStubBlock', () => {
           "dir/file.js",
           Array [
             Object {
-              "filePath": "dir/file/functionName_0_dbClientPoolQuery.mock.js",
+              "filePath": "dir/file/functionName_0_dbClientPoolQuery0.mock.js",
               "fileString": "module.exports = {
-        'SELECT * FROM posts WHERE id=?': {
-          '1': {
-            title: 'content'
-          }
-        }
+        title: 'content'
       };
       ",
-              "identifier": "functionName0dbClientPoolQuery",
-              "importPath": "./file/functionName_0_dbClientPoolQuery.mock.js",
+              "identifier": "functionName0dbClientPoolQuery0",
+              "importPath": "./file/functionName_0_dbClientPoolQuery0.mock.js",
             },
           ],
         ],
@@ -132,5 +107,13 @@ describe('DependencyInjectionStubBlock', () => {
     };
     const code = DependencyInjectionStubBlock(props1);
     expect(code).toMatchInlineSnapshot('""');
+  });
+});
+
+describe('JestMockDeclaration', () => {
+  it('should generate code', () => {
+    const props = { lIdentifier: 'obj.foo.bar' };
+    const code = JestMockDeclaration(props);
+    expect(code).toMatchInlineSnapshot('"obj.foo.bar = jest.fn()"');
   });
 });

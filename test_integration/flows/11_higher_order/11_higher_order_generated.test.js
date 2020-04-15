@@ -17,21 +17,8 @@ describe('11_higher_order', () => {
       let param = {};
       let result = 5;
 
-      param.someFun = (...params) => {
-        const safeParams = params.length === 0 ? [undefined] : params;
-        return safeParams.reduce(
-          (acc, param) => {
-            if (typeof param === 'string') return acc[param];
-            const stringifiedParam = JSON.stringify(param);
-            if (stringifiedParam && stringifiedParam.length > 10000)
-              return acc['KEY_TOO_LARGE'];
-            return acc[stringifiedParam];
-          },
-          {
-            undefined: 5
-          }
-        );
-      };
+      param.someFun = jest.fn();
+      param.someFun.mockReturnValueOnce(5);
       const actual = validFun(param);
       expect(actual).toEqual(result);
     });

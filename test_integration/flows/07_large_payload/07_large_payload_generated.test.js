@@ -3,7 +3,7 @@ const { getClickCountsHelper } = require('./07_large_payload');
 
 const getClickCounts0result = require('./07_large_payload/getClickCounts_0_result.mock.js');
 const getClickCountsHelper0result = require('./07_large_payload/getClickCountsHelper_0_result.mock.js');
-const getClickCountsHelper0requestDataCb = require('./07_large_payload/getClickCountsHelper_0_requestDataCb.mock.js');
+const getClickCountsHelper0requestDataCb0 = require('./07_large_payload/getClickCountsHelper_0_requestDataCb0.mock.js');
 
 describe('07_large_payload', () => {
   describe('getClickCounts', () => {
@@ -20,16 +20,8 @@ describe('07_large_payload', () => {
       let requestDataCb = null;
       let result = getClickCountsHelper0result;
 
-      requestDataCb = (...params) => {
-        const safeParams = params.length === 0 ? [undefined] : params;
-        return safeParams.reduce((acc, param) => {
-          if (typeof param === 'string') return acc[param];
-          const stringifiedParam = JSON.stringify(param);
-          if (stringifiedParam && stringifiedParam.length > 10000)
-            return acc['KEY_TOO_LARGE'];
-          return acc[stringifiedParam];
-        }, getClickCountsHelper0requestDataCb);
-      };
+      requestDataCb = jest.fn();
+      requestDataCb.mockReturnValueOnce(getClickCountsHelper0requestDataCb0);
       const actual = getClickCountsHelper(requestDataCb);
       expect(actual).toEqual(result);
     });

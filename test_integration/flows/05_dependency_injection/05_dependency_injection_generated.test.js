@@ -32,92 +32,36 @@ describe('05_dependency_injection', () => {
         ]
       };
 
-      dbClient.query = (...params) => {
-        const safeParams = params.length === 0 ? [undefined] : params;
-        return safeParams.reduce(
-          (acc, param) => {
-            if (typeof param === 'string') return acc[param];
-            const stringifiedParam = JSON.stringify(param);
-            if (stringifiedParam && stringifiedParam.length > 10000)
-              return acc['KEY_TOO_LARGE'];
-            return acc[stringifiedParam];
-          },
-          {
-            'SELECT * FROM posts WHERE id=?': {
-              '1': {
-                title: 'content'
-              }
-            },
-            'SELECT region_id FROM regions where post_id=?': {
-              '1': 42
-            }
-          }
-        );
-      };
-      redisCache = (...params) => {
-        const safeParams = params.length === 0 ? [undefined] : params;
-        return safeParams.reduce(
-          (acc, param) => {
-            if (typeof param === 'string') return acc[param];
-            const stringifiedParam = JSON.stringify(param);
-            if (stringifiedParam && stringifiedParam.length > 10000)
-              return acc['KEY_TOO_LARGE'];
-            return acc[stringifiedParam];
-          },
-          {
-            '1': 350,
-            '2': 350
-          }
-        );
-      };
-      dbClient.pool.pooledQuery = (...params) => {
-        const safeParams = params.length === 0 ? [undefined] : params;
-        return safeParams.reduce(
-          (acc, param) => {
-            if (typeof param === 'string') return acc[param];
-            const stringifiedParam = JSON.stringify(param);
-            if (stringifiedParam && stringifiedParam.length > 10000)
-              return acc['KEY_TOO_LARGE'];
-            return acc[stringifiedParam];
-          },
-          {
-            'SELECT * FROM comments WHERE post_id=? AND region_id=? AND votes=?': {
-              '1': {
-                '42': {
-                  '350': [
-                    {
-                      comment: 'comment 1'
-                    },
-                    {
-                      comment: 'comment 2'
-                    }
-                  ]
-                }
-              }
-            },
-            'SELECT * FROM users WHERE moderator=true AND postid=?': {
-              '1': [
-                {
-                  comment: 'comment 1'
-                },
-                {
-                  comment: 'comment 2'
-                }
-              ]
-            }
-          }
-        );
-      };
-      dbClient.commitSync = (...params) => {
-        const safeParams = params.length === 0 ? [undefined] : params;
-        return safeParams.reduce((acc, param) => {
-          if (typeof param === 'string') return acc[param];
-          const stringifiedParam = JSON.stringify(param);
-          if (stringifiedParam && stringifiedParam.length > 10000)
-            return acc['KEY_TOO_LARGE'];
-          return acc[stringifiedParam];
-        }, {});
-      };
+      dbClient.query = jest.fn();
+      dbClient.query.mockReturnValueOnce({
+        title: 'content'
+      });
+      dbClient.query.mockReturnValueOnce({
+        title: 'content'
+      });
+      dbClient.query.mockReturnValueOnce(42);
+      redisCache = jest.fn();
+      redisCache.mockReturnValueOnce(350);
+      redisCache.mockReturnValueOnce(350);
+      dbClient.pool.pooledQuery = jest.fn();
+      dbClient.pool.pooledQuery.mockReturnValueOnce([
+        {
+          comment: 'comment 1'
+        },
+        {
+          comment: 'comment 2'
+        }
+      ]);
+      dbClient.pool.pooledQuery.mockReturnValueOnce([
+        {
+          comment: 'comment 1'
+        },
+        {
+          comment: 'comment 2'
+        }
+      ]);
+      dbClient.commitSync = jest.fn();
+      dbClient.commitSync.mockReturnValueOnce(undefined);
       const actual = await getPost(dbClient, postId, redisCache);
       expect(actual).toMatchObject(result);
     });
@@ -139,87 +83,30 @@ describe('05_dependency_injection', () => {
         }
       ];
 
-      redisCache = (...params) => {
-        const safeParams = params.length === 0 ? [undefined] : params;
-        return safeParams.reduce(
-          (acc, param) => {
-            if (typeof param === 'string') return acc[param];
-            const stringifiedParam = JSON.stringify(param);
-            if (stringifiedParam && stringifiedParam.length > 10000)
-              return acc['KEY_TOO_LARGE'];
-            return acc[stringifiedParam];
-          },
-          {
-            '1': 350,
-            '2': 350
-          }
-        );
-      };
-      client.query = (...params) => {
-        const safeParams = params.length === 0 ? [undefined] : params;
-        return safeParams.reduce(
-          (acc, param) => {
-            if (typeof param === 'string') return acc[param];
-            const stringifiedParam = JSON.stringify(param);
-            if (stringifiedParam && stringifiedParam.length > 10000)
-              return acc['KEY_TOO_LARGE'];
-            return acc[stringifiedParam];
-          },
-          {
-            'SELECT region_id FROM regions where post_id=?': {
-              '1': 42
-            }
-          }
-        );
-      };
-      client.pool.pooledQuery = (...params) => {
-        const safeParams = params.length === 0 ? [undefined] : params;
-        return safeParams.reduce(
-          (acc, param) => {
-            if (typeof param === 'string') return acc[param];
-            const stringifiedParam = JSON.stringify(param);
-            if (stringifiedParam && stringifiedParam.length > 10000)
-              return acc['KEY_TOO_LARGE'];
-            return acc[stringifiedParam];
-          },
-          {
-            'SELECT * FROM comments WHERE post_id=? AND region_id=? AND votes=?': {
-              '1': {
-                '42': {
-                  '350': [
-                    {
-                      comment: 'comment 1'
-                    },
-                    {
-                      comment: 'comment 2'
-                    }
-                  ]
-                }
-              }
-            },
-            'SELECT * FROM users WHERE moderator=true AND postid=?': {
-              '1': [
-                {
-                  comment: 'comment 1'
-                },
-                {
-                  comment: 'comment 2'
-                }
-              ]
-            }
-          }
-        );
-      };
-      client.commitSync = (...params) => {
-        const safeParams = params.length === 0 ? [undefined] : params;
-        return safeParams.reduce((acc, param) => {
-          if (typeof param === 'string') return acc[param];
-          const stringifiedParam = JSON.stringify(param);
-          if (stringifiedParam && stringifiedParam.length > 10000)
-            return acc['KEY_TOO_LARGE'];
-          return acc[stringifiedParam];
-        }, {});
-      };
+      redisCache = jest.fn();
+      redisCache.mockReturnValueOnce(350);
+      redisCache.mockReturnValueOnce(350);
+      client.query = jest.fn();
+      client.query.mockReturnValueOnce(42);
+      client.pool.pooledQuery = jest.fn();
+      client.pool.pooledQuery.mockReturnValueOnce([
+        {
+          comment: 'comment 1'
+        },
+        {
+          comment: 'comment 2'
+        }
+      ]);
+      client.pool.pooledQuery.mockReturnValueOnce([
+        {
+          comment: 'comment 1'
+        },
+        {
+          comment: 'comment 2'
+        }
+      ]);
+      client.commitSync = jest.fn();
+      client.commitSync.mockReturnValueOnce(undefined);
       const actual = await getPostComments(client, postId, redisCache);
       expect(actual).toEqual(result);
     });

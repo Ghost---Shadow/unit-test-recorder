@@ -44,21 +44,8 @@ let result = 42
       };
       let result = 2;
 
-      foo.fun2 = (...params) => {
-        const safeParams = params.length === 0 ? [undefined] : params;
-        return safeParams.reduce(
-          (acc, param) => {
-            if (typeof param === 'string') return acc[param];
-            const stringifiedParam = JSON.stringify(param);
-            if (stringifiedParam && stringifiedParam.length > 10000)
-              return acc['KEY_TOO_LARGE'];
-            return acc[stringifiedParam];
-          },
-          {
-            undefined: 2
-          }
-        );
-      };
+      foo.fun2 = jest.fn();
+      foo.fun2.mockReturnValueOnce(2);
       const actual = protoOverwriteHelper(foo);
       expect(actual).toEqual(result);
     });

@@ -28,21 +28,8 @@ describe('12_unwanted_injections', () => {
       let f = null;
       let result = 2;
 
-      f = (...params) => {
-        const safeParams = params.length === 0 ? [undefined] : params;
-        return safeParams.reduce(
-          (acc, param) => {
-            if (typeof param === 'string') return acc[param];
-            const stringifiedParam = JSON.stringify(param);
-            if (stringifiedParam && stringifiedParam.length > 10000)
-              return acc['KEY_TOO_LARGE'];
-            return acc[stringifiedParam];
-          },
-          {
-            '2': 2
-          }
-        );
-      };
+      f = jest.fn();
+      f.mockReturnValueOnce(2);
       const actual = fun3(f);
       expect(actual).toEqual(result);
     });

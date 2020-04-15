@@ -18,16 +18,16 @@ const MockFunctionStubBlock = (props) => {
   Object.keys(capture.mocks).forEach((importPath) => {
     const moduleToMock = capture.mocks[importPath];
     const importIdentifier = _.camelCase(importPath);
-    Object.keys(moduleToMock).forEach((lIdentifier) => {
-      const { captures } = moduleToMock[lIdentifier];
+    Object.keys(moduleToMock).forEach((fnName) => {
+      const { captures } = moduleToMock[fnName];
       captures.forEach((innerCapture, innerCaptureIndex) => {
         const payload = innerCapture.result;
         const paramType = innerCapture.types.result;
+        const lIdentifier = `${importIdentifier}.${fnName}`;
         const innerProps = {
           meta,
           captureIndex,
           innerCaptureIndex,
-          importIdentifier,
           lIdentifier,
           payload,
           paramType,

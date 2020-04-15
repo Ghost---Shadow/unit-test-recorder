@@ -31,16 +31,14 @@ describe('JestMockImplementationStatement', () => {
   const innerCaptureIndex = 0;
   const packagedArguments = {};
   const payload = 42;
-  const lIdentifier = 'lIdentifier';
+  const lIdentifier = 'fs.lIdentifier';
   const paramType = 'Number';
-  const importIdentifier = 'fs';
   it('should generate code when payload is small', () => {
     jest.spyOn(utils, 'shouldMoveToExternal').mockReturnValueOnce(false);
     const props = {
       meta,
       captureIndex,
       innerCaptureIndex,
-      importIdentifier,
       lIdentifier,
       payload,
       paramType,
@@ -57,7 +55,7 @@ describe('JestMockImplementationStatement', () => {
     const props = {
       meta,
       captureIndex,
-      importIdentifier,
+      innerCaptureIndex,
       lIdentifier,
       payload,
       paramType,
@@ -68,17 +66,17 @@ describe('JestMockImplementationStatement', () => {
     const path = eda.AggregatorManager.addExternalData.mock.calls[0][0];
     const externalData = eda.AggregatorManager.addExternalData.mock.calls[0][1];
     expect(code).toMatchInlineSnapshot(
-      '"fs.lIdentifier.mockReturnValueOnce(functionName0fsLIdentifierundefined)"',
+      '"fs.lIdentifier.mockReturnValueOnce(functionName0fsLIdentifier0)"',
     );
     expect(path).toEqual(meta.path);
     expect(externalData).toMatchInlineSnapshot(`
       Array [
         Object {
-          "filePath": "dir/file/functionName_0_fsLIdentifierundefined.mock.js",
+          "filePath": "dir/file/functionName_0_fsLIdentifier0.mock.js",
           "fileString": "module.exports = 42;
       ",
-          "identifier": "functionName0fsLIdentifierundefined",
-          "importPath": "./file/functionName_0_fsLIdentifierundefined.mock.js",
+          "identifier": "functionName0fsLIdentifier0",
+          "importPath": "./file/functionName_0_fsLIdentifier0.mock.js",
         },
       ]
     `);

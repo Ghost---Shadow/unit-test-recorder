@@ -15,7 +15,6 @@ const JestMockImplementationStatement = ({
   meta,
   captureIndex,
   innerCaptureIndex,
-  importIdentifier,
   lIdentifier,
   payload,
   paramType,
@@ -23,8 +22,7 @@ const JestMockImplementationStatement = ({
 }) => {
   const { path } = meta;
 
-  const fqn = `${importIdentifier}.${lIdentifier}`;
-  const inner = rhs => `${fqn}.mockReturnValueOnce(${rhs})`;
+  const inner = rhs => `${lIdentifier}.mockReturnValueOnce(${rhs})`;
   const { sizeLimit } = packagedArguments;
 
   if (!shouldMoveToExternal(payload, sizeLimit)) {
@@ -32,7 +30,7 @@ const JestMockImplementationStatement = ({
     return code;
   }
   const { identifier, filePath, importPath } = generateNameForExternal(
-    meta, captureIndex, _.camelCase(`${fqn}${innerCaptureIndex}`),
+    meta, captureIndex, _.camelCase(`${lIdentifier}${innerCaptureIndex}`),
   );
   const fileString = packageDataForExternal(payload);
   const code = inner(identifier);

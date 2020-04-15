@@ -1,10 +1,11 @@
 const { getTodo } = require('./06_mocks');
 const { localMocksTest } = require('./06_mocks');
+
 const getTodo0result = require('./06_mocks/getTodo_0_result.mock.js');
+
 jest.mock('fs', () => {
   // https://github.com/facebook/jest/issues/2567
   /* eslint-disable */
-
   const fsreadFileSync = require('./06_mocks/fs__readFileSync.mock.js');
   /* eslint-enable */
 
@@ -24,7 +25,6 @@ jest.mock('fs', () => {
 jest.mock('./auxilary1', () => {
   // https://github.com/facebook/jest/issues/2567
   /* eslint-disable */
-
   const auxilary1foo4 = require('./06_mocks/auxilary1__foo4.mock.js');
   /* eslint-enable */
 
@@ -73,16 +73,18 @@ jest.mock('./auxilary1', () => {
 });
 describe('06_mocks', () => {
   describe('getTodo', () => {
-    it('test 0', () => {
+    it('should work for case 1', () => {
       let result = getTodo0result;
+
       const actual = getTodo();
       expect(actual).toEqual(result);
     });
   });
 
   describe('localMocksTest', () => {
-    it('test 0', async () => {
+    it('should work for case 1', async () => {
       let result = 4;
+
       const actual = await localMocksTest();
       expect(actual).toEqual(result);
     });

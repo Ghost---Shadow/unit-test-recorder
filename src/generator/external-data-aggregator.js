@@ -5,12 +5,15 @@ const AggregatorManager = {
   validatePath(path) {
     const addr = ['externalData', path];
     if (!_.get(this, addr)) {
-      _.get(this, addr, []);
+      _.set(this, addr, []);
     }
+  },
+  clear() {
+    this.externalData = {};
   },
   addExternalData(path, externalData) {
     this.validatePath(path);
-    this.externalData[path].concat(externalData);
+    this.externalData[path].push(...externalData);
   },
   getExternalData(path) {
     this.validatePath(path);

@@ -7,37 +7,41 @@ describe('08_this', () => {
   /* This function requires injection of Constructor (WIP)
   describe('newTarget',()=>{
     
-  it('test 0', async ()=>{
+  it('should work for case 1', async ()=>{
     let obj = {}
+let result = 42
     
-    let result = 42
-    const actual = await newTarget(obj);expect(actual).toEqual(result)
+    const actual = await newTarget(obj)
+    expect(actual).toEqual(result)
   })
   
   })
   */
 
   describe('sample', () => {
-    it('test 0', () => {
+    it('should work for case 1', () => {
       let result = undefined;
+
       const actual = sample();
       expect(actual).toEqual(result);
     });
   });
 
   describe('protoOverwrite', () => {
-    it('test 0', () => {
+    it('should work for case 1', () => {
       let result = 2;
+
       const actual = protoOverwrite();
       expect(actual).toEqual(result);
     });
   });
 
   describe('protoOverwriteHelper', () => {
-    it('test 0', () => {
+    it('should work for case 1', () => {
       let foo = {
         bar: 2
       };
+      let result = 2;
       foo.fun2 = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(
@@ -53,8 +57,6 @@ describe('08_this', () => {
           }
         );
       };
-
-      let result = 2;
       const actual = protoOverwriteHelper(foo);
       expect(actual).toEqual(result);
     });

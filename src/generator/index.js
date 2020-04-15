@@ -1,124 +1,9 @@
 // TODO: Use babel template
 const prettier = require('prettier');
 const { filePathToFileName, getOutputFilePath } = require('./utils');
-const { generateMocksFromActivity } = require('./mocks');
-const {
-  generateInputStatements,
-  generateImportStatementFromActivity,
-  generateExpectStatement,
-  generateResultStatement,
-} = require('./statement-genenerators');
 
-const generateTestFromCapture = (
-  functionIdentifier, meta, capture, testIndex, packagedArguments,
-) => {
-  const { doesReturnPromise } = meta;
-  const {
-    inputStatements,
-    injectedFunctionMocks,
-    inputStatementExternalData,
-  } = generateInputStatements(capture, meta, testIndex, packagedArguments);
-  const {
-    resultStatement,
-    resultStatementExternalData,
-  } = generateResultStatement(capture, meta, testIndex, packagedArguments);
-  const expectStatement = generateExpectStatement(
-    functionIdentifier, capture, meta,
-  );
-  const asyncString = doesReturnPromise ? 'async ' : '';
-  const testString = `
-  it('test ${testIndex}', ${asyncString}()=>{
-    ${inputStatements.join('\n')}
-    ${injectedFunctionMocks.join('\n')}
-    ${resultStatement}
-    ${expectStatement}
-  })
-  `;
-  const externalData = inputStatementExternalData.concat(resultStatementExternalData);
-  return { testString, externalData };
-};
-
-const generateComments = (meta) => {
-  const { requiresContructorInjection } = meta;
-  if (requiresContructorInjection) {
-    return {
-      failure: true,
-      startComments: '/* This function requires injection of Constructor (WIP)',
-      endComments: '*/',
-    };
-  }
-  return { failure: false, startComments: '', endComments: '' };
-};
-
-const generateTestsFromFunctionActivity = (functionName, functionActivity, packagedArguments) => {
-  const { meta, captures } = functionActivity;
-  const { maxTestsPerFunction } = packagedArguments;
-  const slicedCaptures = maxTestsPerFunction === -1
-    ? captures : captures.slice(0, maxTestsPerFunction);
-  const testData = slicedCaptures
-    .map((capture, index) => generateTestFromCapture(
-      functionName,
-      meta,
-      capture,
-      index,
-      packagedArguments,
-    ));
-  const tests = testData.map(t => t.testString).join('\n');
-  const externalData = testData.reduce((acc, d) => acc.concat(d.externalData), []);
-  const { failure, startComments, endComments } = generateComments(meta);
-  const describeBlock = `
-  ${startComments}
-  describe('${functionName}',()=>{
-    ${tests}
-  })
-  ${endComments}
-  `;
-  return { describeBlock, externalData, failure };
-};
-
-const generateTestsFromActivity = (fileName, filePath, activity, packagedArguments) => {
-  const { mocks, exportedFunctions, relativePath } = activity;
-  const describeData = Object
-    .keys(exportedFunctions)
-    .map((functionName) => {
-      const { describeBlock, externalData } = generateTestsFromFunctionActivity(
-        functionName,
-        exportedFunctions[functionName],
-        packagedArguments,
-      );
-      return { describeBlock, externalData };
-    });
-
-  const describeBlocks = describeData.map(d => d.describeBlock).join('\n');
-  const externalData = describeData.reduce((acc, d) => acc.concat(d.externalData), []);
-
-  const {
-    mockStatements,
-    externalMocks,
-  } = generateMocksFromActivity(filePath, mocks, relativePath, packagedArguments);
-  const allExternalData = externalData.concat(externalMocks);
-  const importStatements = generateImportStatementFromActivity(exportedFunctions, allExternalData);
-
-  const result = `
-  ${importStatements}
-  ${mockStatements}
-  describe('${fileName}',()=>{
-    ${describeBlocks}
-  })
-  `;
-  let fileString = '';
-  try {
-    fileString = prettier.format(result, {
-      singleQuote: true,
-      parser: 'babel',
-    });
-  } catch (e) {
-    console.error(e);
-    fileString = result;
-  }
-
-  return { fileString, externalData: allExternalData };
-};
+const { TestFileBlock } = require('./components/TestFileBlock/TestFileBlock');
+const { AggregatorManager } = require('./external-data-aggregator');
 
 // maxTestsPerFunction: -1 == inf
 // outputDir === null means use the same directory as inputDir
@@ -141,12 +26,26 @@ const extractTestsFromState = (state, packagedArguments) => Object
 
       // Generate tests
       console.log('Generating tests for ', fileName);
-      const {
-        fileString,
-        externalData,
-      } = generateTestsFromActivity(
-        fileName, filePath, state[filePath], packagedArguments,
-      );
+      const code = TestFileBlock({
+        fileName,
+        filePath,
+        fileData: state[filePath],
+        packagedArguments,
+      });
+      let fileString = '';
+
+      // Prettify the results
+      try {
+        fileString = prettier.format(code, {
+          singleQuote: true,
+          parser: 'babel',
+        });
+      } catch (e) {
+        console.error(e);
+        fileString = code;
+      }
+
+      const externalData = AggregatorManager.getExternalData(filePath);
 
       return { filePath: outputFilePath, fileString, externalData };
     } catch (e) {

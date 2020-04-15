@@ -3,18 +3,19 @@ const { validFun } = require('./11_higher_order');
 
 describe('11_higher_order', () => {
   describe('base', () => {
-    it('test 0', () => {
+    it('should work for case 1', () => {
       let param1 = {};
-
       let result = 'param2 => param1.someFun() + param2.someOtherFun()';
+
       const actual = base(param1);
       expect(actual.toString()).toEqual(result);
     });
   });
 
   describe('validFun', () => {
-    it('test 0', () => {
+    it('should work for case 1', () => {
       let param = {};
+      let result = 5;
       param.someFun = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(
@@ -30,8 +31,6 @@ describe('11_higher_order', () => {
           }
         );
       };
-
-      let result = 5;
       const actual = validFun(param);
       expect(actual).toEqual(result);
     });

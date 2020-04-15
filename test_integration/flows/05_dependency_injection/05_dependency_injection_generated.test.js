@@ -3,12 +3,34 @@ const { getPostComments } = require('./05_dependency_injection');
 
 describe('05_dependency_injection', () => {
   describe('getPost', () => {
-    it('test 0', async () => {
+    it('should work for case 1', async () => {
       let dbClient = {
         pool: {}
       };
       let postId = 1;
       let redisCache = null;
+      let result = {
+        content: {
+          title: 'content'
+        },
+        comments: [
+          {
+            comment: 'comment 1'
+          },
+          {
+            comment: 'comment 2'
+          }
+        ],
+        votes: 350,
+        moderator: [
+          {
+            comment: 'comment 1'
+          },
+          {
+            comment: 'comment 2'
+          }
+        ]
+      };
       dbClient.query = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(
@@ -31,7 +53,6 @@ describe('05_dependency_injection', () => {
           }
         );
       };
-
       redisCache = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(
@@ -48,7 +69,6 @@ describe('05_dependency_injection', () => {
           }
         );
       };
-
       dbClient.pool.pooledQuery = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(
@@ -87,7 +107,6 @@ describe('05_dependency_injection', () => {
           }
         );
       };
-
       dbClient.commitSync = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce((acc, param) => {
@@ -98,41 +117,26 @@ describe('05_dependency_injection', () => {
           return acc[stringifiedParam];
         }, {});
       };
-
-      let result = {
-        content: {
-          title: 'content'
-        },
-        comments: [
-          {
-            comment: 'comment 1'
-          },
-          {
-            comment: 'comment 2'
-          }
-        ],
-        votes: 350,
-        moderator: [
-          {
-            comment: 'comment 1'
-          },
-          {
-            comment: 'comment 2'
-          }
-        ]
-      };
       const actual = await getPost(dbClient, postId, redisCache);
       expect(actual).toMatchObject(result);
     });
   });
 
   describe('getPostComments', () => {
-    it('test 0', async () => {
+    it('should work for case 1', async () => {
       let client = {
         pool: {}
       };
       let postId = 1;
       let redisCache = null;
+      let result = [
+        {
+          comment: 'comment 1'
+        },
+        {
+          comment: 'comment 2'
+        }
+      ];
       redisCache = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(
@@ -149,7 +153,6 @@ describe('05_dependency_injection', () => {
           }
         );
       };
-
       client.query = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(
@@ -167,7 +170,6 @@ describe('05_dependency_injection', () => {
           }
         );
       };
-
       client.pool.pooledQuery = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce(
@@ -206,7 +208,6 @@ describe('05_dependency_injection', () => {
           }
         );
       };
-
       client.commitSync = (...params) => {
         const safeParams = params.length === 0 ? [undefined] : params;
         return safeParams.reduce((acc, param) => {
@@ -217,15 +218,6 @@ describe('05_dependency_injection', () => {
           return acc[stringifiedParam];
         }, {});
       };
-
-      let result = [
-        {
-          comment: 'comment 1'
-        },
-        {
-          comment: 'comment 2'
-        }
-      ];
       const actual = await getPostComments(client, postId, redisCache);
       expect(actual).toEqual(result);
     });

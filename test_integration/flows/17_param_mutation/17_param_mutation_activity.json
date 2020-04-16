@@ -1,0 +1,42 @@
+{
+  "test_integration/flows/17_param_mutation/17_param_mutation.js": {
+    "exportedFunctions": {
+      "fun": {
+        "meta": {
+          "path": "test_integration/flows/17_param_mutation/17_param_mutation.js",
+          "name": "fun",
+          "paramIds": [
+            "a"
+          ],
+          "injectionWhitelist": [],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "isObject": false,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              [
+                1
+              ]
+            ],
+            "result": [
+              2
+            ],
+            "types": {
+              "params": [
+                "Array"
+              ],
+              "result": "Array"
+            }
+          }
+        ],
+        "hashTable": {
+          "YIvp6OIy62pnaVdVdLhGOg==": true
+        }
+      }
+    }
+  }
+}

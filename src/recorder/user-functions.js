@@ -66,7 +66,7 @@ const captureUserFunction = ({
 };
 
 const recorderWrapper = (meta, innerFunction, ...p) => {
-  const originalParams = _.clone(p);
+  const originalParams = _.cloneDeep(p);
   let preObj;
   try {
     preObj = pre({ meta, p });
@@ -80,16 +80,16 @@ const recorderWrapper = (meta, innerFunction, ...p) => {
   const result = innerFunction(...p);
   try {
     const {
-      path, name, captureIndex, params,
+      path, name, captureIndex, /* params, */
     } = preObj;
     if (result && _.isFunction(result.then)) {
       // It might be a promise
       result.then(res => captureUserFunction({
-        result: res, path, name, captureIndex, params, doesReturnPromise: true,
+        result: res, path, name, captureIndex, params: originalParams, doesReturnPromise: true,
       }));
     } else {
       captureUserFunction({
-        result, path, name, captureIndex, params, doesReturnPromise: false,
+        result, path, name, captureIndex, params: originalParams, doesReturnPromise: false,
       });
     }
   } catch (e) {

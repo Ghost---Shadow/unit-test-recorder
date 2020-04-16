@@ -241,4 +241,16 @@ describe('generator.test', () => {
       });
     });
   });
+  describe('17_param_mutation', () => {
+    it('should match generated test code snapshot', () => {
+      const filename = '17_param_mutation';
+      const { outputPath, state } = getInputAndOutputPathForTests(filename);
+      const testFiles = extractTestsFromState(state, defaultPackagedArguments);
+      // Only one file per test
+      expect(testFiles[0].fileString).toMatchFile(outputPath);
+      testFiles[0].externalData.forEach((ed) => {
+        expect(ed.fileString).toMatchFile(ed.filePath);
+      });
+    });
+  });
 });

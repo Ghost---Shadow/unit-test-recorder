@@ -40,7 +40,7 @@ let result = 42
   describe('protoOverwriteHelper', () => {
     it('should work for case 1', () => {
       let foo = {
-        bar: 2
+        bar: 1
       };
       let result = 2;
 

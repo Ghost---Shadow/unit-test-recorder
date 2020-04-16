@@ -19,6 +19,7 @@ const anonTs = require('./13_anon_ts_export_default/13_anon_ts_export_default_in
 const anonMe = require('./14_anon_module_exports_default/14_anon_module_exports_default_instrumented');
 const namedMe = require('./15_named_module_exports_default/15_named_module_exports_default_instrumented');
 const exportedObj = require('./16_exported_objects/16_exported_objects_instrumented');
+const pm = require('./17_param_mutation/17_param_mutation_instrumented');
 
 expect.extend({ toMatchFile });
 
@@ -206,6 +207,15 @@ describe('driver', () => {
       await exportedObj.obj2.higher(1)(2);
       exportedObj.largeObj.largeFun();
       const outputFileName = getSnapshotFileName('16_exported_objects');
+      expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
+    });
+  });
+  describe('17_param_mutation', () => {
+    it('should record activity', async () => {
+      RecorderManager.clear();
+      const arr = [1];
+      pm.fun(arr);
+      const outputFileName = getSnapshotFileName('17_param_mutation');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });
   });

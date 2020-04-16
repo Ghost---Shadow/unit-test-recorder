@@ -129,7 +129,7 @@
             },
             "params": [
               {
-                "bar": 2
+                "bar": 1
               }
             ],
             "result": 2,
@@ -142,7 +142,7 @@
           }
         ],
         "hashTable": {
-          "YD/gdfHyFE+5+htdCytirQ==": true
+          "Pas0xcIhGC6T/kB6USAKog==": true
         }
       }
     }

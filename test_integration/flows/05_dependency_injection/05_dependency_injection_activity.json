@@ -27,48 +27,30 @@
               "dbClient.__proto__.query": {
                 "captures": [
                   {
-                    "params": [
-                      "SELECT * FROM posts WHERE id=?",
-                      1
-                    ],
+                    "params": [],
                     "result": {
                       "title": "content"
                     },
                     "types": {
-                      "params": [
-                        "String",
-                        "Number"
-                      ],
+                      "params": [],
                       "result": "Object"
                     }
                   },
                   {
-                    "params": [
-                      "SELECT * FROM posts WHERE id=?",
-                      1
-                    ],
+                    "params": [],
                     "result": {
                       "title": "content"
                     },
                     "types": {
-                      "params": [
-                        "String",
-                        "Number"
-                      ],
+                      "params": [],
                       "result": "Object"
                     }
                   },
                   {
-                    "params": [
-                      "SELECT region_id FROM regions where post_id=?",
-                      1
-                    ],
+                    "params": [],
                     "result": 42,
                     "types": {
-                      "params": [
-                        "String",
-                        "Number"
-                      ],
+                      "params": [],
                       "result": "Number"
                     }
                   }
@@ -77,26 +59,18 @@
               "redisCache": {
                 "captures": [
                   {
-                    "params": [
-                      2
-                    ],
+                    "params": [],
                     "result": 350,
                     "types": {
-                      "params": [
-                        "Number"
-                      ],
+                      "params": [],
                       "result": "Number"
                     }
                   },
                   {
-                    "params": [
-                      1
-                    ],
+                    "params": [],
                     "result": 350,
                     "types": {
-                      "params": [
-                        "Number"
-                      ],
+                      "params": [],
                       "result": "Number"
                     }
                   }
@@ -105,12 +79,7 @@
               "dbClient.__proto__.__proto__.pool.pooledQuery": {
                 "captures": [
                   {
-                    "params": [
-                      "SELECT * FROM comments WHERE post_id=? AND region_id=? AND votes=?",
-                      1,
-                      42,
-                      350
-                    ],
+                    "params": [],
                     "result": [
                       {
                         "comment": "comment 1"
@@ -120,20 +89,12 @@
                       }
                     ],
                     "types": {
-                      "params": [
-                        "String",
-                        "Number",
-                        "Number",
-                        "Number"
-                      ],
+                      "params": [],
                       "result": "Array"
                     }
                   },
                   {
-                    "params": [
-                      "SELECT * FROM users WHERE moderator=true AND postid=?",
-                      1
-                    ],
+                    "params": [],
                     "result": [
                       {
                         "comment": "comment 1"
@@ -143,10 +104,7 @@
                       }
                     ],
                     "types": {
-                      "params": [
-                        "String",
-                        "Number"
-                      ],
+                      "params": [],
                       "result": "Array"
                     }
                   }
@@ -231,26 +189,18 @@
               "redisCache": {
                 "captures": [
                   {
-                    "params": [
-                      2
-                    ],
+                    "params": [],
                     "result": 350,
                     "types": {
-                      "params": [
-                        "Number"
-                      ],
+                      "params": [],
                       "result": "Number"
                     }
                   },
                   {
-                    "params": [
-                      1
-                    ],
+                    "params": [],
                     "result": 350,
                     "types": {
-                      "params": [
-                        "Number"
-                      ],
+                      "params": [],
                       "result": "Number"
                     }
                   }
@@ -259,16 +209,10 @@
               "client.__proto__.query": {
                 "captures": [
                   {
-                    "params": [
-                      "SELECT region_id FROM regions where post_id=?",
-                      1
-                    ],
+                    "params": [],
                     "result": 42,
                     "types": {
-                      "params": [
-                        "String",
-                        "Number"
-                      ],
+                      "params": [],
                       "result": "Number"
                     }
                   }
@@ -277,12 +221,7 @@
               "client.__proto__.__proto__.pool.pooledQuery": {
                 "captures": [
                   {
-                    "params": [
-                      "SELECT * FROM comments WHERE post_id=? AND region_id=? AND votes=?",
-                      1,
-                      42,
-                      350
-                    ],
+                    "params": [],
                     "result": [
                       {
                         "comment": "comment 1"
@@ -292,20 +231,12 @@
                       }
                     ],
                     "types": {
-                      "params": [
-                        "String",
-                        "Number",
-                        "Number",
-                        "Number"
-                      ],
+                      "params": [],
                       "result": "Array"
                     }
                   },
                   {
-                    "params": [
-                      "SELECT * FROM users WHERE moderator=true AND postid=?",
-                      1
-                    ],
+                    "params": [],
                     "result": [
                       {
                         "comment": "comment 1"
@@ -315,10 +246,7 @@
                       }
                     ],
                     "types": {
-                      "params": [
-                        "String",
-                        "Number"
-                      ],
+                      "params": [],
                       "result": "Array"
                     }
                   }

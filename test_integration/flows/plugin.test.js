@@ -155,4 +155,11 @@ describe('plugin.test', () => {
       expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
     });
   });
+  describe('18_record_stub_params', () => {
+    it('should match instrumented code snapshot', () => {
+      const filename = '18_record_stub_params';
+      const { inputPath, outputPath } = getInputAndOutputPathForInstrumented(filename);
+      expect(generatedInstrumentedCode(inputPath, filename)).toMatchFile(outputPath);
+    });
+  });
 });

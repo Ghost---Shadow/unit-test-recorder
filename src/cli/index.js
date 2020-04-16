@@ -30,6 +30,9 @@ const { argv } = require('yargs')
   .default('only', [])
   .describe('only', 'Run only on these files (relative path, comma separated, supports RegExp)')
 
+  .boolean('record-stub-params')
+  .describe('record-stub-params', 'Record the arguments passed as parameters to stubs (Debugging only)')
+
   .boolean(['d']); // Debug
 
 const { instrumentAllFiles } = require('./instrumentation');
@@ -39,7 +42,9 @@ const { generateAllTests } = require('./generation');
 const entryPoint = argv._[0];
 const maxTestsPerFunction = parseInt(argv.maxTests, 10) || -1;
 const debug = argv.d;
-const { outputDir, testExt, sizeLimit } = argv;
+const {
+  outputDir, testExt, sizeLimit, recordStubParams,
+} = argv;
 const exceptFiles = typeof argv.except === 'string' ? argv.except.split(',') : [];
 const onlyFiles = typeof argv.only === 'string' ? argv.only.split(',') : [];
 const packagedArguments = {
@@ -51,7 +56,11 @@ const packagedArguments = {
   sizeLimit,
   exceptFiles,
   onlyFiles,
+  recordStubParams,
 };
+
+// Set the environment variable flag so that recorder can pick it up
+process.env.UTR_RECORD_STUB_PARAMS = !!recordStubParams;
 
 // Instrument all files
 instrumentAllFiles(packagedArguments);

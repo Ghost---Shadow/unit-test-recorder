@@ -91,14 +91,10 @@
               "f": {
                 "captures": [
                   {
-                    "params": [
-                      2
-                    ],
+                    "params": [],
                     "result": 2,
                     "types": {
-                      "params": [
-                        "Number"
-                      ],
+                      "params": [],
                       "result": "Number"
                     }
                   }

@@ -6,6 +6,7 @@ const { newFunctionNameGenerator } = require('../util/misc');
 // const { checkAndSetHash } = require('./utils/hash-helper');
 const { generateTypesObj } = require('./utils/dynamic-type-inference');
 const { broadcastFunctions } = require('./utils/broadcast-functions');
+const { shouldRecordStubParams } = require('./utils/misc');
 
 const markForConstructorInjection = (meta) => {
   const { path, name } = meta;
@@ -60,7 +61,7 @@ const injectFunctionDynamically = (maybeFunction, meta, boundRecorder) => {
         // https://stackoverflow.com/a/47469377/1217998
         return new OldFp(...paramsOfInjected);
       }
-      const clonedParams = _.cloneDeep(paramsOfInjected);
+      const clonedParams = shouldRecordStubParams() ? _.cloneDeep(paramsOfInjected) : [];
       const result = OldFp.apply(this, paramsOfInjected);
       if (result && _.isFunction(result.then)) {
         // It might be a promise

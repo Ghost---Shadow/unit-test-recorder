@@ -253,4 +253,16 @@ describe('generator.test', () => {
       });
     });
   });
+  describe('18_record_stub_params', () => {
+    it('should match generated test code snapshot', () => {
+      const filename = '18_record_stub_params';
+      const { outputPath, state } = getInputAndOutputPathForTests(filename);
+      const testFiles = extractTestsFromState(state, defaultPackagedArguments);
+      // Only one file per test
+      expect(testFiles[0].fileString).toMatchFile(outputPath);
+      testFiles[0].externalData.forEach((ed) => {
+        expect(ed.fileString).toMatchFile(ed.filePath);
+      });
+    });
+  });
 });

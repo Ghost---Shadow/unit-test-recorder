@@ -3,6 +3,7 @@ const _ = require('lodash');
 const RecorderManager = require('./manager');
 // const { checkAndSetHash } = require('./utils/hash-helper');
 const { generateTypesObj } = require('./utils/dynamic-type-inference');
+const { shouldRecordStubParams } = require('./utils/misc');
 
 const captureMockActivity = (meta, params, result) => {
   const session = getNamespace('default');
@@ -29,7 +30,7 @@ const captureMockActivity = (meta, params, result) => {
 };
 
 const mockRecorderWrapper = (meta, oldFp, ...p) => {
-  const clonedParams = _.cloneDeep(p);
+  const clonedParams = shouldRecordStubParams() ? _.cloneDeep(p) : [];
   const result = oldFp(...p);
   try {
     if (typeof (result.then) === 'function') {

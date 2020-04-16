@@ -20,10 +20,14 @@ const anonMe = require('./14_anon_module_exports_default/14_anon_module_exports_
 const namedMe = require('./15_named_module_exports_default/15_named_module_exports_default_instrumented');
 const exportedObj = require('./16_exported_objects/16_exported_objects_instrumented');
 const pm = require('./17_param_mutation/17_param_mutation_instrumented');
+const rsp = require('./18_record_stub_params/18_record_stub_params_instrumented');
 
 expect.extend({ toMatchFile });
 
 const getSnapshotFileName = fileName => `test_integration/flows/${fileName}/${fileName}_activity.json`;
+
+// Dont record params of injections
+process.env.UTR_RECORD_STUB_PARAMS = false;
 
 describe('driver', () => {
   describe('01_module_exports', () => {
@@ -217,6 +221,18 @@ describe('driver', () => {
       pm.fun(arr);
       const outputFileName = getSnapshotFileName('17_param_mutation');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
+    });
+  });
+  describe('18_record_stub_params', () => {
+    it('should record activity', async () => {
+      process.env.UTR_RECORD_STUB_PARAMS = true;
+
+      RecorderManager.clear();
+      rsp.fun({ fun: a => a });
+      const outputFileName = getSnapshotFileName('18_record_stub_params');
+      expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
+
+      process.env.UTR_RECORD_STUB_PARAMS = false;
     });
   });
 });

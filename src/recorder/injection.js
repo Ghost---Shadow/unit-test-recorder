@@ -60,14 +60,15 @@ const injectFunctionDynamically = (maybeFunction, meta, boundRecorder) => {
         // https://stackoverflow.com/a/47469377/1217998
         return new OldFp(...paramsOfInjected);
       }
+      const clonedParams = _.cloneDeep(paramsOfInjected);
       const result = OldFp.apply(this, paramsOfInjected);
       if (result && _.isFunction(result.then)) {
         // It might be a promise
         result.then((res) => {
-          injectedFunction.boundRecorder(paramsOfInjected, res);
+          injectedFunction.boundRecorder(clonedParams, res);
         });
       } else {
-        injectedFunction.boundRecorder(paramsOfInjected, result);
+        injectedFunction.boundRecorder(clonedParams, result);
       }
       return result;
     }

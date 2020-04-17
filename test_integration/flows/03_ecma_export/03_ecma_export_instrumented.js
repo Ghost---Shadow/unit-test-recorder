@@ -1,3 +1,4 @@
+const { recordFileMeta } = require('../../../src/recorder');
 const { recorderWrapper } = require('../../../src/recorder');
 export const ecma1 = (...p) =>
   recorderWrapper(
@@ -65,3 +66,7 @@ const ecma4 = (...p) =>
 export { ecma33 as ecma3, ecma4 };
 
 export default ecma2;
+recordFileMeta({
+  path: 'test_integration/flows/03_ecma_export/03_ecma_export.js',
+  mocks: []
+});

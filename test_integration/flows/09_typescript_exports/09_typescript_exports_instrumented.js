@@ -1,3 +1,4 @@
+const { recordFileMeta } = require('../../../src/recorder');
 const { recorderWrapper } = require('../../../src/recorder');
 Object.defineProperty(exports, '__esModule', { value: true });
 
@@ -54,3 +55,7 @@ exports.exportTest3 = (...p) =>
     a => 2 * a,
     ...p
   );
+recordFileMeta({
+  path: 'test_integration/flows/09_typescript_exports/09_typescript_exports.js',
+  mocks: []
+});

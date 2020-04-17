@@ -1,3 +1,4 @@
+const { recordFileMeta } = require('../../../src/recorder');
 const { recorderWrapper } = require('../../../src/recorder'); // These are not yet implemented
 // This test case is here to just make sure
 // that these type of code doesnt cause crash
@@ -84,3 +85,7 @@ module.exports = {
   secondary2,
   validFun
 };
+recordFileMeta({
+  path: 'test_integration/flows/11_higher_order/11_higher_order.js',
+  mocks: []
+});

@@ -1,5 +1,9 @@
 {
   "test_integration/flows/02_async_functions/02_async_functions.js": {
+    "meta": {
+      "path": "test_integration/flows/02_async_functions/02_async_functions.js",
+      "mocks": []
+    },
     "exportedFunctions": {
       "getSocialInfo": {
         "meta": {

@@ -1,5 +1,9 @@
 {
   "test_integration/flows/16_exported_objects/16_exported_objects.js": {
+    "meta": {
+      "path": "test_integration/flows/16_exported_objects/16_exported_objects.js",
+      "mocks": []
+    },
     "exportedFunctions": {
       "obj1.foo1": {
         "meta": {

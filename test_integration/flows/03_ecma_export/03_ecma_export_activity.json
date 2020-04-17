@@ -1,5 +1,9 @@
 {
   "test_integration/flows/03_ecma_export/03_ecma_export.js": {
+    "meta": {
+      "path": "test_integration/flows/03_ecma_export/03_ecma_export.js",
+      "mocks": []
+    },
     "exportedFunctions": {
       "ecma1": {
         "meta": {

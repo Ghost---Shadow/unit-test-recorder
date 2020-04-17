@@ -1,5 +1,9 @@
 {
   "test_integration/flows/13_anon_ts_export_default/13_anon_ts_export_default.js": {
+    "meta": {
+      "path": "test_integration/flows/13_anon_ts_export_default/13_anon_ts_export_default.js",
+      "mocks": []
+    },
     "exportedFunctions": {
       "defaultExport": {
         "meta": {

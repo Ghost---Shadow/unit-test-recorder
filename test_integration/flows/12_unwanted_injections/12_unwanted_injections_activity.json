@@ -1,5 +1,9 @@
 {
   "test_integration/flows/12_unwanted_injections/12_unwanted_injections.js": {
+    "meta": {
+      "path": "test_integration/flows/12_unwanted_injections/12_unwanted_injections.js",
+      "mocks": []
+    },
     "exportedFunctions": {
       "fun": {
         "meta": {

@@ -1,3 +1,4 @@
+const { recordFileMeta } = require('../../../src/recorder');
 const { recorderWrapper } = require('../../../src/recorder');
 const getPostContent = (client, postId) =>
   client.testIntegrationFlows05DependencyInjection05DependencyInjectionJsQuery(
@@ -71,3 +72,8 @@ const getPost = async (...p) =>
   );
 
 module.exports = { getPost, getPostComments };
+recordFileMeta({
+  path:
+    'test_integration/flows/05_dependency_injection/05_dependency_injection.js',
+  mocks: []
+});

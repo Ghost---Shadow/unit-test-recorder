@@ -1,3 +1,4 @@
+const { recordFileMeta } = require('../../../src/recorder');
 const { recorderWrapper } = require('../../../src/recorder');
 const fun = (...p) =>
   recorderWrapper(
@@ -19,3 +20,7 @@ const fun = (...p) =>
   );
 
 module.exports = { fun };
+recordFileMeta({
+  path: 'test_integration/flows/17_param_mutation/17_param_mutation.js',
+  mocks: []
+});

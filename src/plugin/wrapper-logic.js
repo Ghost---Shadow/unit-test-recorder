@@ -22,6 +22,12 @@ function maybeAddImportStatement(path) {
     });
     path.unshiftContainer('body', recorderImportStatement);
   }
+
+  const recorderImportStatement = buildRequire({
+    SOURCE: t.stringLiteral(this.importPath),
+    IDENTIFIER: t.identifier('recordFileMeta'),
+  });
+  path.unshiftContainer('body', recorderImportStatement);
 }
 
 function getValidFunctions() {

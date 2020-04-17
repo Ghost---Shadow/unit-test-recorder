@@ -1,3 +1,4 @@
+const { recordFileMeta } = require('../../../src/recorder');
 const { recorderWrapper } = require('../../../src/recorder');
 const obj1 = {
   async foo1(a, b) {
@@ -129,3 +130,7 @@ module.exports = {
   empty,
   largeObj
 };
+recordFileMeta({
+  path: 'test_integration/flows/16_exported_objects/16_exported_objects.js',
+  mocks: []
+});

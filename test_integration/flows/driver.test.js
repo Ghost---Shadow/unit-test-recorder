@@ -1,26 +1,8 @@
 const { toMatchFile } = require('jest-file-snapshot');
 const { RecorderManager } = require('../../src/recorder');
 
-const mei = require('./01_module_exports/01_module_exports_instrumented');
-const { getFacebookInfo, getSocialInfo } = require('./02_async_functions/02_async_functions_instrumented');
-const {
-  default: ecma2, ecma1, ecma3, ecma4,
-} = require('./03_ecma_export/03_ecma_export_instrumented');
-const unserializeable = require('./04_unserializeable/04_unserializeable_instrumented');
-const di = require('./05_dependency_injection/05_dependency_injection_instrumented');
-const mocks = require('./06_mocks/06_mocks_instrumented');
-const { getClickCounts } = require('./07_large_payload/07_large_payload_instrumented');
-const { newTarget, sample, protoOverwrite } = require('./08_this/08_this_instrumented');
-const { exportTest1, default: exportTest2, exportTest3 } = require('./09_typescript_exports/09_typescript_exports_instrumented');
-const { default: edTest } = require('./10_anon_export_default/10_anon_export_default_instrumented');
+// TODO: Move it in
 const hoi = require('./11_higher_order/11_higher_order_instrumented');
-const ui = require('./12_unwanted_injections/12_unwanted_injections_instrumented');
-const anonTs = require('./13_anon_ts_export_default/13_anon_ts_export_default_instrumented');
-const anonMe = require('./14_anon_module_exports_default/14_anon_module_exports_default_instrumented');
-const namedMe = require('./15_named_module_exports_default/15_named_module_exports_default_instrumented');
-const exportedObj = require('./16_exported_objects/16_exported_objects_instrumented');
-const pm = require('./17_param_mutation/17_param_mutation_instrumented');
-const rsp = require('./18_record_stub_params/18_record_stub_params_instrumented');
 
 expect.extend({ toMatchFile });
 
@@ -29,10 +11,14 @@ const getSnapshotFileName = fileName => `test_integration/flows/${fileName}/${fi
 // Dont record params of injections
 process.env.UTR_RECORD_STUB_PARAMS = false;
 
+/* eslint-disable global-require */
 describe('driver', () => {
+  beforeEach(() => {
+    RecorderManager.clear();
+  });
   describe('01_module_exports', () => {
     it('should record activity', () => {
-      RecorderManager.clear();
+      const mei = require('./01_module_exports/01_module_exports_instrumented');
       mei.foo(1, 2);
       mei.foo(1, 2);
       mei.foo('A', 'B');
@@ -47,7 +33,7 @@ describe('driver', () => {
   });
   describe('02_async_functions', () => {
     it('should record activity', async () => {
-      RecorderManager.clear();
+      const { getFacebookInfo, getSocialInfo } = require('./02_async_functions/02_async_functions_instrumented');
       await getSocialInfo('email');
       await getFacebookInfo('email');
       const outputFileName = getSnapshotFileName('02_async_functions');
@@ -56,7 +42,9 @@ describe('driver', () => {
   });
   describe('03_ecma_export', () => {
     it('should record activity', () => {
-      RecorderManager.clear();
+      const {
+        default: ecma2, ecma1, ecma3, ecma4,
+      } = require('./03_ecma_export/03_ecma_export_instrumented');
       ecma1(1, 2);
       ecma2(1);
       ecma3(1);
@@ -67,7 +55,7 @@ describe('driver', () => {
   });
   describe('04_unserializeable', () => {
     it('should record activity', () => {
-      RecorderManager.clear();
+      const unserializeable = require('./04_unserializeable/04_unserializeable_instrumented');
       unserializeable.circularReference(1);
       unserializeable.returnAFunction(1, a => a * 2);
       unserializeable.getElapsedTime(new Date(2018, 1, 1), new Date(2019, 1, 1));
@@ -78,7 +66,7 @@ describe('driver', () => {
   });
   describe('05_dependency_injection', () => {
     it('should record activity', async () => {
-      RecorderManager.clear();
+      const di = require('./05_dependency_injection/05_dependency_injection_instrumented');
       const query = q => new Promise((resolve) => {
         setTimeout(() => resolve({
           'SELECT * FROM posts WHERE id=?': { title: 'content' },
@@ -110,7 +98,7 @@ describe('driver', () => {
   });
   describe('06_mocks', () => {
     it('should record activity', async () => {
-      RecorderManager.clear();
+      const mocks = require('./06_mocks/06_mocks_instrumented');
       await mocks.getTodo();
       await mocks.localMocksTest();
       // mocks.datesTest(); // TODO
@@ -121,7 +109,7 @@ describe('driver', () => {
   });
   describe('07_large_payload', () => {
     it('should record activity', async () => {
-      RecorderManager.clear();
+      const { getClickCounts } = require('./07_large_payload/07_large_payload_instrumented');
       getClickCounts();
       const outputFileName = getSnapshotFileName('07_large_payload');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
@@ -129,7 +117,7 @@ describe('driver', () => {
   });
   describe('08_this', () => {
     it('should record activity', async () => {
-      RecorderManager.clear();
+      const { newTarget, sample, protoOverwrite } = require('./08_this/08_this_instrumented');
       const obj = { InjectedPromise: global.Promise };
       await newTarget(obj);
       sample();
@@ -140,7 +128,7 @@ describe('driver', () => {
   });
   describe('09_typescript_exports', () => {
     it('should record activity', async () => {
-      RecorderManager.clear();
+      const { exportTest1, default: exportTest2, exportTest3 } = require('./09_typescript_exports/09_typescript_exports_instrumented');
       exportTest1(2);
       exportTest2(3);
       exportTest3(4);
@@ -150,7 +138,7 @@ describe('driver', () => {
   });
   describe('10_anon_export_default', () => {
     it('should record activity', async () => {
-      RecorderManager.clear();
+      const { default: edTest } = require('./10_anon_export_default/10_anon_export_default_instrumented');
       edTest(1, 2);
       const outputFileName = getSnapshotFileName('10_anon_export_default');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
@@ -158,7 +146,6 @@ describe('driver', () => {
   });
   describe('11_higher_order', () => {
     it('should record activity', async () => {
-      RecorderManager.clear();
       hoi.base({ someFun: () => 1 })({ someOtherFun: () => 2 });
       hoi.validFun({ someFun: () => 5 });
       hoi.secondary1({ someFun: () => 1 });
@@ -169,7 +156,7 @@ describe('driver', () => {
   });
   describe('12_unwanted_injections', () => {
     it('should record activity', async () => {
-      RecorderManager.clear();
+      const ui = require('./12_unwanted_injections/12_unwanted_injections_instrumented');
       ui.fun([1, 2]);
       ui.fun2(2);
       ui.fun3(a => a);
@@ -179,7 +166,7 @@ describe('driver', () => {
   });
   describe('13_anon_ts_export_default', () => {
     it('should record activity', async () => {
-      RecorderManager.clear();
+      const anonTs = require('./13_anon_ts_export_default/13_anon_ts_export_default_instrumented');
       anonTs.default(1, 2);
       const outputFileName = getSnapshotFileName('13_anon_ts_export_default');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
@@ -187,7 +174,7 @@ describe('driver', () => {
   });
   describe('14_anon_module_exports_default', () => {
     it('should record activity', async () => {
-      RecorderManager.clear();
+      const anonMe = require('./14_anon_module_exports_default/14_anon_module_exports_default_instrumented');
       anonMe(1);
       const outputFileName = getSnapshotFileName('14_anon_module_exports_default');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
@@ -195,7 +182,7 @@ describe('driver', () => {
   });
   describe('15_named_module_exports_default', () => {
     it('should record activity', async () => {
-      RecorderManager.clear();
+      const namedMe = require('./15_named_module_exports_default/15_named_module_exports_default_instrumented');
       namedMe(1);
       const outputFileName = getSnapshotFileName('15_named_module_exports_default');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
@@ -203,7 +190,7 @@ describe('driver', () => {
   });
   describe('16_exported_objects', () => {
     it('should record activity', async () => {
-      RecorderManager.clear();
+      const exportedObj = require('./16_exported_objects/16_exported_objects_instrumented');
       await exportedObj.obj1.foo1({ someFun: () => Promise.resolve(1) }, 2);
       await exportedObj.obj1.foo2();
       await exportedObj.obj2.bar(2, 1);
@@ -216,7 +203,7 @@ describe('driver', () => {
   });
   describe('17_param_mutation', () => {
     it('should record activity', async () => {
-      RecorderManager.clear();
+      const pm = require('./17_param_mutation/17_param_mutation_instrumented');
       const arr = [1];
       pm.fun(arr);
       const outputFileName = getSnapshotFileName('17_param_mutation');
@@ -225,9 +212,8 @@ describe('driver', () => {
   });
   describe('18_record_stub_params', () => {
     it('should record activity', async () => {
+      const rsp = require('./18_record_stub_params/18_record_stub_params_instrumented');
       process.env.UTR_RECORD_STUB_PARAMS = true;
-
-      RecorderManager.clear();
       rsp.fun({ fun: a => a });
       const outputFileName = getSnapshotFileName('18_record_stub_params');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
@@ -236,3 +222,4 @@ describe('driver', () => {
     });
   });
 });
+/* eslint-enable global-require */

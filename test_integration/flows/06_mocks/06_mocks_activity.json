@@ -1,5 +1,12 @@
 {
   "test_integration/flows/06_mocks/06_mocks.js": {
+    "meta": {
+      "path": "test_integration/flows/06_mocks/06_mocks.js",
+      "mocks": [
+        "fs",
+        "./auxilary1"
+      ]
+    },
     "exportedFunctions": {
       "getTodo": {
         "meta": {

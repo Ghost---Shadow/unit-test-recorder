@@ -1,5 +1,11 @@
 {
   "test_integration/flows/18_record_stub_params/18_record_stub_params.js": {
+    "meta": {
+      "path": "test_integration/flows/18_record_stub_params/18_record_stub_params.js",
+      "mocks": [
+        "./auxilary"
+      ]
+    },
     "exportedFunctions": {
       "fun": {
         "meta": {

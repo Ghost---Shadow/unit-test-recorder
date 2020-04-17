@@ -1,3 +1,4 @@
+const { recordFileMeta } = require('../../../src/recorder');
 const { recorderWrapper } = require('../../../src/recorder');
 const newTarget = (...p) =>
   recorderWrapper(
@@ -88,3 +89,7 @@ module.exports = {
   protoOverwrite,
   protoOverwriteHelper
 };
+recordFileMeta({
+  path: 'test_integration/flows/08_this/08_this.js',
+  mocks: []
+});

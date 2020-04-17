@@ -1,3 +1,4 @@
+const { recordFileMeta } = require('../../../src/recorder');
 const { recorderWrapper } = require('../../../src/recorder');
 const fun = (...p) =>
   recorderWrapper(
@@ -51,3 +52,8 @@ const fun3 = (...p) =>
   );
 
 module.exports = { fun, fun2, fun3 };
+recordFileMeta({
+  path:
+    'test_integration/flows/12_unwanted_injections/12_unwanted_injections.js',
+  mocks: []
+});

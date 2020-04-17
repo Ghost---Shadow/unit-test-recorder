@@ -1,3 +1,4 @@
+const { recordFileMeta } = require('../../../src/recorder');
 const { recorderWrapper } = require('../../../src/recorder');
 const getClickCountsHelper = (...p) =>
   recorderWrapper(
@@ -46,3 +47,7 @@ const getClickCounts = (...p) =>
   );
 
 module.exports = { getClickCounts, getClickCountsHelper };
+recordFileMeta({
+  path: 'test_integration/flows/07_large_payload/07_large_payload.js',
+  mocks: []
+});

@@ -1,5 +1,9 @@
 {
   "test_integration/flows/17_param_mutation/17_param_mutation.js": {
+    "meta": {
+      "path": "test_integration/flows/17_param_mutation/17_param_mutation.js",
+      "mocks": []
+    },
     "exportedFunctions": {
       "fun": {
         "meta": {

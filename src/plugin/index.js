@@ -31,6 +31,10 @@ const {
   instrumentValidObjects,
 } = require('./object-capture-logic');
 
+const {
+  addRecordFileMeta,
+} = require('./file-meta');
+
 const { getBlackList } = require('./blacklist-generator');
 
 module.exports = (/* { types: t } */) => ({
@@ -74,6 +78,9 @@ module.exports = (/* { types: t } */) => ({
         this.captureObjFromOe = captureObjFromOe.bind(this);
         this.instrumentValidObjects = instrumentValidObjects.bind(this);
 
+        // Function bindings for file meta
+        this.addRecordFileMeta = addRecordFileMeta.bind(this);
+
         // States
         // Imported modules which are candidates for mocking
         this.importedModules = {};
@@ -114,6 +121,9 @@ module.exports = (/* { types: t } */) => ({
         // Dont add import statement if there are no exported functions
         // Dont import mocks if nothing is mocked
         this.maybeAddImportStatement(path);
+
+        // Add file meta recorder
+        this.addRecordFileMeta(path);
       },
     },
     ArrowFunctionExpression(path) {

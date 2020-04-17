@@ -9,6 +9,9 @@ const {
   injectFunctionDynamically,
   injectDependencyInjections,
 } = require('../injection');
+const {
+  recordFileMeta,
+} = require('../file-meta');
 
 const errorThrower = () => { throw new Error('sample'); };
 
@@ -84,6 +87,13 @@ describe('Robustness tests', () => {
         });
         it('should not crash markForConstructorInjection', () => {
           markForConstructorInjection(meta);
+        });
+      });
+      describe('file-meta.js', () => {
+        it('should not crash recorderWrapper', () => {
+          recordFileMeta({
+            path: 'dir/file.js',
+          });
         });
       });
     });

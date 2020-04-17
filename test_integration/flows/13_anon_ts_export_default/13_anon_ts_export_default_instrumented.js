@@ -1,3 +1,4 @@
+const { recordFileMeta } = require('../../../src/recorder');
 const { recorderWrapper } = require('../../../src/recorder');
 exports.default = (...p) =>
   recorderWrapper(
@@ -15,3 +16,8 @@ exports.default = (...p) =>
     (a, b) => a + b,
     ...p
   );
+recordFileMeta({
+  path:
+    'test_integration/flows/13_anon_ts_export_default/13_anon_ts_export_default.js',
+  mocks: []
+});

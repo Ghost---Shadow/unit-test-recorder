@@ -1,5 +1,9 @@
 {
   "test_integration/flows/08_this/08_this.js": {
+    "meta": {
+      "path": "test_integration/flows/08_this/08_this.js",
+      "mocks": []
+    },
     "exportedFunctions": {
       "newTarget": {
         "meta": {

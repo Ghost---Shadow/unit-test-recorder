@@ -94,11 +94,21 @@ describe('recorder.utils', () => {
       };
       expect(removeNullCaptures(recorderState)).toEqual(expected);
     });
+    it('should not drop meta', () => {
+      const recorderState = {
+        file1: {
+          meta: {},
+          exportedFunctions: {},
+        },
+      };
+      expect(removeNullCaptures(recorderState)).toEqual(recorderState);
+    });
   });
   describe('removeEmptyFiles', () => {
     it('should remove empty files', () => {
       const recorderState = {
         file1: {
+          meta: {},
           exportedFunctions: {
             function1: {
               meta: {},
@@ -111,6 +121,7 @@ describe('recorder.utils', () => {
           },
         },
         file2: {
+          meta: {},
           exportedFunctions: {
             function1: {
               meta: {},
@@ -125,6 +136,7 @@ describe('recorder.utils', () => {
       };
       const expected = {
         file1: {
+          meta: {},
           exportedFunctions: {
             function1: {
               meta: {},
@@ -173,6 +185,15 @@ describe('recorder.utils', () => {
         },
       };
       expect(removeInvalidFunctions(recorderState)).toEqual(expected);
+    });
+    it('should not drop meta', () => {
+      const recorderState = {
+        file1: {
+          meta: {},
+          exportedFunctions: {},
+        },
+      };
+      expect(removeInvalidFunctions(recorderState)).toEqual(recorderState);
     });
   });
 });

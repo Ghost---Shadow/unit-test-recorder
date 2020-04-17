@@ -1,5 +1,9 @@
 {
   "test_integration/flows/05_dependency_injection/05_dependency_injection.js": {
+    "meta": {
+      "path": "test_integration/flows/05_dependency_injection/05_dependency_injection.js",
+      "mocks": []
+    },
     "exportedFunctions": {
       "getPost": {
         "meta": {

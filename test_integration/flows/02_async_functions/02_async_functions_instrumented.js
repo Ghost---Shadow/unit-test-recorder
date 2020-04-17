@@ -1,3 +1,4 @@
+const { recordFileMeta } = require('../../../src/recorder');
 const { recorderWrapper } = require('../../../src/recorder');
 const mocksios = (email, request) =>
   new Promise(resolve => {
@@ -45,3 +46,7 @@ const getFacebookInfoHelper = (...p) =>
 
 module.exports.getFacebookInfo = getFacebookInfoHelper;
 module.exports.getSocialInfo = getSocialInfo;
+recordFileMeta({
+  path: 'test_integration/flows/02_async_functions/02_async_functions.js',
+  mocks: []
+});

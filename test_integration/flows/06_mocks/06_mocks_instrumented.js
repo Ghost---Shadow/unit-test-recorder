@@ -1,3 +1,4 @@
+const { recordFileMeta } = require('../../../src/recorder');
 const { mockRecorderWrapper } = require('../../../src/recorder');
 const { recorderWrapper } = require('../../../src/recorder');
 const fileSystem = require('fs');
@@ -161,3 +162,7 @@ module.exports = {
   datesTest,
   higherOrderTest
 };
+recordFileMeta({
+  path: 'test_integration/flows/06_mocks/06_mocks.js',
+  mocks: ['fs', './auxilary1']
+});

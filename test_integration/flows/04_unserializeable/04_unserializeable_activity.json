@@ -1,5 +1,9 @@
 {
   "test_integration/flows/04_unserializeable/04_unserializeable.js": {
+    "meta": {
+      "path": "test_integration/flows/04_unserializeable/04_unserializeable.js",
+      "mocks": []
+    },
     "exportedFunctions": {
       "circularReference": {
         "meta": {

@@ -2,7 +2,7 @@ const t = require('@babel/types');
 const { default: template } = require('@babel/template');
 const _ = require('lodash');
 
-const { newFunctionNameGenerator } = require('../util/misc');
+const { newFunctionNameGenerator, isWhitelisted } = require('../util/misc');
 
 const mockInjectorObjLike = template(`
 MODULE_ID.NEW_FP_ID = (...p) => mockRecorderWrapper({
@@ -42,12 +42,6 @@ const mockInjectorGenerator = (
     MODULE_STRING_LITERAL: t.stringLiteral(moduleName),
     FILE_NAME: t.stringLiteral(fileName),
   });
-};
-
-const isWhitelisted = (moduleName, whiteListedModules) => {
-  if (`${moduleName}`.startsWith('.')) return true;
-  if (whiteListedModules[moduleName]) return true;
-  return false;
 };
 
 function mockInjectedFunctions() {

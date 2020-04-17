@@ -1,3 +1,4 @@
+const { recordFileMeta } = require('../../../src/recorder');
 const { mockRecorderWrapper } = require('../../../src/recorder');
 const { recorderWrapper } = require('../../../src/recorder');
 const aux = require('./auxilary');
@@ -33,3 +34,7 @@ const fun = (...p) =>
   );
 
 module.exports = { fun };
+recordFileMeta({
+  path: 'test_integration/flows/18_record_stub_params/18_record_stub_params.js',
+  mocks: ['./auxilary']
+});

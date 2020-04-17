@@ -1,5 +1,9 @@
 {
   "test_integration/flows/01_module_exports/01_module_exports.js": {
+    "meta": {
+      "path": "test_integration/flows/01_module_exports/01_module_exports.js",
+      "mocks": []
+    },
     "exportedFunctions": {
       "foo": {
         "meta": {

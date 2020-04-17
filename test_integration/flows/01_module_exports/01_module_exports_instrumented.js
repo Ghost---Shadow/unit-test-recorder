@@ -1,3 +1,4 @@
+const { recordFileMeta } = require('../../../src/recorder');
 const { recorderWrapper } = require('../../../src/recorder');
 const foo1 = (...p) =>
   recorderWrapper(
@@ -75,3 +76,7 @@ module.exports = {
   specialParams,
   specialParams2
 };
+recordFileMeta({
+  path: 'test_integration/flows/01_module_exports/01_module_exports.js',
+  mocks: []
+});

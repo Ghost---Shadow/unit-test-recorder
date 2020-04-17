@@ -1,3 +1,4 @@
+const { recordFileMeta } = require('../../../src/recorder');
 const { recorderWrapper } = require('../../../src/recorder');
 const circularReference = (...p) =>
   recorderWrapper(
@@ -79,3 +80,7 @@ module.exports = {
   getElapsedTime,
   returnsNaN
 };
+recordFileMeta({
+  path: 'test_integration/flows/04_unserializeable/04_unserializeable.js',
+  mocks: []
+});

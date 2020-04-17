@@ -1,5 +1,9 @@
 {
   "test_integration/flows/15_named_module_exports_default/15_named_module_exports_default.js": {
+    "meta": {
+      "path": "test_integration/flows/15_named_module_exports_default/15_named_module_exports_default.js",
+      "mocks": []
+    },
     "exportedFunctions": {
       "foo": {
         "meta": {

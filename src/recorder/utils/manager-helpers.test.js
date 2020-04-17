@@ -171,6 +171,10 @@ describe('recorder.utils', () => {
               meta: {},
               captures: [],
             },
+            function5: {
+              meta: {},
+              captures: [{ injections: {} }],
+            },
           },
         },
       };

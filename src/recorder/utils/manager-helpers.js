@@ -64,7 +64,10 @@ const removeEmptyFiles = (recorderState) => {
 
 const removeInvalidFunctions = (recorderState) => {
   // RecorderManager.recorderState[path].exportedFunctions[name].captures[captureIndex]
-  const isFunctionValid = funObj => funObj.meta && funObj.captures && funObj.captures.length;
+  const isCaptureValid = capture => !!capture.params;
+  const isFunctionValid = funObj => funObj.meta
+    && funObj.captures
+    && funObj.captures.filter(isCaptureValid).length;
   const expFunReducer = exportedFunctions => Object.keys(exportedFunctions)
     .reduce((acc, functionName) => {
       const funObj = exportedFunctions[functionName];

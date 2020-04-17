@@ -117,6 +117,16 @@ function capturePathsOfRequiredModules(path) {
           path: grandParentPath,
         });
       });
+    } else {
+      // e.g.
+      // require('./something')
+      const moduleName = _.get(path, 'node.arguments[0].value');
+      const importedAs = null;
+      const old = this.importedModules[importedAs];
+      this.importedModules[importedAs] = _.merge(old, {
+        moduleName,
+        importedAs,
+      });
     }
   }
 }

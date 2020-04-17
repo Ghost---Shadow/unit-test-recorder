@@ -2,6 +2,7 @@ const fileSystem = require('fs');
 const {
   foo1, foo2: foo3, foo4, foo5, higherOrder,
 } = require('./auxilary1');
+require('./auxilary2');
 
 const getTodo = () => {
   fileSystem.readFileSync('test_integration/flows/06_mocks/response.json', 'utf8').toString();

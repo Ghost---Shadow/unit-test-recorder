@@ -13,6 +13,9 @@ describe('MockImportBlock', () => {
   describe('MockImportBlock', () => {
     it('should generate code', () => {
       const props = {
+        meta: {
+          mocks: ['m1', 'm2', 'm3', 'm4', 'm5'],
+        },
         exportedFunctions: {
           fun1: {
             captures: [
@@ -48,6 +51,7 @@ describe('MockImportBlock', () => {
         jest.mock('m2');
         jest.mock('m3');
         jest.mock('m4');
+        jest.mock('m5');
         "
       `);
     });

@@ -63,6 +63,7 @@ const testIntegrationFlows06Mocks06MocksJsFoo1 = (...p) =>
     foo1,
     ...p
   );
+require('./auxilary2');
 
 const getTodo = (...p) =>
   recorderWrapper(
@@ -164,5 +165,5 @@ module.exports = {
 };
 recordFileMeta({
   path: 'test_integration/flows/06_mocks/06_mocks.js',
-  mocks: ['fs', './auxilary1']
+  mocks: ['fs', './auxilary1', './auxilary2']
 });

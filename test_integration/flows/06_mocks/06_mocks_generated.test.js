@@ -1,8 +1,9 @@
 const auxilary1 = require('./auxilary1');
 const fs = require('fs');
 
-jest.mock('./auxilary1');
 jest.mock('fs');
+jest.mock('./auxilary1');
+jest.mock('./auxilary2');
 
 const { getTodo } = require('./06_mocks');
 const { localMocksTest } = require('./06_mocks');

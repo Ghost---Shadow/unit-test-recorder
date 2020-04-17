@@ -146,6 +146,10 @@ describe('driver', () => {
   });
   describe('11_higher_order', () => {
     it('should record activity', async () => {
+      // TODO: Remove
+      RecorderManager.record([
+        'recorderState', 'test_integration/flows/11_higher_order/11_higher_order.js', 'meta', 'mocks'],
+      []);
       hoi.base({ someFun: () => 1 })({ someOtherFun: () => 2 });
       hoi.validFun({ someFun: () => 5 });
       hoi.secondary1({ someFun: () => 1 });

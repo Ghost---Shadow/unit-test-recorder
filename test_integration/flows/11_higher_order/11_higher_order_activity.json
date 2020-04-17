@@ -1,5 +1,8 @@
 {
   "test_integration/flows/11_higher_order/11_higher_order.js": {
+    "meta": {
+      "mocks": []
+    },
     "exportedFunctions": {
       "base": {
         "meta": {

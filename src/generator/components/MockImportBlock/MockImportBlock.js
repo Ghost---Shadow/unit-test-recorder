@@ -4,7 +4,7 @@ const { DefaultImportStatement } = require('../ImportStatements/ImportStatements
 
 const JestMockStatement = ({ importPath }) => `jest.mock('${importPath}');`;
 
-const MockImportBlock = ({ exportedFunctions }) => {
+const MockImportBlock = ({ meta, exportedFunctions }) => {
   const importPaths = Object.keys(exportedFunctions).reduce((acc, fnName) => {
     const { captures } = exportedFunctions[fnName];
     return acc.concat(captures.reduce((innerAcc, capture) => {
@@ -15,7 +15,7 @@ const MockImportBlock = ({ exportedFunctions }) => {
 
   const uniqImportPaths = (_.uniq(importPaths)).sort();
 
-  const mockStatements = uniqImportPaths
+  const mockStatements = meta.mocks
     .map(importPath => JestMockStatement({ importPath }));
 
   const importStatements = uniqImportPaths

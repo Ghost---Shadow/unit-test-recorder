@@ -56,6 +56,9 @@ describe('TestFileBlock', () => {
       fileName: 'file',
       filePath,
       fileData: {
+        meta: {
+          mocks: ['../../someScript', 'fs'],
+        },
         exportedFunctions: {
           [meta.name]: functionActivity,
         },

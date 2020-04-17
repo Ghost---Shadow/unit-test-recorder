@@ -22,7 +22,7 @@ const TestFileBlock = (props) => {
     path: filePath,
   });
 
-  const mockImportStatements = MockImportBlock({ exportedFunctions });
+  const mockImportStatements = MockImportBlock(fileData);
 
   const result = `
   ${mockImportStatements}

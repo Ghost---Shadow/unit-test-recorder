@@ -4,7 +4,8 @@
       "path": "test_integration/flows/06_mocks/06_mocks.js",
       "mocks": [
         "fs",
-        "./auxilary1"
+        "./auxilary1",
+        "./auxilary2"
       ]
     },
     "exportedFunctions": {

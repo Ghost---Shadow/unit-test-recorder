@@ -40,7 +40,7 @@
           }
         ],
         "hashTable": {
-          "krs8gtle1lXxA11mkKd7tQ==": true
+          "RfDVfJjbad8lhfB1GlNUIA==": true
         }
       },
       "fun2": {
@@ -72,7 +72,7 @@
           }
         ],
         "hashTable": {
-          "0AqRT9EPx92+k/YaoBk7Bg==": true
+          "vpBxCjOFctyIkzBQr+fWXQ==": true
         }
       },
       "fun3": {
@@ -106,7 +106,7 @@
               }
             },
             "params": [
-              null
+              "a => a"
             ],
             "result": 2,
             "types": {
@@ -118,7 +118,7 @@
           }
         ],
         "hashTable": {
-          "OxlSdmg4qH64f7WxDtiMsA==": true
+          "+RBq4ZQThZP+QWcvwIzRcQ==": true
         }
       }
     }

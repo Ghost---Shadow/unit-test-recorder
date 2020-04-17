@@ -429,7 +429,7 @@
           }
         ],
         "hashTable": {
-          "11FxOYiYfpMxmANj4kGJzg==": true
+          "QvE6V13fZMgFy+aUVyIEYA==": true
         }
       },
       "getClickCountsHelper": {
@@ -764,7 +764,7 @@
               }
             },
             "params": [
-              null
+              "() => [...Array(100)].map((_, index) => ({\n    imageId: index\n  }))"
             ],
             "result": [
               {
@@ -1177,7 +1177,7 @@
           }
         ],
         "hashTable": {
-          "OxlSdmg4qH64f7WxDtiMsA==": true
+          "PNUM6cI4UrZ+IlE+I1ZyQg==": true
         }
       }
     }

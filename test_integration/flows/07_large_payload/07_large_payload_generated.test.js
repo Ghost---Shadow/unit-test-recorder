@@ -17,7 +17,8 @@ describe('07_large_payload', () => {
 
   describe('getClickCountsHelper', () => {
     it('should work for case 1', () => {
-      let requestDataCb = null;
+      let requestDataCb =
+        '() => [...Array(100)].map((_, index) => ({\n    imageId: index\n  }))';
       let result = getClickCountsHelper0result;
 
       requestDataCb = jest.fn();

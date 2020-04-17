@@ -36,7 +36,7 @@
           }
         ],
         "hashTable": {
-          "zzvvHO4JAn0vNgcX2g7OrA==": true
+          "IoRSV6b1dOnb/JyUMM4p8Q==": true
         }
       },
       "returnAFunction": {
@@ -58,7 +58,7 @@
           {
             "params": [
               1,
-              null
+              "a => a * 2"
             ],
             "result": "b => a + f2(b)",
             "types": {
@@ -71,7 +71,7 @@
           }
         ],
         "hashTable": {
-          "5PYDcF336WQHyAx7ouEyJw==": true
+          "bqJmtLQs1GCj4wHqE1hD0Q==": true
         }
       },
       "getElapsedTime": {
@@ -106,7 +106,7 @@
           }
         ],
         "hashTable": {
-          "Er+sr8i14pQtLU46YaceVw==": true
+          "ePbUR8xguUXb8Pr9hgU3uw==": true
         }
       },
       "returnsNaN": {
@@ -138,7 +138,7 @@
           }
         ],
         "hashTable": {
-          "dYe2uh7/JcA1jFdJXBGNUw==": true
+          "DhPFHTODFMawBc9rehkziw==": true
         }
       }
     }

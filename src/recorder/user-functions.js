@@ -45,6 +45,9 @@ const captureUserFunction = ({
   if (_.isFunction(result)) {
     result = result.toString();
   }
+  params = params.map(param => (_.isFunction(param) ? param.toString() : param));
+  const newCapture = { params, result, types };
+
   const addrToCurrentFun = ['recorderState', path, 'exportedFunctions', name];
   const addrToDoesReturnPromise = [...addrToCurrentFun, 'meta', 'doesReturnPromise'];
   const addrToCaptureIndex = [...addrToCurrentFun, 'captures', captureIndex];
@@ -53,7 +56,7 @@ const captureUserFunction = ({
   RecorderManager.record(addrToDoesReturnPromise, doesReturnPromise, false);
 
   const basePath = ['recorderState', path, 'exportedFunctions', name];
-  if (checkAndSetHash(RecorderManager, basePath, params)) {
+  if (checkAndSetHash(RecorderManager, basePath, newCapture)) {
     // Capture already exists
     RecorderManager.record(addrToCaptureIndex, null, null);
     return;
@@ -61,7 +64,6 @@ const captureUserFunction = ({
 
   // Merge with recordings of dependency injections
   const existing = _.get(RecorderManager, addrToCaptureIndex);
-  const newCapture = { params, result, types };
   RecorderManager.record(addrToCaptureIndex, _.merge(existing, newCapture), existing);
 };
 

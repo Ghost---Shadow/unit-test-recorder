@@ -1,6 +1,8 @@
 const { getPost } = require('./05_dependency_injection');
 const { getPostComments } = require('./05_dependency_injection');
 
+const getPostComments0redisCache = require('./05_dependency_injection/getPostComments_0_redisCache.mock.js');
+
 describe('05_dependency_injection', () => {
   describe('getPost', () => {
     it('should work for case 1', async () => {
@@ -8,7 +10,8 @@ describe('05_dependency_injection', () => {
         pool: {}
       };
       let postId = 1;
-      let redisCache = null;
+      let redisCache =
+        '() => new Promise(resolve => {\n        setTimeout(() => resolve(350));\n      })';
       let result = {
         content: {
           title: 'content'
@@ -73,7 +76,7 @@ describe('05_dependency_injection', () => {
         pool: {}
       };
       let postId = 1;
-      let redisCache = null;
+      let redisCache = getPostComments0redisCache;
       let result = [
         {
           comment: 'comment 1'

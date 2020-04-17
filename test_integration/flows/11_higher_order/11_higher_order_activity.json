@@ -1,9 +1,81 @@
 {
   "test_integration/flows/11_higher_order/11_higher_order.js": {
-    "meta": {
-      "mocks": []
-    },
     "exportedFunctions": {
+      "rObj.foo": {
+        "meta": {
+          "path": "test_integration/flows/11_higher_order/11_higher_order.js",
+          "name": "rObj.foo",
+          "paramIds": [
+            "f"
+          ],
+          "injectionWhitelist": [
+            "someFun"
+          ],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": false,
+          "isObject": true,
+          "doesReturnPromise": false
+        },
+        "captures": [
+          {
+            "params": [
+              "p => p.someFun()"
+            ],
+            "result": "p => f(p)",
+            "types": {
+              "params": [
+                "Function"
+              ],
+              "result": "Function"
+            },
+            "injections": {
+              "f": {
+                "captures": [
+                  {
+                    "params": [],
+                    "result": 4,
+                    "types": {
+                      "params": [],
+                      "result": "Number"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "params": [
+              "function f(p) {\n  return p.someFun();\n}"
+            ],
+            "result": "p => f(p)",
+            "types": {
+              "params": [
+                "Function"
+              ],
+              "result": "Function"
+            },
+            "injections": {
+              "f": {
+                "captures": [
+                  {
+                    "params": [],
+                    "result": 5,
+                    "types": {
+                      "params": [],
+                      "result": "Number"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "hashTable": {
+          "+aqvmMaJmEylWjK+toj5fQ==": true,
+          "NP2kSNbhYqxG0mNX+Koq0Q==": true
+        }
+      },
       "base": {
         "meta": {
           "path": "test_integration/flows/11_higher_order/11_higher_order.js",
@@ -35,7 +107,7 @@
           }
         ],
         "hashTable": {
-          "VE/M8Yddsxc+gCUTVJ8cxA==": true
+          "4+SqArVQCz/D5YIV5aAHwQ==": true
         }
       },
       "validFun": {
@@ -61,7 +133,7 @@
                 "captures": [
                   {
                     "params": [],
-                    "result": 5,
+                    "result": 3,
                     "types": {
                       "params": [],
                       "result": "Number"
@@ -73,7 +145,7 @@
             "params": [
               {}
             ],
-            "result": 5,
+            "result": 3,
             "types": {
               "params": [
                 "Object"
@@ -83,9 +155,13 @@
           }
         ],
         "hashTable": {
-          "VE/M8Yddsxc+gCUTVJ8cxA==": true
+          "ptDMXfY3QQwk0LZqG8IhYA==": true
         }
       }
+    },
+    "meta": {
+      "path": "test_integration/flows/11_higher_order/11_higher_order.js",
+      "mocks": []
     }
   }
 }

@@ -1,9 +1,6 @@
 const { toMatchFile } = require('jest-file-snapshot');
 const { RecorderManager } = require('../../src/recorder');
 
-// TODO: Move it in
-const hoi = require('./11_higher_order/11_higher_order_instrumented');
-
 expect.extend({ toMatchFile });
 
 const getSnapshotFileName = fileName => `test_integration/flows/${fileName}/${fileName}_activity.json`;
@@ -146,14 +143,11 @@ describe('driver', () => {
   });
   describe('11_higher_order', () => {
     it('should record activity', async () => {
-      // TODO: Remove
-      RecorderManager.record([
-        'recorderState', 'test_integration/flows/11_higher_order/11_higher_order.js', 'meta', 'mocks'],
-      []);
+      const hoi = require('./11_higher_order/11_higher_order_instrumented');
       hoi.base({ someFun: () => 1 })({ someOtherFun: () => 2 });
-      hoi.validFun({ someFun: () => 5 });
-      hoi.secondary1({ someFun: () => 1 });
-      hoi.secondary2({ someFun: () => 1 });
+      hoi.validFun({ someFun: () => 3 });
+      hoi.secondary1({ someFun: () => 4 });
+      hoi.secondary2({ someFun: () => 5 });
       const outputFileName = getSnapshotFileName('11_higher_order');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

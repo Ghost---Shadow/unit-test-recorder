@@ -35,6 +35,13 @@ const pre = ({ meta, p }) => {
   };
 };
 
+const processFunctionLikeParam = (param) => {
+  if (_.isFunction(param) && !_.isFunction(param.boundRecorder)) {
+    return param.toString();
+  }
+  return param;
+};
+
 const captureUserFunction = ({
   result, path, name, captureIndex, params, doesReturnPromise,
 }) => {
@@ -45,7 +52,7 @@ const captureUserFunction = ({
   if (_.isFunction(result)) {
     result = result.toString();
   }
-  params = params.map(param => (_.isFunction(param) ? param.toString() : param));
+  params = params.map(processFunctionLikeParam);
   const newCapture = { params, result, types };
 
   const addrToCurrentFun = ['recorderState', path, 'exportedFunctions', name];

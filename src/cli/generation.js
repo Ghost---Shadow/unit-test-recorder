@@ -8,14 +8,6 @@ const { extractTestsFromState } = require('../generator');
 const { getTestFileNameForFile } = require('../util/misc');
 
 const writeFileAsync = promisify(fs.writeFile);
-const readFileAsync = promisify(fs.readFile);
-
-const writeAndFetchSerializedState = async (fileName) => {
-  console.log('Dumping activity to disk');
-  await writeFileAsync(fileName, RecorderManager.getSerialized());
-  const nonCircularState = await readFileAsync(fileName);
-  return JSON.parse(nonCircularState.toString());
-};
 
 const writeTestAndExternalData = async ({ testObj, packagedArguments }) => {
   console.log('Writing test for: ', testObj.filePath);
@@ -35,10 +27,11 @@ const writeTestAndExternalData = async ({ testObj, packagedArguments }) => {
 const generateAllTests = async (packagedArguments) => {
   try {
     // Make sure activity.json is the source of truth for generaton
-    const newState = await writeAndFetchSerializedState('activity.json');
+    RecorderManager.dumpToDisk();
+    RecorderManager.loadFromDisk();
 
     console.log('Generating test cases');
-    const testData = await extractTestsFromState(newState, packagedArguments);
+    const testData = await extractTestsFromState(RecorderManager.recorderState, packagedArguments);
 
     console.log('Dumping test cases to disk');
     const writePromises = testData

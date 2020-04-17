@@ -67,10 +67,8 @@ const instrumentAllFiles = (packagedArguments) => {
 
   filteredFiles.forEach(fileName => transformFile(fileName, whiteListedModules));
 
-  if (fs.existsSync('activity.json')) {
-    console.log('Found existing state');
-    RecorderManager.recorderState = JSON.parse(fs.readFileSync('activity.json').toString());
-  }
+  // Load existing state if present
+  RecorderManager.loadFromDisk();
 
   console.log('Injection complete. Starting server...');
   console.log('Press Ctrl + C to stop recording and dump the tests');

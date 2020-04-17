@@ -30,6 +30,10 @@ const { argv } = require('yargs')
   .default('only', [])
   .describe('only', 'Run only on these files (relative path, comma separated, supports RegExp)')
 
+  .default('max-stack-depth', 7)
+  .describe('max-stack-depth', 'Properties of a JSON at a depth higher than this, will not be recorded')
+  .alias('s', 'max-stack-depth')
+
   .boolean('record-stub-params')
   .describe('record-stub-params', 'Record the arguments passed as parameters to stubs (Debugging only)')
 
@@ -43,7 +47,11 @@ const entryPoint = argv._[0];
 const maxTestsPerFunction = parseInt(argv.maxTests, 10) || -1;
 const debug = argv.d;
 const {
-  outputDir, testExt, sizeLimit, recordStubParams,
+  outputDir,
+  testExt,
+  sizeLimit,
+  recordStubParams,
+  maxStackDepth,
 } = argv;
 const exceptFiles = typeof argv.except === 'string' ? argv.except.split(',') : [];
 const onlyFiles = typeof argv.only === 'string' ? argv.only.split(',') : [];
@@ -57,10 +65,12 @@ const packagedArguments = {
   exceptFiles,
   onlyFiles,
   recordStubParams,
+  maxStackDepth,
 };
 
 // Set the environment variable flag so that recorder can pick it up
 process.env.UTR_RECORD_STUB_PARAMS = !!recordStubParams;
+process.env.UTR_STACK_DEPTH = maxStackDepth;
 
 // Instrument all files
 instrumentAllFiles(packagedArguments);

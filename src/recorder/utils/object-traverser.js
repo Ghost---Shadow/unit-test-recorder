@@ -2,6 +2,16 @@ const _ = require('lodash');
 const { getBlackList } = require('../../plugin/blacklist-generator');
 const { inferTypeOfObject } = require('../utils/dynamic-type-inference');
 
+const UTR_DEFAULT_STACK_DEPTH = 7;
+const getMaxStackDepth = () => {
+  // Arbitarily chosen number
+  try {
+    return JSON.parse(process.env.UTR_STACK_DEPTH);
+  } catch (e) {
+    return UTR_DEFAULT_STACK_DEPTH;
+  }
+};
+
 // https://stackoverflow.com/a/44536464/1217998
 const isGetter = (obj, prop) => !!_.get(Object.getOwnPropertyDescriptor(obj, prop), 'get');
 
@@ -26,8 +36,16 @@ const isObjectLikeEmpty = (type, keys, path) => {
 };
 
 function* traverse(objRoot, crawlProto = true, blacklist = bl) {
+  const MAX_DEPTH = getMaxStackDepth();
+
   const stack = [objRoot];
   function* traverseInner(obj, path = []) {
+    // Dont crawl too deep
+    if (stack.length > MAX_DEPTH) {
+      yield path;
+      return;
+    }
+
     const type = inferTypeOfObject(obj);
     if (type !== 'Object' && type !== 'Array') {
       if (path.length) {
@@ -88,10 +106,16 @@ const updateLutGen = (leavesToFind) => {
 };
 
 function* traverseBfs(objRoot, leavesToFind = null, crawlProto = true, blacklist = bl) {
+  const MAX_DEPTH = getMaxStackDepth();
+
   const updateLut = updateLutGen(leavesToFind);
   const queue = [{ path: [], node: objRoot, stack: [] }];
   while (queue.length) {
     const { path, node, stack } = queue.shift();
+    if (stack.length + 1 > MAX_DEPTH) {
+      yield path;
+      continue;
+    }
     const type = inferTypeOfObject(node);
     if (type !== 'Object' && type !== 'Array') {
       if (path.length) {
@@ -129,4 +153,4 @@ function* traverseBfs(objRoot, leavesToFind = null, crawlProto = true, blacklist
   }
 }
 
-module.exports = { traverse, traverseBfs };
+module.exports = { traverse, traverseBfs, UTR_DEFAULT_STACK_DEPTH };

@@ -1,4 +1,4 @@
-const { traverse, traverseBfs } = require('./object-traverser');
+const { traverse, traverseBfs, UTR_DEFAULT_STACK_DEPTH } = require('./object-traverser');
 
 const degenerate = (iterator) => {
   const arr = [];
@@ -14,6 +14,9 @@ const degenerate = (iterator) => {
 
 describe('object-traverser', () => {
   describe('traverse', () => {
+    beforeEach(() => {
+      process.env.UTR_STACK_DEPTH = UTR_DEFAULT_STACK_DEPTH;
+    });
     it('should list all paths including prototypes', () => {
       const obj = {
         fun: () => 'baz',
@@ -107,6 +110,15 @@ describe('object-traverser', () => {
         [0, 'a'],
       ]);
     });
+    it('should only crawl upto stack depth', () => {
+      process.env.UTR_STACK_DEPTH = 2;
+      const obj = { a: { b: { c: { d: 1 } } } };
+      const paths = degenerate(traverse(obj));
+      expect(paths).toEqual([
+        ['a', '__proto__'],
+        ['a', 'b'],
+      ]);
+    });
     describe('empty likes', () => {
       it('should not crash for empty objects', () => {
         const paths = degenerate(traverse({}));
@@ -123,6 +135,9 @@ describe('object-traverser', () => {
     });
   });
   describe('traverseBfs', () => {
+    beforeEach(() => {
+      process.env.UTR_STACK_DEPTH = UTR_DEFAULT_STACK_DEPTH;
+    });
     it('should list all paths including prototypes', () => {
       const obj = {
         fun: () => 'baz',
@@ -249,6 +264,15 @@ describe('object-traverser', () => {
         ['b', 'c'],
         ['__proto__', '__proto__', 'f'],
         ['__proto__', 'e', 'f'],
+      ]);
+    });
+    it('should only crawl upto stack depth', () => {
+      process.env.UTR_STACK_DEPTH = 2;
+      const obj = { a: { b: { c: { d: 1 } } } };
+      const paths = degenerate(traverseBfs(obj));
+      expect(paths).toEqual([
+        ['a', '__proto__'],
+        ['a', 'b'],
       ]);
     });
     describe('empty likes', () => {

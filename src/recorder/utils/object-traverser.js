@@ -42,7 +42,6 @@ function* traverse(objRoot, crawlProto = true, blacklist = bl) {
   function* traverseInner(obj, path = []) {
     // Dont crawl too deep
     if (stack.length > MAX_DEPTH) {
-      yield path;
       return;
     }
 
@@ -116,7 +115,6 @@ function* traverseBfs(objRoot, leavesToFind = null, crawlProto = true, blacklist
   while (queue.length) {
     const { path, node, stack } = queue.shift();
     if (stack.length + 1 > MAX_DEPTH) {
-      yield path;
       continue;
     }
     const type = inferTypeOfObject(node);

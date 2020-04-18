@@ -112,11 +112,10 @@ describe('object-traverser', () => {
     });
     it('should only crawl upto stack depth', () => {
       process.env.UTR_STACK_DEPTH = 2;
-      const obj = { a: { b: { c: { d: 1 } } } };
+      const obj = { ok: 1, a: { b: { c: { d: 1 } } } };
       const paths = degenerate(traverse(obj));
       expect(paths).toEqual([
-        ['a', '__proto__'],
-        ['a', 'b'],
+        ['ok'],
       ]);
     });
     describe('empty likes', () => {
@@ -268,11 +267,10 @@ describe('object-traverser', () => {
     });
     it('should only crawl upto stack depth', () => {
       process.env.UTR_STACK_DEPTH = 2;
-      const obj = { a: { b: { c: { d: 1 } } } };
+      const obj = { ok: 1, a: { b: { c: { d: 1 } } } };
       const paths = degenerate(traverseBfs(obj));
       expect(paths).toEqual([
-        ['a', '__proto__'],
-        ['a', 'b'],
+        ['ok'],
       ]);
     });
     it('should early exit if whitelist is empty', () => {

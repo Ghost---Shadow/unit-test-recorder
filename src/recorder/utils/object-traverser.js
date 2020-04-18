@@ -106,6 +106,9 @@ const updateLutGen = (leavesToFind) => {
 };
 
 function* traverseBfs(objRoot, leavesToFind = null, crawlProto = true, blacklist = bl) {
+  // Early exit if empty
+  if (leavesToFind && leavesToFind.length === 0) return;
+
   const MAX_DEPTH = getMaxStackDepth();
 
   const updateLut = updateLutGen(leavesToFind);

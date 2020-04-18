@@ -275,6 +275,18 @@ describe('object-traverser', () => {
         ['a', 'b'],
       ]);
     });
+    it('should early exit if whitelist is empty', () => {
+      const leavesToFind = [];
+      const obj = {
+        fun: () => null,
+        a: {
+          arr: [{ a: { fun2: () => null } }],
+          b: { c: {}, d: { e: { f: {} } } },
+        },
+      };
+      const paths = degenerate(traverseBfs(obj, leavesToFind));
+      expect(paths).toEqual([]);
+    });
     describe('empty likes', () => {
       it('should not crash for empty objects', () => {
         const paths = degenerate(traverseBfs({}));

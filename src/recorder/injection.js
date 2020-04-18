@@ -29,19 +29,17 @@ const recordInjectedActivity = (meta, paramIndex, fppkey, params, result) => {
   const fqn = fppkey ? `${paramIds[paramIndex]}.${fppkey}` : paramIds[paramIndex];
   const basePath = ['recorderState', path, 'exportedFunctions', name, 'captures', captureIndex, 'injections', fqn];
   const destinationPath = [...basePath, 'captures'];
-  if (!_.get(RecorderManager, destinationPath)) {
-    _.set(RecorderManager, destinationPath, []);
-  }
   try {
     // TODO: Put it back later
     // if (checkAndSetHash(RecorderManager, basePath, params)) {
     //   return;
     // }
     // Record types from this capture
+    const old = _.get(RecorderManager, destinationPath, []);
+    const innerCaptureIndex = old.length;
+    const addr = [...destinationPath, innerCaptureIndex];
     const types = generateTypesObj({ params, result });
-    const old = _.get(RecorderManager, destinationPath);
-    const newCapture = { params, result, types };
-    RecorderManager.record(destinationPath, old.concat([newCapture]), old);
+    RecorderManager.recordTrio(addr, params, result, types);
   } catch (e) {
     console.error(e);
   }

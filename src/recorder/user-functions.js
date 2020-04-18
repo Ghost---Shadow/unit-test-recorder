@@ -69,9 +69,7 @@ const captureUserFunction = ({
     return;
   }
 
-  // Merge with recordings of dependency injections
-  const existing = _.get(RecorderManager, addrToCaptureIndex);
-  RecorderManager.record(addrToCaptureIndex, _.merge(existing, newCapture), existing);
+  RecorderManager.recordTrio(addrToCaptureIndex, params, result, types);
 };
 
 const recorderWrapper = (meta, innerFunction, ...p) => {

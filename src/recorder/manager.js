@@ -88,6 +88,22 @@ const RecorderManager = {
       _.set(this, address, fallback);
     }
   },
+  recordTrio(address, params, result, types) {
+    const paramAddr = [...address, 'params'];
+    if (!_.get(this, paramAddr)) {
+      _.set(this, paramAddr, []);
+    }
+    params.forEach((innerParam, innerParamIndex) => {
+      const addr = [...paramAddr, innerParamIndex];
+      this.record(addr, innerParam);
+    });
+    const resultAddr = [...address, 'result'];
+    if (result !== undefined) {
+      this.record(resultAddr, result);
+    }
+    const typesAddr = [...address, 'types'];
+    this.record(typesAddr, types);
+  },
 };
 
 module.exports = RecorderManager;

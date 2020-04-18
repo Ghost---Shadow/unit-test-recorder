@@ -74,7 +74,7 @@ describe('05_dependency_injection', () => {
         pool: {}
       };
       let postId = 1;
-      let redisCache = null;
+      let redisCache = {};
       let result = [
         {
           comment: 'comment 1'

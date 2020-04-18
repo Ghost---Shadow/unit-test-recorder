@@ -119,4 +119,191 @@ describe('RecorderManager', () => {
       expect(RecorderManager.recorderState).toEqual({});
     });
   });
+  describe('recordTrio', () => {
+    let oldFp;
+    beforeAll(() => {
+      oldFp = RecorderManager.removeInvalidCaptures;
+      RecorderManager.removeInvalidCaptures = () => null; // noop
+    });
+    afterAll(() => {
+      RecorderManager.removeInvalidCaptures = oldFp;
+    });
+    it('should work for dependency injections', () => {
+      RecorderManager.recorderState = {
+        file1: {
+          exportedFunctions: {
+            fun1: {
+              captures: [],
+            },
+          },
+        },
+      };
+      const expected = {
+        file1: {
+          exportedFunctions: {
+            fun1: {
+              captures: [
+                {
+                  injections: {
+                    inj1: {
+                      captures: [
+                        {
+                          params: [1, 2],
+                          result: 3,
+                          types: 4,
+                        },
+                      ],
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      };
+      const destinationPath = ['recorderState', 'file1', 'exportedFunctions', 'fun1', 'captures', 0, 'injections', 'inj1', 'captures', 0];
+      RecorderManager.recordTrio(destinationPath, [1, 2], 3, 4);
+      expect(RecorderManager.recorderState).toEqual(expected);
+    });
+    it('should work for mocks', () => {
+      RecorderManager.recorderState = {
+        file1: {
+          exportedFunctions: {
+            fun1: {
+              captures: [],
+            },
+          },
+        },
+      };
+      const expected = {
+        file1: {
+          exportedFunctions: {
+            fun1: {
+              captures: [
+                {
+                  mocks: {
+                    moduleName: {
+                      fnName: {
+                        captures: [
+                          {
+                            params: [1, 2],
+                            result: 3,
+                            types: 4,
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      };
+      const destinationPath = ['recorderState', 'file1', 'exportedFunctions', 'fun1', 'captures', 0, 'mocks', 'moduleName', 'fnName', 'captures', 0];
+      RecorderManager.recordTrio(destinationPath, [1, 2], 3, 4);
+      expect(RecorderManager.recorderState).toEqual(expected);
+    });
+    it('should work for user functions', () => {
+      RecorderManager.recorderState = {
+        file1: {
+          exportedFunctions: {
+            fun1: {
+              captures: [
+                {
+                },
+              ],
+            },
+          },
+        },
+      };
+      const expected = {
+        file1: {
+          exportedFunctions: {
+            fun1: {
+              captures: [
+                {
+                  params: [1, 2],
+                  result: 3,
+                  types: 4,
+                },
+              ],
+            },
+          },
+        },
+      };
+      const destinationPath = ['recorderState', 'file1', 'exportedFunctions', 'fun1', 'captures', 0];
+      RecorderManager.recordTrio(destinationPath, [1, 2], 3, 4);
+      expect(RecorderManager.recorderState).toEqual(expected);
+    });
+    it('should work in unison', () => {
+      RecorderManager.recorderState = {};
+      const expected = {
+        file1: {
+          exportedFunctions: {
+            fun1: {
+              captures: [
+                {
+                  injections: {
+                    inj1: {
+                      captures: [
+                        {
+                          params: [1, 2],
+                          result: 3,
+                          types: 4,
+                        },
+                      ],
+                    },
+                  },
+                  mocks: {
+                    moduleName: {
+                      fnName: {
+                        captures: [
+                          {
+                            params: [1, 2],
+                            result: 3,
+                            types: 4,
+                          },
+                        ],
+                      },
+                    },
+                  },
+                  params: [1, 2],
+                  result: 3,
+                  types: 4,
+                },
+              ],
+            },
+          },
+        },
+      };
+      const diDestinationPath = ['recorderState', 'file1', 'exportedFunctions', 'fun1', 'captures', 0, 'injections', 'inj1', 'captures', 0];
+      RecorderManager.recordTrio(diDestinationPath, [1, 2], 3, 4);
+      const mockDestinationPath = ['recorderState', 'file1', 'exportedFunctions', 'fun1', 'captures', 0, 'mocks', 'moduleName', 'fnName', 'captures', 0];
+      RecorderManager.recordTrio(mockDestinationPath, [1, 2], 3, 4);
+      const ufDestinationPath = ['recorderState', 'file1', 'exportedFunctions', 'fun1', 'captures', 0];
+      RecorderManager.recordTrio(ufDestinationPath, [1, 2], 3, 4);
+      expect(RecorderManager.recorderState).toEqual(expected);
+    });
+    it('should work if result is undefined', () => {
+      RecorderManager.recorderState = {};
+      const expected = {
+        file1: {
+          exportedFunctions: {
+            fun1: {
+              captures: [
+                {
+                  params: [1, 2],
+                  types: 4,
+                },
+              ],
+            },
+          },
+        },
+      };
+      const destinationPath = ['recorderState', 'file1', 'exportedFunctions', 'fun1', 'captures', 0];
+      RecorderManager.recordTrio(destinationPath, [1, 2], undefined, 4);
+      expect(RecorderManager.recorderState).toEqual(expected);
+    });
+  });
 });

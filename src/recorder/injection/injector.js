@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
 const RecorderManager = require('../manager');
-const { broadcastFunctions } = require('../utils/broadcast-functions');
+const { broadcastFunctions } = require('./broadcast-functions');
 const { shouldRecordStubParams } = require('../utils/misc');
 
 const markForConstructorInjection = (meta) => {

@@ -1,5 +1,5 @@
-jest.mock('../utils/broadcast-functions');
-const bf = require('../utils/broadcast-functions');
+jest.mock('../injection/broadcast-functions');
+const bf = require('../injection/broadcast-functions');
 
 const { mockRecorderWrapper } = require('../mock');
 const { recorderWrapper } = require('../user-functions');

@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const { getNamespace } = require('cls-hooked');
 
 const RecorderManager = require('../manager');
 // const { checkAndSetHash } = require('./utils/hash-helper');
@@ -28,4 +29,14 @@ const recordInjectedActivity = (meta, paramIndex, fppkey, params, result) => {
   }
 };
 
-module.exports = { recordInjectedActivity };
+const recordToCls = (paramIndex, fppkey, params, result) => {
+  const session = getNamespace('default');
+  const injections = session.get('injections') || [];
+  injections.push([paramIndex, fppkey, params, result]);
+  session.set('injections', injections);
+};
+
+module.exports = {
+  recordInjectedActivity,
+  recordToCls,
+};

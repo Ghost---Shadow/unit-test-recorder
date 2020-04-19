@@ -1,14 +1,13 @@
 const _ = require('lodash');
+const { getNamespace } = require('cls-hooked');
 
 const { traverseBfs } = require('../utils/object-traverser');
 const { newFunctionNameGenerator } = require('../../util/misc');
-const { recordInjectedActivity } = require('./di-recorder');
 const { injectFunctionDynamically } = require('./injector');
 
-const getBoundRecorder = (meta, paramIndex, fppkey) => recordInjectedActivity
-  .bind(null, meta, paramIndex, fppkey);
-
-const injectDependencyInjections = (params, meta) => {
+const injectDependencyInjections = (params) => {
+  const session = getNamespace('default');
+  const meta = session.get('meta');
   const { injectionWhitelist, path: fileName } = meta;
   params.forEach((param, paramIndex) => {
     try {
@@ -26,21 +25,15 @@ const injectDependencyInjections = (params, meta) => {
           const newPath = _.clone(path);
           newPath[lIndex] = newFnName;
           const fppkey = path.join('.');
-          const boundRecorder = getBoundRecorder(meta, paramIndex, fppkey);
           const propertyToInject = _.get(param, newPath, existingProperty);
           const injectedProperty = injectFunctionDynamically(
-            propertyToInject,
-            meta,
-            boundRecorder,
+            propertyToInject, paramIndex, fppkey,
           );
           _.set(param, newPath, injectedProperty);
         }
       } else {
-        const boundRecorder = getBoundRecorder(meta, paramIndex, null);
         params[paramIndex] = injectFunctionDynamically(
-          param,
-          meta,
-          boundRecorder,
+          params[paramIndex], paramIndex, null,
         );
       }
     } catch (e) {

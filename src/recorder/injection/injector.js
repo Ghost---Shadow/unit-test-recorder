@@ -1,8 +1,9 @@
 const _ = require('lodash');
+const { getNamespace } = require('cls-hooked');
 
 const RecorderManager = require('../manager');
-const { broadcastFunctions } = require('./broadcast-functions');
 const { shouldRecordStubParams } = require('../utils/misc');
+const { recordToCls } = require('./di-recorder');
 
 const markForConstructorInjection = (meta) => {
   const { path, name } = meta;
@@ -17,8 +18,13 @@ const markForConstructorInjection = (meta) => {
   }
 };
 
-const injectFunctionDynamically = (maybeFunction, meta, boundRecorder) => {
+const injectFunctionDynamically = (maybeFunction, paramIndex, fppkey) => {
+  const session = getNamespace('default');
+  const meta = session.get('meta');
   if (_.isFunction(maybeFunction)) {
+    // Already injected
+    if (maybeFunction.utrIsInjected) return maybeFunction;
+
     const OldFp = maybeFunction;
     // eslint-disable-next-line
     function injectedFunction(...paramsOfInjected) {
@@ -29,22 +35,19 @@ const injectFunctionDynamically = (maybeFunction, meta, boundRecorder) => {
         return new OldFp(...paramsOfInjected);
       }
       const clonedParams = shouldRecordStubParams() ? _.cloneDeep(paramsOfInjected) : [];
+      const curiedRecorder = recordToCls.bind(null, paramIndex, fppkey, clonedParams);
       const result = OldFp.apply(this, paramsOfInjected);
       if (result && _.isFunction(result.then)) {
         // It might be a promise
         result.then((res) => {
-          injectedFunction.boundRecorder(clonedParams, res);
+          curiedRecorder(res);
         });
       } else {
-        injectedFunction.boundRecorder(clonedParams, result);
+        curiedRecorder(result);
       }
       return result;
     }
-    if (OldFp.boundRecorder) {
-      OldFp.boundRecorder = broadcastFunctions(OldFp.boundRecorder, boundRecorder);
-      return OldFp;
-    }
-    injectedFunction.boundRecorder = boundRecorder;
+    injectedFunction.utrIsInjected = true;
     return injectedFunction;
   }
   return maybeFunction;

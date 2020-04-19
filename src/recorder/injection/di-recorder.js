@@ -5,9 +5,9 @@ const RecorderManager = require('../manager');
 // const { checkAndSetHash } = require('./utils/hash-helper');
 const { generateTypesObj } = require('../utils/dynamic-type-inference');
 
-const recordInjectedActivity = (meta, paramIndex, fppkey, params, result) => {
+const recordInjectedActivity = (meta, paramIndex, captureIndex, fppkey, params, result) => {
   const {
-    path, name, captureIndex, paramIds,
+    path, name, paramIds,
   } = meta;
   // Fully qualified name
   const fqn = fppkey ? `${paramIds[paramIndex]}.${fppkey}` : paramIds[paramIndex];
@@ -36,7 +36,18 @@ const recordToCls = (paramIndex, fppkey, params, result) => {
   session.set('injections', injections);
 };
 
+const recordAllToRecorderState = (captureIndex) => {
+  const session = getNamespace('default');
+  const injections = session.get('injections') || [];
+  const meta = session.get('meta');
+
+  injections.forEach(([paramIndex, fppkey, params, result]) => {
+    recordInjectedActivity(meta, paramIndex, captureIndex, fppkey, params, result);
+  });
+};
+
 module.exports = {
   recordInjectedActivity,
   recordToCls,
+  recordAllToRecorderState,
 };

@@ -68,6 +68,7 @@ describe('driver', () => {
         setTimeout(() => resolve({
           'SELECT * FROM posts WHERE id=?': { title: 'content' },
           'SELECT region_id FROM regions where post_id=?': 42,
+          'SELECT COUNT(*) FROM active_users;': 350,
         }[q]), 1);
       });
 
@@ -89,6 +90,7 @@ describe('driver', () => {
         setTimeout(() => resolve(350));
       });
       await di.getPost(dbClient, 1, redisCache);
+      await Promise.all([...Array(2)].map(() => di.getActiveUserCount(dbClient)));
       const outputFileName = getSnapshotFileName('05_dependency_injection');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

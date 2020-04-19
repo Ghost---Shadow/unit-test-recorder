@@ -1,4 +1,5 @@
 jest.mock('../utils/object-traverser');
+const cls = require('cls-hooked');
 const traverser = require('../utils/object-traverser');
 
 const { mockRecorderWrapper } = require('../mock');
@@ -66,21 +67,33 @@ describe('Robustness tests', () => {
           isAsync: false,
           isObject: false,
         };
-        it('should not crash injectDependencyInjections', () => {
+        it('should not crash injectDependencyInjections', (done) => {
           const params = [{ a: () => 1 }];
-          injectDependencyInjections(params, meta);
+          const session = cls.getNamespace('default');
+          session.run(() => {
+            session.set('meta', meta);
+            injectDependencyInjections(params);
+            done();
+          });
         });
-        it('should not crash injectFunctionDynamically', () => {
-          const maybeFunction = () => {};
-          const boundRecorder = () => {};
-          injectFunctionDynamically(maybeFunction, meta, boundRecorder);
+        it('should not crash injectFunctionDynamically', (done) => {
+          const session = cls.getNamespace('default');
+          session.run(() => {
+            session.set('meta', meta);
+            const maybeFunction = () => {};
+            const paramIndex = 0;
+            const fppkey = null;
+            injectFunctionDynamically(maybeFunction, paramIndex, fppkey);
+            done();
+          });
         });
         it('should not crash recordInjectedActivity', () => {
           const paramIndex = 0;
           const fppkey = 'a.b.c';
           const params = [{ a: 1 }, 2];
           const result = { b: 1 };
-          recordInjectedActivity(meta, paramIndex, fppkey, params, result);
+          const captureIndex = 0;
+          recordInjectedActivity(meta, paramIndex, captureIndex, fppkey, params, result);
         });
         it('should not crash markForConstructorInjection', () => {
           markForConstructorInjection(meta);

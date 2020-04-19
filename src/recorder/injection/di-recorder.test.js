@@ -7,7 +7,11 @@ jest.mock('../utils/dynamic-type-inference', () => ({
   generateTypesObj: () => ({ params: ['Number', 'Number'], result: 'Number' }),
 }));
 const RecorderManager = require('../manager');
-const { recordToCls, recordInjectedActivity } = require('./di-recorder');
+const {
+  recordToCls,
+  recordInjectedActivity,
+  recordAllToRecorderState,
+} = require('./di-recorder');
 
 describe('di-recorder', () => {
   describe('recordToCls', () => {
@@ -30,13 +34,14 @@ describe('di-recorder', () => {
     });
     it('should call recordmanager correctly for objectlikes', () => {
       const meta = {
-        path: 'path', name: 'name', captureIndex: 0, paramIds: ['a', 'b'],
+        path: 'path', name: 'name', paramIds: ['a', 'b'],
       };
       const paramIndex = 0;
       const fppkey = 'foo.bar';
       const params = [1, 2];
       const result = 3;
-      recordInjectedActivity(meta, paramIndex, fppkey, params, result);
+      const captureIndex = 0;
+      recordInjectedActivity(meta, paramIndex, captureIndex, fppkey, params, result);
       const addr = ['recorderState', 'path', 'exportedFunctions', 'name', 'captures', 0, 'injections', 'a.foo.bar', 'captures', 0];
       const types = { params: ['Number', 'Number'], result: 'Number' };
       expect(RecorderManager.recordTrio.mock.calls).toEqual([
@@ -45,18 +50,46 @@ describe('di-recorder', () => {
     });
     it('should call recordmanager correctly for functionlikes', () => {
       const meta = {
-        path: 'path', name: 'name', captureIndex: 0, paramIds: ['a', 'b'],
+        path: 'path', name: 'name', paramIds: ['a', 'b'],
       };
       const paramIndex = 0;
       const fppkey = null;
       const params = [1, 2];
       const result = 3;
-      recordInjectedActivity(meta, paramIndex, fppkey, params, result);
+      const captureIndex = 0;
+      recordInjectedActivity(meta, paramIndex, captureIndex, fppkey, params, result);
       const addr = ['recorderState', 'path', 'exportedFunctions', 'name', 'captures', 0, 'injections', 'a', 'captures', 0];
       const types = { params: ['Number', 'Number'], result: 'Number' };
       expect(RecorderManager.recordTrio.mock.calls).toEqual([
         [addr, params, result, types],
       ]);
+    });
+  });
+  describe('recordAllToRecorderState', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+    it('should dump everything from cls to state', () => {
+      const session = createNamespace('default');
+      session.run(() => {
+        const meta = {
+          path: 'path', name: 'name', captureIndex: 0, paramIds: ['a', 'b'],
+        };
+        const injections = [
+          [0, null, [1, 2], 3],
+          [0, null, [2, 3], 5],
+        ];
+        const captureIndex = 0;
+        session.set('meta', meta);
+        session.set('injections', injections);
+        recordAllToRecorderState(captureIndex);
+        const addr = ['recorderState', 'path', 'exportedFunctions', 'name', 'captures', 0, 'injections', 'a', 'captures', 0];
+        const types = { params: ['Number', 'Number'], result: 'Number' };
+        expect(RecorderManager.recordTrio.mock.calls).toEqual([
+          [addr, [1, 2], 3, types],
+          [addr, [2, 3], 5, types],
+        ]);
+      });
     });
   });
 });

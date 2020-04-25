@@ -9,7 +9,7 @@ jest.mock('./di-recorder', () => ({
 }));
 jest.mock('cls-hooked', () => ({
   getNamespace: () => ({
-    get: () => ({}),
+    get: () => ([{}]),
   }),
 }));
 const RecorderManager = require('../manager');

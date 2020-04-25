@@ -30,7 +30,7 @@ describe('mock-capture', () => {
         params: ['Number', 'Number'],
         result: 'Number',
       };
-      const get = jest.fn().mockReturnValue(meta);
+      const get = jest.fn().mockReturnValue([meta]);
       cls.getNamespace.mockImplementation(() => ({ get }));
       captureMockActivity(mockMeta, params, result);
       const addr = ['recorderState', 'dir1/file1.js', 'exportedFunctions', 'fun1', 'captures', 0, 'mocks', 'fs', 'readFileSync', 'captures', 0];

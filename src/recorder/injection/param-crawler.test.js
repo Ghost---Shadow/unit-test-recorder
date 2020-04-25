@@ -24,7 +24,7 @@ describe('param-crawler', () => {
             name: 'fun1',
             paramIds: ['a', 'b'],
           };
-          session.set('meta', meta);
+          session.set('stack', [meta]);
           injectDependencyInjections(params);
           params[paramIndex](1, 2);
           params[paramIndex](1, 2);
@@ -48,7 +48,7 @@ describe('param-crawler', () => {
             name: 'fun1',
             paramIds: ['a', 'b'],
           };
-          session.set('meta', meta);
+          session.set('stack', [meta]);
           injectDependencyInjections(params);
           injectDependencyInjections(params);
           params[paramIndex](1, 2);
@@ -78,7 +78,7 @@ describe('param-crawler', () => {
             name: 'fun1',
             paramIds: ['a', 'b'],
           };
-          session.set('meta', meta);
+          session.set('stack', [meta]);
           injectDependencyInjections(params);
           params[paramIndex].file1JsFn(1, 2);
           params[paramIndex].file1JsFn(1, 2);
@@ -103,7 +103,7 @@ describe('param-crawler', () => {
             name: 'fun1',
             paramIds: ['a', 'b'],
           };
-          session.set('meta', meta);
+          session.set('stack', [meta]);
           injectDependencyInjections(params);
           injectDependencyInjections(params);
           params[paramIndex].file1JsFn(1, 2);

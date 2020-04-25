@@ -80,7 +80,7 @@ describe('di-recorder', () => {
           [0, null, [2, 3], 5],
         ];
         const captureIndex = 0;
-        session.set('meta', meta);
+        session.set('stack', [meta]);
         session.set('injections', injections);
         recordAllToRecorderState(captureIndex);
         const addr = ['recorderState', 'path', 'exportedFunctions', 'name', 'captures', 0, 'injections', 'a', 'captures', 0];

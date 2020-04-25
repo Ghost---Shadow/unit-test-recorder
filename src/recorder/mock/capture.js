@@ -6,7 +6,8 @@ const { generateTypesObj } = require('../utils/dynamic-type-inference');
 
 const captureMockActivity = (meta, params, result) => {
   const session = getNamespace('default');
-  const { captureIndex, name: functionName } = session.get('meta');
+  const stack = session.get('stack');
+  const { captureIndex, name: functionName } = _.last(stack);
 
   const { path, moduleName, name } = meta;
   const pathToCapture = ['recorderState', path, 'exportedFunctions', functionName, 'captures', captureIndex];

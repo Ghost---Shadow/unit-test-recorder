@@ -20,7 +20,8 @@ const markForConstructorInjection = (meta) => {
 
 const injectFunctionDynamically = (maybeFunction, paramIndex, fppkey) => {
   const session = getNamespace('default');
-  const meta = session.get('meta');
+  const stack = session.get('stack');
+  const meta = _.last(stack);
   if (_.isFunction(maybeFunction)) {
     // Already injected
     if (maybeFunction.utrIsInjected) return maybeFunction;

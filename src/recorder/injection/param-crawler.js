@@ -7,7 +7,8 @@ const { injectFunctionDynamically } = require('./injector');
 
 const injectDependencyInjections = (params) => {
   const session = getNamespace('default');
-  const meta = session.get('meta');
+  const stack = session.get('stack');
+  const meta = _.last(stack);
   const { injectionWhitelist, path: fileName } = meta;
   params.forEach((param, paramIndex) => {
     try {

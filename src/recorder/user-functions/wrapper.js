@@ -18,16 +18,17 @@ const recorderWrapper = (meta, innerFunction, ...params) => {
   // the user should handle it
   const result = innerFunction(...params);
   try {
+    const stack = session.get('stack');
+    const top = stack.length - 1;
+
     if (result && _.isFunction(result.then)) {
       // It might be a promise
-      const newMeta = session.get('meta');
-      newMeta.doesReturnPromise = true;
-      session.set('meta', newMeta);
+      stack[top].doesReturnPromise = true;
+      session.set('stack', stack);
       result.then(res => captureUserFunction(params, res));
     } else {
-      const newMeta = session.get('meta');
-      newMeta.doesReturnPromise = false;
-      session.set('meta', newMeta);
+      stack[top].doesReturnPromise = false;
+      session.set('stack', stack);
       captureUserFunction(params, result);
     }
   } catch (e) {

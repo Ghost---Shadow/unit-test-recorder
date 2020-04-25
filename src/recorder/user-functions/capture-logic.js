@@ -17,7 +17,9 @@ const processFunctionLikeParam = (param) => {
 
 const captureUserFunction = (params, result) => {
   const session = getNamespace('default');
-  const meta = session.get('meta');
+  const stack = session.get('stack');
+  const meta = _.last(stack);
+
   const { path, name, doesReturnPromise } = meta;
   // Record types from this capture
   const types = generateTypesObj({ params, result });

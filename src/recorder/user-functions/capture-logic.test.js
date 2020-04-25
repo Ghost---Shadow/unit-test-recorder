@@ -42,7 +42,7 @@ describe('user-function-capture', () => {
         doesReturnPromise,
       };
       cls.getNamespace.mockImplementation(() => ({
-        get: () => meta,
+        get: () => [meta],
       }));
       captureUserFunction(params, result);
       const addrToDoesReturnPromise = ['recorderState', 'dir1/file1.js', 'exportedFunctions', 'fun1', 'meta', 'doesReturnPromise'];
@@ -69,7 +69,7 @@ describe('user-function-capture', () => {
         doesReturnPromise,
       };
       cls.getNamespace.mockImplementation(() => ({
-        get: () => meta,
+        get: () => [meta],
       }));
       captureUserFunction(params, result);
       const addrToDoesReturnPromise = ['recorderState', 'dir1/file1.js', 'exportedFunctions', 'fun1', 'meta', 'doesReturnPromise'];
@@ -96,7 +96,7 @@ describe('user-function-capture', () => {
         doesReturnPromise,
       };
       cls.getNamespace.mockImplementation(() => ({
-        get: () => meta,
+        get: () => [meta],
       }));
       hh.checkAndSetHash.mockReturnValue(true);
       captureUserFunction(params, result);
@@ -119,7 +119,7 @@ describe('user-function-capture', () => {
         doesReturnPromise,
       };
       cls.getNamespace.mockImplementation(() => ({
-        get: () => meta,
+        get: () => [meta],
       }));
       captureUserFunction(params, result);
       const addrToDoesReturnPromise = ['recorderState', 'dir1/file1.js', 'exportedFunctions', 'fun1', 'meta', 'doesReturnPromise'];

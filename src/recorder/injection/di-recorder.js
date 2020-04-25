@@ -39,7 +39,8 @@ const recordToCls = (paramIndex, fppkey, params, result) => {
 const recordAllToRecorderState = (captureIndex) => {
   const session = getNamespace('default');
   const injections = session.get('injections') || [];
-  const meta = session.get('meta');
+  const stack = session.get('stack');
+  const meta = _.last(stack);
 
   injections.forEach(([paramIndex, fppkey, params, result]) => {
     recordInjectedActivity(meta, paramIndex, captureIndex, fppkey, params, result);

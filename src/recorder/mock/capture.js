@@ -1,9 +1,8 @@
 const { getNamespace } = require('cls-hooked');
 const _ = require('lodash');
-const RecorderManager = require('./manager');
+const RecorderManager = require('../manager');
 // const { checkAndSetHash } = require('./utils/hash-helper');
-const { generateTypesObj } = require('./utils/dynamic-type-inference');
-const { shouldRecordStubParams } = require('./utils/misc');
+const { generateTypesObj } = require('../utils/dynamic-type-inference');
 
 const captureMockActivity = (meta, params, result) => {
   const session = getNamespace('default');
@@ -27,23 +26,4 @@ const captureMockActivity = (meta, params, result) => {
   RecorderManager.recordTrio(addr, params, result, types);
 };
 
-const mockRecorderWrapper = (meta, oldFp, ...p) => {
-  const clonedParams = shouldRecordStubParams() ? _.cloneDeep(p) : [];
-  const result = oldFp(...p);
-  try {
-    if (typeof (result.then) === 'function') {
-      result.then((res) => {
-        captureMockActivity(meta, clonedParams, res);
-      });
-    } else {
-      captureMockActivity(meta, clonedParams, result);
-    }
-  } catch (e) {
-    console.error(e);
-  }
-  return result;
-};
-
-module.exports = {
-  mockRecorderWrapper,
-};
+module.exports = { captureMockActivity };

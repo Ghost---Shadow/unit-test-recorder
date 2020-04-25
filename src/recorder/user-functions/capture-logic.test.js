@@ -58,6 +58,7 @@ describe('user-function-capture', () => {
         [addrToCaptureIndex, params, result, types],
       ]);
       expect(dir.recordAllToRecorderState.mock.calls.length).toBe(1);
+      expect(dir.promoteInjections.mock.calls.length).toBe(1);
     });
     it('should record async functions', () => {
       const result = 3;
@@ -85,6 +86,7 @@ describe('user-function-capture', () => {
         [addrToCaptureIndex, params, result, types],
       ]);
       expect(dir.recordAllToRecorderState.mock.calls.length).toBe(1);
+      expect(dir.promoteInjections.mock.calls.length).toBe(1);
     });
     it('should not record if hash matches', () => {
       const result = 3;
@@ -108,6 +110,7 @@ describe('user-function-capture', () => {
       ]);
       expect(RecorderManager.recordTrio.mock.calls).toEqual([]);
       expect(dir.recordAllToRecorderState.mock.calls.length).toBe(0);
+      expect(dir.promoteInjections.mock.calls.length).toBe(1);
     });
     it('should not crash for HOF', () => {
       const result = () => {};
@@ -135,6 +138,7 @@ describe('user-function-capture', () => {
         [addrToCaptureIndex, params, result.toString(), types],
       ]);
       expect(dir.recordAllToRecorderState.mock.calls.length).toBe(1);
+      expect(dir.promoteInjections.mock.calls.length).toBe(1);
     });
   });
 });

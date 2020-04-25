@@ -4,7 +4,10 @@ const _ = require('lodash');
 const RecorderManager = require('../manager');
 const { checkAndSetHash } = require('../utils/hash-helper');
 const { generateTypesObj } = require('../utils/dynamic-type-inference');
-const { recordAllToRecorderState } = require('../injection/di-recorder');
+const {
+  recordAllToRecorderState,
+  promoteInjections,
+} = require('../injection/di-recorder');
 
 const processFunctionLikeParam = (param) => {
   if (_.isFunction(param) && !param.utrIsInjected) {
@@ -44,6 +47,8 @@ const captureUserFunction = (params, result) => {
   if (checkAndSetHash(RecorderManager, basePath, newCapture)) {
     // Capture already exists
     RecorderManager.record(addrToCaptureIndex, null, null);
+    // Copy all dependency injections to parent
+    promoteInjections();
     return;
   }
 
@@ -51,6 +56,9 @@ const captureUserFunction = (params, result) => {
 
   // Record all dependency injections
   recordAllToRecorderState(captureIndex);
+
+  // Copy all dependency injections to parent
+  promoteInjections();
 };
 
 module.exports = { captureUserFunction, processFunctionLikeParam };

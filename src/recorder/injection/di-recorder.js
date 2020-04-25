@@ -31,24 +31,49 @@ const recordInjectedActivity = (meta, paramIndex, captureIndex, fppkey, params, 
 
 const recordToCls = (paramIndex, fppkey, params, result) => {
   const session = getNamespace('default');
-  const injections = session.get('injections') || [];
+  const stack = session.get('stack');
+  const top = stack.length - 1;
+  const injections = stack[top].injections || [];
   injections.push([paramIndex, fppkey, params, result]);
-  session.set('injections', injections);
+  stack[top].injections = injections;
+  session.set('stack', stack);
 };
 
 const recordAllToRecorderState = (captureIndex) => {
   const session = getNamespace('default');
-  const injections = session.get('injections') || [];
   const stack = session.get('stack');
-  const meta = _.last(stack);
+  const top = _.last(stack);
+  const { injections } = top;
+  const meta = _.omit(top, 'injections');
 
   injections.forEach(([paramIndex, fppkey, params, result]) => {
     recordInjectedActivity(meta, paramIndex, captureIndex, fppkey, params, result);
   });
 };
 
+const promoteInjections = () => {
+  // Parent needs all the injections recorded by child
+  const session = getNamespace('default');
+  const stack = session.get('stack');
+
+  const childIndex = stack.length - 1;
+  const parentIndex = stack.length - 2;
+  if (parentIndex < 0) return; // No parent
+  const childInjections = stack[childIndex].injections || [];
+  const parentInjections = stack[parentIndex].injections || [];
+
+  const newInjections = parentInjections.concat(childInjections);
+  stack[parentIndex].injections = newInjections;
+
+  // Child is recorded and no longer required
+  stack.pop();
+
+  session.set('stack', stack);
+};
+
 module.exports = {
   recordInjectedActivity,
   recordToCls,
   recordAllToRecorderState,
+  promoteInjections,
 };

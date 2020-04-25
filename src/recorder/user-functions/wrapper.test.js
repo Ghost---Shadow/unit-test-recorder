@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const { getNamespace } = require('cls-hooked');
 const RecorderManager = require('../manager');
 
@@ -27,8 +29,9 @@ describe('user-function-wrapper', () => {
         const result = recorderWrapper(meta, innerFunction, ...params);
         expect(result).toBe(3);
         expect(innerFunction.mock.calls.length).toEqual(1);
-        const injections = session.get('injections');
-        expect(injections).toEqual([
+        const stack = session.get('stack');
+        expect(stack.length).toBe(1);
+        expect(stack[0].injections).toEqual([
           [0, null, [], 3],
           [0, null, [], 5],
         ]);
@@ -115,8 +118,9 @@ describe('user-function-wrapper', () => {
         const result = await recorderWrapper(meta, innerFunction, ...params);
         expect(result).toBe(3);
         expect(innerFunction.mock.calls.length).toEqual(1);
-        const injections = session.get('injections');
-        expect(injections).toEqual([
+        const stack = session.get('stack');
+        expect(stack.length).toBe(1);
+        expect(stack[0].injections).toEqual([
           [0, null, [], 3],
           [0, null, [], 5],
         ]);
@@ -184,6 +188,112 @@ describe('user-function-wrapper', () => {
           }
         `);
         done();
+      });
+    });
+    it('should broadcast injected activity to calling function in same file', () => {
+      const session = getNamespace('default');
+      session.run(() => {
+        const childFunctionMeta = {
+          path: 'dir1/file1.js',
+          name: 'child',
+          paramIds: ['fn'],
+        };
+        const childFn = jest.fn().mockImplementation(fn => fn(2));
+        const parentMeta = {
+          path: 'dir1/file1.js',
+          name: 'parent',
+          paramIds: ['fn'],
+        };
+        const boundChild = (...params) => recorderWrapper(childFunctionMeta, childFn, ...params);
+        const parentFn = jest.fn().mockImplementation((fn) => {
+          const a = fn(1);
+          const b = boundChild(fn);
+          const c = fn(3);
+          return a + b + c;
+        });
+        const injFn = jest.fn().mockImplementation(a => a);
+        const params = [injFn];
+        const result = recorderWrapper(parentMeta, parentFn, ...params);
+        expect(result).toBe(6);
+        expect(injFn.mock.calls.length).toEqual(3);
+        const stack = session.get('stack');
+        expect(stack.length).toBe(1);
+        const parentInjections = stack[0].injections;
+        expect(parentInjections).toEqual([
+          [0, null, [], 1],
+          [0, null, [], 2], // child
+          [0, null, [], 3],
+        ]);
+        // const childInjections = stack[1].injections;
+        // expect(childInjections).toEqual([
+        //   [0, null, [], 2],
+        // ]);
+        const parentAddress = [
+          'dir1/file1.js',
+          'exportedFunctions',
+          'parent',
+          'captures',
+          0,
+          'injections',
+        ];
+        expect(_.get(RecorderManager.recorderState, parentAddress))
+          .toMatchInlineSnapshot(`
+          Object {
+            "fn": Object {
+              "captures": Array [
+                Object {
+                  "params": Array [],
+                  "result": 1,
+                  "types": Object {
+                    "params": Array [],
+                    "result": "Number",
+                  },
+                },
+                Object {
+                  "params": Array [],
+                  "result": 2,
+                  "types": Object {
+                    "params": Array [],
+                    "result": "Number",
+                  },
+                },
+                Object {
+                  "params": Array [],
+                  "result": 3,
+                  "types": Object {
+                    "params": Array [],
+                    "result": "Number",
+                  },
+                },
+              ],
+            },
+          }
+        `);
+        const childAddress = [
+          'dir1/file1.js',
+          'exportedFunctions',
+          'child',
+          'captures',
+          0,
+          'injections',
+        ];
+        expect(_.get(RecorderManager.recorderState, childAddress))
+          .toMatchInlineSnapshot(`
+          Object {
+            "fn": Object {
+              "captures": Array [
+                Object {
+                  "params": Array [],
+                  "result": 2,
+                  "types": Object {
+                    "params": Array [],
+                    "result": "Number",
+                  },
+                },
+              ],
+            },
+          }
+        `);
       });
     });
   });

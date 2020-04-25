@@ -11,6 +11,7 @@ const {
   recordToCls,
   recordInjectedActivity,
   recordAllToRecorderState,
+  promoteInjections,
 } = require('./di-recorder');
 
 describe('di-recorder', () => {
@@ -18,9 +19,11 @@ describe('di-recorder', () => {
     it('should add injections to a flat list', () => {
       const session = createNamespace('default');
       session.run(() => {
+        session.set('stack', [{}]);
         recordToCls(1, 2, 3, 4);
         recordToCls(5, 6, 7, 8);
-        const injections = session.get('injections');
+        const stack = session.get('stack');
+        const { injections } = stack[0];
         expect(injections).toEqual([
           [1, 2, 3, 4],
           [5, 6, 7, 8],
@@ -72,16 +75,15 @@ describe('di-recorder', () => {
     it('should dump everything from cls to state', () => {
       const session = createNamespace('default');
       session.run(() => {
-        const meta = {
-          path: 'path', name: 'name', captureIndex: 0, paramIds: ['a', 'b'],
-        };
         const injections = [
           [0, null, [1, 2], 3],
           [0, null, [2, 3], 5],
         ];
+        const meta = {
+          path: 'path', name: 'name', captureIndex: 0, paramIds: ['a', 'b'], injections,
+        };
         const captureIndex = 0;
         session.set('stack', [meta]);
-        session.set('injections', injections);
         recordAllToRecorderState(captureIndex);
         const addr = ['recorderState', 'path', 'exportedFunctions', 'name', 'captures', 0, 'injections', 'a', 'captures', 0];
         const types = { params: ['Number', 'Number'], result: 'Number' };
@@ -89,6 +91,62 @@ describe('di-recorder', () => {
           [addr, [1, 2], 3, types],
           [addr, [2, 3], 5, types],
         ]);
+      });
+    });
+  });
+  describe('promoteInjections', () => {
+    it('should add childs injections to parent', () => {
+      const session = createNamespace('default');
+      session.run(() => {
+        const parentInjections = [
+          [0, null, [], 1],
+          [0, null, [], 2],
+        ];
+        const parentMeta = {
+          path: 'path',
+          name: 'parent',
+          captureIndex: 0,
+          paramIds: ['a', 'b'],
+          injections: parentInjections,
+        };
+        const childInjections = [
+          [0, null, [], 3],
+          [0, null, [], 4],
+        ];
+        const childMeta = {
+          path: 'path',
+          name: 'child',
+          captureIndex: 0,
+          paramIds: ['a', 'b'],
+          injections: childInjections,
+        };
+        session.set('stack', [parentMeta, childMeta]);
+        promoteInjections();
+        const stack = session.get('stack');
+        const { injections } = stack[0];
+        expect(injections).toEqual([...parentInjections, ...childInjections]);
+        expect(stack.length).toEqual(1);
+      });
+    });
+    it('should do nothing if no parent', () => {
+      const session = createNamespace('default');
+      session.run(() => {
+        const injections = [
+          [0, null, [], 1],
+          [0, null, [], 2],
+        ];
+        const meta = {
+          path: 'path',
+          name: 'parent',
+          captureIndex: 0,
+          paramIds: ['a', 'b'],
+          injections,
+        };
+        session.set('stack', [meta]);
+        promoteInjections();
+        const stack = session.get('stack');
+        expect(stack[0].injections).toEqual(injections);
+        expect(stack.length).toEqual(1);
       });
     });
   });

@@ -71,7 +71,7 @@ describe('Robustness tests', () => {
           const params = [{ a: () => 1 }];
           const session = cls.getNamespace('default');
           session.run(() => {
-            session.set('meta', meta);
+            session.set('stack', [meta]);
             injectDependencyInjections(params);
             done();
           });
@@ -79,7 +79,7 @@ describe('Robustness tests', () => {
         it('should not crash injectFunctionDynamically', (done) => {
           const session = cls.getNamespace('default');
           session.run(() => {
-            session.set('meta', meta);
+            session.set('stack', [meta]);
             const maybeFunction = () => {};
             const paramIndex = 0;
             const fppkey = null;

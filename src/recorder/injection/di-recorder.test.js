@@ -93,6 +93,18 @@ describe('di-recorder', () => {
         ]);
       });
     });
+    it('should do nothing if there are no injections', () => {
+      const session = createNamespace('default');
+      session.run(() => {
+        const meta = {
+          path: 'path', name: 'name', captureIndex: 0, paramIds: ['a', 'b'],
+        };
+        const captureIndex = 0;
+        session.set('stack', [meta]);
+        recordAllToRecorderState(captureIndex);
+        expect(RecorderManager.recordTrio.mock.calls.length).toEqual(0);
+      });
+    });
   });
   describe('promoteInjections', () => {
     it('should add childs injections to parent', () => {

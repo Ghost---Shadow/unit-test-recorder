@@ -43,7 +43,7 @@ const recordAllToRecorderState = (captureIndex) => {
   const session = getNamespace('default');
   const stack = session.get('stack');
   const top = _.last(stack);
-  const { injections } = top;
+  const injections = top.injections || [];
   const meta = _.omit(top, 'injections');
 
   injections.forEach(([paramIndex, fppkey, params, result]) => {

@@ -90,7 +90,7 @@ describe('driver', () => {
         setTimeout(() => resolve(350));
       });
       await di.getPost(dbClient, 1, redisCache);
-      await Promise.all([...Array(2)].map(() => di.getActiveUserCount(dbClient)));
+      await Promise.all([1, 2].map(val => di.getActiveUserCount(dbClient, val)));
       const outputFileName = getSnapshotFileName('05_dependency_injection');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

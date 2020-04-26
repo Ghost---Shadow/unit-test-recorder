@@ -20,4 +20,9 @@ const getPost = async (dbClient, postId, redisCache) => {
   };
 };
 
-module.exports = { getPost, getPostComments };
+const getActiveUserCount = async (dbClient, botCount) => {
+  const totalUsers = await dbClient.query('SELECT COUNT(*) FROM active_users;');
+  return totalUsers - botCount;
+};
+
+module.exports = { getPost, getPostComments, getActiveUserCount };

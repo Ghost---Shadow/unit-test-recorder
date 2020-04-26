@@ -71,7 +71,29 @@ const getPost = async (...p) =>
     ...p
   );
 
-module.exports = { getPost, getPostComments };
+const getActiveUserCount = async (...p) =>
+  recorderWrapper(
+    {
+      path:
+        'test_integration/flows/05_dependency_injection/05_dependency_injection.js',
+      name: 'getActiveUserCount',
+      paramIds: ['dbClient', 'botCount'],
+      injectionWhitelist: ['query', 'pooledQuery', 'commitSync'],
+      isDefault: false,
+      isEcmaDefault: false,
+      isAsync: true,
+      isObject: false
+    },
+    async (dbClient, botCount) => {
+      const totalUsers = await dbClient.testIntegrationFlows05DependencyInjection05DependencyInjectionJsQuery(
+        'SELECT COUNT(*) FROM active_users;'
+      );
+      return totalUsers - botCount;
+    },
+    ...p
+  );
+
+module.exports = { getPost, getPostComments, getActiveUserCount };
 recordFileMeta({
   path:
     'test_integration/flows/05_dependency_injection/05_dependency_injection.js',

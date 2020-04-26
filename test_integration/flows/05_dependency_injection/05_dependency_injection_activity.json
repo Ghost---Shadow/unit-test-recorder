@@ -25,8 +25,46 @@
           "isObject": false,
           "doesReturnPromise": true
         },
+        "hashTable": {
+          "N7C73kHrh/88WYWQXqcgFw==": true
+        },
         "captures": [
           {
+            "params": [
+              {},
+              1,
+              null
+            ],
+            "result": {
+              "content": {
+                "title": "content"
+              },
+              "comments": [
+                {
+                  "comment": "comment 1"
+                },
+                {
+                  "comment": "comment 2"
+                }
+              ],
+              "votes": 350,
+              "moderator": [
+                {
+                  "comment": "comment 1"
+                },
+                {
+                  "comment": "comment 2"
+                }
+              ]
+            },
+            "types": {
+              "params": [
+                "Object",
+                "Number",
+                "Function"
+              ],
+              "result": "Object"
+            },
             "injections": {
               "dbClient.__proto__.query": {
                 "captures": [
@@ -125,47 +163,9 @@
                   }
                 ]
               }
-            },
-            "params": [
-              {},
-              1,
-              "() => new Promise(resolve => {\n        setTimeout(() => resolve(350));\n      })"
-            ],
-            "result": {
-              "content": {
-                "title": "content"
-              },
-              "comments": [
-                {
-                  "comment": "comment 1"
-                },
-                {
-                  "comment": "comment 2"
-                }
-              ],
-              "votes": 350,
-              "moderator": [
-                {
-                  "comment": "comment 1"
-                },
-                {
-                  "comment": "comment 2"
-                }
-              ]
-            },
-            "types": {
-              "params": [
-                "Object",
-                "Number",
-                "Function"
-              ],
-              "result": "Object"
             }
           }
-        ],
-        "hashTable": {
-          "tGuRwxmWsBEGg4aC0BGKXQ==": true
-        }
+        ]
       },
       "getPostComments": {
         "meta": {
@@ -187,19 +187,35 @@
           "isObject": false,
           "doesReturnPromise": true
         },
+        "hashTable": {
+          "3iQwhSesvbxm+NdNogyCGg==": true
+        },
         "captures": [
           {
+            "params": [
+              {},
+              1,
+              null
+            ],
+            "result": [
+              {
+                "comment": "comment 1"
+              },
+              {
+                "comment": "comment 2"
+              }
+            ],
+            "types": {
+              "params": [
+                "Object",
+                "Number",
+                "Function"
+              ],
+              "result": "Array"
+            },
             "injections": {
               "redisCache": {
                 "captures": [
-                  {
-                    "params": [],
-                    "result": 350,
-                    "types": {
-                      "params": [],
-                      "result": "Number"
-                    }
-                  },
                   {
                     "params": [],
                     "result": 350,
@@ -238,62 +254,94 @@
                       "params": [],
                       "result": "Array"
                     }
-                  },
-                  {
-                    "params": [],
-                    "result": [
-                      {
-                        "comment": "comment 1"
-                      },
-                      {
-                        "comment": "comment 2"
-                      }
-                    ],
-                    "types": {
-                      "params": [],
-                      "result": "Array"
-                    }
-                  }
-                ]
-              },
-              "client.commitSync": {
-                "captures": [
-                  {
-                    "params": [],
-                    "types": {
-                      "params": [],
-                      "result": "Undefined"
-                    }
                   }
                 ]
               }
-            },
+            }
+          }
+        ]
+      },
+      "getActiveUserCount": {
+        "meta": {
+          "path": "test_integration/flows/05_dependency_injection/05_dependency_injection.js",
+          "name": "getActiveUserCount",
+          "paramIds": [
+            "dbClient",
+            "botCount"
+          ],
+          "injectionWhitelist": [
+            "query",
+            "pooledQuery",
+            "commitSync"
+          ],
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isAsync": true,
+          "isObject": false,
+          "doesReturnPromise": true
+        },
+        "hashTable": {
+          "4QW+lA8G5nLHl9n80OaTJQ==": true,
+          "MRBmcToHOrenTA/XuvMRzQ==": true
+        },
+        "captures": [
+          {
             "params": [
               {},
-              1,
-              {}
+              1
             ],
-            "result": [
-              {
-                "comment": "comment 1"
-              },
-              {
-                "comment": "comment 2"
-              }
-            ],
+            "result": 349,
             "types": {
               "params": [
                 "Object",
-                "Number",
-                "Function"
+                "Number"
               ],
-              "result": "Array"
+              "result": "Number"
+            },
+            "injections": {
+              "dbClient.__proto__.query": {
+                "captures": [
+                  {
+                    "params": [],
+                    "result": 350,
+                    "types": {
+                      "params": [],
+                      "result": "Number"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "params": [
+              {},
+              2
+            ],
+            "result": 348,
+            "types": {
+              "params": [
+                "Object",
+                "Number"
+              ],
+              "result": "Number"
+            },
+            "injections": {
+              "dbClient.__proto__.query": {
+                "captures": [
+                  {
+                    "params": [],
+                    "result": 350,
+                    "types": {
+                      "params": [],
+                      "result": "Number"
+                    }
+                  }
+                ]
+              }
             }
           }
-        ],
-        "hashTable": {
-          "3iQwhSesvbxm+NdNogyCGg==": true
-        }
+        ]
       }
     }
   }

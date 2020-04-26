@@ -1,5 +1,6 @@
 const { getPost } = require('./05_dependency_injection');
 const { getPostComments } = require('./05_dependency_injection');
+const { getActiveUserCount } = require('./05_dependency_injection');
 
 describe('05_dependency_injection', () => {
   describe('getPost', () => {
@@ -8,8 +9,7 @@ describe('05_dependency_injection', () => {
         pool: {}
       };
       let postId = 1;
-      let redisCache =
-        '() => new Promise(resolve => {\n        setTimeout(() => resolve(350));\n      })';
+      let redisCache = null;
       let result = {
         content: {
           title: 'content'
@@ -74,7 +74,7 @@ describe('05_dependency_injection', () => {
         pool: {}
       };
       let postId = 1;
-      let redisCache = {};
+      let redisCache = null;
       let result = [
         {
           comment: 'comment 1'
@@ -85,7 +85,6 @@ describe('05_dependency_injection', () => {
       ];
 
       redisCache = jest.fn();
-      redisCache.mockReturnValueOnce(350);
       redisCache.mockReturnValueOnce(350);
       client.query = jest.fn();
       client.query.mockReturnValueOnce(42);
@@ -98,17 +97,31 @@ describe('05_dependency_injection', () => {
           comment: 'comment 2'
         }
       ]);
-      client.pool.pooledQuery.mockReturnValueOnce([
-        {
-          comment: 'comment 1'
-        },
-        {
-          comment: 'comment 2'
-        }
-      ]);
-      client.commitSync = jest.fn();
-      client.commitSync.mockReturnValueOnce(undefined);
       const actual = await getPostComments(client, postId, redisCache);
+      expect(actual).toEqual(result);
+    });
+  });
+
+  describe('getActiveUserCount', () => {
+    it('should work for case 1', async () => {
+      let dbClient = {};
+      let botCount = 1;
+      let result = 349;
+
+      dbClient.query = jest.fn();
+      dbClient.query.mockReturnValueOnce(350);
+      const actual = await getActiveUserCount(dbClient, botCount);
+      expect(actual).toEqual(result);
+    });
+
+    it('should work for case 2', async () => {
+      let dbClient = {};
+      let botCount = 2;
+      let result = 348;
+
+      dbClient.query = jest.fn();
+      dbClient.query.mockReturnValueOnce(350);
+      const actual = await getActiveUserCount(dbClient, botCount);
       expect(actual).toEqual(result);
     });
   });

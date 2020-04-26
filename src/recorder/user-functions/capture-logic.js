@@ -10,6 +10,9 @@ const {
 } = require('../injection/di-recorder');
 
 const processFunctionLikeParam = (param) => {
+  // Ignore falsey types
+  if (!param) return param;
+
   if (_.isFunction(param) && !param.utrIsInjected) {
     return param.toString();
   }

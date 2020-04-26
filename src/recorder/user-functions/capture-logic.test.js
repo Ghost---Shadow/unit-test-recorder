@@ -27,6 +27,11 @@ describe('user-function-capture', () => {
       const result = processFunctionLikeParam(param);
       expect(result).toEqual(null);
     });
+    it('should return same if param is falsy', () => {
+      const param = null;
+      const result = processFunctionLikeParam(param);
+      expect(result).toEqual(param);
+    });
   });
   describe('captureUserFunction', () => {
     beforeEach(() => {

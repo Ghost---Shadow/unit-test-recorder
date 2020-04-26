@@ -33,7 +33,8 @@ describe('05_dependency_injection', () => {
         pool: {}
       };
       let postId = 1;
-      let redisCache = null;
+      let redisCache =
+        '() => new Promise(resolve => {\n        setTimeout(() => resolve(350));\n      })';
       let result = {
         comments: [
           {

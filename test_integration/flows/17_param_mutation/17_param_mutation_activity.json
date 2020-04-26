@@ -1,24 +1,7 @@
 {
   "test_integration/flows/17_param_mutation/17_param_mutation.js": {
-    "meta": {
-      "path": "test_integration/flows/17_param_mutation/17_param_mutation.js",
-      "mocks": []
-    },
     "exportedFunctions": {
       "fun": {
-        "meta": {
-          "path": "test_integration/flows/17_param_mutation/17_param_mutation.js",
-          "name": "fun",
-          "paramIds": [
-            "a"
-          ],
-          "injectionWhitelist": [],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
         "captures": [
           {
             "params": [
@@ -39,8 +22,27 @@
         ],
         "hashTable": {
           "yqoqNoYz7HZJNW28/qZN8Q==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "fun",
+          "paramIds": [
+            "a"
+          ],
+          "path": "test_integration/flows/17_param_mutation/17_param_mutation.js"
         }
       }
+    },
+    "meta": {
+      "mocks": [
+      ],
+      "path": "test_integration/flows/17_param_mutation/17_param_mutation.js"
     }
   }
 }

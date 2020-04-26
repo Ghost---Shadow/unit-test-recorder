@@ -30,7 +30,7 @@ describe('04_unserializeable', () => {
   describe('returnAFunction', () => {
     it('should work for case 1', () => {
       let a = 1;
-      let f2 = null;
+      let f2 = 'a => a * 2';
       let result = 'b => a + f2(b)';
 
       const actual = returnAFunction(a, f2);

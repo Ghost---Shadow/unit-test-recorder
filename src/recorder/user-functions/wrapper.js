@@ -25,11 +25,11 @@ const recorderWrapper = (meta, innerFunction, ...params) => {
       // It might be a promise
       stack[top].doesReturnPromise = true;
       session.set('stack', stack);
-      result.then(res => captureUserFunction(params, res));
+      result.then(res => captureUserFunction(originalParams, res));
     } else {
       stack[top].doesReturnPromise = false;
       session.set('stack', stack);
-      captureUserFunction(params, result);
+      captureUserFunction(originalParams, result);
     }
   } catch (e) {
     console.error(e);

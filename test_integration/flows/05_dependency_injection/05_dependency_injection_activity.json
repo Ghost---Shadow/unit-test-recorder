@@ -211,7 +211,7 @@
               {
               },
               1,
-              null
+              "() => new Promise(resolve => {\n        setTimeout(() => resolve(350));\n      })"
             ],
             "result": {
               "comments": [
@@ -246,7 +246,7 @@
           }
         ],
         "hashTable": {
-          "N7C73kHrh/88WYWQXqcgFw==": true
+          "tGuRwxmWsBEGg4aC0BGKXQ==": true
         },
         "meta": {
           "doesReturnPromise": true,

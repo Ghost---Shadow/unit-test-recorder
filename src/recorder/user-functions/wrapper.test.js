@@ -68,7 +68,9 @@ describe('user-function-wrapper', () => {
                         },
                       },
                       "params": Array [
-                        null,
+                        "function () {
+                  return fn.apply(this, arguments);
+                }",
                         1,
                         2,
                       ],
@@ -84,7 +86,7 @@ describe('user-function-wrapper', () => {
                     },
                   ],
                   "hashTable": Object {
-                    "ZsBJ9pvhQdvzyiLigrJ+dg==": true,
+                    "sp71Isul6+y7NgjD7SvYQg==": true,
                   },
                   "meta": Object {
                     "doesReturnPromise": false,
@@ -157,7 +159,9 @@ describe('user-function-wrapper', () => {
                         },
                       },
                       "params": Array [
-                        null,
+                        "function () {
+                  return fn.apply(this, arguments);
+                }",
                         1,
                         2,
                       ],
@@ -173,7 +177,7 @@ describe('user-function-wrapper', () => {
                     },
                   ],
                   "hashTable": Object {
-                    "ZsBJ9pvhQdvzyiLigrJ+dg==": true,
+                    "sp71Isul6+y7NgjD7SvYQg==": true,
                   },
                   "meta": Object {
                     "doesReturnPromise": true,

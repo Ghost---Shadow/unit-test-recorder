@@ -77,7 +77,7 @@
           {
             "params": [
               1,
-              null
+              "a => a * 2"
             ],
             "result": "b => a + f2(b)",
             "types": {
@@ -90,7 +90,7 @@
           }
         ],
         "hashTable": {
-          "aoWYcZXWQ6WNyuLib4S6jg==": true
+          "bqJmtLQs1GCj4wHqE1hD0Q==": true
         },
         "meta": {
           "doesReturnPromise": false,

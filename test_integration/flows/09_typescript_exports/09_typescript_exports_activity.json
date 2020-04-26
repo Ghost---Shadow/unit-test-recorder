@@ -1,24 +1,7 @@
 {
   "test_integration/flows/09_typescript_exports/09_typescript_exports.js": {
-    "meta": {
-      "path": "test_integration/flows/09_typescript_exports/09_typescript_exports.js",
-      "mocks": []
-    },
     "exportedFunctions": {
       "exportTest1": {
-        "meta": {
-          "path": "test_integration/flows/09_typescript_exports/09_typescript_exports.js",
-          "name": "exportTest1",
-          "paramIds": [
-            "a"
-          ],
-          "injectionWhitelist": [],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
         "captures": [
           {
             "params": [
@@ -35,22 +18,23 @@
         ],
         "hashTable": {
           "mMNVEI0Tl4BHRDqI/gNW9Q==": true
-        }
-      },
-      "exportTest2": {
+        },
         "meta": {
-          "path": "test_integration/flows/09_typescript_exports/09_typescript_exports.js",
-          "name": "exportTest2",
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "exportTest1",
           "paramIds": [
             "a"
           ],
-          "injectionWhitelist": [],
-          "isDefault": false,
-          "isEcmaDefault": true,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
+          "path": "test_integration/flows/09_typescript_exports/09_typescript_exports.js"
+        }
+      },
+      "exportTest2": {
         "captures": [
           {
             "params": [
@@ -67,22 +51,23 @@
         ],
         "hashTable": {
           "r3NLLGCRJIfpuHh9AD1+Zw==": true
-        }
-      },
-      "exportTest3": {
+        },
         "meta": {
-          "path": "test_integration/flows/09_typescript_exports/09_typescript_exports.js",
-          "name": "exportTest3",
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": true,
+          "isObject": false,
+          "name": "exportTest2",
           "paramIds": [
             "a"
           ],
-          "injectionWhitelist": [],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
+          "path": "test_integration/flows/09_typescript_exports/09_typescript_exports.js"
+        }
+      },
+      "exportTest3": {
         "captures": [
           {
             "params": [
@@ -99,8 +84,27 @@
         ],
         "hashTable": {
           "5ipSWSe7lvvpE+cV4lmqHw==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "exportTest3",
+          "paramIds": [
+            "a"
+          ],
+          "path": "test_integration/flows/09_typescript_exports/09_typescript_exports.js"
         }
       }
+    },
+    "meta": {
+      "mocks": [
+      ],
+      "path": "test_integration/flows/09_typescript_exports/09_typescript_exports.js"
     }
   }
 }

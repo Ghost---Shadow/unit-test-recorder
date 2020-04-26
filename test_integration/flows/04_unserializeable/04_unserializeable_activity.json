@@ -1,24 +1,7 @@
 {
   "test_integration/flows/04_unserializeable/04_unserializeable.js": {
-    "meta": {
-      "path": "test_integration/flows/04_unserializeable/04_unserializeable.js",
-      "mocks": []
-    },
     "exportedFunctions": {
       "circularReference": {
-        "meta": {
-          "path": "test_integration/flows/04_unserializeable/04_unserializeable.js",
-          "name": "circularReference",
-          "paramIds": [
-            "a"
-          ],
-          "injectionWhitelist": [],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
         "captures": [
           {
             "params": [
@@ -37,58 +20,23 @@
         ],
         "hashTable": {
           "IoRSV6b1dOnb/JyUMM4p8Q==": true
-        }
-      },
-      "returnAFunction": {
+        },
         "meta": {
-          "path": "test_integration/flows/04_unserializeable/04_unserializeable.js",
-          "name": "returnAFunction",
-          "paramIds": [
-            "a",
-            "f2"
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
           ],
-          "injectionWhitelist": [],
+          "isAsync": false,
           "isDefault": false,
           "isEcmaDefault": false,
-          "isAsync": false,
           "isObject": false,
-          "doesReturnPromise": false
-        },
-        "captures": [
-          {
-            "params": [
-              1,
-              "a => a * 2"
-            ],
-            "result": "b => a + f2(b)",
-            "types": {
-              "params": [
-                "Number",
-                "Function"
-              ],
-              "result": "Function"
-            }
-          }
-        ],
-        "hashTable": {
-          "bqJmtLQs1GCj4wHqE1hD0Q==": true
+          "name": "circularReference",
+          "paramIds": [
+            "a"
+          ],
+          "path": "test_integration/flows/04_unserializeable/04_unserializeable.js"
         }
       },
       "getElapsedTime": {
-        "meta": {
-          "path": "test_integration/flows/04_unserializeable/04_unserializeable.js",
-          "name": "getElapsedTime",
-          "paramIds": [
-            "start",
-            "end"
-          ],
-          "injectionWhitelist": [],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
         "captures": [
           {
             "params": [
@@ -107,22 +55,60 @@
         ],
         "hashTable": {
           "ePbUR8xguUXb8Pr9hgU3uw==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "getElapsedTime",
+          "paramIds": [
+            "start",
+            "end"
+          ],
+          "path": "test_integration/flows/04_unserializeable/04_unserializeable.js"
+        }
+      },
+      "returnAFunction": {
+        "captures": [
+          {
+            "params": [
+              1,
+              null
+            ],
+            "result": "b => a + f2(b)",
+            "types": {
+              "params": [
+                "Number",
+                "Function"
+              ],
+              "result": "Function"
+            }
+          }
+        ],
+        "hashTable": {
+          "aoWYcZXWQ6WNyuLib4S6jg==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "returnAFunction",
+          "paramIds": [
+            "a",
+            "f2"
+          ],
+          "path": "test_integration/flows/04_unserializeable/04_unserializeable.js"
         }
       },
       "returnsNaN": {
-        "meta": {
-          "path": "test_integration/flows/04_unserializeable/04_unserializeable.js",
-          "name": "returnsNaN",
-          "paramIds": [
-            "a"
-          ],
-          "injectionWhitelist": [],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
         "captures": [
           {
             "params": [
@@ -139,8 +125,27 @@
         ],
         "hashTable": {
           "DhPFHTODFMawBc9rehkziw==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "returnsNaN",
+          "paramIds": [
+            "a"
+          ],
+          "path": "test_integration/flows/04_unserializeable/04_unserializeable.js"
         }
       }
+    },
+    "meta": {
+      "mocks": [
+      ],
+      "path": "test_integration/flows/04_unserializeable/04_unserializeable.js"
     }
   }
 }

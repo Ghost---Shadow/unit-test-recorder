@@ -1,44 +1,219 @@
 {
   "test_integration/flows/05_dependency_injection/05_dependency_injection.js": {
-    "meta": {
-      "path": "test_integration/flows/05_dependency_injection/05_dependency_injection.js",
-      "mocks": []
-    },
     "exportedFunctions": {
-      "getPost": {
+      "getActiveUserCount": {
+        "captures": [
+          {
+            "injections": {
+              "dbClient.__proto__.query": {
+                "captures": [
+                  {
+                    "params": [
+                    ],
+                    "result": 350,
+                    "types": {
+                      "params": [
+                      ],
+                      "result": "Number"
+                    }
+                  }
+                ]
+              }
+            },
+            "params": [
+              {
+              },
+              1
+            ],
+            "result": 349,
+            "types": {
+              "params": [
+                "Object",
+                "Number"
+              ],
+              "result": "Number"
+            }
+          },
+          {
+            "injections": {
+              "dbClient.__proto__.query": {
+                "captures": [
+                  {
+                    "params": [
+                    ],
+                    "result": 350,
+                    "types": {
+                      "params": [
+                      ],
+                      "result": "Number"
+                    }
+                  }
+                ]
+              }
+            },
+            "params": [
+              {
+              },
+              2
+            ],
+            "result": 348,
+            "types": {
+              "params": [
+                "Object",
+                "Number"
+              ],
+              "result": "Number"
+            }
+          }
+        ],
+        "hashTable": {
+          "4QW+lA8G5nLHl9n80OaTJQ==": true,
+          "MRBmcToHOrenTA/XuvMRzQ==": true
+        },
         "meta": {
-          "path": "test_integration/flows/05_dependency_injection/05_dependency_injection.js",
-          "name": "getPost",
-          "paramIds": [
-            "dbClient",
-            "postId",
-            "redisCache"
-          ],
+          "doesReturnPromise": true,
           "injectionWhitelist": [
             "query",
             "pooledQuery",
             "commitSync"
           ],
+          "isAsync": true,
           "isDefault": false,
           "isEcmaDefault": false,
-          "isAsync": true,
           "isObject": false,
-          "doesReturnPromise": true
-        },
-        "hashTable": {
-          "N7C73kHrh/88WYWQXqcgFw==": true
-        },
+          "name": "getActiveUserCount",
+          "paramIds": [
+            "dbClient",
+            "botCount"
+          ],
+          "path": "test_integration/flows/05_dependency_injection/05_dependency_injection.js"
+        }
+      },
+      "getPost": {
         "captures": [
           {
+            "injections": {
+              "dbClient.__proto__.__proto__.pool.pooledQuery": {
+                "captures": [
+                  {
+                    "params": [
+                    ],
+                    "result": [
+                      {
+                        "comment": "comment 1"
+                      },
+                      {
+                        "comment": "comment 2"
+                      }
+                    ],
+                    "types": {
+                      "params": [
+                      ],
+                      "result": "Array"
+                    }
+                  },
+                  {
+                    "params": [
+                    ],
+                    "result": [
+                      {
+                        "comment": "comment 1"
+                      },
+                      {
+                        "comment": "comment 2"
+                      }
+                    ],
+                    "types": {
+                      "params": [
+                      ],
+                      "result": "Array"
+                    }
+                  }
+                ]
+              },
+              "dbClient.__proto__.query": {
+                "captures": [
+                  {
+                    "params": [
+                    ],
+                    "result": {
+                      "title": "content"
+                    },
+                    "types": {
+                      "params": [
+                      ],
+                      "result": "Object"
+                    }
+                  },
+                  {
+                    "params": [
+                    ],
+                    "result": {
+                      "title": "content"
+                    },
+                    "types": {
+                      "params": [
+                      ],
+                      "result": "Object"
+                    }
+                  },
+                  {
+                    "params": [
+                    ],
+                    "result": 42,
+                    "types": {
+                      "params": [
+                      ],
+                      "result": "Number"
+                    }
+                  }
+                ]
+              },
+              "dbClient.commitSync": {
+                "captures": [
+                  {
+                    "params": [
+                    ],
+                    "types": {
+                      "params": [
+                      ],
+                      "result": "Undefined"
+                    }
+                  }
+                ]
+              },
+              "redisCache": {
+                "captures": [
+                  {
+                    "params": [
+                    ],
+                    "result": 350,
+                    "types": {
+                      "params": [
+                      ],
+                      "result": "Number"
+                    }
+                  },
+                  {
+                    "params": [
+                    ],
+                    "result": 350,
+                    "types": {
+                      "params": [
+                      ],
+                      "result": "Number"
+                    }
+                  }
+                ]
+              }
+            },
             "params": [
-              {},
+              {
+              },
               1,
               null
             ],
             "result": {
-              "content": {
-                "title": "content"
-              },
               "comments": [
                 {
                   "comment": "comment 1"
@@ -47,7 +222,9 @@
                   "comment": "comment 2"
                 }
               ],
-              "votes": 350,
+              "content": {
+                "title": "content"
+              },
               "moderator": [
                 {
                   "comment": "comment 1"
@@ -55,7 +232,8 @@
                 {
                   "comment": "comment 2"
                 }
-              ]
+              ],
+              "votes": 350
             },
             "types": {
               "params": [
@@ -64,35 +242,66 @@
                 "Function"
               ],
               "result": "Object"
-            },
+            }
+          }
+        ],
+        "hashTable": {
+          "N7C73kHrh/88WYWQXqcgFw==": true
+        },
+        "meta": {
+          "doesReturnPromise": true,
+          "injectionWhitelist": [
+            "query",
+            "pooledQuery",
+            "commitSync"
+          ],
+          "isAsync": true,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "getPost",
+          "paramIds": [
+            "dbClient",
+            "postId",
+            "redisCache"
+          ],
+          "path": "test_integration/flows/05_dependency_injection/05_dependency_injection.js"
+        }
+      },
+      "getPostComments": {
+        "captures": [
+          {
             "injections": {
-              "dbClient.__proto__.query": {
+              "client.__proto__.__proto__.pool.pooledQuery": {
                 "captures": [
                   {
-                    "params": [],
-                    "result": {
-                      "title": "content"
-                    },
+                    "params": [
+                    ],
+                    "result": [
+                      {
+                        "comment": "comment 1"
+                      },
+                      {
+                        "comment": "comment 2"
+                      }
+                    ],
                     "types": {
-                      "params": [],
-                      "result": "Object"
+                      "params": [
+                      ],
+                      "result": "Array"
                     }
-                  },
+                  }
+                ]
+              },
+              "client.__proto__.query": {
+                "captures": [
                   {
-                    "params": [],
-                    "result": {
-                      "title": "content"
-                    },
-                    "types": {
-                      "params": [],
-                      "result": "Object"
-                    }
-                  },
-                  {
-                    "params": [],
+                    "params": [
+                    ],
                     "result": 42,
                     "types": {
-                      "params": [],
+                      "params": [
+                      ],
                       "result": "Number"
                     }
                   }
@@ -101,99 +310,21 @@
               "redisCache": {
                 "captures": [
                   {
-                    "params": [],
+                    "params": [
+                    ],
                     "result": 350,
                     "types": {
-                      "params": [],
+                      "params": [
+                      ],
                       "result": "Number"
-                    }
-                  },
-                  {
-                    "params": [],
-                    "result": 350,
-                    "types": {
-                      "params": [],
-                      "result": "Number"
-                    }
-                  }
-                ]
-              },
-              "dbClient.__proto__.__proto__.pool.pooledQuery": {
-                "captures": [
-                  {
-                    "params": [],
-                    "result": [
-                      {
-                        "comment": "comment 1"
-                      },
-                      {
-                        "comment": "comment 2"
-                      }
-                    ],
-                    "types": {
-                      "params": [],
-                      "result": "Array"
-                    }
-                  },
-                  {
-                    "params": [],
-                    "result": [
-                      {
-                        "comment": "comment 1"
-                      },
-                      {
-                        "comment": "comment 2"
-                      }
-                    ],
-                    "types": {
-                      "params": [],
-                      "result": "Array"
-                    }
-                  }
-                ]
-              },
-              "dbClient.commitSync": {
-                "captures": [
-                  {
-                    "params": [],
-                    "types": {
-                      "params": [],
-                      "result": "Undefined"
                     }
                   }
                 ]
               }
-            }
-          }
-        ]
-      },
-      "getPostComments": {
-        "meta": {
-          "path": "test_integration/flows/05_dependency_injection/05_dependency_injection.js",
-          "name": "getPostComments",
-          "paramIds": [
-            "client",
-            "postId",
-            "redisCache"
-          ],
-          "injectionWhitelist": [
-            "query",
-            "pooledQuery",
-            "commitSync"
-          ],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": true,
-          "isObject": false,
-          "doesReturnPromise": true
-        },
-        "hashTable": {
-          "3iQwhSesvbxm+NdNogyCGg==": true
-        },
-        "captures": [
-          {
+            },
             "params": [
-              {},
+              {
+              },
               1,
               null
             ],
@@ -212,137 +343,37 @@
                 "Function"
               ],
               "result": "Array"
-            },
-            "injections": {
-              "redisCache": {
-                "captures": [
-                  {
-                    "params": [],
-                    "result": 350,
-                    "types": {
-                      "params": [],
-                      "result": "Number"
-                    }
-                  }
-                ]
-              },
-              "client.__proto__.query": {
-                "captures": [
-                  {
-                    "params": [],
-                    "result": 42,
-                    "types": {
-                      "params": [],
-                      "result": "Number"
-                    }
-                  }
-                ]
-              },
-              "client.__proto__.__proto__.pool.pooledQuery": {
-                "captures": [
-                  {
-                    "params": [],
-                    "result": [
-                      {
-                        "comment": "comment 1"
-                      },
-                      {
-                        "comment": "comment 2"
-                      }
-                    ],
-                    "types": {
-                      "params": [],
-                      "result": "Array"
-                    }
-                  }
-                ]
-              }
             }
           }
-        ]
-      },
-      "getActiveUserCount": {
+        ],
+        "hashTable": {
+          "3iQwhSesvbxm+NdNogyCGg==": true
+        },
         "meta": {
-          "path": "test_integration/flows/05_dependency_injection/05_dependency_injection.js",
-          "name": "getActiveUserCount",
-          "paramIds": [
-            "dbClient",
-            "botCount"
-          ],
+          "doesReturnPromise": true,
           "injectionWhitelist": [
             "query",
             "pooledQuery",
             "commitSync"
           ],
+          "isAsync": true,
           "isDefault": false,
           "isEcmaDefault": false,
-          "isAsync": true,
           "isObject": false,
-          "doesReturnPromise": true
-        },
-        "hashTable": {
-          "4QW+lA8G5nLHl9n80OaTJQ==": true,
-          "MRBmcToHOrenTA/XuvMRzQ==": true
-        },
-        "captures": [
-          {
-            "params": [
-              {},
-              1
-            ],
-            "result": 349,
-            "types": {
-              "params": [
-                "Object",
-                "Number"
-              ],
-              "result": "Number"
-            },
-            "injections": {
-              "dbClient.__proto__.query": {
-                "captures": [
-                  {
-                    "params": [],
-                    "result": 350,
-                    "types": {
-                      "params": [],
-                      "result": "Number"
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "params": [
-              {},
-              2
-            ],
-            "result": 348,
-            "types": {
-              "params": [
-                "Object",
-                "Number"
-              ],
-              "result": "Number"
-            },
-            "injections": {
-              "dbClient.__proto__.query": {
-                "captures": [
-                  {
-                    "params": [],
-                    "result": 350,
-                    "types": {
-                      "params": [],
-                      "result": "Number"
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        ]
+          "name": "getPostComments",
+          "paramIds": [
+            "client",
+            "postId",
+            "redisCache"
+          ],
+          "path": "test_integration/flows/05_dependency_injection/05_dependency_injection.js"
+        }
       }
+    },
+    "meta": {
+      "mocks": [
+      ],
+      "path": "test_integration/flows/05_dependency_injection/05_dependency_injection.js"
     }
   }
 }

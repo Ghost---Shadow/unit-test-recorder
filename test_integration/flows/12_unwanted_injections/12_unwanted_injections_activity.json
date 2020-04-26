@@ -1,24 +1,7 @@
 {
   "test_integration/flows/12_unwanted_injections/12_unwanted_injections.js": {
-    "meta": {
-      "path": "test_integration/flows/12_unwanted_injections/12_unwanted_injections.js",
-      "mocks": []
-    },
     "exportedFunctions": {
       "fun": {
-        "meta": {
-          "path": "test_integration/flows/12_unwanted_injections/12_unwanted_injections.js",
-          "name": "fun",
-          "paramIds": [
-            "arr"
-          ],
-          "injectionWhitelist": [],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
         "captures": [
           {
             "params": [
@@ -41,22 +24,23 @@
         ],
         "hashTable": {
           "RfDVfJjbad8lhfB1GlNUIA==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "fun",
+          "paramIds": [
+            "arr"
+          ],
+          "path": "test_integration/flows/12_unwanted_injections/12_unwanted_injections.js"
         }
       },
       "fun2": {
-        "meta": {
-          "path": "test_integration/flows/12_unwanted_injections/12_unwanted_injections.js",
-          "name": "fun2",
-          "paramIds": [
-            "num"
-          ],
-          "injectionWhitelist": [],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
         "captures": [
           {
             "params": [
@@ -73,32 +57,35 @@
         ],
         "hashTable": {
           "vpBxCjOFctyIkzBQr+fWXQ==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "fun2",
+          "paramIds": [
+            "num"
+          ],
+          "path": "test_integration/flows/12_unwanted_injections/12_unwanted_injections.js"
         }
       },
       "fun3": {
-        "meta": {
-          "path": "test_integration/flows/12_unwanted_injections/12_unwanted_injections.js",
-          "name": "fun3",
-          "paramIds": [
-            "f"
-          ],
-          "injectionWhitelist": [],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
         "captures": [
           {
             "injections": {
               "f": {
                 "captures": [
                   {
-                    "params": [],
+                    "params": [
+                    ],
                     "result": 2,
                     "types": {
-                      "params": [],
+                      "params": [
+                      ],
                       "result": "Number"
                     }
                   }
@@ -106,7 +93,7 @@
               }
             },
             "params": [
-              "a => a"
+              null
             ],
             "result": 2,
             "types": {
@@ -118,9 +105,28 @@
           }
         ],
         "hashTable": {
-          "+RBq4ZQThZP+QWcvwIzRcQ==": true
+          "SCWAr3BaNTG4gkaO6KX85Q==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "fun3",
+          "paramIds": [
+            "f"
+          ],
+          "path": "test_integration/flows/12_unwanted_injections/12_unwanted_injections.js"
         }
       }
+    },
+    "meta": {
+      "mocks": [
+      ],
+      "path": "test_integration/flows/12_unwanted_injections/12_unwanted_injections.js"
     }
   }
 }

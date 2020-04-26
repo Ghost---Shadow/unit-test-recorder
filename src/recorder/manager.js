@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const stableStringify = require('json-stable-stringify');
 
 const _ = require('lodash');
 // const rimraf = require('rimraf');
@@ -17,6 +18,8 @@ const {
 // TODO: Get from CLI args
 const DEFAULT_BASE_PATH = './utr_activity';
 
+const STABLE_STRINGIFY_OPTS = { space: 2 };
+
 // TODO: Use redux
 const RecorderManager = {
   recorderState: {},
@@ -31,13 +34,13 @@ const RecorderManager = {
   getSerialized() {
     this.removeInvalidCaptures();
     // This JSON should be serializeable
-    return JSON.stringify(this.recorderState, null, 2);
+    return stableStringify(this.recorderState, STABLE_STRINGIFY_OPTS);
   },
   getSerializedArray() {
     this.removeInvalidCaptures();
     return Object.keys(this.recorderState).map((scriptFilePath) => {
       // This JSON should be serializeable
-      const data = JSON.stringify(this.recorderState[scriptFilePath], null, 2);
+      const data = stableStringify(this.recorderState[scriptFilePath], STABLE_STRINGIFY_OPTS);
       const activityPath = `${scriptFilePath}on`; // .js -> .json
       return { activityPath, data };
     });

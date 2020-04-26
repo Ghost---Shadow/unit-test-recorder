@@ -1,230 +1,11 @@
 {
   "test_integration/flows/16_exported_objects/16_exported_objects.js": {
-    "meta": {
-      "path": "test_integration/flows/16_exported_objects/16_exported_objects.js",
-      "mocks": []
-    },
     "exportedFunctions": {
-      "obj1.foo1": {
-        "meta": {
-          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js",
-          "name": "obj1.foo1",
-          "paramIds": [
-            "a",
-            "b"
-          ],
-          "injectionWhitelist": [
-            "someFun",
-            "anotherFun"
-          ],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": true,
-          "isObject": true,
-          "doesReturnPromise": true
-        },
-        "captures": [
-          {
-            "injections": {
-              "a.someFun": {
-                "captures": [
-                  {
-                    "params": [],
-                    "result": 1,
-                    "types": {
-                      "params": [],
-                      "result": "Number"
-                    }
-                  }
-                ]
-              }
-            },
-            "params": [
-              {},
-              2
-            ],
-            "result": 3,
-            "types": {
-              "params": [
-                "Object",
-                "Number"
-              ],
-              "result": "Number"
-            }
-          }
-        ],
-        "hashTable": {
-          "lNa3pVKtSPD6MgJ11Hm12g==": true
-        }
-      },
-      "obj1.foo2": {
-        "meta": {
-          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js",
-          "name": "obj1.foo2",
-          "paramIds": [],
-          "injectionWhitelist": [
-            "someFun",
-            "anotherFun"
-          ],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": true,
-          "doesReturnPromise": false
-        },
-        "captures": [
-          {
-            "params": [],
-            "types": {
-              "params": [],
-              "result": "Undefined"
-            }
-          }
-        ],
-        "hashTable": {
-          "IH+TCNUdvy2Ihqlcrzm8mg==": true
-        }
-      },
-      "obj2.bar": {
-        "meta": {
-          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js",
-          "name": "obj2.bar",
-          "paramIds": [
-            "a",
-            "b"
-          ],
-          "injectionWhitelist": [
-            "someFun",
-            "anotherFun"
-          ],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": true,
-          "isObject": true,
-          "doesReturnPromise": true
-        },
-        "captures": [
-          {
-            "params": [
-              2,
-              1
-            ],
-            "result": 1,
-            "types": {
-              "params": [
-                "Number",
-                "Number"
-              ],
-              "result": "Number"
-            }
-          }
-        ],
-        "hashTable": {
-          "lAsrjr65xIOqnEXehczjag==": true
-        }
-      },
-      "obj2.deep.fun": {
-        "meta": {
-          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js",
-          "name": "obj2.deep.fun",
-          "paramIds": [
-            "a"
-          ],
-          "injectionWhitelist": [
-            "someFun",
-            "anotherFun"
-          ],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": true,
-          "isObject": true,
-          "doesReturnPromise": true
-        },
-        "captures": [
-          {
-            "injections": {
-              "a.anotherFun": {
-                "captures": [
-                  {
-                    "params": [],
-                    "result": 1,
-                    "types": {
-                      "params": [],
-                      "result": "Number"
-                    }
-                  }
-                ]
-              }
-            },
-            "params": [
-              {}
-            ],
-            "result": 1,
-            "types": {
-              "params": [
-                "Object"
-              ],
-              "result": "Number"
-            }
-          }
-        ],
-        "hashTable": {
-          "9xxEukj/KC8AbdtpQmYKaw==": true
-        }
-      },
-      "obj2.higher": {
-        "meta": {
-          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js",
-          "name": "obj2.higher",
-          "paramIds": [
-            "a"
-          ],
-          "injectionWhitelist": [
-            "someFun",
-            "anotherFun"
-          ],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": true,
-          "doesReturnPromise": false
-        },
-        "captures": [
-          {
-            "params": [
-              1
-            ],
-            "result": "b => a * b",
-            "types": {
-              "params": [
-                "Number"
-              ],
-              "result": "Function"
-            }
-          }
-        ],
-        "hashTable": {
-          "Zk6EvQX7OC4tw+yJxJp4dw==": true
-        }
-      },
       "largeObj.largeFun": {
-        "meta": {
-          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js",
-          "name": "largeObj.largeFun",
-          "paramIds": [],
-          "injectionWhitelist": [
-            "someFun",
-            "anotherFun"
-          ],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": true,
-          "doesReturnPromise": false
-        },
         "captures": [
           {
-            "params": [],
+            "params": [
+            ],
             "result": [
               0,
               1,
@@ -1228,15 +1009,247 @@
               999
             ],
             "types": {
-              "params": [],
+              "params": [
+              ],
               "result": "Array"
             }
           }
         ],
         "hashTable": {
           "rTK4+01cosU2fhY2J9OZeg==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+            "someFun",
+            "anotherFun"
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": true,
+          "name": "largeObj.largeFun",
+          "paramIds": [
+          ],
+          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js"
+        }
+      },
+      "obj1.foo1": {
+        "captures": [
+          {
+            "injections": {
+              "a.someFun": {
+                "captures": [
+                  {
+                    "params": [
+                    ],
+                    "result": 1,
+                    "types": {
+                      "params": [
+                      ],
+                      "result": "Number"
+                    }
+                  }
+                ]
+              }
+            },
+            "params": [
+              {
+              },
+              2
+            ],
+            "result": 3,
+            "types": {
+              "params": [
+                "Object",
+                "Number"
+              ],
+              "result": "Number"
+            }
+          }
+        ],
+        "hashTable": {
+          "lNa3pVKtSPD6MgJ11Hm12g==": true
+        },
+        "meta": {
+          "doesReturnPromise": true,
+          "injectionWhitelist": [
+            "someFun",
+            "anotherFun"
+          ],
+          "isAsync": true,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": true,
+          "name": "obj1.foo1",
+          "paramIds": [
+            "a",
+            "b"
+          ],
+          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js"
+        }
+      },
+      "obj1.foo2": {
+        "captures": [
+          {
+            "params": [
+            ],
+            "types": {
+              "params": [
+              ],
+              "result": "Undefined"
+            }
+          }
+        ],
+        "hashTable": {
+          "IH+TCNUdvy2Ihqlcrzm8mg==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+            "someFun",
+            "anotherFun"
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": true,
+          "name": "obj1.foo2",
+          "paramIds": [
+          ],
+          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js"
+        }
+      },
+      "obj2.bar": {
+        "captures": [
+          {
+            "params": [
+              2,
+              1
+            ],
+            "result": 1,
+            "types": {
+              "params": [
+                "Number",
+                "Number"
+              ],
+              "result": "Number"
+            }
+          }
+        ],
+        "hashTable": {
+          "lAsrjr65xIOqnEXehczjag==": true
+        },
+        "meta": {
+          "doesReturnPromise": true,
+          "injectionWhitelist": [
+            "someFun",
+            "anotherFun"
+          ],
+          "isAsync": true,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": true,
+          "name": "obj2.bar",
+          "paramIds": [
+            "a",
+            "b"
+          ],
+          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js"
+        }
+      },
+      "obj2.deep.fun": {
+        "captures": [
+          {
+            "injections": {
+              "a.anotherFun": {
+                "captures": [
+                  {
+                    "params": [
+                    ],
+                    "result": 1,
+                    "types": {
+                      "params": [
+                      ],
+                      "result": "Number"
+                    }
+                  }
+                ]
+              }
+            },
+            "params": [
+              {
+              }
+            ],
+            "result": 1,
+            "types": {
+              "params": [
+                "Object"
+              ],
+              "result": "Number"
+            }
+          }
+        ],
+        "hashTable": {
+          "9xxEukj/KC8AbdtpQmYKaw==": true
+        },
+        "meta": {
+          "doesReturnPromise": true,
+          "injectionWhitelist": [
+            "someFun",
+            "anotherFun"
+          ],
+          "isAsync": true,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": true,
+          "name": "obj2.deep.fun",
+          "paramIds": [
+            "a"
+          ],
+          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js"
+        }
+      },
+      "obj2.higher": {
+        "captures": [
+          {
+            "params": [
+              1
+            ],
+            "result": "b => a * b",
+            "types": {
+              "params": [
+                "Number"
+              ],
+              "result": "Function"
+            }
+          }
+        ],
+        "hashTable": {
+          "Zk6EvQX7OC4tw+yJxJp4dw==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+            "someFun",
+            "anotherFun"
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": true,
+          "name": "obj2.higher",
+          "paramIds": [
+            "a"
+          ],
+          "path": "test_integration/flows/16_exported_objects/16_exported_objects.js"
         }
       }
+    },
+    "meta": {
+      "mocks": [
+      ],
+      "path": "test_integration/flows/16_exported_objects/16_exported_objects.js"
     }
   }
 }

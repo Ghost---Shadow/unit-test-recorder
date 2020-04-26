@@ -25,7 +25,7 @@ describe('12_unwanted_injections', () => {
 
   describe('fun3', () => {
     it('should work for case 1', () => {
-      let f = 'a => a';
+      let f = null;
       let result = 2;
 
       f = jest.fn();

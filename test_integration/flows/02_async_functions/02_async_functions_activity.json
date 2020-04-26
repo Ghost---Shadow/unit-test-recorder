@@ -1,24 +1,43 @@
 {
   "test_integration/flows/02_async_functions/02_async_functions.js": {
-    "meta": {
-      "path": "test_integration/flows/02_async_functions/02_async_functions.js",
-      "mocks": []
-    },
     "exportedFunctions": {
-      "getSocialInfo": {
+      "getFacebookInfo": {
+        "captures": [
+          {
+            "params": [
+              "email"
+            ],
+            "result": {
+              "email": "email",
+              "request": "facebook"
+            },
+            "types": {
+              "params": [
+                "String"
+              ],
+              "result": "Object"
+            }
+          }
+        ],
+        "hashTable": {
+          "QH3HU2B26SG4xehO+jKMUA==": true
+        },
         "meta": {
-          "path": "test_integration/flows/02_async_functions/02_async_functions.js",
-          "name": "getSocialInfo",
+          "doesReturnPromise": true,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "getFacebookInfo",
           "paramIds": [
             "email"
           ],
-          "injectionWhitelist": [],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": true,
-          "isObject": false,
-          "doesReturnPromise": true
-        },
+          "path": "test_integration/flows/02_async_functions/02_async_functions.js"
+        }
+      },
+      "getSocialInfo": {
         "captures": [
           {
             "params": [
@@ -44,43 +63,27 @@
         ],
         "hashTable": {
           "ivhA6obL4h2UYHkzRpB/Pw==": true
-        }
-      },
-      "getFacebookInfo": {
+        },
         "meta": {
-          "path": "test_integration/flows/02_async_functions/02_async_functions.js",
-          "name": "getFacebookInfo",
+          "doesReturnPromise": true,
+          "injectionWhitelist": [
+          ],
+          "isAsync": true,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "getSocialInfo",
           "paramIds": [
             "email"
           ],
-          "injectionWhitelist": [],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": true
-        },
-        "captures": [
-          {
-            "params": [
-              "email"
-            ],
-            "result": {
-              "email": "email",
-              "request": "facebook"
-            },
-            "types": {
-              "params": [
-                "String"
-              ],
-              "result": "Object"
-            }
-          }
-        ],
-        "hashTable": {
-          "QH3HU2B26SG4xehO+jKMUA==": true
+          "path": "test_integration/flows/02_async_functions/02_async_functions.js"
         }
       }
+    },
+    "meta": {
+      "mocks": [
+      ],
+      "path": "test_integration/flows/02_async_functions/02_async_functions.js"
     }
   }
 }

@@ -58,6 +58,7 @@
     "babel-project-relative-import": "^2.0.1",
     "cls-hooked": "^4.2.2",
     "flat": "^5.0.0",
+    "json-stable-stringify": "^1.0.1",
     "json-stringify-safe": "^5.0.1",
     "lodash": "^4.17.15",
     "mkdirp": "^1.0.4",

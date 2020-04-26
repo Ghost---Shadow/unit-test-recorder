@@ -1,24 +1,7 @@
 {
   "test_integration/flows/14_anon_module_exports_default/14_anon_module_exports_default.js": {
-    "meta": {
-      "path": "test_integration/flows/14_anon_module_exports_default/14_anon_module_exports_default.js",
-      "mocks": []
-    },
     "exportedFunctions": {
       "defaultExport": {
-        "meta": {
-          "path": "test_integration/flows/14_anon_module_exports_default/14_anon_module_exports_default.js",
-          "name": "defaultExport",
-          "paramIds": [
-            "a"
-          ],
-          "injectionWhitelist": [],
-          "isDefault": true,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
         "captures": [
           {
             "params": [
@@ -35,8 +18,27 @@
         ],
         "hashTable": {
           "OJ+hJ1O9bhmPAa4D6zmzLQ==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": true,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "defaultExport",
+          "paramIds": [
+            "a"
+          ],
+          "path": "test_integration/flows/14_anon_module_exports_default/14_anon_module_exports_default.js"
         }
       }
+    },
+    "meta": {
+      "mocks": [
+      ],
+      "path": "test_integration/flows/14_anon_module_exports_default/14_anon_module_exports_default.js"
     }
   }
 }

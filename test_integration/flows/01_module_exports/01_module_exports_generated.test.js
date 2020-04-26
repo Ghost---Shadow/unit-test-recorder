@@ -1,9 +1,20 @@
-const { foo } = require('./01_module_exports');
 const { bar } = require('./01_module_exports');
+const { foo } = require('./01_module_exports');
 const { specialParams } = require('./01_module_exports');
 const { specialParams2 } = require('./01_module_exports');
 
 describe('01_module_exports', () => {
+  describe('bar', () => {
+    it('should work for case 1', () => {
+      let a = 2;
+      let b = 2;
+      let result = 0;
+
+      const actual = bar(a, b);
+      expect(actual).toEqual(result);
+    });
+  });
+
   describe('foo', () => {
     it('should work for case 1', () => {
       let a = 1;
@@ -20,17 +31,6 @@ describe('01_module_exports', () => {
       let result = 'AB';
 
       const actual = foo(a, b);
-      expect(actual).toEqual(result);
-    });
-  });
-
-  describe('bar', () => {
-    it('should work for case 1', () => {
-      let a = 2;
-      let b = 2;
-      let result = 0;
-
-      const actual = bar(a, b);
       expect(actual).toEqual(result);
     });
   });

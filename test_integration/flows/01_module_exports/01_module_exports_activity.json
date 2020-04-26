@@ -1,25 +1,43 @@
 {
   "test_integration/flows/01_module_exports/01_module_exports.js": {
-    "meta": {
-      "path": "test_integration/flows/01_module_exports/01_module_exports.js",
-      "mocks": []
-    },
     "exportedFunctions": {
-      "foo": {
+      "bar": {
+        "captures": [
+          {
+            "params": [
+              2,
+              2
+            ],
+            "result": 0,
+            "types": {
+              "params": [
+                "Number",
+                "Number"
+              ],
+              "result": "Number"
+            }
+          }
+        ],
+        "hashTable": {
+          "zdomyKVDc2p6ZV1GuZcwRg==": true
+        },
         "meta": {
-          "path": "test_integration/flows/01_module_exports/01_module_exports.js",
-          "name": "foo",
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "bar",
           "paramIds": [
             "a",
             "b"
           ],
-          "injectionWhitelist": [],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
+          "path": "test_integration/flows/01_module_exports/01_module_exports.js"
+        }
+      },
+      "foo": {
         "captures": [
           {
             "params": [
@@ -65,62 +83,27 @@
           }
         ],
         "hashTable": {
-          "XsRtb87OKK89hcJikSMaww==": true,
+          "1SN8WZ8fBA0HaUTBGjEzXA==": true,
           "DO7vimVz2rKX1liuvJAIuQ==": true,
-          "1SN8WZ8fBA0HaUTBGjEzXA==": true
-        }
-      },
-      "bar": {
+          "XsRtb87OKK89hcJikSMaww==": true
+        },
         "meta": {
-          "path": "test_integration/flows/01_module_exports/01_module_exports.js",
-          "name": "bar",
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "foo",
           "paramIds": [
             "a",
             "b"
           ],
-          "injectionWhitelist": [],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
-        "captures": [
-          {
-            "params": [
-              2,
-              2
-            ],
-            "result": 0,
-            "types": {
-              "params": [
-                "Number",
-                "Number"
-              ],
-              "result": "Number"
-            }
-          }
-        ],
-        "hashTable": {
-          "zdomyKVDc2p6ZV1GuZcwRg==": true
+          "path": "test_integration/flows/01_module_exports/01_module_exports.js"
         }
       },
       "specialParams": {
-        "meta": {
-          "path": "test_integration/flows/01_module_exports/01_module_exports.js",
-          "name": "specialParams",
-          "paramIds": [
-            "a",
-            "_obj",
-            "d"
-          ],
-          "injectionWhitelist": [],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
         "captures": [
           {
             "params": [
@@ -162,24 +145,25 @@
         "hashTable": {
           "3rHxB4H7QG3evRh7bOsZXQ==": true,
           "uAJqDZovRCoUxXG0b6x2Ng==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "specialParams",
+          "paramIds": [
+            "a",
+            "_obj",
+            "d"
+          ],
+          "path": "test_integration/flows/01_module_exports/01_module_exports.js"
         }
       },
       "specialParams2": {
-        "meta": {
-          "path": "test_integration/flows/01_module_exports/01_module_exports.js",
-          "name": "specialParams2",
-          "paramIds": [
-            "a",
-            "_obj2",
-            "d"
-          ],
-          "injectionWhitelist": [],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
         "captures": [
           {
             "params": [
@@ -201,8 +185,29 @@
         ],
         "hashTable": {
           "3rHxB4H7QG3evRh7bOsZXQ==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "specialParams2",
+          "paramIds": [
+            "a",
+            "_obj2",
+            "d"
+          ],
+          "path": "test_integration/flows/01_module_exports/01_module_exports.js"
         }
       }
+    },
+    "meta": {
+      "mocks": [
+      ],
+      "path": "test_integration/flows/01_module_exports/01_module_exports.js"
     }
   }
 }

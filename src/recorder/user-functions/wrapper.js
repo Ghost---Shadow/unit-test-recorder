@@ -38,7 +38,7 @@ const recorderWrapper = (meta, innerFunction, ...params) => {
   return result;
 };
 
-const boundRecorderWrapper = session.bind(recorderWrapper);
+const boundRecorderWrapper = (...p) => session.bind(recorderWrapper, session.createContext())(...p);
 
 module.exports = {
   recorderWrapper: boundRecorderWrapper,

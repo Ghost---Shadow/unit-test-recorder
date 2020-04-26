@@ -3,7 +3,10 @@ const _ = require('lodash');
 const { getNamespace } = require('cls-hooked');
 const RecorderManager = require('../manager');
 
-const { unBoundRecorderWrapper: recorderWrapper } = require('./wrapper');
+const {
+  recorderWrapper: boundRecorderWrapper,
+  unBoundRecorderWrapper: recorderWrapper,
+} = require('./wrapper');
 
 describe('user-function-wrapper', () => {
   describe('recorderWrapper', () => {
@@ -295,6 +298,19 @@ describe('user-function-wrapper', () => {
           }
         `);
       });
+    });
+  });
+  describe('boundRecorderWrapper', () => {
+    it('should create a new context for each call', () => {
+      const session = getNamespace('default');
+      const fn = () => {
+        const stack = session.get('stack');
+        expect(stack.length).toBe(1);
+      };
+      const meta = { name: 'fn' };
+      const wrappedFn = (...params) => boundRecorderWrapper(meta, fn, ...params);
+      wrappedFn();
+      wrappedFn();
     });
   });
 });

@@ -316,5 +316,25 @@ describe('user-function-wrapper', () => {
       wrappedFn();
       wrappedFn();
     });
+    it('should not create a new context for nested calls', () => {
+      const session = getNamespace('default');
+      const childFn = () => {
+        const stack = session.get('stack');
+        expect(stack).toEqual([
+          { name: 'parentFn' },
+          { name: 'childFn' },
+        ]);
+      };
+      const wrappedChild = (...params) => boundRecorderWrapper({ name: 'childFn' }, childFn, ...params);
+      const parentFn = () => {
+        wrappedChild();
+        const stack = session.get('stack');
+        expect(stack).toEqual([
+          { name: 'parentFn', injections: [] },
+        ]);
+      };
+      const wrappedParent = (...params) => boundRecorderWrapper({ name: 'parentFn' }, parentFn, ...params);
+      wrappedParent();
+    });
   });
 });

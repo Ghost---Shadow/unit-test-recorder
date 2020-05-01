@@ -1,15 +1,13 @@
-const { getNamespace } = require('cls-hooked');
 const _ = require('lodash');
 const RecorderManager = require('../manager');
 // const { checkAndSetHash } = require('./utils/hash-helper');
 const { generateTypesObj } = require('../utils/dynamic-type-inference');
 
-const captureMockActivity = (meta, params, result) => {
-  const session = getNamespace('default');
-  const stack = session.get('stack');
-  const { captureIndex, name: functionName } = _.last(stack);
+const captureMockActivity = (captureIndex, meta, data) => {
+  const { name: functionName } = meta;
+  const { mockMeta, params, result } = data;
+  const { path, moduleName, name } = mockMeta;
 
-  const { path, moduleName, name } = meta;
   const pathToCapture = ['recorderState', path, 'exportedFunctions', functionName, 'captures', captureIndex];
   const basePath = [...pathToCapture, 'mocks', moduleName, name];
   const address = [...basePath, 'captures'];

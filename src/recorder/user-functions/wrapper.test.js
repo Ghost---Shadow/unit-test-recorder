@@ -8,6 +8,8 @@ const {
   unBoundRecorderWrapper: recorderWrapper,
 } = require('./wrapper');
 
+const { mockRecorderWrapper } = require('../mock/wrapper');
+
 describe('user-function-wrapper', () => {
   describe('recorderWrapper', () => {
     beforeEach(() => {
@@ -35,10 +37,16 @@ describe('user-function-wrapper', () => {
         const stack = session.get('stack');
         expect(stack.length).toBe(1);
         const data1 = {
-          paramIndex: 0, fppkey: null, params: [], result: 3,
+          paramIndex: 0,
+          fppkey: null,
+          params: [],
+          result: 3,
         };
         const data2 = {
-          paramIndex: 0, fppkey: null, params: [], result: 5,
+          paramIndex: 0,
+          fppkey: null,
+          params: [],
+          result: 5,
         };
         expect(stack[0].injections).toEqual([data1, data2]);
         expect(RecorderManager.recorderState).toMatchInlineSnapshot(`
@@ -129,10 +137,16 @@ describe('user-function-wrapper', () => {
         const stack = session.get('stack');
         expect(stack.length).toBe(1);
         const data1 = {
-          paramIndex: 0, fppkey: null, params: [], result: 3,
+          paramIndex: 0,
+          fppkey: null,
+          params: [],
+          result: 3,
         };
         const data2 = {
-          paramIndex: 0, fppkey: null, params: [], result: 5,
+          paramIndex: 0,
+          fppkey: null,
+          params: [],
+          result: 5,
         };
         expect(stack[0].injections).toEqual([data1, data2]);
         expect(RecorderManager.recorderState).toMatchInlineSnapshot(`
@@ -233,13 +247,22 @@ describe('user-function-wrapper', () => {
         expect(stack.length).toBe(1);
         const parentInjections = stack[0].injections;
         const data1 = {
-          paramIndex: 0, fppkey: null, params: [], result: 1,
+          paramIndex: 0,
+          fppkey: null,
+          params: [],
+          result: 1,
         };
         const data2 = {
-          paramIndex: 0, fppkey: null, params: [], result: 2,
+          paramIndex: 0,
+          fppkey: null,
+          params: [],
+          result: 2,
         };
         const data3 = {
-          paramIndex: 0, fppkey: null, params: [], result: 3,
+          paramIndex: 0,
+          fppkey: null,
+          params: [],
+          result: 3,
         };
         expect(parentInjections).toEqual([
           data1,
@@ -318,6 +341,74 @@ describe('user-function-wrapper', () => {
         `);
       });
     });
+    it('should work for mock functions', () => {
+      const session = getNamespace('default');
+      session.run(() => {
+        const mockFn = jest.fn().mockImplementation((a, b) => a + b);
+        const mockMeta = {
+          path: 'dir1/file1.js',
+          moduleName: 'fs',
+          name: 'readFileSync',
+        };
+        const wrappedMock = (...p) => mockRecorderWrapper(mockMeta, mockFn, ...p);
+        const meta = {
+          path: 'dir1/file1.js',
+          name: 'fun1',
+          paramIds: ['a', 'b'],
+        };
+        const innerFunction = jest.fn().mockImplementation((a, b) => {
+          const c = wrappedMock(a, b);
+          const d = wrappedMock(a + 1, b + 1);
+          return c + d;
+        });
+        const params = [1, 2];
+        const result = recorderWrapper(meta, innerFunction, ...params);
+        expect(result).toBe(8);
+        expect(innerFunction.mock.calls.length).toEqual(1);
+        const stack = session.get('stack');
+        expect(stack.length).toBe(1);
+        const data1 = {
+          mockMeta,
+          params: [],
+          result: 3,
+        };
+        const data2 = {
+          mockMeta,
+          params: [],
+          result: 5,
+        };
+        expect(stack[0].mocks).toEqual([data1, data2]);
+        expect(
+          RecorderManager.recorderState['dir1/file1.js'].exportedFunctions.fun1
+            .captures[0].mocks,
+        ).toMatchInlineSnapshot(`
+          Object {
+            "fs": Object {
+              "readFileSync": Object {
+                "captures": Array [
+                  Object {
+                    "params": Array [],
+                    "result": 3,
+                    "types": Object {
+                      "params": Array [],
+                      "result": "Number",
+                    },
+                  },
+                  Object {
+                    "params": Array [],
+                    "result": 5,
+                    "types": Object {
+                      "params": Array [],
+                      "result": "Number",
+                    },
+                  },
+                ],
+              },
+            },
+          }
+        `);
+      });
+    });
   });
   describe('boundRecorderWrapper', () => {
     it('should create a new context for each call', () => {
@@ -335,18 +426,13 @@ describe('user-function-wrapper', () => {
       const session = getNamespace('default');
       const childFn = () => {
         const stack = session.get('stack');
-        expect(stack).toEqual([
-          { name: 'parentFn' },
-          { name: 'childFn' },
-        ]);
+        expect(stack).toEqual([{ name: 'parentFn' }, { name: 'childFn' }]);
       };
       const wrappedChild = (...params) => boundRecorderWrapper({ name: 'childFn' }, childFn, ...params);
       const parentFn = () => {
         wrappedChild();
         const stack = session.get('stack');
-        expect(stack).toEqual([
-          { name: 'parentFn', injections: [] },
-        ]);
+        expect(stack).toEqual([{ name: 'parentFn', injections: [] }]);
       };
       const wrappedParent = (...params) => boundRecorderWrapper({ name: 'parentFn' }, parentFn, ...params);
       wrappedParent();

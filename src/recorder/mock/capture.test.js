@@ -1,9 +1,6 @@
-
-jest.mock('cls-hooked');
 // jest.mock('../utils/dynamic-type-inference');
 jest.mock('../manager');
 
-const cls = require('cls-hooked');
 // const dti = require('../utils/dynamic-type-inference');
 const RecorderManager = require('../manager');
 
@@ -24,15 +21,14 @@ describe('mock-capture', () => {
       };
       const meta = {
         name: 'fun1',
-        captureIndex: 0,
       };
       const types = {
         params: ['Number', 'Number'],
         result: 'Number',
       };
-      const get = jest.fn().mockReturnValue([meta]);
-      cls.getNamespace.mockImplementation(() => ({ get }));
-      captureMockActivity(mockMeta, params, result);
+      const captureIndex = 0;
+      const data = { mockMeta, params, result };
+      captureMockActivity(captureIndex, meta, data);
       const addr = ['recorderState', 'dir1/file1.js', 'exportedFunctions', 'fun1', 'captures', 0, 'mocks', 'fs', 'readFileSync', 'captures', 0];
       expect(RecorderManager.recordTrio.mock.calls).toEqual([
         [addr, params, result, types],

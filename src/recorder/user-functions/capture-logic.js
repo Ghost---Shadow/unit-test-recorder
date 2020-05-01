@@ -8,6 +8,9 @@ const {
   recordInjectedActivity,
 } = require('../injection/di-recorder');
 const {
+  captureMockActivity,
+} = require('../mock/capture');
+const {
   recordAllToRecorderState,
   promoteInjections,
 } = require('../utils/cls-recordings');
@@ -62,7 +65,9 @@ const captureUserFunction = (params, result) => {
 
   // Record all dependency injections
   const DI_KEY = 'injections'; // TODO: Refactor out
+  const MOCK_KEY = 'mocks'; // TODO: Refactor out
   recordAllToRecorderState(DI_KEY, recordInjectedActivity, captureIndex);
+  recordAllToRecorderState(MOCK_KEY, captureMockActivity, captureIndex);
 
   // Copy all dependency injections to parent
   promoteInjections();

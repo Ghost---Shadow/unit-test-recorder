@@ -1,28 +1,7 @@
 {
   "test_integration/flows/18_record_stub_params/18_record_stub_params.js": {
-    "meta": {
-      "path": "test_integration/flows/18_record_stub_params/18_record_stub_params.js",
-      "mocks": [
-        "./auxilary"
-      ]
-    },
     "exportedFunctions": {
       "fun": {
-        "meta": {
-          "path": "test_integration/flows/18_record_stub_params/18_record_stub_params.js",
-          "name": "fun",
-          "paramIds": [
-            "obj"
-          ],
-          "injectionWhitelist": [
-            "fun"
-          ],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
         "captures": [
           {
             "injections": {
@@ -64,7 +43,8 @@
               }
             },
             "params": [
-              {}
+              {
+              }
             ],
             "result": 3,
             "types": {
@@ -77,8 +57,29 @@
         ],
         "hashTable": {
           "ptDMXfY3QQwk0LZqG8IhYA==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+            "fun"
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "fun",
+          "paramIds": [
+            "obj"
+          ],
+          "path": "test_integration/flows/18_record_stub_params/18_record_stub_params.js"
         }
       }
+    },
+    "meta": {
+      "mocks": [
+        "./auxilary"
+      ],
+      "path": "test_integration/flows/18_record_stub_params/18_record_stub_params.js"
     }
   }
 }

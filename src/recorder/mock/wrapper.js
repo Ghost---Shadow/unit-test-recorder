@@ -1,18 +1,21 @@
 const _ = require('lodash');
 // const { checkAndSetHash } = require('./utils/hash-helper');
 const { shouldRecordStubParams } = require('../utils/misc');
-const { captureMockActivity } = require('./capture');
+const { recordToCls } = require('../utils/cls-recordings');
 
 const mockRecorderWrapper = (meta, oldFp, ...p) => {
   const clonedParams = shouldRecordStubParams() ? _.cloneDeep(p) : [];
   const result = oldFp(...p);
+  const MOCK_KEY = 'mocks';
   try {
     if (typeof (result.then) === 'function') {
       result.then((res) => {
-        captureMockActivity(meta, clonedParams, res);
+        const data = { mockMeta: meta, params: clonedParams, result: res };
+        recordToCls(MOCK_KEY, data);
       });
     } else {
-      captureMockActivity(meta, clonedParams, result);
+      const data = { mockMeta: meta, params: clonedParams, result };
+      recordToCls(MOCK_KEY, data);
     }
   } catch (e) {
     console.error(e);

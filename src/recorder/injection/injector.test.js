@@ -21,11 +21,15 @@ const {
 
 describe('injector', () => {
   describe('injectFunctionDynamically', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
     it('should do nothing if not a function', () => {
       const maybeFunction = 42;
       const boundRecorder = jest.fn();
       const result = injectFunctionDynamically(maybeFunction, boundRecorder);
       expect(result).toEqual(42);
+      expect(dir.recordToCls.mock.calls.length).toEqual(0);
       expect(boundRecorder.mock.calls.length).toEqual(0);
     });
     it('should assign and invoke bound recorder if not present', () => {
@@ -34,7 +38,11 @@ describe('injector', () => {
       const fppkey = 'fppKey';
       const injFn = injectFunctionDynamically(maybeFunction, paramIndex, fppkey);
       injFn(1, 2);
-      expect(dir.recordToCls.mock.calls[0]).toEqual([0, 'fppKey', [1, 2], 3]);
+      const data = {
+        paramIndex: 0, fppkey: 'fppKey', params: [1, 2], result: 3,
+      };
+      expect(dir.recordToCls.mock.calls.length).toEqual(1);
+      expect(dir.recordToCls.mock.calls[0]).toEqual([data]);
       expect(injFn.utrIsInjected).toBeTruthy();
     });
     it('should assign and invoke bound recorder if not present (async)', async () => {
@@ -45,7 +53,11 @@ describe('injector', () => {
       const fppkey = 'fppKey';
       const injFn = injectFunctionDynamically(maybeFunction, paramIndex, fppkey);
       await injFn(1, 2);
-      expect(dir.recordToCls.mock.calls[0]).toEqual([0, 'fppKey', [1, 2], 3]);
+      const data = {
+        paramIndex: 0, fppkey: 'fppKey', params: [1, 2], result: 3,
+      };
+      expect(dir.recordToCls.mock.calls.length).toEqual(1);
+      expect(dir.recordToCls.mock.calls[0]).toEqual([data]);
       expect(injFn.utrIsInjected).toBeTruthy();
     });
     it('should ignore function as constructor', () => {
@@ -56,6 +68,7 @@ describe('injector', () => {
       const InjFn = injectFunctionDynamically(maybeFunction, boundRecorder);
       // eslint-disable-next-line no-new
       new InjFn(1, 2);
+      expect(dir.recordToCls.mock.calls.length).toEqual(0);
       expect(boundRecorder.mock.calls.length).toEqual(0);
       expect(RecorderManager.record.mock.calls.length).toEqual(1);
     });
@@ -67,7 +80,11 @@ describe('injector', () => {
       injFn = injectFunctionDynamically(injFn, paramIndex, fppkey);
       injFn = injectFunctionDynamically(injFn, paramIndex, fppkey);
       injFn(1, 2);
-      expect(dir.recordToCls.mock.calls[0]).toEqual([0, 'fppKey', [1, 2], 3]);
+      const data = {
+        paramIndex: 0, fppkey: 'fppKey', params: [1, 2], result: 3,
+      };
+      expect(dir.recordToCls.mock.calls.length).toEqual(1);
+      expect(dir.recordToCls.mock.calls[0]).toEqual([data]);
       expect(injFn.utrIsInjected).toBeTruthy();
     });
   });

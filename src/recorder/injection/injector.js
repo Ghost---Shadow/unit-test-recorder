@@ -36,15 +36,20 @@ const injectFunctionDynamically = (maybeFunction, paramIndex, fppkey) => {
         return new OldFp(...paramsOfInjected);
       }
       const clonedParams = shouldRecordStubParams() ? _.cloneDeep(paramsOfInjected) : [];
-      const curiedRecorder = recordToCls.bind(null, paramIndex, fppkey, clonedParams);
       const result = OldFp.apply(this, paramsOfInjected);
       if (result && _.isFunction(result.then)) {
         // It might be a promise
         result.then((res) => {
-          curiedRecorder(res);
+          const data = {
+            paramIndex, fppkey, params: clonedParams, result: res,
+          };
+          recordToCls(data);
         });
       } else {
-        curiedRecorder(result);
+        const data = {
+          paramIndex, fppkey, params: clonedParams, result,
+        };
+        recordToCls(data);
       }
       return result;
     }

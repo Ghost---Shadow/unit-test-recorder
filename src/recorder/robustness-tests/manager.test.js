@@ -96,7 +96,10 @@ describe('Robustness tests', () => {
           const params = [{ a: 1 }, 2];
           const result = { b: 1 };
           const captureIndex = 0;
-          recordInjectedActivity(meta, paramIndex, captureIndex, fppkey, params, result);
+          const data = {
+            paramIndex, fppkey, params, result,
+          };
+          recordInjectedActivity(captureIndex, meta, data);
         });
         it('should not crash markForConstructorInjection', () => {
           markForConstructorInjection(meta);

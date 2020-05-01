@@ -34,10 +34,13 @@ describe('user-function-wrapper', () => {
         expect(innerFunction.mock.calls.length).toEqual(1);
         const stack = session.get('stack');
         expect(stack.length).toBe(1);
-        expect(stack[0].injections).toEqual([
-          [0, null, [], 3],
-          [0, null, [], 5],
-        ]);
+        const data1 = {
+          paramIndex: 0, fppkey: null, params: [], result: 3,
+        };
+        const data2 = {
+          paramIndex: 0, fppkey: null, params: [], result: 5,
+        };
+        expect(stack[0].injections).toEqual([data1, data2]);
         expect(RecorderManager.recorderState).toMatchInlineSnapshot(`
           Object {
             "dir1/file1.js": Object {
@@ -125,10 +128,13 @@ describe('user-function-wrapper', () => {
         expect(innerFunction.mock.calls.length).toEqual(1);
         const stack = session.get('stack');
         expect(stack.length).toBe(1);
-        expect(stack[0].injections).toEqual([
-          [0, null, [], 3],
-          [0, null, [], 5],
-        ]);
+        const data1 = {
+          paramIndex: 0, fppkey: null, params: [], result: 3,
+        };
+        const data2 = {
+          paramIndex: 0, fppkey: null, params: [], result: 5,
+        };
+        expect(stack[0].injections).toEqual([data1, data2]);
         expect(RecorderManager.recorderState).toMatchInlineSnapshot(`
           Object {
             "dir1/file1.js": Object {
@@ -226,10 +232,19 @@ describe('user-function-wrapper', () => {
         const stack = session.get('stack');
         expect(stack.length).toBe(1);
         const parentInjections = stack[0].injections;
+        const data1 = {
+          paramIndex: 0, fppkey: null, params: [], result: 1,
+        };
+        const data2 = {
+          paramIndex: 0, fppkey: null, params: [], result: 2,
+        };
+        const data3 = {
+          paramIndex: 0, fppkey: null, params: [], result: 3,
+        };
         expect(parentInjections).toEqual([
-          [0, null, [], 1],
-          [0, null, [], 2], // child
-          [0, null, [], 3],
+          data1,
+          data2, // child
+          data3,
         ]);
         // const childInjections = stack[1].injections;
         // expect(childInjections).toEqual([

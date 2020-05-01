@@ -30,10 +30,10 @@ describe('param-crawler', () => {
           params[paramIndex](1, 2);
           const stack = session.get('stack');
           const { injections } = stack[0];
-          expect(injections).toEqual([
-            [paramIndex, fppkey, [1, 2], 3],
-            [paramIndex, fppkey, [1, 2], 3],
-          ]);
+          const data = {
+            paramIndex, fppkey, params: [1, 2], result: 3,
+          };
+          expect(injections).toEqual([data, data]);
         });
       });
       it('should handle duplicate injections', () => {
@@ -56,10 +56,10 @@ describe('param-crawler', () => {
           params[paramIndex](1, 2);
           const stack = session.get('stack');
           const { injections } = stack[0];
-          expect(injections).toEqual([
-            [paramIndex, fppkey, [1, 2], 3],
-            [paramIndex, fppkey, [1, 2], 3],
-          ]);
+          const data = {
+            paramIndex, fppkey, params: [1, 2], result: 3,
+          };
+          expect(injections).toEqual([data, data]);
         });
       });
     });
@@ -86,10 +86,10 @@ describe('param-crawler', () => {
           params[paramIndex].file1JsFn(1, 2);
           const stack = session.get('stack');
           const { injections } = stack[0];
-          expect(injections).toEqual([
-            [paramIndex, fppkey, [1, 2], 3],
-            [paramIndex, fppkey, [1, 2], 3],
-          ]);
+          const data = {
+            paramIndex, fppkey, params: [1, 2], result: 3,
+          };
+          expect(injections).toEqual([data, data]);
         });
       });
       it('should handle duplicate injections', () => {
@@ -113,10 +113,10 @@ describe('param-crawler', () => {
           params[paramIndex].file1JsFn(1, 2);
           const stack = session.get('stack');
           const { injections } = stack[0];
-          expect(injections).toEqual([
-            [paramIndex, fppkey, [1, 2], 3],
-            [paramIndex, fppkey, [1, 2], 3],
-          ]);
+          const data = {
+            paramIndex, fppkey, params: [1, 2], result: 3,
+          };
+          expect(injections).toEqual([data, data]);
         });
       });
     });

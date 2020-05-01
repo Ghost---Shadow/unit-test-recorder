@@ -20,14 +20,17 @@ describe('di-recorder', () => {
       const session = createNamespace('default');
       session.run(() => {
         session.set('stack', [{}]);
-        recordToCls(1, 2, 3, 4);
-        recordToCls(5, 6, 7, 8);
+        const data1 = {
+          paramIndex: 1, fppkey: 2, params: 3, result: 4,
+        };
+        const data2 = {
+          paramIndex: 5, fppkey: 6, params: 7, result: 8,
+        };
+        recordToCls(data1);
+        recordToCls(data2);
         const stack = session.get('stack');
         const { injections } = stack[0];
-        expect(injections).toEqual([
-          [1, 2, 3, 4],
-          [5, 6, 7, 8],
-        ]);
+        expect(injections).toEqual([data1, data2]);
       });
     });
   });
@@ -44,7 +47,10 @@ describe('di-recorder', () => {
       const params = [1, 2];
       const result = 3;
       const captureIndex = 0;
-      recordInjectedActivity(meta, paramIndex, captureIndex, fppkey, params, result);
+      const data = {
+        paramIndex, fppkey, params, result,
+      };
+      recordInjectedActivity(captureIndex, meta, data);
       const addr = ['recorderState', 'path', 'exportedFunctions', 'name', 'captures', 0, 'injections', 'a.foo.bar', 'captures', 0];
       const types = { params: ['Number', 'Number'], result: 'Number' };
       expect(RecorderManager.recordTrio.mock.calls).toEqual([
@@ -60,7 +66,10 @@ describe('di-recorder', () => {
       const params = [1, 2];
       const result = 3;
       const captureIndex = 0;
-      recordInjectedActivity(meta, paramIndex, captureIndex, fppkey, params, result);
+      const data = {
+        paramIndex, fppkey, params, result,
+      };
+      recordInjectedActivity(captureIndex, meta, data);
       const addr = ['recorderState', 'path', 'exportedFunctions', 'name', 'captures', 0, 'injections', 'a', 'captures', 0];
       const types = { params: ['Number', 'Number'], result: 'Number' };
       expect(RecorderManager.recordTrio.mock.calls).toEqual([
@@ -75,10 +84,13 @@ describe('di-recorder', () => {
     it('should dump everything from cls to state', () => {
       const session = createNamespace('default');
       session.run(() => {
-        const injections = [
-          [0, null, [1, 2], 3],
-          [0, null, [2, 3], 5],
-        ];
+        const data1 = {
+          paramIndex: 0, fppkey: null, params: [1, 2], result: 3,
+        };
+        const data2 = {
+          paramIndex: 0, fppkey: null, params: [2, 3], result: 5,
+        };
+        const injections = [data1, data2];
         const meta = {
           path: 'path', name: 'name', captureIndex: 0, paramIds: ['a', 'b'], injections,
         };
@@ -110,10 +122,19 @@ describe('di-recorder', () => {
     it('should add childs injections to parent', () => {
       const session = createNamespace('default');
       session.run(() => {
-        const parentInjections = [
-          [0, null, [], 1],
-          [0, null, [], 2],
-        ];
+        const data1 = {
+          paramIndex: 0, fppkey: null, params: [], result: 1,
+        };
+        const data2 = {
+          paramIndex: 0, fppkey: null, params: [], result: 2,
+        };
+        const data3 = {
+          paramIndex: 0, fppkey: null, params: [], result: 3,
+        };
+        const data4 = {
+          paramIndex: 0, fppkey: null, params: [], result: 4,
+        };
+        const parentInjections = [data1, data2];
         const parentMeta = {
           path: 'path',
           name: 'parent',
@@ -121,10 +142,7 @@ describe('di-recorder', () => {
           paramIds: ['a', 'b'],
           injections: parentInjections,
         };
-        const childInjections = [
-          [0, null, [], 3],
-          [0, null, [], 4],
-        ];
+        const childInjections = [data3, data4];
         const childMeta = {
           path: 'path',
           name: 'child',
@@ -143,10 +161,13 @@ describe('di-recorder', () => {
     it('should do nothing if no parent', () => {
       const session = createNamespace('default');
       session.run(() => {
-        const injections = [
-          [0, null, [], 1],
-          [0, null, [], 2],
-        ];
+        const data1 = {
+          paramIndex: 0, fppkey: null, params: [], result: 1,
+        };
+        const data2 = {
+          paramIndex: 0, fppkey: null, params: [], result: 2,
+        };
+        const injections = [data1, data2];
         const meta = {
           path: 'path',
           name: 'parent',

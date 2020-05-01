@@ -3,7 +3,7 @@ const { getNamespace } = require('cls-hooked');
 
 const RecorderManager = require('../manager');
 const { shouldRecordStubParams } = require('../utils/misc');
-const { recordToCls } = require('./di-recorder');
+const { recordToCls } = require('../utils/cls-recordings');
 
 const markForConstructorInjection = (meta) => {
   const { path, name } = meta;
@@ -37,19 +37,20 @@ const injectFunctionDynamically = (maybeFunction, paramIndex, fppkey) => {
       }
       const clonedParams = shouldRecordStubParams() ? _.cloneDeep(paramsOfInjected) : [];
       const result = OldFp.apply(this, paramsOfInjected);
+      const KEY = 'injections'; // TODO: refactor
       if (result && _.isFunction(result.then)) {
         // It might be a promise
         result.then((res) => {
           const data = {
             paramIndex, fppkey, params: clonedParams, result: res,
           };
-          recordToCls(data);
+          recordToCls(KEY, data);
         });
       } else {
         const data = {
           paramIndex, fppkey, params: clonedParams, result,
         };
-        recordToCls(data);
+        recordToCls(KEY, data);
       }
       return result;
     }

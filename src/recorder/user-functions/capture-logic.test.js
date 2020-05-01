@@ -1,4 +1,4 @@
-jest.mock('../injection/di-recorder');
+jest.mock('../utils/cls-recordings');
 jest.mock('../manager');
 jest.mock('../utils/hash-helper');
 jest.mock('cls-hooked');
@@ -6,7 +6,7 @@ jest.mock('cls-hooked');
 const cls = require('cls-hooked');
 const RecorderManager = require('../manager');
 const hh = require('../utils/hash-helper');
-const dir = require('../injection/di-recorder');
+const clsr = require('../utils/cls-recordings');
 const { processFunctionLikeParam, captureUserFunction } = require('./capture-logic');
 
 describe('user-function-capture', () => {
@@ -62,8 +62,8 @@ describe('user-function-capture', () => {
       expect(RecorderManager.recordTrio.mock.calls).toEqual([
         [addrToCaptureIndex, params, result, types],
       ]);
-      expect(dir.recordAllToRecorderState.mock.calls.length).toBe(1);
-      expect(dir.promoteInjections.mock.calls.length).toBe(1);
+      expect(clsr.recordAllToRecorderState.mock.calls.length).toBe(1);
+      expect(clsr.promoteInjections.mock.calls.length).toBe(1);
     });
     it('should record async functions', () => {
       const result = 3;
@@ -90,8 +90,8 @@ describe('user-function-capture', () => {
       expect(RecorderManager.recordTrio.mock.calls).toEqual([
         [addrToCaptureIndex, params, result, types],
       ]);
-      expect(dir.recordAllToRecorderState.mock.calls.length).toBe(1);
-      expect(dir.promoteInjections.mock.calls.length).toBe(1);
+      expect(clsr.recordAllToRecorderState.mock.calls.length).toBe(1);
+      expect(clsr.promoteInjections.mock.calls.length).toBe(1);
     });
     it('should not record if hash matches', () => {
       const result = 3;
@@ -114,8 +114,8 @@ describe('user-function-capture', () => {
         [addrToCaptureIndex, null, null],
       ]);
       expect(RecorderManager.recordTrio.mock.calls).toEqual([]);
-      expect(dir.recordAllToRecorderState.mock.calls.length).toBe(0);
-      expect(dir.promoteInjections.mock.calls.length).toBe(1);
+      expect(clsr.recordAllToRecorderState.mock.calls.length).toBe(0);
+      expect(clsr.promoteInjections.mock.calls.length).toBe(1);
     });
     it('should not crash for HOF', () => {
       const result = () => {};
@@ -142,8 +142,8 @@ describe('user-function-capture', () => {
       expect(RecorderManager.recordTrio.mock.calls).toEqual([
         [addrToCaptureIndex, params, result.toString(), types],
       ]);
-      expect(dir.recordAllToRecorderState.mock.calls.length).toBe(1);
-      expect(dir.promoteInjections.mock.calls.length).toBe(1);
+      expect(clsr.recordAllToRecorderState.mock.calls.length).toBe(1);
+      expect(clsr.promoteInjections.mock.calls.length).toBe(1);
     });
   });
 });

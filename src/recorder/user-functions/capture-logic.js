@@ -5,9 +5,12 @@ const RecorderManager = require('../manager');
 const { checkAndSetHash } = require('../utils/hash-helper');
 const { generateTypesObj } = require('../utils/dynamic-type-inference');
 const {
+  recordInjectedActivity,
+} = require('../injection/di-recorder');
+const {
   recordAllToRecorderState,
   promoteInjections,
-} = require('../injection/di-recorder');
+} = require('../utils/cls-recordings');
 
 const processFunctionLikeParam = (param) => {
   // Ignore falsey types
@@ -58,7 +61,8 @@ const captureUserFunction = (params, result) => {
   RecorderManager.recordTrio(addrToCaptureIndex, params, result, types);
 
   // Record all dependency injections
-  recordAllToRecorderState(captureIndex);
+  const DI_KEY = 'injections'; // TODO: Refactor out
+  recordAllToRecorderState(DI_KEY, recordInjectedActivity, captureIndex);
 
   // Copy all dependency injections to parent
   promoteInjections();

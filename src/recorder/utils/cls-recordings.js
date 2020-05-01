@@ -3,6 +3,8 @@ const { getNamespace } = require('cls-hooked');
 
 const recordToCls = (key, data) => {
   const session = getNamespace('default');
+  if (!session.active) return;
+
   const stack = session.get('stack');
   const top = stack.length - 1;
   const injections = stack[top][key] || [];

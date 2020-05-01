@@ -30,6 +30,14 @@ describe('di-recorder', () => {
         expect(injections).toEqual([data1, data2]);
       });
     });
+    it('should do nothing if not in a session', () => {
+      const data1 = {
+        paramIndex: 1, fppkey: 2, params: 3, result: 4,
+      };
+
+      const KEY = 'injections';
+      recordToCls(KEY, data1); // Should not throw exception
+    });
   });
   describe('recordAllToRecorderState', () => {
     beforeEach(() => {

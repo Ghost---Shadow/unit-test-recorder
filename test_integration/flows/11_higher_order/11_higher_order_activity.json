@@ -1,101 +1,12 @@
 {
   "test_integration/flows/11_higher_order/11_higher_order.js": {
     "exportedFunctions": {
-      "rObj.foo": {
-        "meta": {
-          "path": "test_integration/flows/11_higher_order/11_higher_order.js",
-          "name": "rObj.foo",
-          "paramIds": [
-            "f"
-          ],
-          "injectionWhitelist": [
-            "someFun"
-          ],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": true,
-          "doesReturnPromise": false
-        },
-        "captures": [
-          {
-            "params": [
-              "p => p.someFun()"
-            ],
-            "result": "p => f(p)",
-            "types": {
-              "params": [
-                "Function"
-              ],
-              "result": "Function"
-            },
-            "injections": {
-              "f": {
-                "captures": [
-                  {
-                    "params": [],
-                    "result": 4,
-                    "types": {
-                      "params": [],
-                      "result": "Number"
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "params": [
-              "function f(p) {\n  return p.someFun();\n}"
-            ],
-            "result": "p => f(p)",
-            "types": {
-              "params": [
-                "Function"
-              ],
-              "result": "Function"
-            },
-            "injections": {
-              "f": {
-                "captures": [
-                  {
-                    "params": [],
-                    "result": 5,
-                    "types": {
-                      "params": [],
-                      "result": "Number"
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        ],
-        "hashTable": {
-          "+aqvmMaJmEylWjK+toj5fQ==": true,
-          "NP2kSNbhYqxG0mNX+Koq0Q==": true
-        }
-      },
       "base": {
-        "meta": {
-          "path": "test_integration/flows/11_higher_order/11_higher_order.js",
-          "name": "base",
-          "paramIds": [
-            "param1"
-          ],
-          "injectionWhitelist": [
-            "someFun"
-          ],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
         "captures": [
           {
             "params": [
-              {}
+              {
+              }
             ],
             "result": "param2 => param1.someFun() + param2.someOtherFun()",
             "types": {
@@ -108,34 +19,83 @@
         ],
         "hashTable": {
           "4+SqArVQCz/D5YIV5aAHwQ==": true
-        }
-      },
-      "validFun": {
+        },
         "meta": {
-          "path": "test_integration/flows/11_higher_order/11_higher_order.js",
-          "name": "validFun",
-          "paramIds": [
-            "param"
-          ],
+          "doesReturnPromise": false,
           "injectionWhitelist": [
             "someFun"
           ],
+          "isAsync": false,
           "isDefault": false,
           "isEcmaDefault": false,
-          "isAsync": false,
           "isObject": false,
-          "doesReturnPromise": false
+          "name": "base",
+          "paramIds": [
+            "param1"
+          ],
+          "path": "test_integration/flows/11_higher_order/11_higher_order.js"
+        }
+      },
+      "rObj.foo": {
+        "captures": [
+          {
+            "params": [
+              "p => p.someFun()"
+            ],
+            "result": "p => f(p)",
+            "types": {
+              "params": [
+                "Function"
+              ],
+              "result": "Function"
+            }
+          },
+          {
+            "params": [
+              "function f(p) {\n  return p.someFun();\n}"
+            ],
+            "result": "p => f(p)",
+            "types": {
+              "params": [
+                "Function"
+              ],
+              "result": "Function"
+            }
+          }
+        ],
+        "hashTable": {
+          "+aqvmMaJmEylWjK+toj5fQ==": true,
+          "NP2kSNbhYqxG0mNX+Koq0Q==": true
         },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+            "someFun"
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": true,
+          "name": "rObj.foo",
+          "paramIds": [
+            "f"
+          ],
+          "path": "test_integration/flows/11_higher_order/11_higher_order.js"
+        }
+      },
+      "validFun": {
         "captures": [
           {
             "injections": {
               "param.someFun": {
                 "captures": [
                   {
-                    "params": [],
+                    "params": [
+                    ],
                     "result": 3,
                     "types": {
-                      "params": [],
+                      "params": [
+                      ],
                       "result": "Number"
                     }
                   }
@@ -143,7 +103,8 @@
               }
             },
             "params": [
-              {}
+              {
+              }
             ],
             "result": 3,
             "types": {
@@ -156,12 +117,28 @@
         ],
         "hashTable": {
           "ptDMXfY3QQwk0LZqG8IhYA==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+            "someFun"
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "validFun",
+          "paramIds": [
+            "param"
+          ],
+          "path": "test_integration/flows/11_higher_order/11_higher_order.js"
         }
       }
     },
     "meta": {
-      "path": "test_integration/flows/11_higher_order/11_higher_order.js",
-      "mocks": []
+      "mocks": [
+      ],
+      "path": "test_integration/flows/11_higher_order/11_higher_order.js"
     }
   }
 }

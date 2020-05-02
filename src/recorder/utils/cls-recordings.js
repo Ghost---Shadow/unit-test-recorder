@@ -6,6 +6,7 @@ const {
   KEY_UUID,
   KEY_INJECTIONS,
   KEY_MOCKS,
+  KEY_UUID_LUT,
 } = require('../../util/constants');
 
 const recordToCls = (key, data) => {
@@ -32,21 +33,6 @@ const recordAllToRecorderState = (key, recorderFunction, captureIndex) => {
   });
 };
 
-const crossCorrelate = (pInjections, cInjections) => {
-  const result = cInjections.map((cInjection) => {
-    // Mocks dont have paramIndex
-    if (cInjection.paramIndex === undefined) return cInjection;
-    const probableInjections = pInjections
-      .filter(pInjection => pInjection[KEY_UUID] === cInjection[KEY_UUID]);
-    if (probableInjections.length > 1) console.warn('WARN: UUID duplication found', probableInjections);
-    const pParamIndex = probableInjections
-      .map(pInjection => pInjection.paramIndex)[0];
-    if (pParamIndex === undefined) return null;
-    return { ...cInjection, paramIndex: pParamIndex };
-  });
-  return result.filter(inj => inj);
-};
-
 const promoteInjections = () => {
   // Parent needs all the injections recorded by child
   const session = getNamespace(CLS_NAMESPACE);
@@ -59,9 +45,15 @@ const promoteInjections = () => {
   const promoteInner = (key) => {
     const childInjections = stack[childIndex][key] || [];
     const parentInjections = stack[parentIndex][key] || [];
+    const lut = stack[parentIndex][KEY_UUID_LUT] || {};
 
     // Align the paramIndex from child to parent
-    const crossCorrelatedChildren = crossCorrelate(parentInjections, childInjections);
+    const crossCorrelatedChildren = childInjections
+      .map(cInj => ({
+        ...cInj,
+        paramIndex: lut[cInj[KEY_UUID]],
+      }))
+      .filter(cInj => cInj.paramIndex !== undefined);
 
     const newInjections = parentInjections.concat(crossCorrelatedChildren);
     stack[parentIndex][key] = newInjections;
@@ -80,5 +72,4 @@ module.exports = {
   recordToCls,
   recordAllToRecorderState,
   promoteInjections,
-  crossCorrelate,
 };

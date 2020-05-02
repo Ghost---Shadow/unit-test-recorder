@@ -65,6 +65,30 @@ const testIntegrationFlows06Mocks06MocksJsFoo1 = (...p) =>
   );
 require('./auxilary2');
 
+const expContinuationFn = (...p) =>
+  recorderWrapper(
+    {
+      path: 'test_integration/flows/06_mocks/06_mocks.js',
+      name: 'expContinuationFn',
+      paramIds: [],
+      injectionWhitelist: [],
+      isDefault: false,
+      isEcmaDefault: false,
+      isAsync: false,
+      isObject: false
+    },
+    () =>
+      JSON.parse(
+        fileSystem
+          .testIntegrationFlows06Mocks06MocksJsReadFileSync(
+            'test_integration/flows/06_mocks/response.json',
+            'utf8'
+          )
+          .toString()
+      ),
+    ...p
+  );
+
 const getTodo = (...p) =>
   recorderWrapper(
     {
@@ -84,14 +108,7 @@ const getTodo = (...p) =>
           'utf8'
         )
         .toString();
-      const a = JSON.parse(
-        fileSystem
-          .testIntegrationFlows06Mocks06MocksJsReadFileSync(
-            'test_integration/flows/06_mocks/response.json',
-            'utf8'
-          )
-          .toString()
-      );
+      const a = expContinuationFn();
       const b = testIntegrationFlows06Mocks06MocksJsFoo4();
       return a.concat(b);
     },
@@ -161,7 +178,8 @@ module.exports = {
   getTodo,
   localMocksTest,
   datesTest,
-  higherOrderTest
+  higherOrderTest,
+  expContinuationFn
 };
 recordFileMeta({
   path: 'test_integration/flows/06_mocks/06_mocks.js',

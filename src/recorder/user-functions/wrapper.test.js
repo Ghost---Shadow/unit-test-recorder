@@ -472,7 +472,7 @@ describe('user-function-wrapper', () => {
       const parentFn = () => {
         wrappedChild();
         const stack = session.get('stack');
-        expect(stack).toEqual([{ name: 'parentFn', injections: [] }]);
+        expect(stack).toEqual([{ name: 'parentFn', injections: [], mocks: [] }]);
       };
       const wrappedParent = (...params) => boundRecorderWrapper({ name: 'parentFn' }, parentFn, ...params);
       wrappedParent();

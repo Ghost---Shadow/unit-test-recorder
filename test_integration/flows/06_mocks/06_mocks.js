@@ -4,9 +4,11 @@ const {
 } = require('./auxilary1');
 require('./auxilary2');
 
+const expContinuationFn = () => JSON.parse(fileSystem.readFileSync('test_integration/flows/06_mocks/response.json', 'utf8').toString());
+
 const getTodo = () => {
   fileSystem.readFileSync('test_integration/flows/06_mocks/response.json', 'utf8').toString();
-  const a = JSON.parse(fileSystem.readFileSync('test_integration/flows/06_mocks/response.json', 'utf8').toString());
+  const a = expContinuationFn();
   const b = foo4();
   return a.concat(b);
 };
@@ -26,5 +28,5 @@ const higherOrderTest = () => {
 };
 
 module.exports = {
-  getTodo, localMocksTest, datesTest, higherOrderTest,
+  getTodo, localMocksTest, datesTest, higherOrderTest, expContinuationFn,
 };

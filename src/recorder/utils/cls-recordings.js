@@ -42,25 +42,25 @@ const promoteInjections = () => {
   const parentIndex = stack.length - 2;
   if (parentIndex < 0) return;
 
-  const promoteInner = (key) => {
+  const promoteInner = (key, useLut) => {
     const childInjections = stack[childIndex][key] || [];
     const parentInjections = stack[parentIndex][key] || [];
     const lut = stack[parentIndex][KEY_UUID_LUT] || {};
 
     // Align the paramIndex from child to parent
-    const crossCorrelatedChildren = childInjections
+    const crossCorrelatedChildren = useLut ? childInjections
       .map(cInj => ({
         ...cInj,
         paramIndex: lut[cInj[KEY_UUID]],
       }))
-      .filter(cInj => cInj.paramIndex !== undefined);
+      .filter(cInj => cInj.paramIndex !== undefined) : childInjections;
 
     const newInjections = parentInjections.concat(crossCorrelatedChildren);
     stack[parentIndex][key] = newInjections;
   };
 
-  promoteInner(KEY_INJECTIONS);
-  // TODO: Promote mocks
+  promoteInner(KEY_INJECTIONS, true);
+  promoteInner(KEY_MOCKS, false);
 
   // Child is recorded and no longer required
   stack.pop();

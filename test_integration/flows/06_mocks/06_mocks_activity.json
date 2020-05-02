@@ -1,6 +1,271 @@
 {
   "test_integration/flows/06_mocks/06_mocks.js": {
     "exportedFunctions": {
+      "expContinuationFn": {
+        "captures": [
+          {
+            "mocks": {
+              "fs": {
+                "readFileSync": {
+                  "captures": [
+                    {
+                      "params": [
+                      ],
+                      "result": "[\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  },\n  {\n    \"userId\": 1,\n    \"id\": 1,\n    \"title\": \"delectus aut autem\",\n    \"completed\": false\n  }\n]",
+                      "types": {
+                        "params": [
+                        ],
+                        "result": "String"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "params": [
+            ],
+            "result": [
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              },
+              {
+                "completed": false,
+                "id": 1,
+                "title": "delectus aut autem",
+                "userId": 1
+              }
+            ],
+            "types": {
+              "params": [
+              ],
+              "result": "Array"
+            }
+          }
+        ],
+        "hashTable": {
+          "QaWoVyHVr6mUNa+iSIPoLg==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "expContinuationFn",
+          "paramIds": [
+          ],
+          "path": "test_integration/flows/06_mocks/06_mocks.js"
+        }
+      },
       "getTodo": {
         "captures": [
           {

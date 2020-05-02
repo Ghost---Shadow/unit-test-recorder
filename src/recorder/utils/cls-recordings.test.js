@@ -134,6 +134,35 @@ describe('di-recorder', () => {
         expect(stack.length).toEqual(1);
       });
     });
+    it('should add childs mocks to parent', () => {
+      const session = createNamespace(CLS_NAMESPACE);
+      session.run(() => {
+        const data1 = { params: [], result: 1 };
+        const data2 = { params: [], result: 2 };
+        const data3 = { params: [], result: 3 };
+        const data4 = { params: [], result: 4 };
+        const parentMocks = [data1, data2];
+        const parentMeta = {
+          path: 'path',
+          name: 'parent',
+          captureIndex: 0,
+          mocks: parentMocks,
+        };
+        const childMocks = [data3, data4];
+        const childMeta = {
+          path: 'path',
+          name: 'child',
+          captureIndex: 0,
+          mocks: childMocks,
+        };
+        session.set('stack', [parentMeta, childMeta]);
+        promoteInjections();
+        const stack = session.get('stack');
+        const { mocks } = stack[0];
+        expect(mocks).toEqual([...parentMocks, ...childMocks]);
+        expect(stack.length).toEqual(1);
+      });
+    });
     it('should do nothing if no parent', () => {
       const session = createNamespace(CLS_NAMESPACE);
       session.run(() => {

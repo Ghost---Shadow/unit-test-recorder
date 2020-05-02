@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const { getNamespace } = require('cls-hooked');
+const isPromise = require('is-promise');
 const { v4: uuidv4 } = require('uuid');
 
 const RecorderManager = require('../manager');
@@ -66,27 +67,16 @@ const injectFunctionDynamically = (maybeFunction, paramIndex, fppkey) => {
       const result = OldFp.apply(this, paramsOfInjected);
       const funcUuid = injectedFunction[KEY_UUID];
       const newParamIndex = getTransformedParamIndex(funcUuid, paramIndex);
-      if (result && _.isFunction(result.then)) {
-        // It might be a promise
-        result.then((res) => {
-          const data = {
-            paramIndex: newParamIndex,
-            fppkey,
-            params: clonedParams,
-            result: res,
-            [KEY_UUID]: funcUuid,
-          };
-          recordToCls(KEY_INJECTIONS, data);
-        });
+      const data = {
+        paramIndex: newParamIndex,
+        fppkey,
+        params: clonedParams,
+        [KEY_UUID]: funcUuid,
+      };
+      if (isPromise(result)) {
+        result.then(res => recordToCls(KEY_INJECTIONS, { ...data, result: res }));
       } else {
-        const data = {
-          paramIndex: newParamIndex,
-          fppkey,
-          params: clonedParams,
-          result,
-          [KEY_UUID]: funcUuid,
-        };
-        recordToCls(KEY_INJECTIONS, data);
+        recordToCls(KEY_INJECTIONS, { ...data, result });
       }
       return result;
     }

@@ -1,5 +1,7 @@
 const _ = require('lodash');
+const isPromise = require('is-promise');
 const { createNamespace } = require('cls-hooked');
+
 const { captureUserFunction } = require('./capture-logic');
 const { pre } = require('./pre');
 
@@ -26,8 +28,7 @@ const recorderWrapper = (meta, innerFunction, ...params) => {
     const stack = session.get('stack');
     const top = stack.length - 1;
 
-    if (result && _.isFunction(result.then)) {
-      // It might be a promise
+    if (isPromise(result)) {
       stack[top].doesReturnPromise = true;
       session.set('stack', stack);
       result.then(res => captureUserFunction(originalParams, res));

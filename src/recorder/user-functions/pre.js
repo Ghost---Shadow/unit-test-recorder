@@ -2,6 +2,10 @@ const { getNamespace } = require('cls-hooked');
 const { injectDependencyInjections } = require('../injection');
 const RecorderManager = require('../manager');
 
+const {
+  CLS_NAMESPACE,
+} = require('../../util/constants');
+
 const pre = (meta, params) => {
   const { path, name } = meta;
 
@@ -10,7 +14,7 @@ const pre = (meta, params) => {
   RecorderManager.record(address, meta);
 
   // Set stack in continuation local storage
-  const session = getNamespace('default');
+  const session = getNamespace(CLS_NAMESPACE);
   const stack = session.get('stack') || [];
   stack.push(meta);
   session.set('stack', stack);

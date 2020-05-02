@@ -9,6 +9,10 @@ const hh = require('../utils/hash-helper');
 const clsr = require('../utils/cls-recordings');
 const { processFunctionLikeParam, captureUserFunction } = require('./capture-logic');
 
+const {
+  KEY_UUID,
+} = require('../../util/constants');
+
 describe('user-function-capture', () => {
   describe('processFunctionLikeParam', () => {
     it('should return same for non function like params', () => {
@@ -23,7 +27,7 @@ describe('user-function-capture', () => {
     });
     it('should return null for injected functions', () => {
       const param = () => {};
-      param.utrIsInjected = true;
+      param[KEY_UUID] = true;
       const result = processFunctionLikeParam(param);
       expect(result).toEqual(null);
     });

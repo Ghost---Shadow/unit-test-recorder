@@ -11,12 +11,17 @@ const {
   crossCorrelate,
 } = require('./cls-recordings');
 
+const {
+  CLS_NAMESPACE,
+  KEY_UUID,
+} = require('../../util/constants');
+
 console.warn = () => null;
 
 describe('di-recorder', () => {
   describe('recordToCls', () => {
     it('should add injections to a flat list', () => {
-      const session = createNamespace('default');
+      const session = createNamespace(CLS_NAMESPACE);
       session.run(() => {
         session.set('stack', [{}]);
         const data1 = {
@@ -47,7 +52,7 @@ describe('di-recorder', () => {
       jest.clearAllMocks();
     });
     it('should dump everything from cls to state', () => {
-      const session = createNamespace('default');
+      const session = createNamespace(CLS_NAMESPACE);
       session.run(() => {
         const data1 = {
           paramIndex: 0, fppkey: null, params: [1, 2], result: 3,
@@ -72,7 +77,7 @@ describe('di-recorder', () => {
       });
     });
     it('should do nothing if there are no injections', () => {
-      const session = createNamespace('default');
+      const session = createNamespace(CLS_NAMESPACE);
       session.run(() => {
         const meta = {
           path: 'path', name: 'name', captureIndex: 0, paramIds: ['a', 'b'],
@@ -88,7 +93,7 @@ describe('di-recorder', () => {
   });
   describe('promoteInjections', () => {
     it('should add childs injections to parent', () => {
-      const session = createNamespace('default');
+      const session = createNamespace(CLS_NAMESPACE);
       session.run(() => {
         const data1 = {
           paramIndex: 0, fppkey: null, params: [], result: 1,
@@ -127,7 +132,7 @@ describe('di-recorder', () => {
       });
     });
     it('should do nothing if no parent', () => {
-      const session = createNamespace('default');
+      const session = createNamespace(CLS_NAMESPACE);
       session.run(() => {
         const data1 = {
           paramIndex: 0, fppkey: null, params: [], result: 1,
@@ -159,23 +164,23 @@ describe('di-recorder', () => {
       expect(actual).toEqual(cInjections);
     });
     it('should align parent and child', () => {
-      const pInjections = [{ paramIndex: 0, funcUuid: '1' }, { paramIndex: 1, funcUuid: '2' }];
-      const cInjections = [{ paramIndex: 0, funcUuid: '2' }, { paramIndex: 1, funcUuid: '1' }];
-      const expected = [{ paramIndex: 1, funcUuid: '2' }, { paramIndex: 0, funcUuid: '1' }];
+      const pInjections = [{ paramIndex: 0, [KEY_UUID]: '1' }, { paramIndex: 1, [KEY_UUID]: '2' }];
+      const cInjections = [{ paramIndex: 0, [KEY_UUID]: '2' }, { paramIndex: 1, [KEY_UUID]: '1' }];
+      const expected = [{ paramIndex: 1, [KEY_UUID]: '2' }, { paramIndex: 0, [KEY_UUID]: '1' }];
       const actual = crossCorrelate(pInjections, cInjections);
       expect(actual).toEqual(expected);
     });
     it('should not crash if not found in parent', () => {
-      const pInjections = [{ paramIndex: 1, funcUuid: '1' }];
-      const cInjections = [{ paramIndex: 3, funcUuid: '2' }, { paramIndex: 4, funcUuid: '1' }];
-      const expected = [{ paramIndex: 1, funcUuid: '1' }];
+      const pInjections = [{ paramIndex: 1, [KEY_UUID]: '1' }];
+      const cInjections = [{ paramIndex: 3, [KEY_UUID]: '2' }, { paramIndex: 4, [KEY_UUID]: '1' }];
+      const expected = [{ paramIndex: 1, [KEY_UUID]: '1' }];
       const actual = crossCorrelate(pInjections, cInjections);
       expect(actual).toEqual(expected);
     });
     it('should pick first one if multiple uuids', () => {
-      const pInjections = [{ paramIndex: 1, funcUuid: '1' }, { paramIndex: 2, funcUuid: '1' }];
-      const cInjections = [{ paramIndex: 3, funcUuid: '2' }, { paramIndex: 4, funcUuid: '1' }];
-      const expected = [{ paramIndex: 1, funcUuid: '1' }];
+      const pInjections = [{ paramIndex: 1, [KEY_UUID]: '1' }, { paramIndex: 2, [KEY_UUID]: '1' }];
+      const cInjections = [{ paramIndex: 3, [KEY_UUID]: '2' }, { paramIndex: 4, [KEY_UUID]: '1' }];
+      const expected = [{ paramIndex: 1, [KEY_UUID]: '1' }];
       const actual = crossCorrelate(pInjections, cInjections);
       expect(actual).toEqual(expected);
     });

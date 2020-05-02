@@ -6,8 +6,15 @@ const RecorderManager = require('../manager');
 const { shouldRecordStubParams } = require('../utils/misc');
 const { recordToCls } = require('../utils/cls-recordings');
 
+const {
+  CLS_NAMESPACE,
+  KEY_UUID,
+  KEY_INJECTIONS,
+  KEY_UUID_LUT,
+} = require('../../util/constants');
+
 const markForConstructorInjection = () => {
-  const session = getNamespace('default');
+  const session = getNamespace(CLS_NAMESPACE);
   const stack = session.get('stack');
   const meta = _.last(stack);
   const { path, name } = meta;
@@ -24,25 +31,25 @@ const markForConstructorInjection = () => {
 
 
 const updateUuidLut = (uuid, paramIndex) => {
-  const session = getNamespace('default');
+  const session = getNamespace(CLS_NAMESPACE);
   const stack = session.get('stack');
   const top = stack.length - 1;
-  _.set(stack, [top, 'uuidLut', uuid], paramIndex);
+  _.set(stack, [top, KEY_UUID_LUT, uuid], paramIndex);
   session.set('stack', stack);
 };
 
 const getTransformedParamIndex = (uuid, defaultParamIndex) => {
-  const session = getNamespace('default');
+  const session = getNamespace(CLS_NAMESPACE);
   const stack = session.get('stack');
   const meta = _.last(stack);
-  return _.get(meta, ['uuidLut', uuid], defaultParamIndex);
+  return _.get(meta, [KEY_UUID_LUT, uuid], defaultParamIndex);
 };
 
 const injectFunctionDynamically = (maybeFunction, paramIndex, fppkey) => {
   if (_.isFunction(maybeFunction)) {
     // Already injected
-    if (maybeFunction.utrUuid) {
-      updateUuidLut(maybeFunction.utrUuid, paramIndex);
+    if (maybeFunction[KEY_UUID]) {
+      updateUuidLut(maybeFunction[KEY_UUID], paramIndex);
       return maybeFunction;
     }
 
@@ -57,27 +64,34 @@ const injectFunctionDynamically = (maybeFunction, paramIndex, fppkey) => {
       }
       const clonedParams = shouldRecordStubParams() ? _.cloneDeep(paramsOfInjected) : [];
       const result = OldFp.apply(this, paramsOfInjected);
-      const KEY = 'injections'; // TODO: refactor
-      const funcUuid = injectedFunction.utrUuid;
+      const funcUuid = injectedFunction[KEY_UUID];
       const newParamIndex = getTransformedParamIndex(funcUuid, paramIndex);
       if (result && _.isFunction(result.then)) {
         // It might be a promise
         result.then((res) => {
           const data = {
-            paramIndex: newParamIndex, fppkey, params: clonedParams, result: res, funcUuid,
+            paramIndex: newParamIndex,
+            fppkey,
+            params: clonedParams,
+            result: res,
+            [KEY_UUID]: funcUuid,
           };
-          recordToCls(KEY, data);
+          recordToCls(KEY_INJECTIONS, data);
         });
       } else {
         const data = {
-          paramIndex: newParamIndex, fppkey, params: clonedParams, result, funcUuid,
+          paramIndex: newParamIndex,
+          fppkey,
+          params: clonedParams,
+          result,
+          [KEY_UUID]: funcUuid,
         };
-        recordToCls(KEY, data);
+        recordToCls(KEY_INJECTIONS, data);
       }
       return result;
     }
-    injectedFunction.utrUuid = uuidv4();
-    updateUuidLut(injectedFunction.utrUuid, paramIndex);
+    injectedFunction[KEY_UUID] = uuidv4();
+    updateUuidLut(injectedFunction[KEY_UUID], paramIndex);
     return injectedFunction;
   }
   return maybeFunction;

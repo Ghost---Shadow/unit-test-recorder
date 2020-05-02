@@ -13,6 +13,10 @@ jest.mock('uuid', () => {
 const uuid = require('uuid');
 
 const { injectDependencyInjections } = require('./param-crawler');
+const {
+  CLS_NAMESPACE,
+  KEY_UUID,
+} = require('../../util/constants');
 
 describe('param-crawler', () => {
   describe('injectDependencyInjections', () => {
@@ -21,7 +25,7 @@ describe('param-crawler', () => {
         uuid.v4.reset();
       });
       it('should inject recorder to params', () => {
-        const session = createNamespace('default');
+        const session = createNamespace(CLS_NAMESPACE);
         session.run(() => {
           const fn = jest.fn().mockImplementation((a, b) => a + b);
           const paramIndex = 0;
@@ -40,13 +44,13 @@ describe('param-crawler', () => {
           const stack = session.get('stack');
           const { injections } = stack[0];
           const data = {
-            paramIndex, fppkey, params: [1, 2], result: 3, funcUuid: 'uuid_0',
+            paramIndex, fppkey, params: [1, 2], result: 3, [KEY_UUID]: 'uuid_0',
           };
           expect(injections).toEqual([data, data]);
         });
       });
       it('should handle duplicate injections', () => {
-        const session = createNamespace('default');
+        const session = createNamespace(CLS_NAMESPACE);
         session.run(() => {
           const fn = jest.fn().mockImplementation((a, b) => a + b);
           const paramIndex = 0;
@@ -66,7 +70,7 @@ describe('param-crawler', () => {
           const stack = session.get('stack');
           const { injections } = stack[0];
           const data = {
-            paramIndex, fppkey, params: [1, 2], result: 3, funcUuid: 'uuid_0',
+            paramIndex, fppkey, params: [1, 2], result: 3, [KEY_UUID]: 'uuid_0',
           };
           expect(injections).toEqual([data, data]);
         });
@@ -76,7 +80,7 @@ describe('param-crawler', () => {
       beforeEach(() => {
       });
       it('should inject recorder to params', () => {
-        const session = createNamespace('default');
+        const session = createNamespace(CLS_NAMESPACE);
         session.run(() => {
           const fn = jest.fn().mockImplementation((a, b) => a + b);
           const obj = { fn };
@@ -96,13 +100,13 @@ describe('param-crawler', () => {
           const stack = session.get('stack');
           const { injections } = stack[0];
           const data = {
-            paramIndex, fppkey, params: [1, 2], result: 3, funcUuid: 'uuid_0',
+            paramIndex, fppkey, params: [1, 2], result: 3, [KEY_UUID]: 'uuid_0',
           };
           expect(injections).toEqual([data, data]);
         });
       });
       it('should handle duplicate injections', () => {
-        const session = createNamespace('default');
+        const session = createNamespace(CLS_NAMESPACE);
         session.run(() => {
           const fn = jest.fn().mockImplementation((a, b) => a + b);
           const obj = { fn };
@@ -123,7 +127,7 @@ describe('param-crawler', () => {
           const stack = session.get('stack');
           const { injections } = stack[0];
           const data = {
-            paramIndex, fppkey, params: [1, 2], result: 3, funcUuid: 'uuid_0',
+            paramIndex, fppkey, params: [1, 2], result: 3, [KEY_UUID]: 'uuid_0',
           };
           expect(injections).toEqual([data, data]);
         });

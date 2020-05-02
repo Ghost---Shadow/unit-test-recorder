@@ -16,6 +16,10 @@ const {
 
 const errorThrower = () => { throw new Error('sample'); };
 
+const {
+  CLS_NAMESPACE,
+} = require('../../util/constants');
+
 describe('Robustness tests', () => {
   beforeAll(() => {
     // Suppress console error
@@ -72,7 +76,7 @@ describe('Robustness tests', () => {
         };
         it('should not crash injectDependencyInjections', (done) => {
           const params = [{ a: () => 1 }];
-          const session = cls.getNamespace('default');
+          const session = cls.getNamespace(CLS_NAMESPACE);
           session.run(() => {
             session.set('stack', [meta]);
             injectDependencyInjections(params);
@@ -80,7 +84,7 @@ describe('Robustness tests', () => {
           });
         });
         it('should not crash injectFunctionDynamically', (done) => {
-          const session = cls.getNamespace('default');
+          const session = cls.getNamespace(CLS_NAMESPACE);
           session.run(() => {
             session.set('stack', [meta]);
             const maybeFunction = () => {};
@@ -102,7 +106,7 @@ describe('Robustness tests', () => {
           recordInjectedActivity(captureIndex, meta, data);
         });
         it('should not crash markForConstructorInjection', () => {
-          const session = cls.getNamespace('default');
+          const session = cls.getNamespace(CLS_NAMESPACE);
           session.run(() => {
             session.set('stack', [meta]);
             markForConstructorInjection(meta);

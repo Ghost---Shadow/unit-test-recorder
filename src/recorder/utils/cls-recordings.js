@@ -1,8 +1,15 @@
 const _ = require('lodash');
 const { getNamespace } = require('cls-hooked');
 
+const {
+  CLS_NAMESPACE,
+  KEY_UUID,
+  KEY_INJECTIONS,
+  KEY_MOCKS,
+} = require('../../util/constants');
+
 const recordToCls = (key, data) => {
-  const session = getNamespace('default');
+  const session = getNamespace(CLS_NAMESPACE);
   if (!session.active) return;
 
   const stack = session.get('stack');
@@ -14,11 +21,11 @@ const recordToCls = (key, data) => {
 };
 
 const recordAllToRecorderState = (key, recorderFunction, captureIndex) => {
-  const session = getNamespace('default');
+  const session = getNamespace(CLS_NAMESPACE);
   const stack = session.get('stack');
   const top = _.last(stack);
   const injections = top[key] || [];
-  const meta = _.omit(top, ['injections', 'mocks']);
+  const meta = _.omit(top, [KEY_INJECTIONS, KEY_MOCKS]);
 
   injections.forEach((data) => {
     recorderFunction(captureIndex, meta, data);
@@ -30,7 +37,7 @@ const crossCorrelate = (pInjections, cInjections) => {
     // Mocks dont have paramIndex
     if (cInjection.paramIndex === undefined) return cInjection;
     const probableInjections = pInjections
-      .filter(pInjection => pInjection.funcUuid === cInjection.funcUuid);
+      .filter(pInjection => pInjection[KEY_UUID] === cInjection[KEY_UUID]);
     if (probableInjections.length > 1) console.warn('WARN: UUID duplication found', probableInjections);
     const pParamIndex = probableInjections
       .map(pInjection => pInjection.paramIndex)[0];
@@ -42,7 +49,7 @@ const crossCorrelate = (pInjections, cInjections) => {
 
 const promoteInjections = () => {
   // Parent needs all the injections recorded by child
-  const session = getNamespace('default');
+  const session = getNamespace(CLS_NAMESPACE);
   const stack = session.get('stack');
 
   const childIndex = stack.length - 1;
@@ -60,8 +67,8 @@ const promoteInjections = () => {
     stack[parentIndex][key] = newInjections;
   };
 
-  const DI_KEY = 'injections'; // TODO: Refactor out
-  promoteInner(DI_KEY);
+  promoteInner(KEY_INJECTIONS);
+  // TODO: Promote mocks
 
   // Child is recorded and no longer required
   stack.pop();

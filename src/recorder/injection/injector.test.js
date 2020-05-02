@@ -20,18 +20,24 @@ const RecorderManager = require('../manager');
 const clsr = require('../utils/cls-recordings');
 
 const {
+  CLS_NAMESPACE,
+  KEY_UUID,
+  KEY_INJECTIONS,
+  KEY_UUID_LUT,
+} = require('../../util/constants');
+
+const {
   injectFunctionDynamically,
 } = require('./injector');
 
 describe('injector', () => {
-  const KEY = 'injections'; // TODO: Refactor
   describe('injectFunctionDynamically', () => {
     beforeEach(() => {
       jest.clearAllMocks();
       uuid.v4.reset();
     });
     it('should do nothing if not a function', () => {
-      const session = cls.createNamespace('default');
+      const session = cls.createNamespace(CLS_NAMESPACE);
       session.run(() => {
         const maybeFunction = 42;
         const boundRecorder = jest.fn();
@@ -42,7 +48,7 @@ describe('injector', () => {
       });
     });
     it('should assign and invoke bound recorder if not present', () => {
-      const session = cls.createNamespace('default');
+      const session = cls.createNamespace(CLS_NAMESPACE);
       session.run(() => {
         session.set('stack', [{}]);
         const maybeFunction = (a, b) => a + b;
@@ -52,16 +58,16 @@ describe('injector', () => {
         injFn(1, 2);
         const funcUuid = 'uuid_0';
         const data = {
-          paramIndex: 0, fppkey: 'fppKey', params: [1, 2], result: 3, funcUuid,
+          paramIndex: 0, fppkey: 'fppKey', params: [1, 2], result: 3, [KEY_UUID]: funcUuid,
         };
         expect(clsr.recordToCls.mock.calls.length).toEqual(1);
-        expect(clsr.recordToCls.mock.calls[0]).toEqual([KEY, data]);
-        expect(injFn.utrUuid).toEqual(funcUuid);
-        expect(session.get('stack')).toEqual([{ uuidLut: { [funcUuid]: paramIndex } }]);
+        expect(clsr.recordToCls.mock.calls[0]).toEqual([KEY_INJECTIONS, data]);
+        expect(injFn[KEY_UUID]).toEqual(funcUuid);
+        expect(session.get('stack')).toEqual([{ [KEY_UUID_LUT]: { [funcUuid]: paramIndex } }]);
       });
     });
     it('should assign and invoke bound recorder if not present (async)', (done) => {
-      const session = cls.createNamespace('default');
+      const session = cls.createNamespace(CLS_NAMESPACE);
       session.run(async () => {
         session.set('stack', [{}]);
         const maybeFunction = (a, b) => new Promise((res) => {
@@ -73,17 +79,17 @@ describe('injector', () => {
         const injFn = injectFunctionDynamically(maybeFunction, paramIndex, fppkey);
         await injFn(1, 2);
         const data = {
-          paramIndex: 0, fppkey: 'fppKey', params: [1, 2], result: 3, funcUuid,
+          paramIndex: 0, fppkey: 'fppKey', params: [1, 2], result: 3, [KEY_UUID]: funcUuid,
         };
         expect(clsr.recordToCls.mock.calls.length).toEqual(1);
-        expect(clsr.recordToCls.mock.calls[0]).toEqual([KEY, data]);
-        expect(injFn.utrUuid).toEqual(funcUuid);
-        expect(session.get('stack')).toEqual([{ uuidLut: { [funcUuid]: paramIndex } }]);
+        expect(clsr.recordToCls.mock.calls[0]).toEqual([KEY_INJECTIONS, data]);
+        expect(injFn[KEY_UUID]).toEqual(funcUuid);
+        expect(session.get('stack')).toEqual([{ [KEY_UUID_LUT]: { [funcUuid]: paramIndex } }]);
         done();
       });
     });
     it('should ignore function as constructor', () => {
-      const session = cls.createNamespace('default');
+      const session = cls.createNamespace(CLS_NAMESPACE);
       session.run(() => {
         session.set('stack', [{}]);
         function maybeFunction(a, b) {
@@ -99,7 +105,7 @@ describe('injector', () => {
       });
     });
     it('should not inject if already injected', () => {
-      const session = cls.createNamespace('default');
+      const session = cls.createNamespace(CLS_NAMESPACE);
       session.run(() => {
         session.set('stack', [{}]);
         const maybeFunction = (a, b) => a + b;
@@ -111,48 +117,48 @@ describe('injector', () => {
         injFn = injectFunctionDynamically(injFn, paramIndex, fppkey);
         injFn(1, 2);
         const data = {
-          paramIndex: 0, fppkey: 'fppKey', params: [1, 2], result: 3, funcUuid,
+          paramIndex: 0, fppkey: 'fppKey', params: [1, 2], result: 3, [KEY_UUID]: funcUuid,
         };
         expect(clsr.recordToCls.mock.calls.length).toEqual(1);
-        expect(clsr.recordToCls.mock.calls[0]).toEqual([KEY, data]);
-        expect(injFn.utrUuid).toEqual(funcUuid);
-        expect(session.get('stack')).toEqual([{ uuidLut: { [funcUuid]: paramIndex } }]);
+        expect(clsr.recordToCls.mock.calls[0]).toEqual([KEY_INJECTIONS, data]);
+        expect(injFn[KEY_UUID]).toEqual(funcUuid);
+        expect(session.get('stack')).toEqual([{ [KEY_UUID_LUT]: { [funcUuid]: paramIndex } }]);
       });
     });
     it('should update paramIndex on reinjection', () => {
-      const session = cls.createNamespace('default');
+      const session = cls.createNamespace(CLS_NAMESPACE);
       session.run(() => {
         const metaFun1 = { name: 'fun1' };
         const metaFun2 = { name: 'fun2' };
         const funcUuid = 'uuid_0';
-        const metaFun1WithUUid = { ...metaFun1, uuidLut: { [funcUuid]: 0 } };
-        const metaFun2WithUUid = { ...metaFun2, uuidLut: { [funcUuid]: 1 } };
+        const metaFun1WithUUid = { ...metaFun1, [KEY_UUID_LUT]: { [funcUuid]: 0 } };
+        const metaFun2WithUUid = { ...metaFun2, [KEY_UUID_LUT]: { [funcUuid]: 1 } };
         const maybeFunction = (a, b) => a + b;
         const fppkey = 'fppKey';
         let injFn = maybeFunction;
 
         // Parent function
         const data1 = {
-          paramIndex: 0, fppkey: 'fppKey', params: [1, 2], result: 3, funcUuid,
+          paramIndex: 0, fppkey: 'fppKey', params: [1, 2], result: 3, [KEY_UUID]: funcUuid,
         };
         session.set('stack', [metaFun1]);
         injFn = injectFunctionDynamically(injFn, data1.paramIndex, fppkey);
         injFn(1, 2);
         expect(session.get('stack')).toEqual([metaFun1WithUUid]);
-        expect(clsr.recordToCls.mock.calls[0]).toEqual([KEY, data1]);
+        expect(clsr.recordToCls.mock.calls[0]).toEqual([KEY_INJECTIONS, data1]);
 
         // Child function
         const data2 = {
-          paramIndex: 1, fppkey: 'fppKey', params: [1, 2], result: 3, funcUuid,
+          paramIndex: 1, fppkey: 'fppKey', params: [1, 2], result: 3, [KEY_UUID]: funcUuid,
         };
         session.set('stack', [metaFun1WithUUid, metaFun2]);
         injFn = injectFunctionDynamically(injFn, data2.paramIndex, fppkey);
         injFn(1, 2);
         expect(session.get('stack')).toEqual([metaFun1WithUUid, metaFun2WithUUid]);
-        expect(clsr.recordToCls.mock.calls[1]).toEqual([KEY, data2]);
+        expect(clsr.recordToCls.mock.calls[1]).toEqual([KEY_INJECTIONS, data2]);
 
         expect(clsr.recordToCls.mock.calls.length).toEqual(2);
-        expect(injFn.utrUuid).toEqual(funcUuid);
+        expect(injFn[KEY_UUID]).toEqual(funcUuid);
       });
     });
   });

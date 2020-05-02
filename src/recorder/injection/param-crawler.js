@@ -5,8 +5,12 @@ const { traverseBfs } = require('../utils/object-traverser');
 const { newFunctionNameGenerator } = require('../../util/misc');
 const { injectFunctionDynamically } = require('./injector');
 
+const {
+  CLS_NAMESPACE,
+} = require('../../util/constants');
+
 const injectDependencyInjections = (params) => {
-  const session = getNamespace('default');
+  const session = getNamespace(CLS_NAMESPACE);
   const stack = session.get('stack');
   const meta = _.last(stack);
   const { injectionWhitelist, path: fileName } = meta;

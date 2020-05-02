@@ -15,20 +15,27 @@ const {
   promoteInjections,
 } = require('../utils/cls-recordings');
 
+const {
+  CLS_NAMESPACE,
+  KEY_UUID,
+  KEY_INJECTIONS,
+  KEY_MOCKS,
+} = require('../../util/constants');
+
 const processFunctionLikeParam = (param) => {
   // Ignore falsey types
   if (!param) return param;
 
-  if (_.isFunction(param) && !param.utrIsInjected) {
+  if (_.isFunction(param) && !param[KEY_UUID]) {
     return param.toString();
   }
   // Will be mocked separately
-  if (param.utrIsInjected) return null;
+  if (param[KEY_UUID]) return null;
   return param;
 };
 
 const captureUserFunction = (params, result) => {
-  const session = getNamespace('default');
+  const session = getNamespace(CLS_NAMESPACE);
   const stack = session.get('stack');
   const meta = _.last(stack);
 
@@ -64,10 +71,8 @@ const captureUserFunction = (params, result) => {
   RecorderManager.recordTrio(addrToCaptureIndex, params, result, types);
 
   // Record all dependency injections
-  const DI_KEY = 'injections'; // TODO: Refactor out
-  const MOCK_KEY = 'mocks'; // TODO: Refactor out
-  recordAllToRecorderState(DI_KEY, recordInjectedActivity, captureIndex);
-  recordAllToRecorderState(MOCK_KEY, captureMockActivity, captureIndex);
+  recordAllToRecorderState(KEY_INJECTIONS, recordInjectedActivity, captureIndex);
+  recordAllToRecorderState(KEY_MOCKS, captureMockActivity, captureIndex);
 
   // Copy all dependency injections to parent
   promoteInjections();

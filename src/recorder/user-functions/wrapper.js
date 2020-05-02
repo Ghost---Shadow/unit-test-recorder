@@ -3,7 +3,12 @@ const { createNamespace } = require('cls-hooked');
 const { captureUserFunction } = require('./capture-logic');
 const { pre } = require('./pre');
 
-const session = createNamespace('default');
+const {
+  CLS_NAMESPACE,
+} = require('../../util/constants');
+
+
+const session = createNamespace(CLS_NAMESPACE);
 
 const recorderWrapper = (meta, innerFunction, ...params) => {
   const originalParams = _.cloneDeep(params);

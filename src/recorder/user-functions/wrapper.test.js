@@ -12,6 +12,12 @@ const _ = require('lodash');
 const uuid = require('uuid');
 
 const { getNamespace } = require('cls-hooked');
+
+const {
+  CLS_NAMESPACE,
+  KEY_UUID_LUT,
+  KEY_UUID,
+} = require('../../util/constants');
 const RecorderManager = require('../manager');
 
 const {
@@ -29,7 +35,7 @@ describe('user-function-wrapper', () => {
       uuid.v4.reset();
     });
     it('should set meta and inject sync functions', () => {
-      const session = getNamespace('default');
+      const session = getNamespace(CLS_NAMESPACE);
       session.run(() => {
         const injFn = jest.fn().mockImplementation((a, b) => a + b);
         const meta = {
@@ -53,14 +59,14 @@ describe('user-function-wrapper', () => {
           fppkey: null,
           params: [],
           result: 3,
-          funcUuid: 'uuid_0',
+          [KEY_UUID]: 'uuid_0',
         };
         const data2 = {
           paramIndex: 0,
           fppkey: null,
           params: [],
           result: 5,
-          funcUuid: 'uuid_0',
+          [KEY_UUID]: 'uuid_0',
         };
         expect(stack[0].injections).toEqual([data1, data2]);
         expect(RecorderManager.recorderState).toMatchInlineSnapshot(`
@@ -131,7 +137,7 @@ describe('user-function-wrapper', () => {
       });
     });
     it('should set meta and inject async functions', (done) => {
-      const session = getNamespace('default');
+      const session = getNamespace(CLS_NAMESPACE);
       session.run(async () => {
         const injFn = jest.fn().mockImplementation(async (a, b) => a + b);
         const meta = {
@@ -155,14 +161,14 @@ describe('user-function-wrapper', () => {
           fppkey: null,
           params: [],
           result: 3,
-          funcUuid: 'uuid_0',
+          [KEY_UUID]: 'uuid_0',
         };
         const data2 = {
           paramIndex: 0,
           fppkey: null,
           params: [],
           result: 5,
-          funcUuid: 'uuid_0',
+          [KEY_UUID]: 'uuid_0',
         };
         expect(stack[0].injections).toEqual([data1, data2]);
         expect(RecorderManager.recorderState).toMatchInlineSnapshot(`
@@ -234,7 +240,7 @@ describe('user-function-wrapper', () => {
       });
     });
     it('should broadcast injected activity to calling function in same file', () => {
-      const session = getNamespace('default');
+      const session = getNamespace(CLS_NAMESPACE);
       session.run(() => {
         const childFunctionMeta = {
           path: 'dir1/file1.js',
@@ -248,7 +254,7 @@ describe('user-function-wrapper', () => {
             injections: [
               {
                 fppkey: null,
-                funcUuid: 'uuid_0',
+                [KEY_UUID]: 'uuid_0',
                 paramIndex: 1,
                 params: [],
                 result: 2,
@@ -257,7 +263,7 @@ describe('user-function-wrapper', () => {
             name: 'child',
             paramIds: ['a', 'fn'],
             path: 'dir1/file1.js',
-            uuidLut: { uuid_0: 1 },
+            [KEY_UUID_LUT]: { uuid_0: 1 },
           });
           return result;
         });
@@ -286,21 +292,21 @@ describe('user-function-wrapper', () => {
           fppkey: null,
           params: [],
           result: 1,
-          funcUuid: 'uuid_0',
+          [KEY_UUID]: 'uuid_0',
         };
         const data2 = {
           paramIndex: 0,
           fppkey: null,
           params: [],
           result: 2,
-          funcUuid: 'uuid_0',
+          [KEY_UUID]: 'uuid_0',
         };
         const data3 = {
           paramIndex: 0,
           fppkey: null,
           params: [],
           result: 3,
-          funcUuid: 'uuid_0',
+          [KEY_UUID]: 'uuid_0',
         };
         expect(parentInjections).toEqual([
           data1,
@@ -376,7 +382,7 @@ describe('user-function-wrapper', () => {
       });
     });
     it('should work for mock functions', () => {
-      const session = getNamespace('default');
+      const session = getNamespace(CLS_NAMESPACE);
       session.run(() => {
         const mockFn = jest.fn().mockImplementation((a, b) => a + b);
         const mockMeta = {
@@ -446,7 +452,7 @@ describe('user-function-wrapper', () => {
   });
   describe('boundRecorderWrapper', () => {
     it('should create a new context for each call', () => {
-      const session = getNamespace('default');
+      const session = getNamespace(CLS_NAMESPACE);
       const fn = () => {
         const stack = session.get('stack');
         expect(stack.length).toBe(1);
@@ -457,7 +463,7 @@ describe('user-function-wrapper', () => {
       wrappedFn();
     });
     it('should not create a new context for nested calls', () => {
-      const session = getNamespace('default');
+      const session = getNamespace(CLS_NAMESPACE);
       const childFn = () => {
         const stack = session.get('stack');
         expect(stack).toEqual([{ name: 'parentFn' }, { name: 'childFn' }]);

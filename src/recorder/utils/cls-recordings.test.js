@@ -8,7 +8,10 @@ const {
   recordToCls,
   recordAllToRecorderState,
   promoteInjections,
+  crossCorrelate,
 } = require('./cls-recordings');
+
+console.warn = () => null;
 
 describe('di-recorder', () => {
   describe('recordToCls', () => {
@@ -146,6 +149,35 @@ describe('di-recorder', () => {
         expect(stack[0].injections).toEqual(injections);
         expect(stack.length).toEqual(1);
       });
+    });
+  });
+  describe('crossCorrelate', () => {
+    it('should ignore if no paramIndex', () => {
+      const pInjections = [{ foo: 1 }, { foo: 2 }];
+      const cInjections = [{ foo: 3 }, { foo: 4 }];
+      const actual = crossCorrelate(pInjections, cInjections);
+      expect(actual).toEqual(cInjections);
+    });
+    it('should align parent and child', () => {
+      const pInjections = [{ paramIndex: 0, funcUuid: '1' }, { paramIndex: 1, funcUuid: '2' }];
+      const cInjections = [{ paramIndex: 0, funcUuid: '2' }, { paramIndex: 1, funcUuid: '1' }];
+      const expected = [{ paramIndex: 1, funcUuid: '2' }, { paramIndex: 0, funcUuid: '1' }];
+      const actual = crossCorrelate(pInjections, cInjections);
+      expect(actual).toEqual(expected);
+    });
+    it('should not crash if not found in parent', () => {
+      const pInjections = [{ paramIndex: 1, funcUuid: '1' }];
+      const cInjections = [{ paramIndex: 3, funcUuid: '2' }, { paramIndex: 4, funcUuid: '1' }];
+      const expected = [{ paramIndex: 1, funcUuid: '1' }];
+      const actual = crossCorrelate(pInjections, cInjections);
+      expect(actual).toEqual(expected);
+    });
+    it('should pick first one if multiple uuids', () => {
+      const pInjections = [{ paramIndex: 1, funcUuid: '1' }, { paramIndex: 2, funcUuid: '1' }];
+      const cInjections = [{ paramIndex: 3, funcUuid: '2' }, { paramIndex: 4, funcUuid: '1' }];
+      const expected = [{ paramIndex: 1, funcUuid: '1' }];
+      const actual = crossCorrelate(pInjections, cInjections);
+      expect(actual).toEqual(expected);
     });
   });
 });

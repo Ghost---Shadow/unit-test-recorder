@@ -1,4 +1,15 @@
+jest.mock('uuid', () => {
+  let counter = 0;
+  counter += 1;
+  const uuidGen = () => `uuid_${counter}`;
+  uuidGen.reset = () => {
+    counter = 0;
+  };
+  return { v4: uuidGen };
+});
+
 const _ = require('lodash');
+const uuid = require('uuid');
 
 const { getNamespace } = require('cls-hooked');
 const RecorderManager = require('../manager');
@@ -15,6 +26,7 @@ describe('user-function-wrapper', () => {
     beforeEach(() => {
       jest.resetAllMocks();
       RecorderManager.clear();
+      uuid.v4.reset();
     });
     it('should set meta and inject sync functions', () => {
       const session = getNamespace('default');
@@ -41,12 +53,14 @@ describe('user-function-wrapper', () => {
           fppkey: null,
           params: [],
           result: 3,
+          funcUuid: 'uuid_0',
         };
         const data2 = {
           paramIndex: 0,
           fppkey: null,
           params: [],
           result: 5,
+          funcUuid: 'uuid_0',
         };
         expect(stack[0].injections).toEqual([data1, data2]);
         expect(RecorderManager.recorderState).toMatchInlineSnapshot(`
@@ -141,12 +155,14 @@ describe('user-function-wrapper', () => {
           fppkey: null,
           params: [],
           result: 3,
+          funcUuid: 'uuid_0',
         };
         const data2 = {
           paramIndex: 0,
           fppkey: null,
           params: [],
           result: 5,
+          funcUuid: 'uuid_0',
         };
         expect(stack[0].injections).toEqual([data1, data2]);
         expect(RecorderManager.recorderState).toMatchInlineSnapshot(`
@@ -223,9 +239,28 @@ describe('user-function-wrapper', () => {
         const childFunctionMeta = {
           path: 'dir1/file1.js',
           name: 'child',
-          paramIds: ['fn'],
+          paramIds: ['a', 'fn'],
         };
-        const childFn = jest.fn().mockImplementation(fn => fn(2));
+        const childFn = jest.fn().mockImplementation((a, fn) => {
+          const result = a + fn(2);
+          const stack = session.get('stack');
+          expect(stack[1]).toEqual({
+            injections: [
+              {
+                fppkey: null,
+                funcUuid: 'uuid_0',
+                paramIndex: 1,
+                params: [],
+                result: 2,
+              },
+            ],
+            name: 'child',
+            paramIds: ['a', 'fn'],
+            path: 'dir1/file1.js',
+            uuidLut: { uuid_0: 1 },
+          });
+          return result;
+        });
         const parentMeta = {
           path: 'dir1/file1.js',
           name: 'parent',
@@ -234,14 +269,14 @@ describe('user-function-wrapper', () => {
         const boundChild = (...params) => recorderWrapper(childFunctionMeta, childFn, ...params);
         const parentFn = jest.fn().mockImplementation((fn) => {
           const a = fn(1);
-          const b = boundChild(fn);
+          const b = boundChild(a, fn);
           const c = fn(3);
           return a + b + c;
         });
         const injFn = jest.fn().mockImplementation(a => a);
         const params = [injFn];
         const result = recorderWrapper(parentMeta, parentFn, ...params);
-        expect(result).toBe(6);
+        expect(result).toBe(7);
         expect(injFn.mock.calls.length).toEqual(3);
         const stack = session.get('stack');
         expect(stack.length).toBe(1);
@@ -251,28 +286,27 @@ describe('user-function-wrapper', () => {
           fppkey: null,
           params: [],
           result: 1,
+          funcUuid: 'uuid_0',
         };
         const data2 = {
           paramIndex: 0,
           fppkey: null,
           params: [],
           result: 2,
+          funcUuid: 'uuid_0',
         };
         const data3 = {
           paramIndex: 0,
           fppkey: null,
           params: [],
           result: 3,
+          funcUuid: 'uuid_0',
         };
         expect(parentInjections).toEqual([
           data1,
           data2, // child
           data3,
         ]);
-        // const childInjections = stack[1].injections;
-        // expect(childInjections).toEqual([
-        //   [0, null, [], 2],
-        // ]);
         const parentAddress = [
           'dir1/file1.js',
           'exportedFunctions',

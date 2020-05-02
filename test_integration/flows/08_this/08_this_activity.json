@@ -1,32 +1,12 @@
 {
   "test_integration/flows/08_this/08_this.js": {
-    "meta": {
-      "path": "test_integration/flows/08_this/08_this.js",
-      "mocks": []
-    },
     "exportedFunctions": {
       "newTarget": {
-        "meta": {
-          "path": "test_integration/flows/08_this/08_this.js",
-          "name": "newTarget",
-          "paramIds": [
-            "obj"
-          ],
-          "injectionWhitelist": [
-            "InjectedPromise",
-            "fun2"
-          ],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "requiresContructorInjection": true,
-          "doesReturnPromise": true
-        },
         "captures": [
           {
             "params": [
-              {}
+              {
+              }
             ],
             "result": 42,
             "types": {
@@ -39,92 +19,70 @@
         ],
         "hashTable": {
           "4UwMEBE99isJMcAHuYZXWQ==": true
-        }
-      },
-      "sample": {
+        },
         "meta": {
-          "path": "test_integration/flows/08_this/08_this.js",
-          "name": "sample",
-          "paramIds": [],
+          "doesReturnPromise": true,
           "injectionWhitelist": [
             "InjectedPromise",
             "fun2"
           ],
+          "isAsync": false,
           "isDefault": false,
           "isEcmaDefault": false,
-          "isAsync": false,
           "isObject": false,
-          "doesReturnPromise": false
-        },
-        "captures": [
-          {
-            "params": [],
-            "types": {
-              "params": [],
-              "result": "Undefined"
-            }
-          }
-        ],
-        "hashTable": {
-          "IH+TCNUdvy2Ihqlcrzm8mg==": true
+          "name": "newTarget",
+          "paramIds": [
+            "obj"
+          ],
+          "path": "test_integration/flows/08_this/08_this.js",
+          "requiresContructorInjection": true
         }
       },
       "protoOverwrite": {
-        "meta": {
-          "path": "test_integration/flows/08_this/08_this.js",
-          "name": "protoOverwrite",
-          "paramIds": [],
-          "injectionWhitelist": [
-            "InjectedPromise",
-            "fun2"
-          ],
-          "isDefault": false,
-          "isEcmaDefault": false,
-          "isAsync": false,
-          "isObject": false,
-          "doesReturnPromise": false
-        },
         "captures": [
           {
-            "params": [],
+            "params": [
+            ],
             "result": 2,
             "types": {
-              "params": [],
+              "params": [
+              ],
               "result": "Number"
             }
           }
         ],
         "hashTable": {
           "EILaQhOvnYUJjuIJkEMt9w==": true
-        }
-      },
-      "protoOverwriteHelper": {
+        },
         "meta": {
-          "path": "test_integration/flows/08_this/08_this.js",
-          "name": "protoOverwriteHelper",
-          "paramIds": [
-            "foo"
-          ],
+          "doesReturnPromise": false,
           "injectionWhitelist": [
             "InjectedPromise",
             "fun2"
           ],
+          "isAsync": false,
           "isDefault": false,
           "isEcmaDefault": false,
-          "isAsync": false,
           "isObject": false,
-          "doesReturnPromise": false
-        },
+          "name": "protoOverwrite",
+          "paramIds": [
+          ],
+          "path": "test_integration/flows/08_this/08_this.js"
+        }
+      },
+      "protoOverwriteHelper": {
         "captures": [
           {
             "injections": {
               "foo.__proto__.fun2": {
                 "captures": [
                   {
-                    "params": [],
+                    "params": [
+                    ],
                     "result": 2,
                     "types": {
-                      "params": [],
+                      "params": [
+                      ],
                       "result": "Number"
                     }
                   }
@@ -147,8 +105,60 @@
         ],
         "hashTable": {
           "1JUas50byaC7RQto35J6RA==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+            "InjectedPromise",
+            "fun2"
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "protoOverwriteHelper",
+          "paramIds": [
+            "foo"
+          ],
+          "path": "test_integration/flows/08_this/08_this.js"
+        }
+      },
+      "sample": {
+        "captures": [
+          {
+            "params": [
+            ],
+            "types": {
+              "params": [
+              ],
+              "result": "Undefined"
+            }
+          }
+        ],
+        "hashTable": {
+          "IH+TCNUdvy2Ihqlcrzm8mg==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+            "InjectedPromise",
+            "fun2"
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "sample",
+          "paramIds": [
+          ],
+          "path": "test_integration/flows/08_this/08_this.js"
         }
       }
+    },
+    "meta": {
+      "mocks": [
+      ],
+      "path": "test_integration/flows/08_this/08_this.js"
     }
   }
 }

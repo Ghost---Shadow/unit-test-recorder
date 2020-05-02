@@ -99,7 +99,11 @@ describe('Robustness tests', () => {
           recordInjectedActivity(captureIndex, meta, data);
         });
         it('should not crash markForConstructorInjection', () => {
-          markForConstructorInjection(meta);
+          const session = cls.getNamespace('default');
+          session.run(() => {
+            session.set('stack', [meta]);
+            markForConstructorInjection(meta);
+          });
         });
       });
     });

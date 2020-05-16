@@ -9,6 +9,7 @@ const { inferTypeOfObject } = require('../utils/dynamic-type-inference');
 const safeStringify = (obj) => {
   const type = inferTypeOfObject(obj);
   const base = { Array: [], Object: {} }[type];
+  if (type === 'Undefined') return 'null';
   const decycledObj = _.clone(base || obj);
 
   if (base) {
@@ -27,7 +28,6 @@ const safeStringify = (obj) => {
   try {
     return JSON.stringify(decycledObj, null, 2);
   } catch (e) {
-    // In case it is somehow still cyclic
     console.error(e);
     return JSON.stringify(base);
   }

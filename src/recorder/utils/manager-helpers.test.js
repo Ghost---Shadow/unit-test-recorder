@@ -61,6 +61,10 @@ describe('recorder.utils', () => {
         }"
       `);
     });
+    it('should coerce undefined to null', () => {
+      const obj = undefined;
+      expect(safeStringify(obj)).toMatchInlineSnapshot('"null"');
+    });
   });
   describe('removeNullCaptures', () => {
     it('should remove null captures', () => {

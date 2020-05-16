@@ -22,6 +22,7 @@
         "meta": {
           "doesReturnPromise": false,
           "injectionWhitelist": [
+            "query"
           ],
           "isAsync": false,
           "isDefault": false,
@@ -55,6 +56,7 @@
         "meta": {
           "doesReturnPromise": false,
           "injectionWhitelist": [
+            "query"
           ],
           "isAsync": false,
           "isDefault": false,
@@ -88,6 +90,7 @@
         "meta": {
           "doesReturnPromise": false,
           "injectionWhitelist": [
+            "query"
           ],
           "isAsync": false,
           "isDefault": false,
@@ -96,6 +99,69 @@
           "name": "exportTest3",
           "paramIds": [
             "a"
+          ],
+          "path": "test_integration/flows/09_typescript_exports/09_typescript_exports.js"
+        }
+      },
+      "fetchFromDb": {
+        "captures": [
+          {
+            "injections": {
+              "client.query": {
+                "captures": [
+                  {
+                    "params": [
+                    ],
+                    "result": {
+                      "rows": [
+                        {
+                          "a": 42
+                        }
+                      ]
+                    },
+                    "types": {
+                      "params": [
+                      ],
+                      "result": "Object"
+                    }
+                  }
+                ]
+              }
+            },
+            "params": [
+              {
+              }
+            ],
+            "result": {
+              "rows": [
+                {
+                  "a": 42
+                }
+              ]
+            },
+            "types": {
+              "params": [
+                "Object"
+              ],
+              "result": "Object"
+            }
+          }
+        ],
+        "hashTable": {
+          "4mLLIu7HulldmauNYMdoTg==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+            "query"
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "fetchFromDb",
+          "paramIds": [
+            "client"
           ],
           "path": "test_integration/flows/09_typescript_exports/09_typescript_exports.js"
         }

@@ -1,6 +1,7 @@
 const { exportTest1 } = require('./09_typescript_exports');
 const { default: exportTest2 } = require('./09_typescript_exports');
 const { exportTest3 } = require('./09_typescript_exports');
+const { fetchFromDb } = require('./09_typescript_exports');
 
 describe('09_typescript_exports', () => {
   describe('exportTest1', () => {
@@ -30,6 +31,30 @@ describe('09_typescript_exports', () => {
 
       const actual = exportTest3(a);
       expect(actual).toEqual(result);
+    });
+  });
+
+  describe('fetchFromDb', () => {
+    it('should work for case 1', () => {
+      let client = {};
+      let result = {
+        rows: [
+          {
+            a: 42
+          }
+        ]
+      };
+
+      client.query = jest.fn();
+      client.query.mockReturnValueOnce({
+        rows: [
+          {
+            a: 42
+          }
+        ]
+      });
+      const actual = fetchFromDb(client);
+      expect(actual).toMatchObject(result);
     });
   });
 });

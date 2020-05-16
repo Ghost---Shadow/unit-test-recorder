@@ -9,8 +9,11 @@ function getValidInjections() {
     const parentFunctionNames = Object.keys(this.injectedFunctions[name]);
     const innerObjs = parentFunctionNames.reduce((innerAcc, parentFunctionName) => {
       const { objName } = this.injectedFunctions[name][parentFunctionName];
-      const isParentFunctionTopLevel = this.topLevelBindings[parentFunctionName];
-      const isParentObjTopLevel = this.topLevelBindings[objName];
+      // TODO: Why topLevelBindings?
+      // const isParentFunctionTopLevel = this.topLevelBindings[parentFunctionName];
+      // const isParentObjTopLevel = this.topLevelBindings[objName];
+      const isParentFunctionTopLevel = this.functionsToReplace[parentFunctionName];
+      const isParentObjTopLevel = this.functionsToReplace[objName];
       if (!isParentFunctionTopLevel && !isParentObjTopLevel) return innerAcc;
       const { paths } = this.injectedFunctions[name][parentFunctionName];
       return innerAcc.concat([{ paths, name, parentFunctionName }]);

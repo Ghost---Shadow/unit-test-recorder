@@ -238,7 +238,10 @@ const getParentFunctionName = (path) => {
   const n3 = _.get(parentPath, 'node.key.name');
   // Object property arrow function
   const n4 = _.get(parentPath, 'parent.key.name');
-  return n1 || n2 || n3 || n4 || null;
+  // exports.foo = foo
+  const n5 = _.get(parentPath, 'parent.left.property.name');
+
+  return n1 || n2 || n3 || n4 || n5 || null;
 };
 
 // const obj = {fun: p => p, fun2(p){return p}}

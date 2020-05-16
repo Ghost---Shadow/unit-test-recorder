@@ -127,10 +127,13 @@ describe('driver', () => {
   });
   describe('09_typescript_exports', () => {
     it('should record activity', async () => {
-      const { exportTest1, default: exportTest2, exportTest3 } = require('./09_typescript_exports/09_typescript_exports_instrumented');
+      const {
+        exportTest1, default: exportTest2, exportTest3, fetchFromDb,
+      } = require('./09_typescript_exports/09_typescript_exports_instrumented');
       exportTest1(2);
       exportTest2(3);
       exportTest3(4);
+      await fetchFromDb({ query: () => ({ rows: [{ a: 42 }] }) });
       const outputFileName = getSnapshotFileName('09_typescript_exports');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
     });

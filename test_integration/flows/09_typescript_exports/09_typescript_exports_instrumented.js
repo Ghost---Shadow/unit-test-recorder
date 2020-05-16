@@ -9,7 +9,7 @@ const exportTest1 = (...p) =>
         'test_integration/flows/09_typescript_exports/09_typescript_exports.js',
       name: 'exportTest1',
       paramIds: ['a'],
-      injectionWhitelist: [],
+      injectionWhitelist: ['query'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
@@ -27,7 +27,7 @@ const exportTest2 = (...p) =>
         'test_integration/flows/09_typescript_exports/09_typescript_exports.js',
       name: 'exportTest2',
       paramIds: ['a'],
-      injectionWhitelist: [],
+      injectionWhitelist: ['query'],
       isDefault: false,
       isEcmaDefault: true,
       isAsync: false,
@@ -46,13 +46,30 @@ exports.exportTest3 = (...p) =>
         'test_integration/flows/09_typescript_exports/09_typescript_exports.js',
       name: 'exportTest3',
       paramIds: ['a'],
-      injectionWhitelist: [],
+      injectionWhitelist: ['query'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
       isObject: false
     },
     a => 2 * a,
+    ...p
+  );
+exports.fetchFromDb = (...p) =>
+  recorderWrapper(
+    {
+      path:
+        'test_integration/flows/09_typescript_exports/09_typescript_exports.js',
+      name: 'fetchFromDb',
+      paramIds: ['client'],
+      injectionWhitelist: ['query'],
+      isDefault: false,
+      isEcmaDefault: false,
+      isAsync: false,
+      isObject: false
+    },
+    client =>
+      client.testIntegrationFlows09TypescriptExports09TypescriptExportsJsQuery(),
     ...p
   );
 recordFileMeta({

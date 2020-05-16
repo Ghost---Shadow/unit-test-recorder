@@ -16,25 +16,6 @@ describe('MockImportBlock', () => {
         meta: {
           mocks: ['m1', 'm2', 'm3', 'm4', 'm5'],
         },
-        exportedFunctions: {
-          fun1: {
-            captures: [
-              {
-                mocks: { m1: {}, m2: {} },
-              },
-              {
-                mocks: { m3: {} },
-              },
-            ],
-          },
-          fun2: {
-            captures: [
-              {
-                mocks: { m3: {}, m4: {} },
-              },
-            ],
-          },
-        },
       };
       const code = MockImportBlock(props);
       const formattedCode = prettier.format(code, {
@@ -46,6 +27,7 @@ describe('MockImportBlock', () => {
         const m2 = require('m2');
         const m3 = require('m3');
         const m4 = require('m4');
+        const m5 = require('m5');
 
         jest.mock('m1');
         jest.mock('m2');

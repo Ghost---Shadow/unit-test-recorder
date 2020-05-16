@@ -1,5 +1,6 @@
-const auxilary1 = require('./auxilary1');
 const fs = require('fs');
+const auxilary1 = require('./auxilary1');
+const auxilary2 = require('./auxilary2');
 
 jest.mock('fs');
 jest.mock('./auxilary1');

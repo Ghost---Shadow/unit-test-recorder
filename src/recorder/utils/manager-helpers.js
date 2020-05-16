@@ -8,11 +8,11 @@ const { inferTypeOfObject } = require('../utils/dynamic-type-inference');
 
 const safeStringify = (obj) => {
   const type = inferTypeOfObject(obj);
-  const base = { Array: [], Object: {} }[type];
   if (type === 'Undefined') return 'null';
-  const decycledObj = _.clone(base || obj);
 
+  const base = { Array: [], Object: {} }[type];
   if (base) {
+    const decycledObj = _.clone(base);
     const iterator = traverse(obj, false, {});
     for (
       let path = iterator.next().value;
@@ -23,13 +23,21 @@ const safeStringify = (obj) => {
       const noProto = path.filter(p => p !== '__proto__');
       _.set(decycledObj, noProto, prop);
     }
+    try {
+      return JSON.stringify(decycledObj, null, 2);
+    } catch (e) {
+      // In case it is still cyclic
+      console.error(e);
+      return JSON.stringify(base);
+    }
   }
 
+  // Neither Object or Array
   try {
-    return JSON.stringify(decycledObj, null, 2);
+    return JSON.stringify(obj, null, 2);
   } catch (e) {
-    console.error(e);
-    return JSON.stringify(base);
+    // Needs decycling
+    return JSON.stringify({ message: 'Unable to decycle' });
   }
 };
 

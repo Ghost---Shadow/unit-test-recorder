@@ -65,6 +65,20 @@ describe('recorder.utils', () => {
       const obj = undefined;
       expect(safeStringify(obj)).toMatchInlineSnapshot('"null"');
     });
+    it('should work with bools', () => {
+      const obj = false;
+      expect(safeStringify(obj)).toMatchInlineSnapshot('"false"');
+    });
+    it('should work with numerics', () => {
+      const obj = 1;
+      expect(safeStringify(obj)).toMatchInlineSnapshot('"1"');
+    });
+    it('should work with date', () => {
+      const obj = new Date(2020, 1, 1);
+      expect(safeStringify(obj)).toMatchInlineSnapshot(
+        '"\\"2020-01-31T18:30:00.000Z\\""',
+      );
+    });
   });
   describe('removeNullCaptures', () => {
     it('should remove null captures', () => {

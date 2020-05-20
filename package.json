@@ -12,6 +12,7 @@
     "lint": "eslint ./src/*",
     "lint:fix": "eslint ./src/* --fix",
     "test": "jest",
+    "test:als": "UTR_EXPERIMENTAL_ALS=true jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },

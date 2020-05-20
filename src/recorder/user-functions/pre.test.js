@@ -1,9 +1,9 @@
 
-jest.mock('cls-hooked');
+jest.mock('../../util/cls-provider');
 jest.mock('../injection');
 jest.mock('../manager');
 
-const cls = require('cls-hooked');
+const cls = require('../../util/cls-provider');
 const inj = require('../injection');
 const RecorderManager = require('../manager');
 

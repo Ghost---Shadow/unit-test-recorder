@@ -1,5 +1,5 @@
 jest.mock('../../util/misc');
-const cls = require('cls-hooked');
+const cls = require('../../util/cls-provider');
 const misc = require('../../util/misc');
 
 const { mockRecorderWrapper } = require('../mock');

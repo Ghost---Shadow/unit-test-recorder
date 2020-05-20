@@ -1,5 +1,5 @@
 jest.mock('../manager');
-const cls = require('cls-hooked');
+const cls = require('../../util/cls-provider');
 const RecorderManager = require('../manager');
 
 const { mockRecorderWrapper } = require('../mock');

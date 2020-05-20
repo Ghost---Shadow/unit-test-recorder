@@ -15,7 +15,7 @@ jest.mock('uuid', () => {
   return { v4: uuidGen };
 });
 const uuid = require('uuid');
-const cls = require('cls-hooked');
+const cls = require('../../util/cls-provider');
 const RecorderManager = require('../manager');
 const clsr = require('../utils/cls-recordings');
 

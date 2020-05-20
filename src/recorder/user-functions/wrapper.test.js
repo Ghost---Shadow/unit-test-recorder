@@ -11,7 +11,7 @@ jest.mock('uuid', () => {
 const _ = require('lodash');
 const uuid = require('uuid');
 
-const { getNamespace } = require('cls-hooked');
+const { getNamespace } = require('../../util/cls-provider');
 
 const {
   CLS_NAMESPACE,

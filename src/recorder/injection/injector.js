@@ -1,7 +1,8 @@
 const _ = require('lodash');
-const { getNamespace } = require('cls-hooked');
 const isPromise = require('is-promise');
 const { v4: uuidv4 } = require('uuid');
+
+const { getNamespace } = require('../../util/cls-provider');
 
 const RecorderManager = require('../manager');
 const { shouldRecordStubParams } = require('../utils/misc');

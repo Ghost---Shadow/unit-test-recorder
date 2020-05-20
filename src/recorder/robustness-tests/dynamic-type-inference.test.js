@@ -1,5 +1,5 @@
 jest.mock('../utils/dynamic-type-inference');
-const cls = require('cls-hooked');
+const cls = require('../../util/cls-provider');
 const dti = require('../utils/dynamic-type-inference');
 
 const { mockRecorderWrapper } = require('../mock');

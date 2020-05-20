@@ -1,4 +1,5 @@
-const { createNamespace } = require('cls-hooked');
+const uuid = require('uuid');
+const { createNamespace } = require('../../util/cls-provider');
 
 jest.mock('../utils/misc', () => ({
   shouldRecordStubParams: jest.fn().mockReturnValue(true),
@@ -10,7 +11,6 @@ jest.mock('uuid', () => {
   uuidGen.reset = () => { counter = 0; };
   return { v4: uuidGen };
 });
-const uuid = require('uuid');
 
 const { injectDependencyInjections } = require('./param-crawler');
 const {

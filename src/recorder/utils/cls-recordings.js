@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { getNamespace } = require('cls-hooked');
+const { getNamespace } = require('../../util/cls-provider');
 
 const {
   CLS_NAMESPACE,

@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const isPromise = require('is-promise');
-const { createNamespace } = require('cls-hooked');
+const { createNamespace } = require('../../util/cls-provider');
 
 const { captureUserFunction } = require('./capture-logic');
 const { pre } = require('./pre');

@@ -1,5 +1,5 @@
 jest.mock('../utils/object-traverser');
-const cls = require('cls-hooked');
+const cls = require('../../util/cls-provider');
 const traverser = require('../utils/object-traverser');
 
 const { mockRecorderWrapper } = require('../mock');

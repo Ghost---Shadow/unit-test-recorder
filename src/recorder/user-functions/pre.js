@@ -1,4 +1,4 @@
-const { getNamespace } = require('cls-hooked');
+const { getNamespace } = require('../../util/cls-provider');
 const { injectDependencyInjections } = require('../injection');
 const RecorderManager = require('../manager');
 

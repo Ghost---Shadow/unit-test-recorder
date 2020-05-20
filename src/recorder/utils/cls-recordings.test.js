@@ -1,5 +1,5 @@
-const { createNamespace } = require('cls-hooked');
 const _ = require('lodash');
+const { createNamespace } = require('../../util/cls-provider');
 
 jest.mock('../utils/dynamic-type-inference', () => ({
   generateTypesObj: () => ({ params: ['Number', 'Number'], result: 'Number' }),

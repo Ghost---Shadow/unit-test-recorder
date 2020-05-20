@@ -1,5 +1,5 @@
-const { getNamespace } = require('cls-hooked');
 const _ = require('lodash');
+const { getNamespace } = require('../../util/cls-provider');
 
 const RecorderManager = require('../manager');
 const { checkAndSetHash } = require('../utils/hash-helper');

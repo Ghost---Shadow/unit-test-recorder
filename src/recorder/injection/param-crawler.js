@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { getNamespace } = require('cls-hooked');
+const { getNamespace } = require('../../util/cls-provider');
 
 const { traverseBfs } = require('../utils/object-traverser');
 const { newFunctionNameGenerator } = require('../../util/misc');

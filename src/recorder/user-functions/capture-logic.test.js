@@ -1,9 +1,9 @@
 jest.mock('../utils/cls-recordings');
 jest.mock('../manager');
 jest.mock('../utils/hash-helper');
-jest.mock('cls-hooked');
+jest.mock('../../util/cls-provider');
 
-const cls = require('cls-hooked');
+const cls = require('../../util/cls-provider');
 const RecorderManager = require('../manager');
 const hh = require('../utils/hash-helper');
 const clsr = require('../utils/cls-recordings');

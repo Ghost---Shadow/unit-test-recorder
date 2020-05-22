@@ -4,23 +4,19 @@ describe('async-hook-provider', () => {
   it('should nest contexts correctly', async () => {
     const session = createNamespace('default');
 
-    const pushSelf = (name) => {
-      const stack = session.get('stack') || [];
-      stack.push(name);
-      session.set('stack', stack);
-    };
-
     const fun2 = async () => {
-      pushSelf('fun2');
-      expect(session.get('stack')).toEqual(['fun1', 'fun2']);
+      session.set('fun2', true);
+      expect(session.get('fun1')).toEqual(true);
+      expect(session.get('fun2')).toEqual(true);
     };
 
     const boundFun2 = (...p) => session.bind(fun2, session.createContext())(...p);
 
     const fun1 = async () => {
-      pushSelf('fun1');
+      session.set('fun1', true);
       await boundFun2();
-      expect(session.get('stack')).toEqual(['fun1']);
+      expect(session.get('fun1')).toEqual(true);
+      expect(session.get('fun2')).toEqual(undefined);
     };
 
     const f1 = (...p) => session.bind(fun1, session.createContext())(...p);

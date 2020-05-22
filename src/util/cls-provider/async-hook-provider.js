@@ -1,50 +1,37 @@
 const { AsyncLocalStorage } = require('async_hooks');
-const _ = require('lodash');
 
 const namespaces = {};
+process.namespaces = namespaces;
 
 function Namespace(name) {
   this.asyncLocalStorage = new AsyncLocalStorage();
   this.name = name;
-  this.contexts = [];
-  this.active = null;
-  this.bind = (fn, context = null) => {
-    const newFn = async (...p) => {
-      this.enter(context);
-      const result = await fn(...p);
-      this.exit();
-      return result;
+  Object.defineProperties(this, {
+    active: { get() { return !!this.asyncLocalStorage.getStore(); } },
+  });
+  this.run = (fn) => {
+    const oldStore = this.asyncLocalStorage.getStore();
+    const store = Object.create(oldStore || {});
+    this.asyncLocalStorage.run(store || {}, fn);
+  };
+  this.bind = (fn) => {
+    const newFn = (...p) => {
+      const oldStore = this.asyncLocalStorage.getStore();
+      const store = Object.create(oldStore || {});
+      return this.asyncLocalStorage.run(store || {}, () => fn(...p));
     };
-
     return newFn;
   };
-  this.run = (fn) => {
-    this.createContext();
-    const context = this.active;
-    try {
-      this.enter(context);
-      fn();
-      return context;
-    } catch (e) {
-      throw e;
-    } finally {
-      this.exit();
-    }
+  this.get = (key) => {
+    const store = this.asyncLocalStorage.getStore();
+    return store ? store[key] : undefined;
   };
-  this.get = key => this.active[key];
-  this.set = (key, value) => { this.active[key] = value; };
-  this.createContext = () => {
-    this.contexts.push(_.cloneDeep(this.active || {}));
-    this.active = _.last(this.contexts);
+  this.set = (key, value) => {
+    const store = this.asyncLocalStorage.getStore();
+    if (!store) { throw new Error('No active context'); }
+    store[key] = value;
   };
-  this.enter = (context) => {
-    if (context) this.active = _.cloneDeep(context);
-    this.asyncLocalStorage.enterWith(this.active);
-  };
-  this.exit = () => {
-    this.contexts.pop();
-    this.active = _.last(this.contexts);
-  };
+  this.createContext = () => ({}); // No operation
 }
 
 const createNamespace = (name) => {

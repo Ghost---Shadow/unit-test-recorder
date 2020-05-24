@@ -224,5 +224,16 @@ describe('driver', () => {
       process.env.UTR_RECORD_STUB_PARAMS = false;
     });
   });
+  describe('19_demo', () => {
+    it('should record activity', async () => {
+      const demo = require('./19_demo/19_demo_instrumented');
+      process.env.UTR_RECORD_STUB_PARAMS = true;
+      await demo.saveTodos({ bulkInsert: arr => ({ message: `${arr.length} rows added` }) });
+      const outputFileName = getSnapshotFileName('19_demo');
+      expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);
+
+      process.env.UTR_RECORD_STUB_PARAMS = false;
+    });
+  });
 });
 /* eslint-enable global-require */

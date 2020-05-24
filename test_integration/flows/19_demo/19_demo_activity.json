@@ -1,0 +1,206 @@
+{
+  "test_integration/flows/19_demo/19_demo.js": {
+    "exportedFunctions": {
+      "getCompletedTodos": {
+        "captures": [
+          {
+            "params": [
+              [
+                {
+                  "done": true,
+                  "title": "Get eggs"
+                },
+                {
+                  "done": false,
+                  "title": "Boil eggs"
+                }
+              ]
+            ],
+            "result": [
+              {
+                "done": true,
+                "title": "Get eggs"
+              }
+            ],
+            "types": {
+              "params": [
+                "Array"
+              ],
+              "result": "Array"
+            }
+          }
+        ],
+        "hashTable": {
+          "TFOBTKWDOEn2/KvUr3ivVQ==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+            "bulkInsert"
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "getCompletedTodos",
+          "paramIds": [
+            "todos"
+          ],
+          "path": "test_integration/flows/19_demo/19_demo.js"
+        }
+      },
+      "getTodos": {
+        "captures": [
+          {
+            "mocks": {
+              "fs": {
+                "readFileSync": {
+                  "captures": [
+                    {
+                      "params": [
+                        "test_integration/flows/19_demo/sample.json",
+                        "utf8"
+                      ],
+                      "result": "[\n  {\n    \"title\": \"Get eggs\",\n    \"done\": true\n  },\n  {\n    \"title\": \"Boil eggs\",\n    \"done\": false\n  }\n]",
+                      "types": {
+                        "params": [
+                          "String",
+                          "String"
+                        ],
+                        "result": "String"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "params": [
+            ],
+            "result": [
+              {
+                "done": true,
+                "title": "Get eggs"
+              },
+              {
+                "done": false,
+                "title": "Boil eggs"
+              }
+            ],
+            "types": {
+              "params": [
+              ],
+              "result": "Array"
+            }
+          }
+        ],
+        "hashTable": {
+          "kMS84fApa2yBzs+jPKhOzg==": true
+        },
+        "meta": {
+          "doesReturnPromise": false,
+          "injectionWhitelist": [
+            "bulkInsert"
+          ],
+          "isAsync": false,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "getTodos",
+          "paramIds": [
+          ],
+          "path": "test_integration/flows/19_demo/19_demo.js"
+        }
+      },
+      "saveTodos": {
+        "captures": [
+          {
+            "injections": {
+              "dbClient.bulkInsert": {
+                "captures": [
+                  {
+                    "params": [
+                      [
+                        {
+                          "done": true,
+                          "title": "Get eggs"
+                        }
+                      ]
+                    ],
+                    "result": {
+                      "message": "1 rows added"
+                    },
+                    "types": {
+                      "params": [
+                        "Array"
+                      ],
+                      "result": "Object"
+                    }
+                  }
+                ]
+              }
+            },
+            "mocks": {
+              "fs": {
+                "readFileSync": {
+                  "captures": [
+                    {
+                      "params": [
+                        "test_integration/flows/19_demo/sample.json",
+                        "utf8"
+                      ],
+                      "result": "[\n  {\n    \"title\": \"Get eggs\",\n    \"done\": true\n  },\n  {\n    \"title\": \"Boil eggs\",\n    \"done\": false\n  }\n]",
+                      "types": {
+                        "params": [
+                          "String",
+                          "String"
+                        ],
+                        "result": "String"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "params": [
+              {
+              }
+            ],
+            "result": {
+              "message": "1 rows added"
+            },
+            "types": {
+              "params": [
+                "Object"
+              ],
+              "result": "Object"
+            }
+          }
+        ],
+        "hashTable": {
+          "F5YX5S1EE4H+K0D3xXiTnw==": true
+        },
+        "meta": {
+          "doesReturnPromise": true,
+          "injectionWhitelist": [
+            "bulkInsert"
+          ],
+          "isAsync": true,
+          "isDefault": false,
+          "isEcmaDefault": false,
+          "isObject": false,
+          "name": "saveTodos",
+          "paramIds": [
+            "dbClient"
+          ],
+          "path": "test_integration/flows/19_demo/19_demo.js"
+        }
+      }
+    },
+    "meta": {
+      "mocks": [
+        "fs"
+      ],
+      "path": "test_integration/flows/19_demo/19_demo.js"
+    }
+  }
+}

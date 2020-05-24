@@ -265,4 +265,16 @@ describe('generator.test', () => {
       });
     });
   });
+  describe('19_demo', () => {
+    it('should match generated test code snapshot', () => {
+      const filename = '19_demo';
+      const { outputPath, state } = getInputAndOutputPathForTests(filename);
+      const testFiles = extractTestsFromState(state, defaultPackagedArguments);
+      // Only one file per test
+      expect(testFiles[0].fileString).toMatchFile(outputPath);
+      testFiles[0].externalData.forEach((ed) => {
+        expect(ed.fileString).toMatchFile(ed.filePath);
+      });
+    });
+  });
 });

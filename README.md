@@ -2,7 +2,7 @@
 
 Record unit tests as you use your application.
 
-![sample](sample.png)
+![sample](sample.PNG)
 
 TL;DR:  *Jest snapshots on steroids*
 

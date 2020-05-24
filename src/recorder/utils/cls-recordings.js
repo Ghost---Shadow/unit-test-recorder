@@ -37,15 +37,21 @@ const promoteInjections = () => {
   // Parent needs all the injections recorded by child
   const session = getNamespace(CLS_NAMESPACE);
   const stack = session.get('stack');
+  const originalStackRef = session.get('originalStackRef');
 
-  const childIndex = stack.length - 1;
-  const parentIndex = stack.length - 2;
-  if (parentIndex < 0) return;
+  const selfRef = _.last(stack);
+  const parentRef = _.last(originalStackRef);
+
+  // If self is parent then do nothing
+  if (selfRef === parentRef) return;
+
+  // If there is no parent, then do nothing
+  if (!parentRef) return;
 
   const promoteInner = (key, useLut) => {
-    const childInjections = stack[childIndex][key] || [];
-    const parentInjections = stack[parentIndex][key] || [];
-    const lut = stack[parentIndex][KEY_UUID_LUT] || {};
+    const childInjections = selfRef[key] || [];
+    const parentInjections = parentRef[key] || [];
+    const lut = parentRef[KEY_UUID_LUT] || {};
 
     // Align the paramIndex from child to parent
     const crossCorrelatedChildren = useLut ? childInjections
@@ -56,16 +62,15 @@ const promoteInjections = () => {
       .filter(cInj => cInj.paramIndex !== undefined) : childInjections;
 
     const newInjections = parentInjections.concat(crossCorrelatedChildren);
-    stack[parentIndex][key] = newInjections;
+    parentRef[key] = newInjections;
   };
 
   promoteInner(KEY_INJECTIONS, true);
   promoteInner(KEY_MOCKS, false);
 
-  // Child is recorded and no longer required
-  stack.pop();
 
-  session.set('stack', stack);
+  // Set the updated reference as stack
+  session.set('stack', originalStackRef);
 };
 
 module.exports = {

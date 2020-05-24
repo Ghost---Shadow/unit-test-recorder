@@ -126,7 +126,8 @@ describe('di-recorder', () => {
           paramIds: ['a', 'b'],
           injections: childInjections,
         };
-        session.set('stack', [parentMeta, childMeta]);
+        session.set('originalStackRef', [parentMeta]);
+        session.set('stack', [childMeta]);
         promoteInjections();
         const stack = session.get('stack');
         const { injections } = stack[0];
@@ -155,7 +156,8 @@ describe('di-recorder', () => {
           captureIndex: 0,
           mocks: childMocks,
         };
-        session.set('stack', [parentMeta, childMeta]);
+        session.set('originalStackRef', [parentMeta]);
+        session.set('stack', [childMeta]);
         promoteInjections();
         const stack = session.get('stack');
         const { mocks } = stack[0];
@@ -180,6 +182,7 @@ describe('di-recorder', () => {
           paramIds: ['a', 'b'],
           injections,
         };
+        session.set('originalStackRef', []);
         session.set('stack', [meta]);
         promoteInjections();
         const stack = session.get('stack');

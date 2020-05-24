@@ -30,6 +30,7 @@ describe('user-function-pre', () => {
       ]);
       expect(set.mock.calls).toEqual([
         ['stack', [meta]],
+        ['originalStackRef', []],
       ]);
       expect(inj.injectDependencyInjections.mock.calls).toEqual([
         [params],
@@ -54,7 +55,8 @@ describe('user-function-pre', () => {
         [addrToDoesReturnPromise, meta],
       ]);
       expect(set.mock.calls).toEqual([
-        ['stack', [oldMeta, meta]],
+        ['stack', [meta]],
+        ['originalStackRef', [oldMeta]],
       ]);
       expect(inj.injectDependencyInjections.mock.calls).toEqual([
         [params],

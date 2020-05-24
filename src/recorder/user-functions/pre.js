@@ -15,9 +15,13 @@ const pre = (meta, params) => {
 
   // Set stack in continuation local storage
   const session = getNamespace(CLS_NAMESPACE);
-  const stack = session.get('stack') || [];
-  stack.push(meta);
-  session.set('stack', stack);
+  const originalStackRef = session.get('stack');
+
+  // Set stack as own meta
+  session.set('stack', [meta]);
+
+  // Set reference to parent's meta
+  session.set('originalStackRef', originalStackRef || []);
 
   // Shim all dependency injections
   // Mutating call

@@ -250,7 +250,7 @@ describe('user-function-wrapper', () => {
         const childFn = jest.fn().mockImplementation((a, fn) => {
           const result = a + fn(2);
           const stack = session.get('stack');
-          expect(stack[1]).toEqual({
+          expect(stack[0]).toEqual({
             injections: [
               {
                 fppkey: null,
@@ -451,6 +451,11 @@ describe('user-function-wrapper', () => {
     });
   });
   describe('boundRecorderWrapper', () => {
+    beforeEach(() => {
+      jest.resetAllMocks();
+      RecorderManager.clear();
+      uuid.v4.reset();
+    });
     it('should create a new context for each call', () => {
       const session = getNamespace(CLS_NAMESPACE);
       const fn = () => {
@@ -466,16 +471,391 @@ describe('user-function-wrapper', () => {
       const session = getNamespace(CLS_NAMESPACE);
       const childFn = () => {
         const stack = session.get('stack');
-        expect(stack).toEqual([{ name: 'parentFn' }, { name: 'childFn' }]);
+        const originalStackRef = session.get('originalStackRef');
+        expect(originalStackRef).toEqual([{ name: 'parentFn' }]);
+        expect(stack).toEqual([{ name: 'childFn' }]);
       };
       const wrappedChild = (...params) => boundRecorderWrapper({ name: 'childFn' }, childFn, ...params);
       const parentFn = () => {
         wrappedChild();
         const stack = session.get('stack');
-        expect(stack).toEqual([{ name: 'parentFn', injections: [], mocks: [] }]);
+        expect(stack).toEqual([
+          { name: 'parentFn', injections: [], mocks: [] },
+        ]);
       };
       const wrappedParent = (...params) => boundRecorderWrapper({ name: 'parentFn' }, parentFn, ...params);
       wrappedParent();
+    });
+    describe('race conditions', () => {
+      it('should work when there are no race conditions', async () => {
+        const callStack = [];
+        const session = getNamespace(CLS_NAMESPACE);
+        const childStacks = {};
+        const originalStackRefs = {};
+        let parentFnStack = null;
+        const child1Meta = { name: 'childFn1', paramIds: ['fn'], path: 'c1Path' };
+        const child2Meta = { name: 'childFn2', paramIds: ['fn'], path: 'c2Path' };
+        const parentMeta = { name: 'parentFn', paramIds: ['fn'], path: 'parentPath' };
+        const childInj1 = {
+          UTR_UUID: 'uuid_0',
+          fppkey: null,
+          paramIndex: 0,
+          params: [],
+          result: 'childFn1',
+        };
+        const childInj2 = {
+          UTR_UUID: 'uuid_0',
+          fppkey: null,
+          paramIndex: 0,
+          params: [],
+          result: 'childFn2',
+        };
+        const parentInj = {
+          UTR_UUID: 'uuid_0',
+          fppkey: null,
+          paramIndex: 0,
+          params: [],
+          result: 'parentFn',
+        };
+        const sampleInj = a => a;
+        const childFn = (fn, delay, name) => {
+          callStack.push(`${name} - enter`);
+          return new Promise(resolve => setTimeout(() => {
+            fn(name);
+            const stack = session.get('stack');
+            const originalStackRef = session.get('originalStackRef');
+            childStacks[name] = _.cloneDeep(stack);
+            originalStackRefs[name] = _.cloneDeep(originalStackRef);
+            callStack.push(`${name} - exit`);
+            resolve();
+          }, delay));
+        };
+        const wrappedChild1 = () => boundRecorderWrapper(child1Meta, childFn, sampleInj, 1, 'childFn1');
+        const wrappedChild2 = () => boundRecorderWrapper(child2Meta, childFn, sampleInj, 1, 'childFn2');
+        const parentFn = async (fn) => {
+          const stack = session.get('stack');
+          // const originalStackRef = session.get('originalStackRef');
+          callStack.push('parentFn enter');
+          fn('parentFn');
+          await wrappedChild1();
+          await wrappedChild2();
+          parentFnStack = _.cloneDeep(stack);
+        };
+        const wrappedParent = () => boundRecorderWrapper(parentMeta, parentFn, sampleInj);
+        await wrappedParent();
+        // Sanity check
+        expect(callStack).toEqual([
+          'parentFn enter',
+          'childFn1 - enter',
+          'childFn1 - exit',
+          'childFn2 - enter',
+          'childFn2 - exit',
+        ]);
+        expect(originalStackRefs.childFn1).toEqual([
+          {
+            doesReturnPromise: true,
+            injections: [parentInj],
+            name: 'parentFn',
+            paramIds: ['fn'],
+            path: 'parentPath',
+            uuidLut: { uuid_0: 0 },
+          },
+        ]);
+        expect(childStacks.childFn1).toEqual(
+          [
+            {
+              doesReturnPromise: true,
+              injections: [childInj1],
+              name: 'childFn1',
+              paramIds: ['fn'],
+              path: 'c1Path',
+              uuidLut: { uuid_0: 0 },
+            },
+          ],
+        );
+        expect(originalStackRefs.childFn2).toEqual([
+          {
+            doesReturnPromise: true,
+            injections: [parentInj, childInj1],
+            mocks: [],
+            name: 'parentFn',
+            paramIds: ['fn'],
+            path: 'parentPath',
+            uuidLut: { uuid_0: 0 },
+          },
+        ]);
+        expect(childStacks.childFn2).toEqual(
+          [
+            {
+              doesReturnPromise: true,
+              injections: [childInj2],
+              name: 'childFn2',
+              paramIds: ['fn'],
+              path: 'c2Path',
+              uuidLut: { uuid_0: 0 },
+            },
+          ],
+        );
+        expect(parentFnStack).toEqual(
+          [
+            {
+              doesReturnPromise: true,
+              injections: [parentInj, childInj1, childInj2],
+              mocks: [],
+              name: 'parentFn',
+              paramIds: ['fn'],
+              path: 'parentPath',
+              uuidLut: { uuid_0: 0 },
+            },
+          ],
+        );
+      });
+      it('should work when in 1 in 2 out 2 out 1', async () => {
+        const callStack = [];
+        const session = getNamespace(CLS_NAMESPACE);
+        const originalStackRefs = {};
+        const childStacks = {};
+        let parentFnStack = null;
+        const child1Meta = { name: 'childFn1', paramIds: ['fn'], path: 'c1Path' };
+        const child2Meta = { name: 'childFn2', paramIds: ['fn'], path: 'c2Path' };
+        const parentMeta = { name: 'parentFn', paramIds: ['fn'], path: 'parentPath' };
+        const childInj1 = {
+          UTR_UUID: 'uuid_0',
+          fppkey: null,
+          paramIndex: 0,
+          params: [],
+          result: 'childFn1',
+        };
+        const childInj2 = {
+          UTR_UUID: 'uuid_0',
+          fppkey: null,
+          paramIndex: 0,
+          params: [],
+          result: 'childFn2',
+        };
+        const parentInj = {
+          UTR_UUID: 'uuid_0',
+          fppkey: null,
+          paramIndex: 0,
+          params: [],
+          result: 'parentFn',
+        };
+        const sampleInj = a => a;
+        const childFn = (fn, delay, name) => {
+          callStack.push(`${name} - enter`);
+          return new Promise(resolve => setTimeout(() => {
+            fn(name);
+            const stack = session.get('stack');
+            const originalStackRef = session.get('originalStackRef');
+            childStacks[name] = _.cloneDeep(stack);
+            originalStackRefs[name] = _.cloneDeep(originalStackRef);
+            callStack.push(`${name} - exit`);
+            resolve();
+          }, delay));
+        };
+        const wrappedChild1 = () => boundRecorderWrapper(child1Meta, childFn, sampleInj, 10, 'childFn1');
+        const wrappedChild2 = () => boundRecorderWrapper(child2Meta, childFn, sampleInj, 1, 'childFn2');
+        const parentFn = async (fn) => {
+          const stack = session.get('stack');
+          callStack.push('parentFn enter');
+          fn('parentFn');
+          const p1 = wrappedChild1();
+          const p2 = wrappedChild2();
+          await Promise.all([p1, p2]);
+          parentFnStack = _.cloneDeep(stack);
+        };
+        const wrappedParent = () => boundRecorderWrapper(parentMeta, parentFn, sampleInj);
+        await wrappedParent();
+        // Sanity check
+        expect(callStack).toEqual([
+          'parentFn enter',
+          'childFn1 - enter',
+          'childFn2 - enter',
+          'childFn2 - exit',
+          'childFn1 - exit',
+        ]);
+        expect(originalStackRefs.childFn1).toEqual([
+          {
+            doesReturnPromise: true,
+            injections: [parentInj, childInj2],
+            mocks: [],
+            name: 'parentFn',
+            paramIds: ['fn'],
+            path: 'parentPath',
+            uuidLut: { uuid_0: 0 },
+          },
+        ]);
+        expect(childStacks.childFn1).toEqual(
+          [
+            {
+              doesReturnPromise: true,
+              injections: [childInj1],
+              name: 'childFn1',
+              paramIds: ['fn'],
+              path: 'c1Path',
+              uuidLut: { uuid_0: 0 },
+            },
+          ],
+        );
+        expect(originalStackRefs.childFn2).toEqual([
+          {
+            doesReturnPromise: true,
+            injections: [parentInj],
+            name: 'parentFn',
+            paramIds: ['fn'],
+            path: 'parentPath',
+            uuidLut: { uuid_0: 0 },
+          },
+        ]);
+        expect(childStacks.childFn2).toEqual(
+          [
+            {
+              doesReturnPromise: true,
+              injections: [childInj2],
+              name: 'childFn2',
+              paramIds: ['fn'],
+              path: 'c2Path',
+              uuidLut: { uuid_0: 0 },
+            },
+          ],
+        );
+        expect(parentFnStack).toEqual(
+          [
+            {
+              doesReturnPromise: true,
+              injections: [parentInj, childInj2, childInj1],
+              mocks: [],
+              name: 'parentFn',
+              paramIds: ['fn'],
+              path: 'parentPath',
+              uuidLut: { uuid_0: 0 },
+            },
+          ],
+        );
+      });
+      it('should work when in 1 in 1 out 1 out 2', async () => {
+        const callStack = [];
+        const session = getNamespace(CLS_NAMESPACE);
+        const originalStackRefs = {};
+        const childStacks = {};
+        let parentFnStack = null;
+        const child1Meta = { name: 'childFn1', paramIds: ['fn'], path: 'c1Path' };
+        const child2Meta = { name: 'childFn2', paramIds: ['fn'], path: 'c2Path' };
+        const parentMeta = { name: 'parentFn', paramIds: ['fn'], path: 'parentPath' };
+        const childInj1 = {
+          UTR_UUID: 'uuid_0',
+          fppkey: null,
+          paramIndex: 0,
+          params: [],
+          result: 'childFn1',
+        };
+        const childInj2 = {
+          UTR_UUID: 'uuid_0',
+          fppkey: null,
+          paramIndex: 0,
+          params: [],
+          result: 'childFn2',
+        };
+        const parentInj = {
+          UTR_UUID: 'uuid_0',
+          fppkey: null,
+          paramIndex: 0,
+          params: [],
+          result: 'parentFn',
+        };
+        const sampleInj = a => a;
+        const childFn = (fn, delay, name) => {
+          callStack.push(`${name} - enter`);
+          return new Promise(resolve => setTimeout(() => {
+            fn(name);
+            const stack = session.get('stack');
+            const originalStackRef = session.get('originalStackRef');
+            childStacks[name] = _.cloneDeep(stack);
+            originalStackRefs[name] = _.cloneDeep(originalStackRef);
+            callStack.push(`${name} - exit`);
+            resolve();
+          }, delay));
+        };
+        const wrappedChild1 = () => boundRecorderWrapper(child1Meta, childFn, sampleInj, 1, 'childFn1');
+        const wrappedChild2 = () => boundRecorderWrapper(child2Meta, childFn, sampleInj, 10, 'childFn2');
+        const parentFn = async (fn) => {
+          const stack = session.get('stack');
+          callStack.push('parentFn enter');
+          fn('parentFn');
+          const p1 = wrappedChild1();
+          const p2 = wrappedChild2();
+          await Promise.all([p1, p2]);
+          parentFnStack = _.cloneDeep(stack);
+        };
+        const wrappedParent = () => boundRecorderWrapper(parentMeta, parentFn, sampleInj);
+        await wrappedParent();
+        // Sanity check
+        expect(callStack).toEqual([
+          'parentFn enter',
+          'childFn1 - enter',
+          'childFn2 - enter',
+          'childFn1 - exit',
+          'childFn2 - exit',
+        ]);
+        expect(originalStackRefs.childFn1).toEqual([
+          {
+            doesReturnPromise: true,
+            injections: [parentInj],
+            name: 'parentFn',
+            paramIds: ['fn'],
+            path: 'parentPath',
+            uuidLut: { uuid_0: 0 },
+          },
+        ]);
+        expect(childStacks.childFn1).toEqual(
+          [
+            {
+              doesReturnPromise: true,
+              injections: [childInj1],
+              name: 'childFn1',
+              paramIds: ['fn'],
+              path: 'c1Path',
+              uuidLut: { uuid_0: 0 },
+            },
+          ],
+        );
+        expect(originalStackRefs.childFn2).toEqual([
+          {
+            doesReturnPromise: true,
+            injections: [parentInj, childInj1],
+            mocks: [],
+            name: 'parentFn',
+            paramIds: ['fn'],
+            path: 'parentPath',
+            uuidLut: { uuid_0: 0 },
+          },
+        ]);
+        expect(childStacks.childFn2).toEqual(
+          [
+            {
+              doesReturnPromise: true,
+              injections: [childInj2],
+              name: 'childFn2',
+              paramIds: ['fn'],
+              path: 'c2Path',
+              uuidLut: { uuid_0: 0 },
+            },
+          ],
+        );
+        expect(parentFnStack).toEqual(
+          [
+            {
+              doesReturnPromise: true,
+              injections: [parentInj, childInj1, childInj2],
+              mocks: [],
+              name: 'parentFn',
+              paramIds: ['fn'],
+              path: 'parentPath',
+              uuidLut: { uuid_0: 0 },
+            },
+          ],
+        );
+      });
     });
   });
 });

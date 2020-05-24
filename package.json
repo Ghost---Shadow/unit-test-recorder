@@ -4,7 +4,7 @@
     "unit-test-recorder": "src/index.js",
     "ts-unit-test-recorder": "src/index.ts"
   },
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A cli tool records usage and generates unit tests",
   "main": "index.js",
   "scripts": {
@@ -22,19 +22,15 @@
   },
   "keywords": [
     "babel",
-    "babeljs",
-    "babel-plugin",
+    "testing",
     "cli",
-    "jest"
+    "jest",
+    "instrumentation"
   ],
   "author": "Souradeep Nanda",
   "license": "MIT",
   "devDependencies": {
     "@babel/preset-env": "^7.4.4",
-    "@babel/preset-react": "^7.0.0",
-    "babel-jest": "^25.3.0",
-    "babel-plugin-tester": "^6.0.1",
-    "babel-test": "^0.2.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-babel": "^5.3.0",
@@ -43,9 +39,7 @@
     "eslint-plugin-react": "^7.12.4",
     "husky": "^2.1.0",
     "jest": "^25.3.0",
-    "jest-file-snapshot": "^0.3.6",
-    "react-test-renderer": "^16.8.6",
-    "request-promise": "^4.2.4"
+    "jest-file-snapshot": "^0.3.6"
   },
   "dependencies": {
     "@babel/core": "^7.8.7",
@@ -56,12 +50,9 @@
     "@babel/template": "^7.8.3",
     "@babel/traverse": "^7.4.4",
     "@babel/types": "^7.8.3",
-    "babel-project-relative-import": "^2.0.1",
     "cls-hooked": "^4.2.2",
-    "flat": "^5.0.0",
     "is-promise": "^4.0.0",
     "json-stable-stringify": "^1.0.1",
-    "json-stringify-safe": "^5.0.1",
     "lodash": "^4.17.15",
     "mkdirp": "^1.0.4",
     "prettier": "^1.19.1",

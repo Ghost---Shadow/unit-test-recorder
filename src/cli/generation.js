@@ -26,6 +26,7 @@ const writeTestAndExternalData = async ({ testObj, packagedArguments }) => {
 
 const generateAllTests = async (packagedArguments) => {
   try {
+    console.log('Serializing activities. This may take a while...');
     // Make sure activity.json is the source of truth for generaton
     RecorderManager.dumpToDisk();
     RecorderManager.loadFromDisk();

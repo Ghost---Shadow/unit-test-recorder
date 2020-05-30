@@ -74,7 +74,7 @@ describe('recorder.utils', () => {
       expect(safeStringify(obj)).toMatchInlineSnapshot('"1"');
     });
     it('should work with date', () => {
-      const obj = new Date(2020, 1, 1);
+      const obj = new Date('2020-01-31T18:30:00.000Z');
       expect(safeStringify(obj)).toMatchInlineSnapshot(
         '"\\"2020-01-31T18:30:00.000Z\\""',
       );

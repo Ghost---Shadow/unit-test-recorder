@@ -18,8 +18,8 @@ describe('04_unserializeable', () => {
 
   describe('getElapsedTime', () => {
     it('should work for case 1', () => {
-      let start = new Date('2018-01-31T18:30:00.000Z');
-      let end = new Date('2019-01-31T18:30:00.000Z');
+      let start = new Date('2018-02-01T00:00:00.000Z');
+      let end = new Date('2019-02-01T00:00:00.000Z');
       let result = new Date('2001-01-30T18:30:00.000Z');
 
       const actual = getElapsedTime(start, end);

@@ -40,8 +40,8 @@
         "captures": [
           {
             "params": [
-              "2018-01-31T18:30:00.000Z",
-              "2019-01-31T18:30:00.000Z"
+              "2018-02-01T00:00:00.000Z",
+              "2019-02-01T00:00:00.000Z"
             ],
             "result": "2001-01-30T18:30:00.000Z",
             "types": {
@@ -54,7 +54,7 @@
           }
         ],
         "hashTable": {
-          "ePbUR8xguUXb8Pr9hgU3uw==": true
+          "mo1Obb3rdrDtk9/0CCizRA==": true
         },
         "meta": {
           "doesReturnPromise": false,

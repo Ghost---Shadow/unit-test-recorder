@@ -55,7 +55,7 @@ describe('driver', () => {
       const unserializeable = require('./04_unserializeable/04_unserializeable_instrumented');
       unserializeable.circularReference(1);
       unserializeable.returnAFunction(1, a => a * 2);
-      unserializeable.getElapsedTime(new Date(2018, 1, 1), new Date(2019, 1, 1));
+      unserializeable.getElapsedTime(new Date('2018-02-01T00:00:00.000Z'), new Date('2019-02-01T00:00:00.000Z'));
       unserializeable.returnsNaN('a');
       const outputFileName = getSnapshotFileName('04_unserializeable');
       expect(RecorderManager.getSerialized()).toMatchFile(outputFileName);

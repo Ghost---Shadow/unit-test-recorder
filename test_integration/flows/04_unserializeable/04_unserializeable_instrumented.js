@@ -49,7 +49,7 @@ const getElapsedTime = (...p) =>
       isObject: false
     },
     (start, end) => {
-      const y2k = new Date(2000, 1, 1);
+      const y2k = new Date('2000-01-31T18:30:00.000Z');
       const delta = end.getTime() - start.getTime();
       const result = new Date();
       result.setTime(y2k.getTime() + delta);

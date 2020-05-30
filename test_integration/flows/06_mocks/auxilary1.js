@@ -10,7 +10,7 @@ const foo2 = () => new Promise((resolve) => {
 
 const foo4 = () => JSON.parse(fs.readFileSync('test_integration/flows/06_mocks/response.json', 'utf8').toString());
 
-const foo5 = () => new Date(2020, 1, 1);
+const foo5 = () => new Date('2000-01-31T18:30:00.000Z');
 
 const higherOrder = a => b => a + b;
 

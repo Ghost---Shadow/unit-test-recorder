@@ -4,7 +4,7 @@
     "unit-test-recorder": "src/index.js",
     "ts-unit-test-recorder": "src/index.ts"
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A cli tool records usage and generates unit tests",
   "main": "index.js",
   "scripts": {

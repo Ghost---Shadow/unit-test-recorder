@@ -136,3 +136,4 @@ If that doesnt work
 2. [redux-test-recorder](https://github.com/conorhastings/redux-test-recorder) - Redux middleware which records the states and actions
 3. [test-recorder](https://github.com/QuantumInformation/test-recorder) - Frontend only
 4. [pythoscope](https://github.com/mkwiatkowski/pythoscope) - Python, boilerplate only
+5. [Neitsch](https://github.com/Neitsch/pytest/blob/master/projectDocs/TestInProd%20-%20Project%20Report.pdf) - Python, MagicMocks

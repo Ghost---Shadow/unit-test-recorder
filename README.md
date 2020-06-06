@@ -41,7 +41,7 @@ Except `entrypoint` all are optional.
 | --whitelist | Path to `whitelist.json` |
 | --max-tests | Maximum number of generated tests per function. Type -1 for infinity. Default 5. |
 | --output-dir | The directory in which the tests would be written to. |
-| --test-ext | Extension for test files (spec.js/test.ts) |
+| --test-ext | Extension for test files (spec/test) |
 | --size-limit | Objects larger than this limit will be moved to a different file |
 | --max-stack-depth | Properties of a JSON, at a depth higher than this, will not be recorded. Default 7. |
 

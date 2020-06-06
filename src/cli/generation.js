@@ -12,8 +12,7 @@ const writeFileAsync = promisify(fs.writeFile);
 const writeTestAndExternalData = async ({ testObj, packagedArguments }) => {
   console.log('Writing test for: ', testObj.filePath);
   mkdirp.sync(path.dirname(testObj.filePath));
-  const { testExt } = packagedArguments;
-  const testFileName = getTestFileNameForFile(testObj.filePath, testExt);
+  const testFileName = getTestFileNameForFile(testObj.filePath, packagedArguments);
   const testFilePromise = writeFileAsync(testFileName, testObj.fileString);
   const externalDataPromises = testObj.externalData.map((ed) => {
     console.log('Creating dir:', path.dirname(ed.filePath));

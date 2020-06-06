@@ -59,7 +59,13 @@ const wrapSafely = (param, paramType = typeof (param)) => {
 const shouldMoveToExternal = (obj, limit) => obj && JSON.stringify(obj).length > limit;
 
 const generateNameForExternal = (meta, captureIndex, identifierName) => {
-  const { path: sourceFilePath, name: functionName, relativePath } = meta;
+  const {
+    path: rawSourceFilePath, name: functionName, relativePath, tsBuildDir,
+  } = meta;
+
+  // Remove typescript tsBuildDir if present
+  const sourceFilePath = path.relative(tsBuildDir || './', rawSourceFilePath);
+
   const sourceFileDir = path.posix.dirname(path.posix.join('.', sourceFilePath));
   const outputDir = path.posix.normalize(path.posix.join(sourceFileDir, relativePath));
   const fileName = filePathToFileName(sourceFilePath);

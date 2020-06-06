@@ -20,9 +20,12 @@ const extractTestsFromState = (state, packagedArguments) => Object
       Object.keys(state[filePath].exportedFunctions).forEach((functionName) => {
         state[filePath].exportedFunctions[functionName].meta.importPath = importPath;
         state[filePath].exportedFunctions[functionName].meta.relativePath = relativePath;
+        state[filePath].exportedFunctions[functionName].meta
+          .tsBuildDir = packagedArguments.tsBuildDir;
       });
       state[filePath].importPath = importPath;
       state[filePath].relativePath = relativePath;
+      state[filePath].tsBuildDir = packagedArguments.tsBuildDir;
 
       // Generate file name from file path
       const fileName = filePathToFileName(filePath);

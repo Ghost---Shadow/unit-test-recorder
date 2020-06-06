@@ -16,6 +16,23 @@ describe('generator_utils', () => {
         importPath: './07_large_payload/getClickCounts_1_result.mock.js',
       });
     });
+    it('should work for typescript', () => {
+      const sourceFilePath = 'dist/test_integration/flows/07_large_payload/07_large_payload.js';
+      const functionName = 'getClickCounts';
+      const captureIndex = 1;
+      const identifierName = 'result';
+      const relativePath = './';
+      const tsBuildDir = 'dist';
+      const meta = {
+        path: sourceFilePath, name: functionName, relativePath, tsBuildDir,
+      };
+      const actual = generateNameForExternal(meta, captureIndex, identifierName);
+      expect(actual).toEqual({
+        identifier: 'getClickCounts1result',
+        filePath: 'test_integration/flows/07_large_payload/07_large_payload/getClickCounts_1_result.mock.js',
+        importPath: './07_large_payload/getClickCounts_1_result.mock.js',
+      });
+    });
     it('should work for object exports', () => {
       const sourceFilePath = 'test_integration/flows/16_exported_objects/16_exported_objects.js';
       const functionName = 'obj.subobj.functionName';

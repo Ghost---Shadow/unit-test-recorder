@@ -14,9 +14,7 @@ jest.mock('../../external-data-aggregator', () => ({
 const utils = require('../../utils');
 const eda = require('../../external-data-aggregator');
 
-const {
-  MockFunctionStubBlock,
-} = require('./MockFunctionStubBlock');
+const { MockFunctionStubBlock } = require('./MockFunctionStubBlock');
 
 describe('MockFunctionStubBlock', () => {
   const meta = {
@@ -75,57 +73,57 @@ describe('MockFunctionStubBlock', () => {
       `);
     expect(path).toEqual(meta.path);
     expect(externalData).toMatchInlineSnapshot(`
+      Array [
         Array [
+          "dir/file.js",
           Array [
-            "dir/file.js",
-            Array [
-              Object {
-                "filePath": "dir/file/functionName_0_iid1Fn10.mock.js",
-                "fileString": "module.exports = 1;
-        ",
-                "identifier": "functionName0iid1Fn10",
-                "importPath": "./file/functionName_0_iid1Fn10.mock.js",
-              },
-            ],
+            Object {
+              "filePath": "dir/file/functionName_0_iid1Fn10.mock.js",
+              "fileString": "module.exports = 1;
+      ",
+              "identifier": "functionName0iid1Fn10",
+              "importPath": "./file/functionName_0_iid1Fn10.mock",
+            },
           ],
+        ],
+        Array [
+          "dir/file.js",
           Array [
-            "dir/file.js",
-            Array [
-              Object {
-                "filePath": "dir/file/functionName_0_iid1Fn11.mock.js",
-                "fileString": "module.exports = 2;
-        ",
-                "identifier": "functionName0iid1Fn11",
-                "importPath": "./file/functionName_0_iid1Fn11.mock.js",
-              },
-            ],
+            Object {
+              "filePath": "dir/file/functionName_0_iid1Fn11.mock.js",
+              "fileString": "module.exports = 2;
+      ",
+              "identifier": "functionName0iid1Fn11",
+              "importPath": "./file/functionName_0_iid1Fn11.mock",
+            },
           ],
+        ],
+        Array [
+          "dir/file.js",
           Array [
-            "dir/file.js",
-            Array [
-              Object {
-                "filePath": "dir/file/functionName_0_iid2Fn20.mock.js",
-                "fileString": "module.exports = 3;
-        ",
-                "identifier": "functionName0iid2Fn20",
-                "importPath": "./file/functionName_0_iid2Fn20.mock.js",
-              },
-            ],
+            Object {
+              "filePath": "dir/file/functionName_0_iid2Fn20.mock.js",
+              "fileString": "module.exports = 3;
+      ",
+              "identifier": "functionName0iid2Fn20",
+              "importPath": "./file/functionName_0_iid2Fn20.mock",
+            },
           ],
+        ],
+        Array [
+          "dir/file.js",
           Array [
-            "dir/file.js",
-            Array [
-              Object {
-                "filePath": "dir/file/functionName_0_iid2Fn30.mock.js",
-                "fileString": "module.exports = 4;
-        ",
-                "identifier": "functionName0iid2Fn30",
-                "importPath": "./file/functionName_0_iid2Fn30.mock.js",
-              },
-            ],
+            Object {
+              "filePath": "dir/file/functionName_0_iid2Fn30.mock.js",
+              "fileString": "module.exports = 4;
+      ",
+              "identifier": "functionName0iid2Fn30",
+              "importPath": "./file/functionName_0_iid2Fn30.mock",
+            },
           ],
-        ]
-      `);
+        ],
+      ]
+    `);
   });
   it('should return empty string if no mocks', () => {
     const props1 = {

@@ -69,7 +69,7 @@ describe('AssignmentOperation', () => {
           "fileString": "module.exports = 42;
       ",
           "identifier": "functionName0lIdentifier",
-          "importPath": "./file/functionName_0_lIdentifier.mock.js",
+          "importPath": "./file/functionName_0_lIdentifier.mock",
         },
       ]
     `);

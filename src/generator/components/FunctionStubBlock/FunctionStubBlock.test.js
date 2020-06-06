@@ -104,7 +104,7 @@ describe('FunctionStubBlock', () => {
               "fileString": "module.exports = 1;
       ",
               "identifier": "functionName0iid1Fn10",
-              "importPath": "./file/functionName_0_iid1Fn10.mock.js",
+              "importPath": "./file/functionName_0_iid1Fn10.mock",
             },
           ],
         ],
@@ -116,7 +116,7 @@ describe('FunctionStubBlock', () => {
               "fileString": "module.exports = 2;
       ",
               "identifier": "functionName0iid1Fn11",
-              "importPath": "./file/functionName_0_iid1Fn11.mock.js",
+              "importPath": "./file/functionName_0_iid1Fn11.mock",
             },
           ],
         ],
@@ -128,7 +128,7 @@ describe('FunctionStubBlock', () => {
               "fileString": "module.exports = 3;
       ",
               "identifier": "functionName0iid2Fn20",
-              "importPath": "./file/functionName_0_iid2Fn20.mock.js",
+              "importPath": "./file/functionName_0_iid2Fn20.mock",
             },
           ],
         ],
@@ -140,7 +140,7 @@ describe('FunctionStubBlock', () => {
               "fileString": "module.exports = 4;
       ",
               "identifier": "functionName0iid2Fn30",
-              "importPath": "./file/functionName_0_iid2Fn30.mock.js",
+              "importPath": "./file/functionName_0_iid2Fn30.mock",
             },
           ],
         ],
@@ -154,7 +154,7 @@ describe('FunctionStubBlock', () => {
       };
       ",
               "identifier": "functionName0dbClientPoolQuery0",
-              "importPath": "./file/functionName_0_dbClientPoolQuery0.mock.js",
+              "importPath": "./file/functionName_0_dbClientPoolQuery0.mock",
             },
           ],
         ],

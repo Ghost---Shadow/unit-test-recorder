@@ -10,12 +10,12 @@ const { expContinuationFn } = require('./06_mocks');
 const { getTodo } = require('./06_mocks');
 const { localMocksTest } = require('./06_mocks');
 
-const expContinuationFn0result = require('./06_mocks/expContinuationFn_0_result.mock.js');
-const expContinuationFn0fsReadFileSync0 = require('./06_mocks/expContinuationFn_0_fsReadFileSync0.mock.js');
-const getTodo0result = require('./06_mocks/getTodo_0_result.mock.js');
-const getTodo0auxilary1Foo40 = require('./06_mocks/getTodo_0_auxilary1Foo40.mock.js');
-const getTodo0fsReadFileSync0 = require('./06_mocks/getTodo_0_fsReadFileSync0.mock.js');
-const getTodo0fsReadFileSync1 = require('./06_mocks/getTodo_0_fsReadFileSync1.mock.js');
+const expContinuationFn0result = require('./06_mocks/expContinuationFn_0_result.mock');
+const expContinuationFn0fsReadFileSync0 = require('./06_mocks/expContinuationFn_0_fsReadFileSync0.mock');
+const getTodo0result = require('./06_mocks/getTodo_0_result.mock');
+const getTodo0auxilary1Foo40 = require('./06_mocks/getTodo_0_auxilary1Foo40.mock');
+const getTodo0fsReadFileSync0 = require('./06_mocks/getTodo_0_fsReadFileSync0.mock');
+const getTodo0fsReadFileSync1 = require('./06_mocks/getTodo_0_fsReadFileSync1.mock');
 
 describe('06_mocks', () => {
   describe('expContinuationFn', () => {

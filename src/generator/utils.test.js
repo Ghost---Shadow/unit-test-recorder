@@ -13,7 +13,7 @@ describe('generator_utils', () => {
       expect(actual).toEqual({
         identifier: 'getClickCounts1result',
         filePath: 'test_integration/flows/07_large_payload/07_large_payload/getClickCounts_1_result.mock.js',
-        importPath: './07_large_payload/getClickCounts_1_result.mock.js',
+        importPath: './07_large_payload/getClickCounts_1_result.mock',
       });
     });
     it('should work for typescript', () => {
@@ -30,7 +30,7 @@ describe('generator_utils', () => {
       expect(actual).toEqual({
         identifier: 'getClickCounts1result',
         filePath: 'test_integration/flows/07_large_payload/07_large_payload/getClickCounts_1_result.mock.ts',
-        importPath: './07_large_payload/getClickCounts_1_result.mock.ts',
+        importPath: './07_large_payload/getClickCounts_1_result.mock',
       });
     });
     it('should work for object exports', () => {
@@ -44,7 +44,7 @@ describe('generator_utils', () => {
       expect(actual).toEqual({
         identifier: 'objSubobjFunctionName1result',
         filePath: 'test_integration/flows/16_exported_objects/16_exported_objects/objSubobjFunctionName_1_result.mock.js',
-        importPath: './16_exported_objects/objSubobjFunctionName_1_result.mock.js',
+        importPath: './16_exported_objects/objSubobjFunctionName_1_result.mock',
       });
     });
   });

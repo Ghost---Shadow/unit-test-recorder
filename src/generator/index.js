@@ -12,8 +12,11 @@ const extractTestsFromState = (state, packagedArguments) => Object
   .map((filePath) => {
     try {
       // Generate output file path and store it in the state meta
-      const { outputDir } = packagedArguments;
-      const { outputFilePath, importPath, relativePath } = getOutputFilePath(filePath, outputDir);
+      const {
+        outputFilePath,
+        importPath,
+        relativePath,
+      } = getOutputFilePath(filePath, packagedArguments);
       Object.keys(state[filePath].exportedFunctions).forEach((functionName) => {
         state[filePath].exportedFunctions[functionName].meta.importPath = importPath;
         state[filePath].exportedFunctions[functionName].meta.relativePath = relativePath;

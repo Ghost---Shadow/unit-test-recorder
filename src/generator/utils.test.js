@@ -35,7 +35,7 @@ describe('generator_utils', () => {
     it('should work when outputDir is null', () => {
       const filePath = 'dir1/dir2/foo.js';
       const outputDir = null;
-      const actual = getOutputFilePath(filePath, outputDir);
+      const actual = getOutputFilePath(filePath, { outputDir });
       const expected = {
         outputFilePath: 'dir1/dir2/foo.js',
         importPath: './foo',
@@ -46,7 +46,7 @@ describe('generator_utils', () => {
     it('should work when outputDir is pwd', () => {
       const filePath = 'dir1/dir2/foo.js';
       const outputDir = './';
-      const actual = getOutputFilePath(filePath, outputDir);
+      const actual = getOutputFilePath(filePath, { outputDir });
       const expected = {
         outputFilePath: 'dir1/dir2/foo.js',
         importPath: './foo',
@@ -57,7 +57,7 @@ describe('generator_utils', () => {
     it('should work when outputdir is different', () => {
       const filePath = './dir1/dir2/foo.js';
       const outputDir = './dir3';
-      const actual = getOutputFilePath(filePath, outputDir);
+      const actual = getOutputFilePath(filePath, { outputDir });
       const expected = {
         outputFilePath: 'dir3/dir1/dir2/foo.js',
         importPath: '../../../dir1/dir2/foo',
@@ -65,10 +65,23 @@ describe('generator_utils', () => {
       };
       expect(actual).toEqual(expected);
     });
-    it('should work on windows', () => {
-      const filePath = 'dir1\\dir2\\foo.js';
+    it('should work on compiled typescript on windows', () => {
+      const filePath = 'dist\\dir1\\dir2\\foo.js';
       const outputDir = '.\\dir3';
-      const actual = getOutputFilePath(filePath, outputDir);
+      const tsBuildDir = '.\\dist';
+      const actual = getOutputFilePath(filePath, { outputDir, tsBuildDir });
+      const expected = {
+        outputFilePath: 'dir3/dir1/dir2/foo.js',
+        importPath: '../../../dir1/dir2/foo',
+        relativePath: '../../dir3/dir1/dir2/',
+      };
+      expect(actual).toEqual(expected);
+    });
+    it('should work on compiled typescript', () => {
+      const filePath = './dist/dir1/dir2/foo.js';
+      const outputDir = './dir3';
+      const tsBuildDir = './dist';
+      const actual = getOutputFilePath(filePath, { outputDir, tsBuildDir });
       const expected = {
         outputFilePath: 'dir3/dir1/dir2/foo.js',
         importPath: '../../../dir1/dir2/foo',

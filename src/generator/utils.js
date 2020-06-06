@@ -4,10 +4,20 @@ const _ = require('lodash');
 
 const filePathToFileName = filePath => path.parse(filePath).name;
 
-const getOutputFilePath = (rawFilePath, rawOutputDir) => {
-  // Handle Windows file paths
-  const filePath = rawFilePath.replace(/\\/g, '/');
+const getOutputFilePath = (rawFilePath, packagedArguments) => {
+  const {
+    outputDir: rawOutputDir,
+    tsBuildDir: rawTsBuildDir,
+  } = packagedArguments;
+
+  // Windows to posix paths
+  let filePath = rawFilePath.replace(/\\/g, '/');
+  const tsBuildDir = `${rawTsBuildDir || ''}`.replace(/\\/g, '/');
+
   const fileName = filePathToFileName(filePath);
+
+  // Remove typescript tsBuildDir if present
+  filePath = path.relative(tsBuildDir || './', filePath);
 
   // rawOutputDir === null means use the same directory as inputDir
   if (!rawOutputDir) {
@@ -17,6 +27,8 @@ const getOutputFilePath = (rawFilePath, rawOutputDir) => {
       relativePath: './',
     };
   }
+
+  // Windows to posix paths
   const outputDir = rawOutputDir.replace(/\\/g, '/');
 
   const inputDir = path.posix.dirname(filePath);

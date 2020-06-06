@@ -29,8 +29,8 @@ describe('generator_utils', () => {
       const actual = generateNameForExternal(meta, captureIndex, identifierName);
       expect(actual).toEqual({
         identifier: 'getClickCounts1result',
-        filePath: 'test_integration/flows/07_large_payload/07_large_payload/getClickCounts_1_result.mock.js',
-        importPath: './07_large_payload/getClickCounts_1_result.mock.js',
+        filePath: 'test_integration/flows/07_large_payload/07_large_payload/getClickCounts_1_result.mock.ts',
+        importPath: './07_large_payload/getClickCounts_1_result.mock.ts',
       });
     });
     it('should work for object exports', () => {

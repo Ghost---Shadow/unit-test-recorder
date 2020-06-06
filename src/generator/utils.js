@@ -70,7 +70,8 @@ const generateNameForExternal = (meta, captureIndex, identifierName) => {
   const outputDir = path.posix.normalize(path.posix.join(sourceFileDir, relativePath));
   const fileName = filePathToFileName(sourceFilePath);
   const cameledFnName = _.camelCase(functionName);
-  const externalName = `${cameledFnName}_${captureIndex}_${identifierName}.mock.js`;
+  const extension = tsBuildDir ? 'ts' : 'js';
+  const externalName = `${cameledFnName}_${captureIndex}_${identifierName}.mock.${extension}`;
   const filePath = path.posix.join(outputDir, fileName, externalName);
   const importPath = `./${path.posix.join(fileName, externalName)}`;
   const identifier = `${cameledFnName}${captureIndex}${identifierName}`;

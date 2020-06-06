@@ -76,6 +76,7 @@ const packagedArguments = {
   recordStubParams,
   maxStackDepth,
   tsBuildDir,
+  isTypescript: !!tsBuildDir,
 };
 
 // Set the environment variable flag so that recorder can pick it up

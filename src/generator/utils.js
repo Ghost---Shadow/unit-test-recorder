@@ -108,6 +108,9 @@ const offsetMock = (rawSourceFilePath, mockPath, packagedArguments) => {
 
 const offsetMocks = (state, filePath, packagedArguments) => {
   if (state[filePath].meta.mocks) {
+    // Take a backup of the original mocks to be used by the import statements
+    state[filePath].meta.originalMocks = _.cloneDeep(state[filePath].meta.mocks);
+
     // Offset mocks if they exist
     const sourceFilePath = state[filePath].meta.path;
     const { mocks } = state[filePath].meta;

@@ -4,8 +4,8 @@ const { DefaultImportStatement } = require('../ImportStatements/ImportStatements
 
 const JestMockStatement = ({ importPath }) => `jest.mock('${importPath}');`;
 
-const SpecialImportStatement = ({ importPath, packagedArguments }) => {
-  const identifier = _.camelCase(importPath);
+const SpecialImportStatement = ({ importPath, originalImportPath, packagedArguments }) => {
+  const identifier = _.camelCase(originalImportPath);
   const { isTypescript } = packagedArguments;
   if (!isTypescript) {
     return DefaultImportStatement({ importPath, identifier, packagedArguments });
@@ -19,11 +19,11 @@ const SpecialImportStatement = ({ importPath, packagedArguments }) => {
   return importStatement;
 };
 
-const ReassignmentStatement = ({ importPath, packagedArguments }) => {
+const ReassignmentStatement = ({ originalImportPath, packagedArguments }) => {
   const { isTypescript } = packagedArguments;
   if (!isTypescript) return '';
 
-  const identifier = _.camelCase(importPath);
+  const identifier = _.camelCase(originalImportPath);
   const newIdentifier = `${identifier}Original`;
 
   return `const ${identifier} = ${newIdentifier} as any`;
@@ -33,15 +33,16 @@ const MockImportBlock = ({ meta, packagedArguments }) => {
   const mockStatements = meta.mocks
     .map(importPath => JestMockStatement({ importPath }));
 
-  const importStatements = meta.mocks
-    .map(importPath => SpecialImportStatement({
+  const importStatements = _.zip(meta.mocks, meta.originalMocks)
+    .map(([importPath, originalImportPath]) => SpecialImportStatement({
       importPath,
+      originalImportPath,
       packagedArguments,
     }));
 
-  const reassignmentStatements = meta.mocks
-    .map(importPath => ReassignmentStatement({
-      importPath,
+  const reassignmentStatements = meta.originalMocks
+    .map(originalImportPath => ReassignmentStatement({
+      originalImportPath,
       packagedArguments,
     }));
 

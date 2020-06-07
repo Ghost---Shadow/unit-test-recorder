@@ -15,7 +15,8 @@ describe('MockImportBlock', () => {
       it('should generate code', () => {
         const props = {
           meta: {
-            mocks: ['m1', 'm2', 'm3', 'm4', 'm5'],
+            mocks: ['m1', '../dir1/m2', 'm3', '../dir1/m4', 'm5'],
+            originalMocks: ['m1', './m2', 'm3', './m4', 'm5'],
           },
           packagedArguments: {},
         };
@@ -26,15 +27,15 @@ describe('MockImportBlock', () => {
         });
         expect(formattedCode).toMatchInlineSnapshot(`
           "const m1 = require('m1');
-          const m2 = require('m2');
+          const m2 = require('../dir1/m2');
           const m3 = require('m3');
-          const m4 = require('m4');
+          const m4 = require('../dir1/m4');
           const m5 = require('m5');
 
           jest.mock('m1');
-          jest.mock('m2');
+          jest.mock('../dir1/m2');
           jest.mock('m3');
-          jest.mock('m4');
+          jest.mock('../dir1/m4');
           jest.mock('m5');
           "
         `);
@@ -44,7 +45,8 @@ describe('MockImportBlock', () => {
       it('should generate code', () => {
         const props = {
           meta: {
-            mocks: ['m1', 'm2', 'm3', 'm4', 'm5'],
+            mocks: ['m1', '../dir1/m2', 'm3', '../dir1/m4', 'm5'],
+            originalMocks: ['m1', './m2', 'm3', './m4', 'm5'],
           },
           packagedArguments: { isTypescript: true },
         };
@@ -55,9 +57,9 @@ describe('MockImportBlock', () => {
         });
         expect(formattedCode).toMatchInlineSnapshot(`
           "import * as m1Original from 'm1';
-          import * as m2Original from 'm2';
+          import * as m2Original from '../dir1/m2';
           import * as m3Original from 'm3';
-          import * as m4Original from 'm4';
+          import * as m4Original from '../dir1/m4';
           import * as m5Original from 'm5';
 
           const m1 = m1Original as any;
@@ -67,9 +69,9 @@ describe('MockImportBlock', () => {
           const m5 = m5Original as any;
 
           jest.mock('m1');
-          jest.mock('m2');
+          jest.mock('../dir1/m2');
           jest.mock('m3');
-          jest.mock('m4');
+          jest.mock('../dir1/m4');
           jest.mock('m5');
           "
         `);

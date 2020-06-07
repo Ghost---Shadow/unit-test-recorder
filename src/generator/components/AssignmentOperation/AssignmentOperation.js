@@ -4,7 +4,7 @@ const {
   generateNameForExternal,
 } = require('../../utils');
 
-const { PackagedExternalFile } = require('../PackagedExternalFile');
+const { PackagedExternalFile } = require('../PackagedExternalFile/PackagedExternalFile');
 const { AggregatorManager } = require('../../external-data-aggregator');
 
 const AssignmentOperation = (props) => {
@@ -26,7 +26,7 @@ const AssignmentOperation = (props) => {
   const { identifier, filePath, importPath } = generateNameForExternal(
     meta, captureIndex, lIdentifier,
   );
-  const fileString = PackagedExternalFile(maybeObject);
+  const fileString = PackagedExternalFile({ obj: maybeObject, packagedArguments });
   const code = `let ${lIdentifier} = ${identifier};`;
   const externalData = [{
     fileString,

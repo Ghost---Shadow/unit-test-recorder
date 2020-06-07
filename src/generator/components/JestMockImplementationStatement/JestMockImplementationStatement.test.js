@@ -76,7 +76,7 @@ describe('JestMockImplementationStatement', () => {
           "fileString": "module.exports = 42;
       ",
           "identifier": "functionName0fsLIdentifier0",
-          "importPath": "./file/functionName_0_fsLIdentifier0.mock.js",
+          "importPath": "./file/functionName_0_fsLIdentifier0.mock",
         },
       ]
     `);

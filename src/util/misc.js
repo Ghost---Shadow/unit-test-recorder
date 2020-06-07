@@ -1,6 +1,10 @@
 const _ = require('lodash');
 
-const getTestFileNameForFile = (filePath, testExt) => filePath.replace('.js', `.${testExt}`);
+const getTestFileNameForFile = (filePath, packagedArguments) => {
+  const { testExt, isTypescript } = packagedArguments;
+  const ext = isTypescript ? 'ts' : 'js';
+  return filePath.replace(/\.[jt]s/, `.${testExt}.${ext}`);
+};
 
 // TODO: Make sure it doesnt clober any existing functions of this object
 const newFunctionNameGenerator = (functionName, fileName) => _.camelCase(`${fileName}.${functionName}`);

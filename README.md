@@ -23,6 +23,10 @@ npm i -g unit-test-recorder
 5. Press `Q` or `Ctrl + C` key on the keyboard to safely stop the recording and your application and start generating the tests.
 6. Run your favourite linter/prettier to clean up the generated test code.
 
+### Typescript (beta)
+
+`unit-test-recorder` will look for `tsconfig.json` in `pwd`. You can specifiy a differnt file using `--typescript-config=my-tsconfig.json`. This will make UTR automatically generate tests in typescript.
+
 ### Notes
 
 * **IMPORTANT**: Serialization of JSONs in the process of recording may cause slowdown. The APIs may take considerably longer to execute. (2-10x)
@@ -33,23 +37,39 @@ npm i -g unit-test-recorder
 
 Except `entrypoint` all are optional.
 
-| Flag name | Description |
-| --------- | ------------ |
-| entrypoint (positional) | Path to entrypoint of your application |
-| --only | Run only on these files (relative path, comma separated, supports javascript RegExp) |
-| --except | Dont run on these files (relative path, comma separated, supports javascript RegExp) |
-| --whitelist | Path to `whitelist.json` |
-| --max-tests | Maximum number of generated tests per function. Type -1 for infinity. Default 5. |
-| --output-dir | The directory in which the tests would be written to. |
-| --test-ext | Extension for test files (spec.js/test.ts) |
-| --size-limit | Objects larger than this limit will be moved to a different file |
-| --max-stack-depth | Properties of a JSON, at a depth higher than this, will not be recorded. Default 7. |
+| Flag name | Description | Default |
+| --------- | ------------ | ------------ |
+| entrypoint (positional) | Path to entrypoint of your application | None (Required) |
+| --only | Run only on these files (relative path, comma separated, supports javascript RegExp) | undefined |
+| --except | Dont run on these files (relative path, comma separated, supports javascript RegExp) | undefined |
+| --whitelist | Path to `whitelist.json` | `./whitelist.json` |
+| --typescript-config | Path to typescript config | `./tsconfig.json` |
+| --max-tests | Maximum number of generated tests per function. Type -1 for infinity. | 5 |
+| --output-dir | The directory in which the tests would be written to. | `./` |
+| --test-ext | Extension for test files (spec/test) | test |
+| --size-limit | Objects larger than this limit will be moved to a different file | 500 |
+| --max-stack-depth | Properties of a JSON, at a depth higher than this, will not be recorded. | 7 |
 
 ### Environment variables
 
 | Environment variable name | Description |
 | --------- | ------------ |
 | UTR_EXPERIMENTAL_ALS | Set this flag to use `AsyncLocalStorage` instead of `cls-hooked`. (Experimental, requires nodejs `v13.10+`) |
+
+## Features
+
+* Pure functions
+* Dependency injections
+* Mocks
+* Typescript (beta)
+
+## Planned features
+
+* JSX
+* class methods
+* function methods
+* Better typescript support
+* Higher order functions
 
 ## Mechanism
 
@@ -108,23 +128,6 @@ describe('fileName', () => {
   })
 })
 ```
-
-## Planned features
-
-* Higher order functions
-* class methods and JSX
-* function methods
-* Better typescript support (partial available)
-
-## Typescript (work in progress)
-
-* Make sure you have `ts-node` installed.
-* Run using `ts-unit-test-recorder` instead of `unit-test-recorder`
-
-If that doesnt work
-
-* Compile typescript into javascript
-* Run `unit-test-recorder dist/index.js --output-dir=test --test-ext=test.ts`
 
 ## Troubleshooting
 

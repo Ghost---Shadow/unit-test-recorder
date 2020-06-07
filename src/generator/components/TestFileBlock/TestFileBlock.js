@@ -18,11 +18,12 @@ const TestFileBlock = (props) => {
     });
 
   const importStatements = ImportStatements({
+    packagedArguments,
     exportedFunctions,
     path: filePath,
   });
 
-  const mockImportStatements = MockImportBlock(fileData);
+  const mockImportStatements = MockImportBlock({ ...fileData, packagedArguments });
 
   const result = `
   ${mockImportStatements}

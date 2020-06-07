@@ -4,12 +4,10 @@ const {
   wrapSafely,
   shouldMoveToExternal,
   generateNameForExternal,
-  packageDataForExternal,
 } = require('../../utils');
 
-const {
-  AggregatorManager,
-} = require('../../external-data-aggregator');
+const { PackagedExternalFile } = require('../PackagedExternalFile/PackagedExternalFile');
+const { AggregatorManager } = require('../../external-data-aggregator');
 
 const JestMockImplementationStatement = ({
   meta,
@@ -32,7 +30,7 @@ const JestMockImplementationStatement = ({
   const { identifier, filePath, importPath } = generateNameForExternal(
     meta, captureIndex, _.camelCase(`${lIdentifier}${innerCaptureIndex}`),
   );
-  const fileString = packageDataForExternal(payload);
+  const fileString = PackagedExternalFile({ obj: payload, packagedArguments });
   const code = inner(identifier);
   const externalData = [{
     fileString,

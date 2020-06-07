@@ -5,21 +5,33 @@ const {
 } = require('../../external-data-aggregator');
 
 const DefaultImportStatement = (props) => {
-  const { importPath, identifier } = props;
+  const { importPath, identifier, packagedArguments } = props;
+  const { isTypescript } = packagedArguments;
+  if (isTypescript) {
+    return `import * as ${identifier} from '${importPath}'`;
+  }
   return `const ${identifier} = require('${importPath}');`;
 };
 
 const EcmaDefaultImportStatement = (props) => {
-  const { importPath, identifier } = props;
+  const { importPath, identifier, packagedArguments } = props;
+  const { isTypescript } = packagedArguments;
+  if (isTypescript) {
+    return `import ${identifier} from '${importPath}'`;
+  }
   return `const {default:${identifier}} = require('${importPath}');`;
 };
 
 const DestructureImportStatement = (props) => {
-  const { importPath, identifier } = props;
+  const { importPath, identifier, packagedArguments } = props;
+  const { isTypescript } = packagedArguments;
+  if (isTypescript) {
+    return `import {${identifier}} from '${importPath}'`;
+  }
   return `const {${identifier}} = require('${importPath}');`;
 };
 
-const FunctionImportStatements = ({ exportedFunctions }) => {
+const FunctionImportStatements = ({ exportedFunctions, packagedArguments }) => {
   const importedFunctions = Object.keys(exportedFunctions);
   // Functions in objects have names like obj.fun1, obj.fun2
   const cleanImportedFunctions = _.uniqBy(
@@ -31,27 +43,38 @@ const FunctionImportStatements = ({ exportedFunctions }) => {
   );
   const importStatements = cleanImportedFunctions.map(({ identifier, meta }) => {
     const { isDefault, isEcmaDefault, importPath } = meta;
-    if (isEcmaDefault) return EcmaDefaultImportStatement({ identifier, importPath });
-    if (isDefault) return DefaultImportStatement({ identifier, importPath });
-    return DestructureImportStatement({ identifier, importPath });
+    const props = { identifier, importPath, packagedArguments };
+    if (isEcmaDefault) return EcmaDefaultImportStatement(props);
+    if (isDefault) return DefaultImportStatement(props);
+    return DestructureImportStatement(props);
   });
 
   return importStatements.join('\n');
 };
 
 const ExternalDataImportStatements = (props) => {
-  const { path } = props;
+  const { path, packagedArguments } = props;
+  const { isTypescript } = packagedArguments;
   const externalData = AggregatorManager.getExternalData(path);
   const externalsWithoutMocks = externalData.filter(ed => !ed.isMock);
-  const statements = externalsWithoutMocks.map(DefaultImportStatement);
+  const ImportStatement = isTypescript ? EcmaDefaultImportStatement : DefaultImportStatement;
+  const statements = externalsWithoutMocks
+    .map(data => ({ ...data, packagedArguments }))
+    .map(ImportStatement);
   return statements.join('\n');
 };
 
 const ImportStatements = (props) => {
-  const { exportedFunctions, path } = props;
+  const { exportedFunctions, path, packagedArguments } = props;
 
-  const functionImportStatements = FunctionImportStatements({ exportedFunctions });
-  const externalImportStatements = ExternalDataImportStatements({ path });
+  const functionImportStatements = FunctionImportStatements({
+    exportedFunctions,
+    packagedArguments,
+  });
+  const externalImportStatements = ExternalDataImportStatements({
+    path,
+    packagedArguments,
+  });
 
   return `${functionImportStatements}\n\n${externalImportStatements}\n`;
 };

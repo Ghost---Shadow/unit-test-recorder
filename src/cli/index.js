@@ -10,6 +10,10 @@ const { argv } = require('yargs')
   .describe('whitelist', 'Specify the path to whitelist json')
   .alias('w', 'whitelist')
 
+  .default('typescript-config', './tsconfig.json')
+  .describe('typescript-config', 'Specify the path to tsconfig.json (ignore if not typescript)')
+  .alias('tc', 'typescript-config')
+
   .default('max-tests', '5')
   .describe('max-tests', 'Maximum number of generated tests per function. Type -1 for infinity')
   .alias('t', 'max-tests')
@@ -18,8 +22,8 @@ const { argv } = require('yargs')
   .describe('output-dir', 'The directory in which the tests would be written to.')
   .alias('o', 'output-dir')
 
-  .default('test-ext', 'test.js')
-  .describe('test-ext', 'Extension for test files (spec.js/test.ts)')
+  .default('test-ext', 'test')
+  .describe('test-ext', 'Extension for test files (spec/test)')
 
   .default('size-limit', 500)
   .describe('size-limit', 'Objects larger than this limit will be moved to a different file')
@@ -38,12 +42,13 @@ const { argv } = require('yargs')
   .describe('record-stub-params', 'Record the arguments passed as parameters to stubs (Debugging only)')
 
   .boolean(['d']); // Debug
+const { compileAndGetOutputDir } = require('./utils');
 
 const { instrumentAllFiles } = require('./instrumentation');
 const { generateAllTests } = require('./generation');
 
 // Process and package arguments
-const entryPoint = argv._[0];
+const entryPointArgument = argv._[0];
 const maxTestsPerFunction = parseInt(argv.maxTests, 10) || -1;
 const debug = argv.d;
 const {
@@ -52,9 +57,15 @@ const {
   sizeLimit,
   recordStubParams,
   maxStackDepth,
+  typescriptConfig,
 } = argv;
+
 const exceptFiles = typeof argv.except === 'string' ? argv.except.split(',') : [];
 const onlyFiles = typeof argv.only === 'string' ? argv.only.split(',') : [];
+const tsBuildDir = compileAndGetOutputDir(typescriptConfig);
+
+const entryPoint = path.join(tsBuildDir || './', entryPointArgument).replace(/\.ts$/, '.js');
+
 const packagedArguments = {
   entryPoint,
   maxTestsPerFunction,
@@ -66,6 +77,8 @@ const packagedArguments = {
   onlyFiles,
   recordStubParams,
   maxStackDepth,
+  tsBuildDir,
+  isTypescript: !!tsBuildDir,
 };
 
 // Set the environment variable flag so that recorder can pick it up

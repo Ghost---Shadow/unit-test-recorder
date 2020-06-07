@@ -1,6 +1,10 @@
 // TODO: Use babel template
 const prettier = require('prettier');
-const { filePathToFileName, getOutputFilePath } = require('./utils');
+const {
+  filePathToFileName,
+  getOutputFilePath,
+  offsetMocks,
+} = require('./utils');
 
 const { TestFileBlock } = require('./components/TestFileBlock/TestFileBlock');
 const { AggregatorManager } = require('./external-data-aggregator');
@@ -12,14 +16,21 @@ const extractTestsFromState = (state, packagedArguments) => Object
   .map((filePath) => {
     try {
       // Generate output file path and store it in the state meta
-      const { outputDir } = packagedArguments;
-      const { outputFilePath, importPath, relativePath } = getOutputFilePath(filePath, outputDir);
+      const {
+        outputFilePath,
+        importPath,
+        relativePath,
+      } = getOutputFilePath(filePath, packagedArguments);
       Object.keys(state[filePath].exportedFunctions).forEach((functionName) => {
         state[filePath].exportedFunctions[functionName].meta.importPath = importPath;
         state[filePath].exportedFunctions[functionName].meta.relativePath = relativePath;
+        state[filePath].exportedFunctions[functionName].meta
+          .tsBuildDir = packagedArguments.tsBuildDir;
       });
       state[filePath].importPath = importPath;
       state[filePath].relativePath = relativePath;
+      state[filePath].tsBuildDir = packagedArguments.tsBuildDir;
+      offsetMocks(state, filePath, packagedArguments);
 
       // Generate file name from file path
       const fileName = filePathToFileName(filePath);
@@ -38,7 +49,7 @@ const extractTestsFromState = (state, packagedArguments) => Object
       try {
         fileString = prettier.format(code, {
           singleQuote: true,
-          parser: 'babel',
+          parser: packagedArguments.isTypescript ? 'typescript' : 'babel',
         });
       } catch (e) {
         console.error(e);

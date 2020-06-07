@@ -2,7 +2,7 @@ const { largeObj } = require('./16_exported_objects');
 const { obj1 } = require('./16_exported_objects');
 const { obj2 } = require('./16_exported_objects');
 
-const largeObjLargeFun0result = require('./16_exported_objects/largeObjLargeFun_0_result.mock.js');
+const largeObjLargeFun0result = require('./16_exported_objects/largeObjLargeFun_0_result.mock');
 
 describe('16_exported_objects', () => {
   describe('largeObj.largeFun', () => {

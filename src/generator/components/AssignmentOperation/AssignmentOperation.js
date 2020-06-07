@@ -2,12 +2,10 @@ const {
   wrapSafely,
   shouldMoveToExternal,
   generateNameForExternal,
-  packageDataForExternal,
 } = require('../../utils');
 
-const {
-  AggregatorManager,
-} = require('../../external-data-aggregator');
+const { PackagedExternalFile } = require('../PackagedExternalFile/PackagedExternalFile');
+const { AggregatorManager } = require('../../external-data-aggregator');
 
 const AssignmentOperation = (props) => {
   const {
@@ -20,16 +18,18 @@ const AssignmentOperation = (props) => {
   } = props;
   const { path } = meta;
 
-  const { sizeLimit } = packagedArguments;
+  const { sizeLimit, isTypescript } = packagedArguments;
+  const suffix = isTypescript ? ' as any' : '';
+
   if (!shouldMoveToExternal(maybeObject, sizeLimit)) {
-    const code = `let ${lIdentifier} = ${wrapSafely(maybeObject, paramType)}`;
+    const code = `let ${lIdentifier} = ${wrapSafely(maybeObject, paramType)}${suffix}`;
     return code;
   }
   const { identifier, filePath, importPath } = generateNameForExternal(
     meta, captureIndex, lIdentifier,
   );
-  const fileString = packageDataForExternal(maybeObject);
-  const code = `let ${lIdentifier} = ${identifier};`;
+  const fileString = PackagedExternalFile({ obj: maybeObject, packagedArguments });
+  const code = `let ${lIdentifier} = ${identifier}`;
   const externalData = [{
     fileString,
     identifier,
@@ -38,7 +38,7 @@ const AssignmentOperation = (props) => {
   }];
   AggregatorManager.addExternalData(path, externalData);
 
-  return code;
+  return `${code}${suffix}`;
 };
 
 module.exports = { AssignmentOperation };

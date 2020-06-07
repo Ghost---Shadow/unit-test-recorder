@@ -1,13 +1,22 @@
 const path = require('path');
-const prettier = require('prettier');
 const _ = require('lodash');
 
 const filePathToFileName = filePath => path.parse(filePath).name;
 
-const getOutputFilePath = (rawFilePath, rawOutputDir) => {
-  // Handle Windows file paths
-  const filePath = rawFilePath.replace(/\\/g, '/');
+const getOutputFilePath = (rawFilePath, packagedArguments) => {
+  const {
+    outputDir: rawOutputDir,
+    tsBuildDir: rawTsBuildDir,
+  } = packagedArguments;
+
+  // Windows to posix paths
+  let filePath = rawFilePath.replace(/\\/g, '/');
+  const tsBuildDir = `${rawTsBuildDir || ''}`.replace(/\\/g, '/');
+
   const fileName = filePathToFileName(filePath);
+
+  // Remove typescript tsBuildDir if present
+  filePath = path.relative(tsBuildDir || './', filePath);
 
   // rawOutputDir === null means use the same directory as inputDir
   if (!rawOutputDir) {
@@ -17,6 +26,8 @@ const getOutputFilePath = (rawFilePath, rawOutputDir) => {
       relativePath: './',
     };
   }
+
+  // Windows to posix paths
   const outputDir = rawOutputDir.replace(/\\/g, '/');
 
   const inputDir = path.posix.dirname(filePath);
@@ -47,31 +58,73 @@ const wrapSafely = (param, paramType = typeof (param)) => {
 const shouldMoveToExternal = (obj, limit) => obj && JSON.stringify(obj).length > limit;
 
 const generateNameForExternal = (meta, captureIndex, identifierName) => {
-  const { path: sourceFilePath, name: functionName, relativePath } = meta;
+  const {
+    path: rawSourceFilePath, name: functionName, relativePath, tsBuildDir,
+  } = meta;
+
+  // Remove typescript tsBuildDir if present
+  const sourceFilePath = path.relative(tsBuildDir || './', rawSourceFilePath);
+
   const sourceFileDir = path.posix.dirname(path.posix.join('.', sourceFilePath));
   const outputDir = path.posix.normalize(path.posix.join(sourceFileDir, relativePath));
   const fileName = filePathToFileName(sourceFilePath);
   const cameledFnName = _.camelCase(functionName);
-  const externalName = `${cameledFnName}_${captureIndex}_${identifierName}.mock.js`;
-  const filePath = path.posix.join(outputDir, fileName, externalName);
+  const extension = tsBuildDir ? 'ts' : 'js';
+  const externalName = `${cameledFnName}_${captureIndex}_${identifierName}.mock`;
+  const filePath = `${path.posix.join(outputDir, fileName, externalName)}.${extension}`;
   const importPath = `./${path.posix.join(fileName, externalName)}`;
   const identifier = `${cameledFnName}${captureIndex}${identifierName}`;
   return { identifier, filePath, importPath };
 };
 
-const packageDataForExternal = obj => prettier.format(
-  `module.exports = ${wrapSafely(obj)}`,
-  {
-    singleQuote: true,
-    parser: 'babel',
-  },
-);
+const offsetMock = (rawSourceFilePath, mockPath, packagedArguments) => {
+  // Early exit if from node_modules
+  if (!mockPath.startsWith('.')) return mockPath;
+
+  const tsBuildDir = packagedArguments.tsBuildDir || './';
+  const outputDir = packagedArguments.outputDir || './';
+
+  // ./dist/dir1/file1.js => ./dir1/file1.js
+  const sourcePath = path.relative(tsBuildDir, rawSourceFilePath);
+  // ./dir1/file1.js => ./dir1
+  const sourceDir = path.dirname(sourcePath);
+
+  // ./dir1/file1.js => ./test/dir1/file1.js
+  const offsetSourcePath = path.join(outputDir, sourcePath);
+  // ./test/dir1/file1.js => ./test/dir1
+  const offsetSourceDir = path.dirname(offsetSourcePath);
+
+  // ./dir1 + ../dir2/file2 => ./dir2/file2
+  const pathToMockedModule = `./${path.join(sourceDir, mockPath)}`;
+
+  // ./test/dir1 * ./dir2/file2 => ../../dir2/file2
+  const relativePath = path.relative(offsetSourceDir, pathToMockedModule);
+
+  // file2 => ./file2
+  const formattedRelativePath = relativePath.startsWith('.') ? relativePath : `./${relativePath}`;
+
+  return formattedRelativePath;
+};
+
+const offsetMocks = (state, filePath, packagedArguments) => {
+  if (state[filePath].meta.mocks) {
+    // Take a backup of the original mocks to be used by the import statements
+    state[filePath].meta.originalMocks = _.cloneDeep(state[filePath].meta.mocks);
+
+    // Offset mocks if they exist
+    const sourceFilePath = state[filePath].meta.path;
+    const { mocks } = state[filePath].meta;
+    state[filePath].meta.mocks = mocks
+      .map(mock => offsetMock(sourceFilePath, mock, packagedArguments));
+  }
+};
 
 module.exports = {
   filePathToFileName,
   wrapSafely,
   shouldMoveToExternal,
   generateNameForExternal,
-  packageDataForExternal,
   getOutputFilePath,
+  offsetMock,
+  offsetMocks,
 };

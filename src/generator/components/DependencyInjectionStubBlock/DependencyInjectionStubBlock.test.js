@@ -91,7 +91,7 @@ describe('DependencyInjectionStubBlock', () => {
       };
       ",
               "identifier": "functionName0dbClientPoolQuery0",
-              "importPath": "./file/functionName_0_dbClientPoolQuery0.mock.js",
+              "importPath": "./file/functionName_0_dbClientPoolQuery0.mock",
             },
           ],
         ],

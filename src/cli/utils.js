@@ -13,8 +13,10 @@ const compileAndGetOutputDir = (typescriptConfig) => {
     if (error) throw new Error(error);
 
     const tsBuildDir = config.compilerOptions.outDir;
-    console.log('Purging build directory');
-    rimraf.sync(tsBuildDir);
+    if (fs.existsSync(tsBuildDir)) {
+      console.log('Purging build directory');
+      rimraf.sync(tsBuildDir);
+    }
     console.log('Recompiling');
     cp.execSync('tsc');
     console.log('Compiled');

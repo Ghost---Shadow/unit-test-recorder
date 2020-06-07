@@ -18,16 +18,18 @@ const AssignmentOperation = (props) => {
   } = props;
   const { path } = meta;
 
-  const { sizeLimit } = packagedArguments;
+  const { sizeLimit, isTypescript } = packagedArguments;
+  const suffix = isTypescript ? ' as any' : '';
+
   if (!shouldMoveToExternal(maybeObject, sizeLimit)) {
-    const code = `let ${lIdentifier} = ${wrapSafely(maybeObject, paramType)}`;
+    const code = `let ${lIdentifier} = ${wrapSafely(maybeObject, paramType)}${suffix}`;
     return code;
   }
   const { identifier, filePath, importPath } = generateNameForExternal(
     meta, captureIndex, lIdentifier,
   );
   const fileString = PackagedExternalFile({ obj: maybeObject, packagedArguments });
-  const code = `let ${lIdentifier} = ${identifier};`;
+  const code = `let ${lIdentifier} = ${identifier}`;
   const externalData = [{
     fileString,
     identifier,
@@ -36,7 +38,7 @@ const AssignmentOperation = (props) => {
   }];
   AggregatorManager.addExternalData(path, externalData);
 
-  return code;
+  return `${code}${suffix}`;
 };
 
 module.exports = { AssignmentOperation };

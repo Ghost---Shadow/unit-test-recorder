@@ -1,10 +1,9 @@
 {
   "name": "unit-test-recorder",
   "bin": {
-    "unit-test-recorder": "src/index.js",
-    "ts-unit-test-recorder": "src/index.ts"
+    "unit-test-recorder": "src/index.js"
   },
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A cli tool records usage and generates unit tests",
   "main": "index.js",
   "scripts": {

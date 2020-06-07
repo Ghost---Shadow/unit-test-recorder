@@ -16,6 +16,7 @@ describe('MockImportBlock', () => {
         meta: {
           mocks: ['m1', 'm2', 'm3', 'm4', 'm5'],
         },
+        packagedArguments: {},
       };
       const code = MockImportBlock(props);
       const formattedCode = prettier.format(code, {

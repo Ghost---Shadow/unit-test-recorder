@@ -48,7 +48,7 @@ const { instrumentAllFiles } = require('./instrumentation');
 const { generateAllTests } = require('./generation');
 
 // Process and package arguments
-const entryPoint = argv._[0];
+const entryPointArgument = argv._[0];
 const maxTestsPerFunction = parseInt(argv.maxTests, 10) || -1;
 const debug = argv.d;
 const {
@@ -63,6 +63,8 @@ const {
 const exceptFiles = typeof argv.except === 'string' ? argv.except.split(',') : [];
 const onlyFiles = typeof argv.only === 'string' ? argv.only.split(',') : [];
 const tsBuildDir = compileAndGetOutputDir(typescriptConfig);
+
+const entryPoint = path.join(tsBuildDir || './', entryPointArgument).replace(/\.ts$/, '.js');
 
 const packagedArguments = {
   entryPoint,

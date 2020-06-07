@@ -1,5 +1,4 @@
 const path = require('path');
-const prettier = require('prettier');
 const _ = require('lodash');
 
 const filePathToFileName = filePath => path.parse(filePath).name;
@@ -78,19 +77,10 @@ const generateNameForExternal = (meta, captureIndex, identifierName) => {
   return { identifier, filePath, importPath };
 };
 
-const packageDataForExternal = obj => prettier.format(
-  `module.exports = ${wrapSafely(obj)}`,
-  {
-    singleQuote: true,
-    parser: 'babel',
-  },
-);
-
 module.exports = {
   filePathToFileName,
   wrapSafely,
   shouldMoveToExternal,
   generateNameForExternal,
-  packageDataForExternal,
   getOutputFilePath,
 };

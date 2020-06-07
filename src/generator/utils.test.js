@@ -1,4 +1,8 @@
-const { generateNameForExternal, getOutputFilePath } = require('./utils');
+const {
+  generateNameForExternal,
+  getOutputFilePath,
+  offsetMock,
+} = require('./utils');
 
 describe('generator_utils', () => {
   describe('generateNameForExternal', () => {
@@ -104,6 +108,74 @@ describe('generator_utils', () => {
         importPath: '../../../dir1/dir2/foo',
         relativePath: '../../dir3/dir1/dir2/',
       };
+      expect(actual).toEqual(expected);
+    });
+  });
+  describe('offsetMock', () => {
+    it('should do nothing if not a relative import', () => {
+      const sourceFilePath = './dir1/file1.js';
+      const mockPath = 'fs';
+      const packagedArguments = {};
+      const expected = 'fs';
+
+      const actual = offsetMock(sourceFilePath, mockPath, packagedArguments);
+      expect(actual).toEqual(expected);
+    });
+    it('should do nothing outputDir is not specified', () => {
+      const sourceFilePath = './dir1/file1.js';
+      const mockPath = '../dir2/file2';
+      const packagedArguments = { };
+      // ./dir1/file1.js
+      const expected = '../dir2/file2';
+
+      const actual = offsetMock(sourceFilePath, mockPath, packagedArguments);
+      expect(actual).toEqual(expected);
+    });
+    it('should have preceding ./', () => {
+      const sourceFilePath = './dir1/file1.js';
+      const mockPath = './file2';
+      const packagedArguments = { };
+      // ./dir1/file1.js
+      const expected = './file2';
+
+      const actual = offsetMock(sourceFilePath, mockPath, packagedArguments);
+      expect(actual).toEqual(expected);
+    });
+    it('should offset if outputDir is specified', () => {
+      const sourceFilePath = './dir1/file1.js';
+      const mockPath = '../dir2/file2';
+      const packagedArguments = {
+        outputDir: './test',
+      };
+      // ./test/dir1/file1.js
+      const expected = '../../dir2/file2';
+
+      const actual = offsetMock(sourceFilePath, mockPath, packagedArguments);
+      expect(actual).toEqual(expected);
+    });
+    it('should offset if outputDir and tsBuildDir is specified', () => {
+      const sourceFilePath = './dist/dir1/file1.js';
+      const mockPath = '../dir2/file2';
+      const packagedArguments = {
+        outputDir: './test',
+        tsBuildDir: './dist',
+      };
+      // ./test/dir1/file1.ts
+      const expected = '../../dir2/file2';
+
+      const actual = offsetMock(sourceFilePath, mockPath, packagedArguments);
+      expect(actual).toEqual(expected);
+    });
+    it('should offset if tsBuildDir is specified', () => {
+      const sourceFilePath = './dist/dir1/file1.js';
+      const mockPath = '../dir2/file2';
+      const packagedArguments = {
+        tsBuildDir: './dist',
+      };
+      // ./test/dir1/file1.ts
+      const expected = '../dir2/file2';
+
+      const actual = offsetMock(sourceFilePath, mockPath, packagedArguments);
       expect(actual).toEqual(expected);
     });
   });

@@ -1,6 +1,10 @@
 // TODO: Use babel template
 const prettier = require('prettier');
-const { filePathToFileName, getOutputFilePath } = require('./utils');
+const {
+  filePathToFileName,
+  getOutputFilePath,
+  offsetMocks,
+} = require('./utils');
 
 const { TestFileBlock } = require('./components/TestFileBlock/TestFileBlock');
 const { AggregatorManager } = require('./external-data-aggregator');
@@ -26,6 +30,7 @@ const extractTestsFromState = (state, packagedArguments) => Object
       state[filePath].importPath = importPath;
       state[filePath].relativePath = relativePath;
       state[filePath].tsBuildDir = packagedArguments.tsBuildDir;
+      offsetMocks(state, filePath, packagedArguments);
 
       // Generate file name from file path
       const fileName = filePathToFileName(filePath);

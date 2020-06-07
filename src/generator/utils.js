@@ -77,10 +77,51 @@ const generateNameForExternal = (meta, captureIndex, identifierName) => {
   return { identifier, filePath, importPath };
 };
 
+const offsetMock = (rawSourceFilePath, mockPath, packagedArguments) => {
+  // Early exit if from node_modules
+  if (!mockPath.startsWith('.')) return mockPath;
+
+  const tsBuildDir = packagedArguments.tsBuildDir || './';
+  const outputDir = packagedArguments.outputDir || './';
+
+  // ./dist/dir1/file1.js => ./dir1/file1.js
+  const sourcePath = path.relative(tsBuildDir, rawSourceFilePath);
+  // ./dir1/file1.js => ./dir1
+  const sourceDir = path.dirname(sourcePath);
+
+  // ./dir1/file1.js => ./test/dir1/file1.js
+  const offsetSourcePath = path.join(outputDir, sourcePath);
+  // ./test/dir1/file1.js => ./test/dir1
+  const offsetSourceDir = path.dirname(offsetSourcePath);
+
+  // ./dir1 + ../dir2/file2 => ./dir2/file2
+  const pathToMockedModule = `./${path.join(sourceDir, mockPath)}`;
+
+  // ./test/dir1 * ./dir2/file2 => ../../dir2/file2
+  const relativePath = path.relative(offsetSourceDir, pathToMockedModule);
+
+  // file2 => ./file2
+  const formattedRelativePath = relativePath.startsWith('.') ? relativePath : `./${relativePath}`;
+
+  return formattedRelativePath;
+};
+
+const offsetMocks = (state, filePath, packagedArguments) => {
+  if (state[filePath].meta.mocks) {
+    // Offset mocks if they exist
+    const sourceFilePath = state[filePath].meta.path;
+    const { mocks } = state[filePath].meta;
+    state[filePath].meta.mocks = mocks
+      .map(mock => offsetMock(sourceFilePath, mock, packagedArguments));
+  }
+};
+
 module.exports = {
   filePathToFileName,
   wrapSafely,
   shouldMoveToExternal,
   generateNameForExternal,
   getOutputFilePath,
+  offsetMock,
+  offsetMocks,
 };

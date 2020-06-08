@@ -25,7 +25,8 @@ npm i -g unit-test-recorder
 
 ### Typescript (beta)
 
-`unit-test-recorder` will look for `tsconfig.json` in `pwd`. You can specifiy a differnt file using `--typescript-config=my-tsconfig.json`. This will make UTR automatically generate tests in typescript.
+* Make sure you have typescript installed globally. (`npm i -g typescript`)
+* `unit-test-recorder` will look for `tsconfig.json` in `pwd`. You can specifiy a differnt file using `--typescript-config=my-tsconfig.json`. This will make UTR automatically generate tests in typescript.
 
 ### Notes
 

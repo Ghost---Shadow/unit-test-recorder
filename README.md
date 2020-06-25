@@ -74,6 +74,8 @@ Except `entrypoint` all are optional.
 
 ## Mechanism
 
+*Detailed explanation can be found [here](https://medium.com/@souradeepnanda/unit-test-recorder-automatically-generate-unit-tests-as-you-use-your-application-eb500a312361).*
+
 Lets take this function as an example
 
 ```js

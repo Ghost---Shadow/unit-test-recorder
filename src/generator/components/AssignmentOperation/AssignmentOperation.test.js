@@ -67,7 +67,7 @@ describe("AssignmentOperation", () => {
       expect(externalData).toMatchInlineSnapshot(`
         [
           {
-            "filePath": "file/functionName_0_lIdentifier.mock.js",
+            "filePath": "dir/file/functionName_0_lIdentifier.mock.js",
             "fileString": "module.exports = 42;
         ",
             "identifier": "functionName0lIdentifier",
@@ -127,7 +127,7 @@ describe("AssignmentOperation", () => {
       expect(externalData).toMatchInlineSnapshot(`
         [
           {
-            "filePath": "file/functionName_0_lIdentifier.mock.js",
+            "filePath": "dir/file/functionName_0_lIdentifier.mock.js",
             "fileString": "export default 42;
         ",
             "identifier": "functionName0lIdentifier",

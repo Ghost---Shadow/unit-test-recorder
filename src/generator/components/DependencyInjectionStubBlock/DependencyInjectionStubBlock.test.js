@@ -85,7 +85,7 @@ describe("DependencyInjectionStubBlock", () => {
           "dir/file.js",
           [
             {
-              "filePath": "file/functionName_0_dbClientPoolQuery0.mock.js",
+              "filePath": "dir/file/functionName_0_dbClientPoolQuery0.mock.js",
               "fileString": "module.exports = {
         title: 'content'
       };

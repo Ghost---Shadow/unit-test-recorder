@@ -100,7 +100,7 @@ describe("FunctionStubBlock", () => {
           "dir/file.js",
           [
             {
-              "filePath": "file/functionName_0_iid1Fn10.mock.js",
+              "filePath": "dir/file/functionName_0_iid1Fn10.mock.js",
               "fileString": "module.exports = 1;
       ",
               "identifier": "functionName0iid1Fn10",
@@ -112,7 +112,7 @@ describe("FunctionStubBlock", () => {
           "dir/file.js",
           [
             {
-              "filePath": "file/functionName_0_iid1Fn11.mock.js",
+              "filePath": "dir/file/functionName_0_iid1Fn11.mock.js",
               "fileString": "module.exports = 2;
       ",
               "identifier": "functionName0iid1Fn11",
@@ -124,7 +124,7 @@ describe("FunctionStubBlock", () => {
           "dir/file.js",
           [
             {
-              "filePath": "file/functionName_0_iid2Fn20.mock.js",
+              "filePath": "dir/file/functionName_0_iid2Fn20.mock.js",
               "fileString": "module.exports = 3;
       ",
               "identifier": "functionName0iid2Fn20",
@@ -136,7 +136,7 @@ describe("FunctionStubBlock", () => {
           "dir/file.js",
           [
             {
-              "filePath": "file/functionName_0_iid2Fn30.mock.js",
+              "filePath": "dir/file/functionName_0_iid2Fn30.mock.js",
               "fileString": "module.exports = 4;
       ",
               "identifier": "functionName0iid2Fn30",
@@ -148,7 +148,7 @@ describe("FunctionStubBlock", () => {
           "dir/file.js",
           [
             {
-              "filePath": "file/functionName_0_dbClientPoolQuery0.mock.js",
+              "filePath": "dir/file/functionName_0_dbClientPoolQuery0.mock.js",
               "fileString": "module.exports = {
         title: 'content'
       };

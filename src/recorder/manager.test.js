@@ -67,7 +67,10 @@ describe("RecorderManager", () => {
       RecorderManager.dumpToDisk();
       // expect(rimraf.sync.mock.calls.length).toBe(1);
       expect(mkdirp.sync.mock.calls.length).toBe(3);
-      expect(fs.writeFileSync.mock.calls).toEqual([
+      const normalizedCalls = fs.writeFileSync.mock.calls.map(
+        ([p, d]) => [p.replace(/\\/g, '/'), d]
+      );
+      expect(normalizedCalls).toEqual([
         ["utr_activity/dir1/file1.json", "1"],
         ["utr_activity/dir1/dir2/file2.json", "2"],
         ["utr_activity/dir2/file3.json", "3"],

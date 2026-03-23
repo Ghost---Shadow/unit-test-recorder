@@ -3,6 +3,9 @@ const _ = require('lodash');
 
 const filePathToFileName = filePath => path.parse(filePath).name;
 
+// Normalize all path separators to posix (forward slashes)
+const toPosix = p => p.replace(/\\/g, '/');
+
 const getOutputFilePath = (rawFilePath, packagedArguments) => {
   const {
     outputDir: rawOutputDir,
@@ -10,13 +13,13 @@ const getOutputFilePath = (rawFilePath, packagedArguments) => {
   } = packagedArguments;
 
   // Windows to posix paths
-  let filePath = rawFilePath.replace(/\\/g, '/');
-  const tsBuildDir = `${rawTsBuildDir || ''}`.replace(/\\/g, '/');
+  let filePath = toPosix(rawFilePath);
+  const tsBuildDir = toPosix(`${rawTsBuildDir || ''}`);
 
   const fileName = filePathToFileName(filePath);
 
   // Remove typescript tsBuildDir if present
-  filePath = path.relative(tsBuildDir || './', filePath);
+  filePath = toPosix(path.relative(tsBuildDir || './', filePath));
 
   // rawOutputDir === null means use the same directory as inputDir
   if (!rawOutputDir) {
@@ -63,7 +66,7 @@ const generateNameForExternal = (meta, captureIndex, identifierName) => {
   } = meta;
 
   // Remove typescript tsBuildDir if present
-  const sourceFilePath = path.relative(tsBuildDir || './', rawSourceFilePath);
+  const sourceFilePath = toPosix(path.relative(tsBuildDir || './', rawSourceFilePath));
 
   const sourceFileDir = path.posix.dirname(path.posix.join('.', sourceFilePath));
   const outputDir = path.posix.normalize(path.posix.join(sourceFileDir, relativePath));
@@ -85,20 +88,20 @@ const offsetMock = (rawSourceFilePath, mockPath, packagedArguments) => {
   const outputDir = packagedArguments.outputDir || './';
 
   // ./dist/dir1/file1.js => ./dir1/file1.js
-  const sourcePath = path.relative(tsBuildDir, rawSourceFilePath);
+  const sourcePath = toPosix(path.relative(tsBuildDir, rawSourceFilePath));
   // ./dir1/file1.js => ./dir1
-  const sourceDir = path.dirname(sourcePath);
+  const sourceDir = path.posix.dirname(sourcePath);
 
   // ./dir1/file1.js => ./test/dir1/file1.js
-  const offsetSourcePath = path.join(outputDir, sourcePath);
+  const offsetSourcePath = path.posix.join(outputDir, sourcePath);
   // ./test/dir1/file1.js => ./test/dir1
-  const offsetSourceDir = path.dirname(offsetSourcePath);
+  const offsetSourceDir = path.posix.dirname(offsetSourcePath);
 
   // ./dir1 + ../dir2/file2 => ./dir2/file2
-  const pathToMockedModule = `./${path.join(sourceDir, mockPath)}`;
+  const pathToMockedModule = `./${path.posix.join(sourceDir, mockPath)}`;
 
   // ./test/dir1 * ./dir2/file2 => ../../dir2/file2
-  const relativePath = path.relative(offsetSourceDir, pathToMockedModule);
+  const relativePath = toPosix(path.relative(offsetSourceDir, pathToMockedModule));
 
   // file2 => ./file2
   const formattedRelativePath = relativePath.startsWith('.') ? relativePath : `./${relativePath}`;

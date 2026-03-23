@@ -59,7 +59,8 @@ const RecorderManager = {
         const fixedFilePath = filePath
           .slice(0, filePath.length - 2);
         const removedBase = path.normalize(fixedFilePath.replace(/\\/g, '/'))
-          .replace(path.normalize(`${DEFAULT_BASE_PATH}/`), '');
+          .replace(path.normalize(`${DEFAULT_BASE_PATH}/`), '')
+          .replace(/\\/g, '/');
         RecorderManager.recorderState[removedBase] = JSON.parse(data);
       } catch (e) {
         console.error(e);

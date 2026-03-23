@@ -72,7 +72,7 @@ describe("JestMockImplementationStatement", () => {
     expect(externalData).toMatchInlineSnapshot(`
       [
         {
-          "filePath": "file/functionName_0_fsLIdentifier0.mock.js",
+          "filePath": "dir/file/functionName_0_fsLIdentifier0.mock.js",
           "fileString": "module.exports = 42;
       ",
           "identifier": "functionName0fsLIdentifier0",

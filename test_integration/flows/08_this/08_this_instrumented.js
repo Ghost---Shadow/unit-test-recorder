@@ -10,10 +10,10 @@ const newTarget = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false
+      isObject: false,
     },
-    obj =>
-      new obj.testIntegrationFlows08This08ThisJsInjectedPromise(resolve =>
+    (obj) =>
+      new obj.testIntegrationFlows08This08ThisJsInjectedPromise((resolve) =>
         resolve(42)
       ),
     ...p
@@ -29,7 +29,7 @@ const sample = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false
+      isObject: false,
     },
     () => {},
     ...p
@@ -58,9 +58,9 @@ const protoOverwriteHelper = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false
+      isObject: false,
     },
-    foo => foo.testIntegrationFlows08This08ThisJsFun2(),
+    (foo) => foo.testIntegrationFlows08This08ThisJsFun2(),
     ...p
   );
 
@@ -74,7 +74,7 @@ const protoOverwrite = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false
+      isObject: false,
     },
     () => {
       const foo = new Foo();
@@ -87,9 +87,9 @@ module.exports = {
   newTarget,
   sample,
   protoOverwrite,
-  protoOverwriteHelper
+  protoOverwriteHelper,
 };
 recordFileMeta({
   path: 'test_integration/flows/08_this/08_this.js',
-  mocks: []
+  mocks: [],
 });

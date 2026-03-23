@@ -75,7 +75,7 @@ const getAstWithWrapper = (
             t.identifier(functionName),
             functionAst.params,
             functionAst.body,
-            null,
+            false,
             isAsync,
           ),
         }),

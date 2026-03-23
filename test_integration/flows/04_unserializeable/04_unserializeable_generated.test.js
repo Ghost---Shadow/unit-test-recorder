@@ -8,7 +8,7 @@ describe('04_unserializeable', () => {
     it('should work for case 1', () => {
       let a = 1;
       let result = {
-        a: 1
+        a: 1,
       };
 
       const actual = circularReference(a);

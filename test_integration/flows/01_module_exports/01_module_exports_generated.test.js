@@ -40,7 +40,7 @@ describe('01_module_exports', () => {
       let a = 1;
       let _obj = {
         b: 1,
-        c: 1
+        c: 1,
       };
       let d = undefined;
       let result = 4;
@@ -53,7 +53,7 @@ describe('01_module_exports', () => {
       let a = 1;
       let _obj = {
         b: 1,
-        c: 1
+        c: 1,
       };
       let d = 2;
       let result = 5;
@@ -68,7 +68,7 @@ describe('01_module_exports', () => {
       let a = 1;
       let _obj2 = {
         b: 1,
-        c: 1
+        c: 1,
       };
       let d = undefined;
       let result = 4;

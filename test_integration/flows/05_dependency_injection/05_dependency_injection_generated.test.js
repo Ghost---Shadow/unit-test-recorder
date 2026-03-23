@@ -30,7 +30,7 @@ describe('05_dependency_injection', () => {
   describe('getPost', () => {
     it('should work for case 1', async () => {
       let dbClient = {
-        pool: {}
+        pool: {},
       };
       let postId = 1;
       let redisCache =
@@ -38,49 +38,49 @@ describe('05_dependency_injection', () => {
       let result = {
         comments: [
           {
-            comment: 'comment 1'
+            comment: 'comment 1',
           },
           {
-            comment: 'comment 2'
-          }
+            comment: 'comment 2',
+          },
         ],
         content: {
-          title: 'content'
+          title: 'content',
         },
         moderator: [
           {
-            comment: 'comment 1'
+            comment: 'comment 1',
           },
           {
-            comment: 'comment 2'
-          }
+            comment: 'comment 2',
+          },
         ],
-        votes: 350
+        votes: 350,
       };
 
       dbClient.pool.pooledQuery = jest.fn();
       dbClient.pool.pooledQuery.mockReturnValueOnce([
         {
-          comment: 'comment 1'
+          comment: 'comment 1',
         },
         {
-          comment: 'comment 2'
-        }
+          comment: 'comment 2',
+        },
       ]);
       dbClient.pool.pooledQuery.mockReturnValueOnce([
         {
-          comment: 'comment 1'
+          comment: 'comment 1',
         },
         {
-          comment: 'comment 2'
-        }
+          comment: 'comment 2',
+        },
       ]);
       dbClient.query = jest.fn();
       dbClient.query.mockReturnValueOnce({
-        title: 'content'
+        title: 'content',
       });
       dbClient.query.mockReturnValueOnce({
-        title: 'content'
+        title: 'content',
       });
       dbClient.query.mockReturnValueOnce(42);
       dbClient.commitSync = jest.fn();
@@ -96,27 +96,27 @@ describe('05_dependency_injection', () => {
   describe('getPostComments', () => {
     it('should work for case 1', async () => {
       let client = {
-        pool: {}
+        pool: {},
       };
       let postId = 1;
       let redisCache = null;
       let result = [
         {
-          comment: 'comment 1'
+          comment: 'comment 1',
         },
         {
-          comment: 'comment 2'
-        }
+          comment: 'comment 2',
+        },
       ];
 
       client.pool.pooledQuery = jest.fn();
       client.pool.pooledQuery.mockReturnValueOnce([
         {
-          comment: 'comment 1'
+          comment: 'comment 1',
         },
         {
-          comment: 'comment 2'
-        }
+          comment: 'comment 2',
+        },
       ]);
       client.query = jest.fn();
       client.query.mockReturnValueOnce(42);

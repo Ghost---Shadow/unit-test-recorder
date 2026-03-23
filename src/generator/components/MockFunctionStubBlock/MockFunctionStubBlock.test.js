@@ -1,5 +1,5 @@
-jest.mock('../../utils', () => {
-  const actualUtils = jest.requireActual('../../utils');
+jest.mock("../../utils", () => {
+  const actualUtils = jest.requireActual("../../utils");
   const originalImplementation = actualUtils.shouldMoveToExternal;
 
   return {
@@ -7,20 +7,20 @@ jest.mock('../../utils', () => {
     shouldMoveToExternal: jest.fn().mockImplementation(originalImplementation),
   };
 });
-jest.mock('../../external-data-aggregator', () => ({
+jest.mock("../../external-data-aggregator", () => ({
   AggregatorManager: { addExternalData: jest.fn() },
 }));
 
-const utils = require('../../utils');
-const eda = require('../../external-data-aggregator');
+const utils = require("../../utils");
+const eda = require("../../external-data-aggregator");
 
-const { MockFunctionStubBlock } = require('./MockFunctionStubBlock');
+const { MockFunctionStubBlock } = require("./MockFunctionStubBlock");
 
-describe('MockFunctionStubBlock', () => {
+describe("MockFunctionStubBlock", () => {
   const meta = {
-    path: 'dir/file.js',
-    name: 'functionName',
-    relativePath: './',
+    path: "dir/file.js",
+    name: "functionName",
+    relativePath: "./",
   };
   const captureIndex = 0;
   const packagedArguments = {};
@@ -32,14 +32,14 @@ describe('MockFunctionStubBlock', () => {
       iid1: {
         fn1: {
           captures: [
-            { result: 1, types: { result: 'Number' } },
-            { result: 2, types: { result: 'Number' } },
+            { result: 1, types: { result: "Number" } },
+            { result: 2, types: { result: "Number" } },
           ],
         },
       },
       iid2: {
-        fn2: { captures: [{ result: 3, types: { result: 'Number' } }] },
-        fn3: { captures: [{ result: 4, types: { result: 'Number' } }] },
+        fn2: { captures: [{ result: 3, types: { result: "Number" } }] },
+        fn3: { captures: [{ result: 4, types: { result: "Number" } }] },
       },
     },
   };
@@ -49,8 +49,8 @@ describe('MockFunctionStubBlock', () => {
     packagedArguments,
     capture,
   };
-  it('should generate code when payload is small', () => {
-    jest.spyOn(utils, 'shouldMoveToExternal').mockReturnValue(false);
+  it("should generate code when payload is small", () => {
+    jest.spyOn(utils, "shouldMoveToExternal").mockReturnValue(false);
     const code = MockFunctionStubBlock(props);
     expect(code).toMatchInlineSnapshot(`
         "iid1.fn1.mockReturnValueOnce(1)
@@ -60,8 +60,8 @@ describe('MockFunctionStubBlock', () => {
       `);
     expect(eda.AggregatorManager.addExternalData.mock.calls.length).toBe(0);
   });
-  it('should generate code when payload is large', () => {
-    jest.spyOn(utils, 'shouldMoveToExternal').mockReturnValue(true);
+  it("should generate code when payload is large", () => {
+    jest.spyOn(utils, "shouldMoveToExternal").mockReturnValue(true);
     const code = MockFunctionStubBlock(props);
     const path = eda.AggregatorManager.addExternalData.mock.calls[0][0];
     const externalData = eda.AggregatorManager.addExternalData.mock.calls;
@@ -73,12 +73,12 @@ describe('MockFunctionStubBlock', () => {
       `);
     expect(path).toEqual(meta.path);
     expect(externalData).toMatchInlineSnapshot(`
-      Array [
-        Array [
+      [
+        [
           "dir/file.js",
-          Array [
-            Object {
-              "filePath": "dir/file/functionName_0_iid1Fn10.mock.js",
+          [
+            {
+              "filePath": "file/functionName_0_iid1Fn10.mock.js",
               "fileString": "module.exports = 1;
       ",
               "identifier": "functionName0iid1Fn10",
@@ -86,11 +86,11 @@ describe('MockFunctionStubBlock', () => {
             },
           ],
         ],
-        Array [
+        [
           "dir/file.js",
-          Array [
-            Object {
-              "filePath": "dir/file/functionName_0_iid1Fn11.mock.js",
+          [
+            {
+              "filePath": "file/functionName_0_iid1Fn11.mock.js",
               "fileString": "module.exports = 2;
       ",
               "identifier": "functionName0iid1Fn11",
@@ -98,11 +98,11 @@ describe('MockFunctionStubBlock', () => {
             },
           ],
         ],
-        Array [
+        [
           "dir/file.js",
-          Array [
-            Object {
-              "filePath": "dir/file/functionName_0_iid2Fn20.mock.js",
+          [
+            {
+              "filePath": "file/functionName_0_iid2Fn20.mock.js",
               "fileString": "module.exports = 3;
       ",
               "identifier": "functionName0iid2Fn20",
@@ -110,11 +110,11 @@ describe('MockFunctionStubBlock', () => {
             },
           ],
         ],
-        Array [
+        [
           "dir/file.js",
-          Array [
-            Object {
-              "filePath": "dir/file/functionName_0_iid2Fn30.mock.js",
+          [
+            {
+              "filePath": "file/functionName_0_iid2Fn30.mock.js",
               "fileString": "module.exports = 4;
       ",
               "identifier": "functionName0iid2Fn30",
@@ -125,7 +125,7 @@ describe('MockFunctionStubBlock', () => {
       ]
     `);
   });
-  it('should return empty string if no mocks', () => {
+  it("should return empty string if no mocks", () => {
     const props1 = {
       meta,
       captureIndex,

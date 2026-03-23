@@ -15,22 +15,22 @@ const getModerator = (pool, postId) =>
 const getPostComments = async (...p) =>
   recorderWrapper(
     {
-      path:
-        'test_integration/flows/05_dependency_injection/05_dependency_injection.js',
+      path: 'test_integration/flows/05_dependency_injection/05_dependency_injection.js',
       name: 'getPostComments',
       paramIds: ['client', 'postId', 'redisCache'],
       injectionWhitelist: ['query', 'pooledQuery', 'commitSync'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: true,
-      isObject: false
+      isObject: false,
     },
     async (client, postId, redisCache) => {
       const votes = await redisCache(postId + 1);
-      const regionId = await client.testIntegrationFlows05DependencyInjection05DependencyInjectionJsQuery(
-        'SELECT region_id FROM regions where post_id=?',
-        postId
-      );
+      const regionId =
+        await client.testIntegrationFlows05DependencyInjection05DependencyInjectionJsQuery(
+          'SELECT region_id FROM regions where post_id=?',
+          postId
+        );
       return client.pool.testIntegrationFlows05DependencyInjection05DependencyInjectionJsPooledQuery(
         'SELECT * FROM comments WHERE post_id=? AND region_id=? AND votes=?',
         postId,
@@ -44,15 +44,14 @@ const getPostComments = async (...p) =>
 const getPost = async (...p) =>
   recorderWrapper(
     {
-      path:
-        'test_integration/flows/05_dependency_injection/05_dependency_injection.js',
+      path: 'test_integration/flows/05_dependency_injection/05_dependency_injection.js',
       name: 'getPost',
       paramIds: ['dbClient', 'postId', 'redisCache'],
       injectionWhitelist: ['query', 'pooledQuery', 'commitSync'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: true,
-      isObject: false
+      isObject: false,
     },
     async (dbClient, postId, redisCache) => {
       await getPostContent(dbClient, postId);
@@ -65,7 +64,7 @@ const getPost = async (...p) =>
         content,
         comments,
         votes,
-        moderator
+        moderator,
       };
     },
     ...p
@@ -74,20 +73,20 @@ const getPost = async (...p) =>
 const getActiveUserCount = async (...p) =>
   recorderWrapper(
     {
-      path:
-        'test_integration/flows/05_dependency_injection/05_dependency_injection.js',
+      path: 'test_integration/flows/05_dependency_injection/05_dependency_injection.js',
       name: 'getActiveUserCount',
       paramIds: ['dbClient', 'botCount'],
       injectionWhitelist: ['query', 'pooledQuery', 'commitSync'],
       isDefault: false,
       isEcmaDefault: false,
       isAsync: true,
-      isObject: false
+      isObject: false,
     },
     async (dbClient, botCount) => {
-      const totalUsers = await dbClient.testIntegrationFlows05DependencyInjection05DependencyInjectionJsQuery(
-        'SELECT COUNT(*) FROM active_users;'
-      );
+      const totalUsers =
+        await dbClient.testIntegrationFlows05DependencyInjection05DependencyInjectionJsQuery(
+          'SELECT COUNT(*) FROM active_users;'
+        );
       return totalUsers - botCount;
     },
     ...p
@@ -95,7 +94,6 @@ const getActiveUserCount = async (...p) =>
 
 module.exports = { getPost, getPostComments, getActiveUserCount };
 recordFileMeta({
-  path:
-    'test_integration/flows/05_dependency_injection/05_dependency_injection.js',
-  mocks: []
+  path: 'test_integration/flows/05_dependency_injection/05_dependency_injection.js',
+  mocks: [],
 });

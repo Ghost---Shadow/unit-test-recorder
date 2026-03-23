@@ -1,15 +1,16 @@
-const { getBlackList } = require('./blacklist-generator');
+const { getBlackList } = require("./blacklist-generator");
 
-describe('blacklist-generator', () => {
-  describe('getBlackList', () => {
-    it('should list all paths including prototypes', () => {
+describe("blacklist-generator", () => {
+  describe("getBlackList", () => {
+    it("should list all paths including prototypes", () => {
       const blackList = getBlackList();
       expect(blackList).toMatchInlineSnapshot(`
-        Object {
+        {
           "add": true,
           "anchor": true,
           "apply": true,
           "assign": true,
+          "at": true,
           "big": true,
           "bind": true,
           "blink": true,
@@ -31,6 +32,8 @@ describe('blacklist-generator', () => {
           "defineProperty": true,
           "delete": true,
           "description": true,
+          "detached": true,
+          "difference": true,
           "endsWith": true,
           "entries": true,
           "every": true,
@@ -40,6 +43,8 @@ describe('blacklist-generator', () => {
           "finally": true,
           "find": true,
           "findIndex": true,
+          "findLast": true,
+          "findLastIndex": true,
           "fixed": true,
           "flat": true,
           "flatMap": true,
@@ -83,13 +88,22 @@ describe('blacklist-generator', () => {
           "getUint32": true,
           "getUint8": true,
           "getYear": true,
+          "groupBy": true,
+          "grow": true,
+          "growable": true,
           "has": true,
+          "hasOwn": true,
           "includes": true,
           "indexOf": true,
+          "intersection": true,
           "is": true,
+          "isDisjointFrom": true,
           "isExtensible": true,
           "isFrozen": true,
           "isSealed": true,
+          "isSubsetOf": true,
+          "isSupersetOf": true,
+          "isWellFormed": true,
           "italics": true,
           "join": true,
           "keys": true,
@@ -100,6 +114,7 @@ describe('blacklist-generator', () => {
           "map": true,
           "match": true,
           "matchAll": true,
+          "maxByteLength": true,
           "name": true,
           "normalize": true,
           "padEnd": true,
@@ -112,6 +127,9 @@ describe('blacklist-generator', () => {
           "reduceRight": true,
           "repeat": true,
           "replace": true,
+          "replaceAll": true,
+          "resizable": true,
+          "resize": true,
           "reverse": true,
           "seal": true,
           "search": true,
@@ -157,6 +175,7 @@ describe('blacklist-generator', () => {
           "substr": true,
           "substring": true,
           "sup": true,
+          "symmetricDifference": true,
           "test": true,
           "then": true,
           "toDateString": true,
@@ -171,16 +190,24 @@ describe('blacklist-generator', () => {
           "toLocaleUpperCase": true,
           "toLowerCase": true,
           "toPrecision": true,
+          "toReversed": true,
+          "toSorted": true,
+          "toSpliced": true,
           "toTimeString": true,
           "toUTCString": true,
           "toUpperCase": true,
+          "toWellFormed": true,
+          "transfer": true,
+          "transferToFixedLength": true,
           "trim": true,
           "trimEnd": true,
           "trimLeft": true,
           "trimRight": true,
           "trimStart": true,
+          "union": true,
           "unshift": true,
           "values": true,
+          "with": true,
         }
       `);
     });

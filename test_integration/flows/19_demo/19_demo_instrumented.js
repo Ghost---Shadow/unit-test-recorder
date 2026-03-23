@@ -7,7 +7,7 @@ fileSystem.testIntegrationFlows19Demo19DemoJsReadFileSync = (...p) =>
     {
       path: 'test_integration/flows/19_demo/19_demo.js',
       moduleName: 'fs',
-      name: 'readFileSync'
+      name: 'readFileSync',
     },
     fileSystem.readFileSync,
     ...p
@@ -23,7 +23,7 @@ const getTodos = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false
+      isObject: false,
     },
     () => {
       const fileName = 'test_integration/flows/19_demo/sample.json';
@@ -47,9 +47,9 @@ const getCompletedTodos = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false
+      isObject: false,
     },
-    todos => todos.filter(todo => todo.done),
+    (todos) => todos.filter((todo) => todo.done),
     ...p
   );
 
@@ -63,15 +63,16 @@ const saveTodos = async (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: true,
-      isObject: false
+      isObject: false,
     },
-    async dbClient => {
+    async (dbClient) => {
       const todos = getTodos();
       const completedTodos = getCompletedTodos(todos);
 
-      const result = await dbClient.testIntegrationFlows19Demo19DemoJsBulkInsert(
-        completedTodos
-      );
+      const result =
+        await dbClient.testIntegrationFlows19Demo19DemoJsBulkInsert(
+          completedTodos
+        );
 
       return result;
     },
@@ -81,9 +82,9 @@ const saveTodos = async (...p) =>
 module.exports = {
   getTodos,
   getCompletedTodos,
-  saveTodos
+  saveTodos,
 };
 recordFileMeta({
   path: 'test_integration/flows/19_demo/19_demo.js',
-  mocks: ['fs']
+  mocks: ['fs'],
 });

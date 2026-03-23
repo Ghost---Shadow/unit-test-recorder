@@ -13,9 +13,9 @@ const base = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false
+      isObject: false,
     },
-    param1 => param2 => param1.someFun() + param2.someOtherFun(),
+    (param1) => (param2) => param1.someFun() + param2.someOtherFun(),
     ...p
   );
 const base2 = (...p) =>
@@ -28,7 +28,7 @@ const base2 = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false
+      isObject: false,
     },
     function base2(param1) {
       return function base3(param2) {
@@ -48,13 +48,13 @@ const validFun = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false
+      isObject: false,
     },
-    param => param.testIntegrationFlows11HigherOrder11HigherOrderJsSomeFun(),
+    (param) => param.testIntegrationFlows11HigherOrder11HigherOrderJsSomeFun(),
     ...p
   );
 
-const rObj = { foo: f => p => f(p) };
+const rObj = { foo: (f) => (p) => f(p) };
 const _foo = rObj.foo;
 rObj.foo = (...p) =>
   recorderWrapper(
@@ -66,12 +66,12 @@ rObj.foo = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: true
+      isObject: true,
     },
     _foo,
     ...p
   );
-const secondary1 = rObj.foo(p => p.someFun());
+const secondary1 = rObj.foo((p) => p.someFun());
 // eslint-disable-next-line
 const secondary2 = rObj.foo(function f(p) {
   return p.someFun();
@@ -83,9 +83,9 @@ module.exports = {
   rObj,
   secondary1,
   secondary2,
-  validFun
+  validFun,
 };
 recordFileMeta({
   path: 'test_integration/flows/11_higher_order/11_higher_order.js',
-  mocks: []
+  mocks: [],
 });

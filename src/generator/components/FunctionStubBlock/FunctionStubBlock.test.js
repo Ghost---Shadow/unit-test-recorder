@@ -1,5 +1,5 @@
-jest.mock('../../utils', () => {
-  const actualUtils = jest.requireActual('../../utils');
+jest.mock("../../utils", () => {
+  const actualUtils = jest.requireActual("../../utils");
   const originalImplementation = actualUtils.shouldMoveToExternal;
 
   return {
@@ -7,23 +7,23 @@ jest.mock('../../utils', () => {
     shouldMoveToExternal: jest.fn().mockImplementation(originalImplementation),
   };
 });
-jest.mock('../../external-data-aggregator', () => ({
+jest.mock("../../external-data-aggregator", () => ({
   AggregatorManager: { addExternalData: jest.fn() },
 }));
 
-const utils = require('../../utils');
-const eda = require('../../external-data-aggregator');
+const utils = require("../../utils");
+const eda = require("../../external-data-aggregator");
 
-const { FunctionStubBlock } = require('./FunctionStubBlock');
+const { FunctionStubBlock } = require("./FunctionStubBlock");
 
-describe('FunctionStubBlock', () => {
+describe("FunctionStubBlock", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
   const meta = {
-    path: 'dir/file.js',
-    name: 'functionName',
-    relativePath: './',
+    path: "dir/file.js",
+    name: "functionName",
+    relativePath: "./",
   };
   const captureIndex = 0;
   const packagedArguments = {};
@@ -32,27 +32,27 @@ describe('FunctionStubBlock', () => {
       iid1: {
         fn1: {
           captures: [
-            { result: 1, types: { result: 'Number' } },
-            { result: 2, types: { result: 'Number' } },
+            { result: 1, types: { result: "Number" } },
+            { result: 2, types: { result: "Number" } },
           ],
         },
       },
       iid2: {
-        fn2: { captures: [{ result: 3, types: { result: 'Number' } }] },
-        fn3: { captures: [{ result: 4, types: { result: 'Number' } }] },
+        fn2: { captures: [{ result: 3, types: { result: "Number" } }] },
+        fn3: { captures: [{ result: 4, types: { result: "Number" } }] },
       },
     },
     injections: {
-      'dbClient.__proto__.pool.__proto__.query': {
+      "dbClient.__proto__.pool.__proto__.query": {
         captures: [
           {
-            params: ['SELECT * FROM posts WHERE id=?', 1],
+            params: ["SELECT * FROM posts WHERE id=?", 1],
             result: {
-              title: 'content',
+              title: "content",
             },
             types: {
-              params: ['String', 'Number'],
-              result: 'Object',
+              params: ["String", "Number"],
+              result: "Object",
             },
           },
         ],
@@ -65,8 +65,8 @@ describe('FunctionStubBlock', () => {
     packagedArguments,
     capture,
   };
-  it('should generate code when payload is small', () => {
-    jest.spyOn(utils, 'shouldMoveToExternal').mockReturnValue(false);
+  it("should generate code when payload is small", () => {
+    jest.spyOn(utils, "shouldMoveToExternal").mockReturnValue(false);
     const code = FunctionStubBlock(props);
     expect(code).toMatchInlineSnapshot(`
       "iid1.fn1.mockReturnValueOnce(1)
@@ -75,13 +75,13 @@ describe('FunctionStubBlock', () => {
       iid2.fn3.mockReturnValueOnce(4)
       dbClient.pool.query = jest.fn()
       dbClient.pool.query.mockReturnValueOnce({
-        \\"title\\": \\"content\\"
+        "title": "content"
       })"
     `);
     expect(eda.AggregatorManager.addExternalData.mock.calls.length).toBe(0);
   });
-  it('should generate code when payload is large', () => {
-    jest.spyOn(utils, 'shouldMoveToExternal').mockReturnValue(true);
+  it("should generate code when payload is large", () => {
+    jest.spyOn(utils, "shouldMoveToExternal").mockReturnValue(true);
     const code = FunctionStubBlock(props);
     const path = eda.AggregatorManager.addExternalData.mock.calls[0][0];
     const externalData = eda.AggregatorManager.addExternalData.mock.calls;
@@ -95,12 +95,12 @@ describe('FunctionStubBlock', () => {
     `);
     expect(path).toEqual(meta.path);
     expect(externalData).toMatchInlineSnapshot(`
-      Array [
-        Array [
+      [
+        [
           "dir/file.js",
-          Array [
-            Object {
-              "filePath": "dir/file/functionName_0_iid1Fn10.mock.js",
+          [
+            {
+              "filePath": "file/functionName_0_iid1Fn10.mock.js",
               "fileString": "module.exports = 1;
       ",
               "identifier": "functionName0iid1Fn10",
@@ -108,11 +108,11 @@ describe('FunctionStubBlock', () => {
             },
           ],
         ],
-        Array [
+        [
           "dir/file.js",
-          Array [
-            Object {
-              "filePath": "dir/file/functionName_0_iid1Fn11.mock.js",
+          [
+            {
+              "filePath": "file/functionName_0_iid1Fn11.mock.js",
               "fileString": "module.exports = 2;
       ",
               "identifier": "functionName0iid1Fn11",
@@ -120,11 +120,11 @@ describe('FunctionStubBlock', () => {
             },
           ],
         ],
-        Array [
+        [
           "dir/file.js",
-          Array [
-            Object {
-              "filePath": "dir/file/functionName_0_iid2Fn20.mock.js",
+          [
+            {
+              "filePath": "file/functionName_0_iid2Fn20.mock.js",
               "fileString": "module.exports = 3;
       ",
               "identifier": "functionName0iid2Fn20",
@@ -132,11 +132,11 @@ describe('FunctionStubBlock', () => {
             },
           ],
         ],
-        Array [
+        [
           "dir/file.js",
-          Array [
-            Object {
-              "filePath": "dir/file/functionName_0_iid2Fn30.mock.js",
+          [
+            {
+              "filePath": "file/functionName_0_iid2Fn30.mock.js",
               "fileString": "module.exports = 4;
       ",
               "identifier": "functionName0iid2Fn30",
@@ -144,13 +144,13 @@ describe('FunctionStubBlock', () => {
             },
           ],
         ],
-        Array [
+        [
           "dir/file.js",
-          Array [
-            Object {
-              "filePath": "dir/file/functionName_0_dbClientPoolQuery0.mock.js",
+          [
+            {
+              "filePath": "file/functionName_0_dbClientPoolQuery0.mock.js",
               "fileString": "module.exports = {
-        title: 'content'
+        title: 'content',
       };
       ",
               "identifier": "functionName0dbClientPoolQuery0",
@@ -161,7 +161,7 @@ describe('FunctionStubBlock', () => {
       ]
     `);
   });
-  it('should return empty string if no mocks', () => {
+  it("should return empty string if no mocks", () => {
     const props1 = {
       meta,
       captureIndex,

@@ -10,9 +10,9 @@ const circularReference = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false
+      isObject: false,
     },
-    a => {
+    (a) => {
       const obj = { a };
       obj.obj = obj;
       return obj;
@@ -30,9 +30,9 @@ const returnAFunction = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false
+      isObject: false,
     },
-    (a, f2) => b => a + f2(b),
+    (a, f2) => (b) => a + f2(b),
     ...p
   );
 
@@ -46,7 +46,7 @@ const getElapsedTime = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false
+      isObject: false,
     },
     (start, end) => {
       const y2k = new Date('2000-01-31T18:30:00.000Z');
@@ -68,9 +68,9 @@ const returnsNaN = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false
+      isObject: false,
     },
-    a => Number.parseFloat(a),
+    (a) => Number.parseFloat(a),
     ...p
   );
 
@@ -78,9 +78,9 @@ module.exports = {
   circularReference,
   returnAFunction,
   getElapsedTime,
-  returnsNaN
+  returnsNaN,
 };
 recordFileMeta({
   path: 'test_integration/flows/04_unserializeable/04_unserializeable.js',
-  mocks: []
+  mocks: [],
 });

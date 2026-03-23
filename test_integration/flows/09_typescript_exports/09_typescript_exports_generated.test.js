@@ -40,18 +40,18 @@ describe('09_typescript_exports', () => {
       let result = {
         rows: [
           {
-            a: 42
-          }
-        ]
+            a: 42,
+          },
+        ],
       };
 
       client.query = jest.fn();
       client.query.mockReturnValueOnce({
         rows: [
           {
-            a: 42
-          }
-        ]
+            a: 42,
+          },
+        ],
       });
       const actual = fetchFromDb(client);
       expect(actual).toMatchObject(result);

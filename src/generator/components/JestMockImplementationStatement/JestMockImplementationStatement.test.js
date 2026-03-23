@@ -1,5 +1,5 @@
-jest.mock('../../utils', () => {
-  const actualUtils = jest.requireActual('../../utils');
+jest.mock("../../utils", () => {
+  const actualUtils = jest.requireActual("../../utils");
   const originalImplementation = actualUtils.shouldMoveToExternal;
 
   return {
@@ -7,34 +7,34 @@ jest.mock('../../utils', () => {
     shouldMoveToExternal: jest.fn().mockImplementation(originalImplementation),
   };
 });
-jest.mock('../../external-data-aggregator', () => ({
+jest.mock("../../external-data-aggregator", () => ({
   AggregatorManager: { addExternalData: jest.fn() },
 }));
 
-const utils = require('../../utils');
-const eda = require('../../external-data-aggregator');
+const utils = require("../../utils");
+const eda = require("../../external-data-aggregator");
 
 const {
   JestMockImplementationStatement,
-} = require('./JestMockImplementationStatement');
+} = require("./JestMockImplementationStatement");
 
-describe('JestMockImplementationStatement', () => {
+describe("JestMockImplementationStatement", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
   const meta = {
-    path: 'dir/file.js',
-    name: 'functionName',
-    relativePath: './',
+    path: "dir/file.js",
+    name: "functionName",
+    relativePath: "./",
   };
   const captureIndex = 0;
   const innerCaptureIndex = 0;
   const packagedArguments = {};
   const payload = 42;
-  const lIdentifier = 'fs.lIdentifier';
-  const paramType = 'Number';
-  it('should generate code when payload is small', () => {
-    jest.spyOn(utils, 'shouldMoveToExternal').mockReturnValueOnce(false);
+  const lIdentifier = "fs.lIdentifier";
+  const paramType = "Number";
+  it("should generate code when payload is small", () => {
+    jest.spyOn(utils, "shouldMoveToExternal").mockReturnValueOnce(false);
     const props = {
       meta,
       captureIndex,
@@ -47,11 +47,11 @@ describe('JestMockImplementationStatement', () => {
 
     const code = JestMockImplementationStatement(props);
     expect(code).toMatchInlineSnapshot(
-      '"fs.lIdentifier.mockReturnValueOnce(42)"',
+      '"fs.lIdentifier.mockReturnValueOnce(42)"'
     );
     expect(eda.AggregatorManager.addExternalData.mock.calls.length).toBe(0);
   });
-  it('should generate code when payload is large', () => {
+  it("should generate code when payload is large", () => {
     const props = {
       meta,
       captureIndex,
@@ -61,18 +61,18 @@ describe('JestMockImplementationStatement', () => {
       paramType,
       packagedArguments,
     };
-    jest.spyOn(utils, 'shouldMoveToExternal').mockReturnValueOnce(true);
+    jest.spyOn(utils, "shouldMoveToExternal").mockReturnValueOnce(true);
     const code = JestMockImplementationStatement(props);
     const path = eda.AggregatorManager.addExternalData.mock.calls[0][0];
     const externalData = eda.AggregatorManager.addExternalData.mock.calls[0][1];
     expect(code).toMatchInlineSnapshot(
-      '"fs.lIdentifier.mockReturnValueOnce(functionName0fsLIdentifier0)"',
+      '"fs.lIdentifier.mockReturnValueOnce(functionName0fsLIdentifier0)"'
     );
     expect(path).toEqual(meta.path);
     expect(externalData).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "filePath": "dir/file/functionName_0_fsLIdentifier0.mock.js",
+      [
+        {
+          "filePath": "file/functionName_0_fsLIdentifier0.mock.js",
           "fileString": "module.exports = 42;
       ",
           "identifier": "functionName0fsLIdentifier0",

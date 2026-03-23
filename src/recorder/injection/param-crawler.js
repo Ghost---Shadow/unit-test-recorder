@@ -9,6 +9,26 @@ const {
   CLS_NAMESPACE,
 } = require('../../util/constants');
 
+// lodash _.set blocks __proto__ paths for security (prototype pollution).
+// We need a custom setter that can traverse prototype chains safely.
+const safeSet = (obj, path, value) => {
+  let current = obj;
+  for (let i = 0; i < path.length - 1; i += 1) {
+    current = current[path[i]];
+  }
+  current[path[path.length - 1]] = value;
+};
+
+// lodash _.get also blocks __proto__ paths in newer versions.
+const safeGet = (obj, path, defaultValue) => {
+  let current = obj;
+  for (let i = 0; i < path.length; i += 1) {
+    if (current == null) return defaultValue;
+    current = current[path[i]];
+  }
+  return current !== undefined ? current : defaultValue;
+};
+
 const injectDependencyInjections = (params) => {
   const session = getNamespace(CLS_NAMESPACE);
   const stack = session.get('stack');
@@ -24,17 +44,17 @@ const injectDependencyInjections = (params) => {
           path !== undefined;
           path = iterator.next().value
         ) {
-          const existingProperty = _.get(param, path);
+          const existingProperty = safeGet(param, path);
           const lIndex = path.length - 1;
           const newFnName = newFunctionNameGenerator(path[lIndex], fileName);
           const newPath = _.clone(path);
           newPath[lIndex] = newFnName;
           const fppkey = path.join('.');
-          const propertyToInject = _.get(param, newPath, existingProperty);
+          const propertyToInject = safeGet(param, newPath, existingProperty);
           const injectedProperty = injectFunctionDynamically(
             propertyToInject, paramIndex, fppkey,
           );
-          _.set(param, newPath, injectedProperty);
+          safeSet(param, newPath, injectedProperty);
         }
       } else {
         params[paramIndex] = injectFunctionDynamically(

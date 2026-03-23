@@ -8,7 +8,7 @@ describe("PackagedExternalFile", () => {
     const code = PackagedExternalFile(props);
     expect(code).toMatchInlineSnapshot(`
       "module.exports = {
-        a: 42,
+        a: 42
       };
       "
     `);
@@ -20,7 +20,7 @@ describe("PackagedExternalFile", () => {
     const code = PackagedExternalFile(props);
     expect(code).toMatchInlineSnapshot(`
       "export default {
-        a: 42,
+        a: 42
       };
       "
     `);

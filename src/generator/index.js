@@ -49,6 +49,7 @@ const extractTestsFromState = (state, packagedArguments) => Object
       try {
         fileString = prettier.format(code, {
           singleQuote: true,
+          trailingComma: 'none',
           parser: packagedArguments.isTypescript ? 'typescript' : 'babel',
         });
       } catch (e) {

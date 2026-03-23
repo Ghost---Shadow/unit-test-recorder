@@ -7,7 +7,7 @@ describe('02_async_functions', () => {
       let email = 'email';
       let result = {
         email: 'email',
-        request: 'facebook',
+        request: 'facebook'
       };
 
       const actual = await getFacebookInfo(email);
@@ -21,12 +21,12 @@ describe('02_async_functions', () => {
       let result = {
         facebookInfo: {
           email: 'email',
-          request: 'facebook',
+          request: 'facebook'
         },
         twitterInfo: {
           email: 'email',
-          request: 'twitter',
-        },
+          request: 'twitter'
+        }
       };
 
       const actual = await getSocialInfo(email);

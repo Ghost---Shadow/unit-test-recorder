@@ -13,7 +13,7 @@ const base = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (param1) => (param2) => param1.someFun() + param2.someOtherFun(),
     ...p
@@ -28,7 +28,7 @@ const base2 = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     function base2(param1) {
       return function base3(param2) {
@@ -48,7 +48,7 @@ const validFun = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (param) => param.testIntegrationFlows11HigherOrder11HigherOrderJsSomeFun(),
     ...p
@@ -66,7 +66,7 @@ rObj.foo = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: true,
+      isObject: true
     },
     _foo,
     ...p
@@ -83,9 +83,9 @@ module.exports = {
   rObj,
   secondary1,
   secondary2,
-  validFun,
+  validFun
 };
 recordFileMeta({
   path: 'test_integration/flows/11_higher_order/11_higher_order.js',
-  mocks: [],
+  mocks: []
 });

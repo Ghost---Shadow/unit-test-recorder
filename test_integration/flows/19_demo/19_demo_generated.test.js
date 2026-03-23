@@ -12,18 +12,18 @@ describe('19_demo', () => {
       let todos = [
         {
           done: true,
-          title: 'Get eggs',
+          title: 'Get eggs'
         },
         {
           done: false,
-          title: 'Boil eggs',
-        },
+          title: 'Boil eggs'
+        }
       ];
       let result = [
         {
           done: true,
-          title: 'Get eggs',
-        },
+          title: 'Get eggs'
+        }
       ];
 
       const actual = getCompletedTodos(todos);
@@ -36,12 +36,12 @@ describe('19_demo', () => {
       let result = [
         {
           done: true,
-          title: 'Get eggs',
+          title: 'Get eggs'
         },
         {
           done: false,
-          title: 'Boil eggs',
-        },
+          title: 'Boil eggs'
+        }
       ];
       fs.readFileSync.mockReturnValueOnce(
         '[\n  {\n    "title": "Get eggs",\n    "done": true\n  },\n  {\n    "title": "Boil eggs",\n    "done": false\n  }\n]'
@@ -56,14 +56,14 @@ describe('19_demo', () => {
     it('should work for case 1', async () => {
       let dbClient = {};
       let result = {
-        message: '1 rows added',
+        message: '1 rows added'
       };
       fs.readFileSync.mockReturnValueOnce(
         '[\n  {\n    "title": "Get eggs",\n    "done": true\n  },\n  {\n    "title": "Boil eggs",\n    "done": false\n  }\n]'
       );
       dbClient.bulkInsert = jest.fn();
       dbClient.bulkInsert.mockReturnValueOnce({
-        message: '1 rows added',
+        message: '1 rows added'
       });
       const actual = await saveTodos(dbClient);
       expect(actual).toMatchObject(result);

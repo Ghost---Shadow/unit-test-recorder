@@ -22,7 +22,7 @@ const getPostComments = async (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: true,
-      isObject: false,
+      isObject: false
     },
     async (client, postId, redisCache) => {
       const votes = await redisCache(postId + 1);
@@ -51,7 +51,7 @@ const getPost = async (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: true,
-      isObject: false,
+      isObject: false
     },
     async (dbClient, postId, redisCache) => {
       await getPostContent(dbClient, postId);
@@ -64,7 +64,7 @@ const getPost = async (...p) =>
         content,
         comments,
         votes,
-        moderator,
+        moderator
       };
     },
     ...p
@@ -80,7 +80,7 @@ const getActiveUserCount = async (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: true,
-      isObject: false,
+      isObject: false
     },
     async (dbClient, botCount) => {
       const totalUsers =
@@ -95,5 +95,5 @@ const getActiveUserCount = async (...p) =>
 module.exports = { getPost, getPostComments, getActiveUserCount };
 recordFileMeta({
   path: 'test_integration/flows/05_dependency_injection/05_dependency_injection.js',
-  mocks: [],
+  mocks: []
 });

@@ -10,7 +10,7 @@ const foo1 = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (a, b) => a + b,
     ...p
@@ -25,7 +25,7 @@ const bar = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     function bar(a, b) {
       const c = a - b;
@@ -46,7 +46,7 @@ const specialParams = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (a, { b, c }, d = 1) => a + b + c + d,
     ...p
@@ -61,7 +61,7 @@ const specialParams2 = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     function specialParams2(a, { b, c }, d = 1) {
       return a + b + c + d;
@@ -74,9 +74,9 @@ module.exports = {
   SOME_CONSTANT,
   bar,
   specialParams,
-  specialParams2,
+  specialParams2
 };
 recordFileMeta({
   path: 'test_integration/flows/01_module_exports/01_module_exports.js',
-  mocks: [],
+  mocks: []
 });

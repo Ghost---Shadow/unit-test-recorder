@@ -10,7 +10,7 @@ const foo = (...p) =>
       isDefault: true,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (a) => a,
     ...p
@@ -19,5 +19,5 @@ const foo = (...p) =>
 module.exports = foo;
 recordFileMeta({
   path: 'test_integration/flows/15_named_module_exports_default/15_named_module_exports_default.js',
-  mocks: [],
+  mocks: []
 });

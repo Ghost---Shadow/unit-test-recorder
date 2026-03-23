@@ -17,7 +17,7 @@ const getSocialInfo = async (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: true,
-      isObject: false,
+      isObject: false
     },
     async (email) => {
       const facebookInfo = await mocksios(email, 'facebook');
@@ -38,7 +38,7 @@ const getFacebookInfoHelper = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (email) => mocksios(email, 'facebook'),
     ...p
@@ -48,5 +48,5 @@ module.exports.getFacebookInfo = getFacebookInfoHelper;
 module.exports.getSocialInfo = getSocialInfo;
 recordFileMeta({
   path: 'test_integration/flows/02_async_functions/02_async_functions.js',
-  mocks: [],
+  mocks: []
 });

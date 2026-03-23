@@ -10,7 +10,7 @@ export const ecma1 = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (a, b) => a + b,
     ...p
@@ -26,7 +26,7 @@ const ecma2 = (...p) =>
       isDefault: true,
       isEcmaDefault: true,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (b) => b * 3,
     ...p
@@ -42,7 +42,7 @@ const ecma33 = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (a) => a / 2,
     ...p
@@ -57,7 +57,7 @@ const ecma4 = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (a) => a / 4,
     ...p
@@ -68,5 +68,5 @@ export { ecma33 as ecma3, ecma4 };
 export default ecma2;
 recordFileMeta({
   path: 'test_integration/flows/03_ecma_export/03_ecma_export.js',
-  mocks: [],
+  mocks: []
 });

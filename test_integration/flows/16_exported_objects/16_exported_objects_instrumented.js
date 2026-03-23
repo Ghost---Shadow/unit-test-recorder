@@ -7,7 +7,7 @@ const obj1 = {
     return res + b;
   },
   foo2() {},
-  baz: 42,
+  baz: 42
 };
 const _foo2 = obj1.foo2;
 obj1.foo2 = (...p) =>
@@ -20,7 +20,7 @@ obj1.foo2 = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: true,
+      isObject: true
     },
     _foo2,
     ...p
@@ -36,7 +36,7 @@ obj1.foo1 = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: true,
-      isObject: true,
+      isObject: true
     },
     _foo,
     ...p
@@ -47,9 +47,9 @@ obj2 = {
   bar: async (a, b) => a - b,
   deep: {
     fun: async (a) =>
-      a.testIntegrationFlows16ExportedObjects16ExportedObjectsJsAnotherFun(),
+      a.testIntegrationFlows16ExportedObjects16ExportedObjectsJsAnotherFun()
   },
-  higher: (a) => (b) => a * b,
+  higher: (a) => (b) => a * b
 };
 const _higher = obj2.higher;
 obj2.higher = (...p) =>
@@ -62,7 +62,7 @@ obj2.higher = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: true,
+      isObject: true
     },
     _higher,
     ...p
@@ -78,7 +78,7 @@ obj2.deep.fun = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: true,
-      isObject: true,
+      isObject: true
     },
     _fun,
     ...p
@@ -94,14 +94,14 @@ obj2.bar = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: true,
-      isObject: true,
+      isObject: true
     },
     _bar,
     ...p
   );
 
 const largeObj = {
-  largeFun: () => [...Array(1000).keys()],
+  largeFun: () => [...Array(1000).keys()]
 };
 const _largeFun = largeObj.largeFun;
 largeObj.largeFun = (...p) =>
@@ -114,7 +114,7 @@ largeObj.largeFun = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: true,
+      isObject: true
     },
     _largeFun,
     ...p
@@ -129,9 +129,9 @@ module.exports = {
   obj2,
   obj3,
   empty,
-  largeObj,
+  largeObj
 };
 recordFileMeta({
   path: 'test_integration/flows/16_exported_objects/16_exported_objects.js',
-  mocks: [],
+  mocks: []
 });

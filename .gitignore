@@ -105,3 +105,9 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+
+# Generated test artifacts
+utr_activity/
+06_mocks/
+07_large_payload/
+16_exported_objects/

@@ -7,7 +7,7 @@ fileSystem.testIntegrationFlows06Mocks06MocksJsReadFileSync = (...p) =>
     {
       path: 'test_integration/flows/06_mocks/06_mocks.js',
       moduleName: 'fs',
-      name: 'readFileSync',
+      name: 'readFileSync'
     },
     fileSystem.readFileSync,
     ...p
@@ -18,7 +18,7 @@ const testIntegrationFlows06Mocks06MocksJsHigherOrder = (...p) =>
     {
       path: 'test_integration/flows/06_mocks/06_mocks.js',
       moduleName: './auxilary1',
-      name: 'higherOrder',
+      name: 'higherOrder'
     },
     higherOrder,
     ...p
@@ -28,7 +28,7 @@ const testIntegrationFlows06Mocks06MocksJsFoo5 = (...p) =>
     {
       path: 'test_integration/flows/06_mocks/06_mocks.js',
       moduleName: './auxilary1',
-      name: 'foo5',
+      name: 'foo5'
     },
     foo5,
     ...p
@@ -38,7 +38,7 @@ const testIntegrationFlows06Mocks06MocksJsFoo4 = (...p) =>
     {
       path: 'test_integration/flows/06_mocks/06_mocks.js',
       moduleName: './auxilary1',
-      name: 'foo4',
+      name: 'foo4'
     },
     foo4,
     ...p
@@ -48,7 +48,7 @@ const testIntegrationFlows06Mocks06MocksJsFoo3 = (...p) =>
     {
       path: 'test_integration/flows/06_mocks/06_mocks.js',
       moduleName: './auxilary1',
-      name: 'foo2',
+      name: 'foo2'
     },
     foo3,
     ...p
@@ -58,7 +58,7 @@ const testIntegrationFlows06Mocks06MocksJsFoo1 = (...p) =>
     {
       path: 'test_integration/flows/06_mocks/06_mocks.js',
       moduleName: './auxilary1',
-      name: 'foo1',
+      name: 'foo1'
     },
     foo1,
     ...p
@@ -75,7 +75,7 @@ const expContinuationFn = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     () =>
       JSON.parse(
@@ -99,7 +99,7 @@ const getTodo = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     () => {
       fileSystem
@@ -125,7 +125,7 @@ const localMocksTest = async (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: true,
-      isObject: false,
+      isObject: false
     },
     async () => {
       const result =
@@ -148,7 +148,7 @@ const datesTest = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     () => testIntegrationFlows06Mocks06MocksJsFoo5(),
     ...p
@@ -165,7 +165,7 @@ const higherOrderTest = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     () => {
       const gen = testIntegrationFlows06Mocks06MocksJsHigherOrder(1);
@@ -179,9 +179,9 @@ module.exports = {
   localMocksTest,
   datesTest,
   higherOrderTest,
-  expContinuationFn,
+  expContinuationFn
 };
 recordFileMeta({
   path: 'test_integration/flows/06_mocks/06_mocks.js',
-  mocks: ['fs', './auxilary1', './auxilary2'],
+  mocks: ['fs', './auxilary1', './auxilary2']
 });

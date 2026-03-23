@@ -10,13 +10,13 @@ const getClickCountsHelper = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (requestDataCb) => {
       const imgObjs = requestDataCb();
       const result = imgObjs.map((imgObj) => ({
         ...imgObj,
-        clicks: imgObj.imageId * 100,
+        clicks: imgObj.imageId * 100
       }));
       return result;
     },
@@ -33,12 +33,12 @@ const getClickCounts = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     () => {
       const requestDataCb = () =>
         [...Array(100)].map((_, index) => ({
-          imageId: index,
+          imageId: index
         }));
       return getClickCountsHelper(requestDataCb);
     },
@@ -48,5 +48,5 @@ const getClickCounts = (...p) =>
 module.exports = { getClickCounts, getClickCountsHelper };
 recordFileMeta({
   path: 'test_integration/flows/07_large_payload/07_large_payload.js',
-  mocks: [],
+  mocks: []
 });

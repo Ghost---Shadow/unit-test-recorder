@@ -13,6 +13,7 @@ const PackagedExternalFile = ({ obj, packagedArguments }) => {
 
   return prettier.format(code, {
     singleQuote: true,
+    trailingComma: 'none',
     parser: 'babel',
   });
 };

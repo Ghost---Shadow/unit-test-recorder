@@ -30,6 +30,7 @@ const transformFile = (fileName, whiteListedModules) => {
     const { code } = generate(ast, generatorOptions);
     const formattedCode = prettier.format(code, {
       singleQuote: true,
+      trailingComma: 'none',
       parser: 'babel',
     });
 

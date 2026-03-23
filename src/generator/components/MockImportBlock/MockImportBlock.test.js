@@ -23,6 +23,7 @@ describe('MockImportBlock', () => {
         const code = MockImportBlock(props);
         const formattedCode = prettier.format(code, {
           singleQuote: true,
+          trailingComma: 'none',
           parser: 'babel',
         });
         expect(formattedCode).toMatchInlineSnapshot(`
@@ -53,6 +54,7 @@ describe('MockImportBlock', () => {
         const code = MockImportBlock(props);
         const formattedCode = prettier.format(code, {
           singleQuote: true,
+          trailingComma: 'none',
           parser: 'typescript',
         });
         expect(formattedCode).toMatchInlineSnapshot(`

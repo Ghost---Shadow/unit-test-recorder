@@ -25,6 +25,7 @@ const generatedInstrumentedCode = (inputPath) => {
   return prettier.format(code, {
     singleQuote: true,
     parser: 'babel',
+    trailingComma: 'none',
   });
 };
 

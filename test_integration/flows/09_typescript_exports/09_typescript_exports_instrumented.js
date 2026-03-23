@@ -12,7 +12,7 @@ const exportTest1 = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (a) => a,
     ...p
@@ -29,7 +29,7 @@ const exportTest2 = (...p) =>
       isDefault: false,
       isEcmaDefault: true,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (a) => (b) => [a, b],
     ...p
@@ -47,7 +47,7 @@ exports.exportTest3 = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (a) => 2 * a,
     ...p
@@ -62,7 +62,7 @@ exports.fetchFromDb = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (client) =>
       client.testIntegrationFlows09TypescriptExports09TypescriptExportsJsQuery(),
@@ -70,5 +70,5 @@ exports.fetchFromDb = (...p) =>
   );
 recordFileMeta({
   path: 'test_integration/flows/09_typescript_exports/09_typescript_exports.js',
-  mocks: [],
+  mocks: []
 });

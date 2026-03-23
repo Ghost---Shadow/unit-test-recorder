@@ -10,7 +10,7 @@ const fun = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (a) => {
       a[0] += 1;
@@ -22,5 +22,5 @@ const fun = (...p) =>
 module.exports = { fun };
 recordFileMeta({
   path: 'test_integration/flows/17_param_mutation/17_param_mutation.js',
-  mocks: [],
+  mocks: []
 });

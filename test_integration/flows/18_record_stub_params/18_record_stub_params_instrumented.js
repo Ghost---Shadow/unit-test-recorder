@@ -7,7 +7,7 @@ aux.testIntegrationFlows18RecordStubParams18RecordStubParamsJsFun = (...p) =>
     {
       path: 'test_integration/flows/18_record_stub_params/18_record_stub_params.js',
       moduleName: './auxilary',
-      name: 'fun',
+      name: 'fun'
     },
     aux.fun,
     ...p
@@ -23,7 +23,7 @@ const fun = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (obj) =>
       obj.testIntegrationFlows18RecordStubParams18RecordStubParamsJsFun(1) +
@@ -34,5 +34,5 @@ const fun = (...p) =>
 module.exports = { fun };
 recordFileMeta({
   path: 'test_integration/flows/18_record_stub_params/18_record_stub_params.js',
-  mocks: ['./auxilary'],
+  mocks: ['./auxilary']
 });

@@ -10,7 +10,7 @@ const fun = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (arr) => arr.map((e) => 2 * e),
     ...p
@@ -26,7 +26,7 @@ const fun2 = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (num) => num.toLocaleString(),
     ...p
@@ -42,7 +42,7 @@ const fun3 = (...p) =>
       isDefault: false,
       isEcmaDefault: false,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (f) => f.call(null, 2),
     ...p
@@ -51,5 +51,5 @@ const fun3 = (...p) =>
 module.exports = { fun, fun2, fun3 };
 recordFileMeta({
   path: 'test_integration/flows/12_unwanted_injections/12_unwanted_injections.js',
-  mocks: [],
+  mocks: []
 });

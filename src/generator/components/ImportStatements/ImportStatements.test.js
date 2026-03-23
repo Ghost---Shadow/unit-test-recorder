@@ -54,6 +54,7 @@ describe('ImportStatements', () => {
       const code = ImportStatements(props);
       const formattedCode = prettier.format(code, {
         singleQuote: true,
+        trailingComma: 'none',
         parser: 'babel',
       });
       expect(formattedCode).toMatchInlineSnapshot(`
@@ -111,6 +112,7 @@ describe('ImportStatements', () => {
       const code = ImportStatements(props);
       const formattedCode = prettier.format(code, {
         singleQuote: true,
+        trailingComma: 'none',
         parser: 'babel',
       });
       expect(formattedCode).toMatchInlineSnapshot(`

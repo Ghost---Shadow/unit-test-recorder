@@ -10,12 +10,12 @@ exports.default = (...p) =>
       isDefault: false,
       isEcmaDefault: true,
       isAsync: false,
-      isObject: false,
+      isObject: false
     },
     (a, b) => a + b,
     ...p
   );
 recordFileMeta({
   path: 'test_integration/flows/13_anon_ts_export_default/13_anon_ts_export_default.js',
-  mocks: [],
+  mocks: []
 });
